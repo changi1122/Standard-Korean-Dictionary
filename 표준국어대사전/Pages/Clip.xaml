@@ -1,0 +1,26 @@
+﻿<Page
+    x:Class="표준국어대사전.Pages.Clip"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:표준국어대사전.Pages"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        <CommandBar>
+            <CommandBar.Content>
+                <Grid/>
+            </CommandBar.Content>
+            <AppBarButton x:Name="Edit" Icon="Edit" Label="수정" IsEnabled="False"/>
+            <AppBarButton x:Name="Delete" Icon="Delete" Label="삭제" IsEnabled="False"/>
+        </CommandBar>
+
+        <Grid Height="48" VerticalAlignment="Top">
+            <TextBlock x:Name="PageTitle" Text="보관" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="20,0,0,0"/>
+        </Grid>
+        <TextBlock HorizontalAlignment="Left" Margin="20,68,0,0" TextWrapping="Wrap" Text="개발 중" VerticalAlignment="Top" FontSize="24"/>
+        <TextBlock HorizontalAlignment="Left" Margin="20,105,0,0" TextWrapping="Wrap" Text=" 국립국어원 표준국어대사전에서 검색한 단어 정보를 웹 페이지 HTML 문서에서 가져와 각 정보를 분류한 후 저장합니다." VerticalAlignment="Top"/>
+
+    </Grid>
+</Page>

@@ -1,0 +1,67 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.26730.16
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "표준국어대사전", "표준국어대사전\표준국어대사전.csproj", "{289AEB63-E7D7-49C1-AAC0-E41E15D9B7A1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "표준국어대사전 HTML 분석기", "표준국어대사전 HTML 분석기\표준국어대사전 HTML 분석기.csproj", "{CAB17FFF-B411-4F0D-B897-A9AB6A80C6FD}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Debug|ARM = Debug|ARM
+		Debug|x64 = Debug|x64
+		Debug|x86 = Debug|x86
+		Release|Any CPU = Release|Any CPU
+		Release|ARM = Release|ARM
+		Release|x64 = Release|x64
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{289AEB63-E7D7-49C1-AAC0-E41E15D9B7A1}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{289AEB63-E7D7-49C1-AAC0-E41E15D9B7A1}.Debug|ARM.ActiveCfg = Debug|ARM
+		{289AEB63-E7D7-49C1-AAC0-E41E15D9B7A1}.Debug|ARM.Build.0 = Debug|ARM
+		{289AEB63-E7D7-49C1-AAC0-E41E15D9B7A1}.Debug|ARM.Deploy.0 = Debug|ARM
+		{289AEB63-E7D7-49C1-AAC0-E41E15D9B7A1}.Debug|x64.ActiveCfg = Debug|x64
+		{289AEB63-E7D7-49C1-AAC0-E41E15D9B7A1}.Debug|x64.Build.0 = Debug|x64
+		{289AEB63-E7D7-49C1-AAC0-E41E15D9B7A1}.Debug|x64.Deploy.0 = Debug|x64
+		{289AEB63-E7D7-49C1-AAC0-E41E15D9B7A1}.Debug|x86.ActiveCfg = Debug|x86
+		{289AEB63-E7D7-49C1-AAC0-E41E15D9B7A1}.Debug|x86.Build.0 = Debug|x86
+		{289AEB63-E7D7-49C1-AAC0-E41E15D9B7A1}.Debug|x86.Deploy.0 = Debug|x86
+		{289AEB63-E7D7-49C1-AAC0-E41E15D9B7A1}.Release|Any CPU.ActiveCfg = Release|x86
+		{289AEB63-E7D7-49C1-AAC0-E41E15D9B7A1}.Release|Any CPU.Build.0 = Release|x86
+		{289AEB63-E7D7-49C1-AAC0-E41E15D9B7A1}.Release|Any CPU.Deploy.0 = Release|x86
+		{289AEB63-E7D7-49C1-AAC0-E41E15D9B7A1}.Release|ARM.ActiveCfg = Release|ARM
+		{289AEB63-E7D7-49C1-AAC0-E41E15D9B7A1}.Release|ARM.Build.0 = Release|ARM
+		{289AEB63-E7D7-49C1-AAC0-E41E15D9B7A1}.Release|ARM.Deploy.0 = Release|ARM
+		{289AEB63-E7D7-49C1-AAC0-E41E15D9B7A1}.Release|x64.ActiveCfg = Release|x64
+		{289AEB63-E7D7-49C1-AAC0-E41E15D9B7A1}.Release|x64.Build.0 = Release|x64
+		{289AEB63-E7D7-49C1-AAC0-E41E15D9B7A1}.Release|x64.Deploy.0 = Release|x64
+		{289AEB63-E7D7-49C1-AAC0-E41E15D9B7A1}.Release|x86.ActiveCfg = Release|x86
+		{289AEB63-E7D7-49C1-AAC0-E41E15D9B7A1}.Release|x86.Build.0 = Release|x86
+		{289AEB63-E7D7-49C1-AAC0-E41E15D9B7A1}.Release|x86.Deploy.0 = Release|x86
+		{CAB17FFF-B411-4F0D-B897-A9AB6A80C6FD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CAB17FFF-B411-4F0D-B897-A9AB6A80C6FD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CAB17FFF-B411-4F0D-B897-A9AB6A80C6FD}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{CAB17FFF-B411-4F0D-B897-A9AB6A80C6FD}.Debug|ARM.Build.0 = Debug|Any CPU
+		{CAB17FFF-B411-4F0D-B897-A9AB6A80C6FD}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{CAB17FFF-B411-4F0D-B897-A9AB6A80C6FD}.Debug|x64.Build.0 = Debug|Any CPU
+		{CAB17FFF-B411-4F0D-B897-A9AB6A80C6FD}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{CAB17FFF-B411-4F0D-B897-A9AB6A80C6FD}.Debug|x86.Build.0 = Debug|Any CPU
+		{CAB17FFF-B411-4F0D-B897-A9AB6A80C6FD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CAB17FFF-B411-4F0D-B897-A9AB6A80C6FD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CAB17FFF-B411-4F0D-B897-A9AB6A80C6FD}.Release|ARM.ActiveCfg = Release|Any CPU
+		{CAB17FFF-B411-4F0D-B897-A9AB6A80C6FD}.Release|ARM.Build.0 = Release|Any CPU
+		{CAB17FFF-B411-4F0D-B897-A9AB6A80C6FD}.Release|x64.ActiveCfg = Release|Any CPU
+		{CAB17FFF-B411-4F0D-B897-A9AB6A80C6FD}.Release|x64.Build.0 = Release|Any CPU
+		{CAB17FFF-B411-4F0D-B897-A9AB6A80C6FD}.Release|x86.ActiveCfg = Release|Any CPU
+		{CAB17FFF-B411-4F0D-B897-A9AB6A80C6FD}.Release|x86.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {B7A1F819-1C09-47CD-8CCD-2B2A7707F52C}
+	EndGlobalSection
+EndGlobal

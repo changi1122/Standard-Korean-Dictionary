@@ -1,0 +1,107 @@
+﻿<Page
+    x:Class="표준국어대사전.Pages.Dic"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:표준국어대사전.Pages"
+    xmlns:Controls="using:표준국어대사전.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+    <Page.Resources>
+        <MenuFlyout x:Name="BasicMenuFlyout" x:Key="Basic" Placement="Bottom">
+            <MenuFlyoutItem x:Name="MenuFlyoutCopy" Text="복사" Click="MenuFlyoutCopy_ClickAsync"/>
+            <MenuFlyoutItem x:Name="MenuFlyoutCut" Text="잘라내기" Click="MenuFlyoutCut_ClickAsync"/>
+        </MenuFlyout>
+        <SolidColorBrush x:Key="MainColor" Color="#FFE6E6E6"/>
+        <SolidColorBrush x:Key="BarColor" Color="#FFBEBEBE"/>
+        <SolidColorBrush x:Key="Red" Color="Red"/>
+        <SolidColorBrush x:Key="White" Color="White"/>
+        <SolidColorBrush x:Key="Black" Color="Black"/>
+    </Page.Resources>
+
+    <Grid x:Name="BasicGrid" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" SizeChanged="Grid_SizeChanged" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+
+        <WebView x:Name="WebViewDic" Margin="0,48,0,0" ScrollViewer.HorizontalScrollBarVisibility="Auto" LoadCompleted="WebViewDic_LoadCompleted" NewWindowRequested="WebViewDic_NewWindowRequested" NavigationFailed="WebViewDic_NavigationFailed" FlyoutBase.AttachedFlyout="{StaticResource Basic}" RightTapped="WebViewDic_RightTapped"/>
+
+        <Grid x:Name="NetNoticeGrid" Margin="10,59,0,0" Height="295" VerticalAlignment="Center" HorizontalAlignment="Center" Width="463" Visibility="Collapsed">
+            <TextBlock TextWrapping="Wrap" Text="연결되어 있지 않음" FontSize="24" HorizontalAlignment="Left" VerticalAlignment="Top" Height="33" Margin="90,0,0,0"/>
+            <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="잠시만 기다려 주세요. " VerticalAlignment="Top" Margin="90,44,0,0"/>
+            <TextBlock HorizontalAlignment="Left" Margin="90,73,0,0" TextWrapping="Wrap" Text="다시 온라인 상태가 되도록 합니다." VerticalAlignment="Top"/>
+            <TextBlock HorizontalAlignment="Left" Margin="90,109,0,0" TextWrapping="Wrap" Text="  •  네트워크 케이블이 연결되어 있는지 확인합니다." VerticalAlignment="Top"/>
+            <TextBlock HorizontalAlignment="Left" Margin="90,142,0,0" TextWrapping="Wrap" Text="  •  비행기 모드가 아닌지 확인하세요." VerticalAlignment="Top"/>
+            <TextBlock HorizontalAlignment="Left" Margin="90,212,0,0" TextWrapping="Wrap" Text="  •  라우터를 다시 시작하세요." VerticalAlignment="Top"/>
+            <TextBlock HorizontalAlignment="Left" Margin="90,177,0,0" TextWrapping="Wrap" Text="  •  무선 스위치가 켜져 있는지 확인하세요." VerticalAlignment="Top"/>
+            <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="&#xE704;" VerticalAlignment="Top" FontSize="80" FontFamily="Segoe MDL2 Assets"/>
+            <Button Content="다시 시도" HorizontalAlignment="Left" Margin="90,247,0,0" VerticalAlignment="Top" Height="34" Width="94" Click="Button_Click"/>
+        </Grid>
+        <Grid x:Name="MainPageGrid" Background="#FFE6E6E6" Margin="0,0,0,0" Visibility="Visible">
+            <Grid x:Name="SearchBoxGrid" Height="400" HorizontalAlignment="Center" Width="650" VerticalAlignment="Center">
+                <TextBox x:Name="TextboxSearch" Margin="70,136,165,20" Text="" VerticalAlignment="Center" KeyDown="TextboxSearch_KeyDown" PlaceholderText="검색할 단어를 입력하세요" FontSize="24" Height="44" FontFamily="Segoe UI" HorizontalAlignment="Center" Width="415"/>
+                <Button x:Name="BtnSearch" Content="검색" HorizontalAlignment="Center" Height="44" Margin="497,136,53,20" VerticalAlignment="Center" Width="100" Click="BtnSearch_Click" FontSize="24" MinWidth="100" MaxWidth="100"/>
+                <TextBlock x:Name="Logo" Text="국립국어원 표준국어대사전" TextWrapping="Wrap" VerticalAlignment="Center" Margin="16,20,5,60" FontSize="48" FontWeight="Bold" HorizontalAlignment="Center" FontFamily="Segoe UI"/>
+                <HyperlinkButton x:Name="BtnSeparate" Content="따로 보기" HorizontalAlignment="Center" Margin="283,347,304,21" VerticalAlignment="Center" Height="32" Width="63" Click="BtnSeparate_Click">
+                    <HyperlinkButton.ContextFlyout>
+                        <MenuFlyout x:Name="SeparateSearchFlyout" Placement="Bottom">
+                            <MenuFlyoutItem x:Name="MenuFlyoutIdiom" Text="관용구" Click="MenuFlyoutIdiom_Click"/>
+                            <MenuFlyoutItem x:Name="MenuFlyoutProverb" Text="속담" Click="MenuFlyoutProverb_Click"/>
+                            <MenuFlyoutItem x:Name="MenuFlyoutDialect" Text="방언" Click="MenuFlyoutDialect_Click"/>
+                            <MenuFlyoutItem x:Name="MenuFlyoutCulture" Text="북한어" Click="MenuFlyoutCulture_Click"/>
+                            <MenuFlyoutItem x:Name="MenuFlyoutKoreaOrigin" Text="고유어" Click="MenuFlyoutKoreaOrigin_Click"/>
+                        </MenuFlyout>
+                    </HyperlinkButton.ContextFlyout>
+                </HyperlinkButton>
+                <HyperlinkButton x:Name="BtnInform" Content="일러두기" HorizontalAlignment="Center" Margin="198,347,392,21" VerticalAlignment="Center" Height="32" Click="BtnInform_Click"/>
+                <HyperlinkButton x:Name="BtnSearchOriginWeb" Content="웹 페이지로 보기" HorizontalAlignment="Center" Margin="370,347,166,21" VerticalAlignment="Center" Height="32" Click="BtnSearchOriginWeb_Click"/>
+            </Grid>
+        </Grid>
+
+        <CommandBar>
+            <CommandBar.SecondaryCommands>
+                <AppBarButton Icon="Globe" Label="다른 브라우저에서 열기" Click="BtnOtherApp_Click"/>
+                <AppBarToggleButton x:Name="ToggleOriginWeb" Label="웹 페이지로 보기" Icon="Page2" Click="ToggleOriginWeb_Click" IsChecked="False"/>
+            </CommandBar.SecondaryCommands>
+            <CommandBar.Content>
+                <Grid/>
+            </CommandBar.Content>
+            <AppBarButton x:Name="BtnBack" Icon="Back" Label="뒤로" Click="BtnBack_Click" IsEnabled="False"/>
+            <AppBarButton x:Name="BtnForward" Icon="Forward" Label="앞으로" Click="BtnForward_Click" IsEnabled="False"/>
+            <AppBarButton x:Name="BtnRefresh" Icon="Refresh" Label="새로 고침" Click="BtnRefresh_Click"/>
+            <AppBarButton x:Name="BtnHome" Icon="Home" Label="홈" Click="BtnHome_Click"/>
+            <AppBarSeparator/>
+            <AppBarButton x:Name="BtnMemo" Label="메모" Click="BtnMemo_Click">
+                <AppBarButton.Icon>
+                    <FontIcon Glyph="&#xE70B;"/>
+                </AppBarButton.Icon>
+            </AppBarButton>
+            <AppBarButton x:Name="BtnMultiSearch" Label="다중 검색" Icon="NewWindow" Click="BtnMultiSearch_Click"/>
+            <AppBarButton x:Name="BtnReadingMode" Label="읽기 모드" Click="BtnReadingMode_Click" IsEnabled="False" Visibility="Collapsed">
+                <AppBarButton.Icon>
+                    <FontIcon Glyph="&#xE7BC;"/>
+                </AppBarButton.Icon>
+            </AppBarButton>
+            <AppBarButton x:Name="BtnClip" Label="저장" IsEnabled="False" Visibility="Collapsed">
+                <AppBarButton.Icon>
+                    <FontIcon Glyph="&#xE105;"/>
+                </AppBarButton.Icon>
+            </AppBarButton>
+        </CommandBar>
+
+        <Grid Height="48" VerticalAlignment="Top">
+            <TextBlock x:Name="PageTitle" Text="검색" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="20,0,0,0"/>
+        </Grid>
+        <Grid x:Name="ReadingModeGrid" Margin="100,150,100,144" Padding="0" Background="#FFF1E599" Visibility="Collapsed">
+            <Button x:Name="ReadingModeClose" Content="&#xE10A;" HorizontalAlignment="Right" VerticalAlignment="Top" FontFamily="Segoe MDL2 Assets" Height="32" Width="46" Click="ReadingModeClose_Click"/>
+            <TextBox x:Name="ReadingModeText" Margin="10,37,10,10" TextWrapping="Wrap" Text="Load..." IsReadOnly="True" BorderBrush="{x:Null}" Background="{x:Null}" SelectionHighlightColor="{x:Null}"/>
+            <Button x:Name="ReadingModeClose_Copy" Content="&#xE123;" HorizontalAlignment="Right" VerticalAlignment="Top" FontFamily="Segoe MDL2 Assets" Height="32" Width="46" Margin="0,0,46,0" Click="ReadingModeClose_Copy_Click"/>
+        </Grid>
+        <Grid x:Name="MemoGrid" Height="280" Margin="0,48,0,0" VerticalAlignment="Top" HorizontalAlignment="Right" Width="300" Background="#FFBEBEBE" Visibility="Collapsed">
+            <TextBox x:Name="TextboxMemoBox" Margin="1,40,1,1" TextWrapping="Wrap" Background="#FFE6E6E6" BorderBrush="#FFE6E6E6" AcceptsReturn="True"/>
+            <TextBlock HorizontalAlignment="Left" Margin="10,10,0,0" TextWrapping="Wrap" Text="&#xE70B;" VerticalAlignment="Top" FontSize="20" FontFamily="Segoe MDL2 Assets"/>
+            <Button x:Name="BtnMemoClose" Content="&#xE10A;" HorizontalAlignment="Right" VerticalAlignment="Top" Height="40" Width="40" Margin="0,0,0,0" Background="{x:Null}" FontFamily="Segoe MDL2 Assets" FontSize="20" Click="BtnMemoClose_Click"/>
+            <Button x:Name="BtnMemoMin" Content="&#xE73F;" HorizontalAlignment="Right" VerticalAlignment="Top" Height="40" Width="40" Margin="0,0,40,0" Background="{x:Null}" FontFamily="Segoe MDL2 Assets" FontSize="20" Click="BtnMemoMin_Click"/>
+            <Button x:Name="BtnMemoMax" Content="&#xE740;" HorizontalAlignment="Right" VerticalAlignment="Top" Height="40" Width="40" Margin="0,0,80,0" Background="{x:Null}" FontFamily="Segoe MDL2 Assets" FontSize="20" Click="BtnMemoMax_Click"/>
+            <Button x:Name="BtnMemoDelete" Content="&#xE107;" HorizontalAlignment="Left" VerticalAlignment="Top" Height="40" Width="40" Margin="80,0,0,0" Background="{x:Null}" FontFamily="Segoe MDL2 Assets" FontSize="20" Click="BtnMemoDelete_Click"/>
+            <Button x:Name="BtnMemoCopy" Content="&#xE16F;" HorizontalAlignment="Left" VerticalAlignment="Top" Height="40" Width="40" Margin="40,0,0,0" Background="{x:Null}" FontFamily="Segoe MDL2 Assets" FontSize="20" Click="BtnMemoCopy_Click"/>
+        </Grid>
+    </Grid>
+</Page>
