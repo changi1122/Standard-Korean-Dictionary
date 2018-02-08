@@ -32,7 +32,7 @@
             <TextBlock HorizontalAlignment="Left" Margin="90,212,0,0" TextWrapping="Wrap" Text="  •  라우터를 다시 시작하세요." VerticalAlignment="Top"/>
             <TextBlock HorizontalAlignment="Left" Margin="90,177,0,0" TextWrapping="Wrap" Text="  •  무선 스위치가 켜져 있는지 확인하세요." VerticalAlignment="Top"/>
             <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="&#xE704;" VerticalAlignment="Top" FontSize="80" FontFamily="Segoe MDL2 Assets"/>
-            <Button Content="다시 시도" HorizontalAlignment="Left" Margin="90,247,0,0" VerticalAlignment="Top" Height="34" Width="94" Click="Button_Click"/>
+            <Button x:Name="NoticeRefresh" Content="다시 시도" HorizontalAlignment="Left" Margin="90,247,0,0" VerticalAlignment="Top" Height="34" Width="94" Click="BtnRefresh_Click"/>
         </Grid>
         <Grid x:Name="MainPageGrid" Background="#FFE6E6E6" Margin="0,0,0,0" Visibility="Visible">
             <Grid x:Name="SearchBoxGrid" Height="400" HorizontalAlignment="Center" Width="650" VerticalAlignment="Center">
@@ -90,7 +90,7 @@
         <Grid x:Name="ReadingModeGrid" Margin="100,150,100,144" Padding="0" Background="#FFF1E599" Visibility="Collapsed">
             <Button x:Name="ReadingModeClose" Content="&#xE10A;" HorizontalAlignment="Right" VerticalAlignment="Top" FontFamily="Segoe MDL2 Assets" Height="32" Width="46" Click="ReadingModeClose_Click"/>
             <TextBox x:Name="ReadingModeText" Margin="10,37,10,10" TextWrapping="Wrap" Text="Load..." IsReadOnly="True" BorderBrush="{x:Null}" Background="{x:Null}" SelectionHighlightColor="{x:Null}"/>
-            <Button x:Name="ReadingModeClose_Copy" Content="&#xE123;" HorizontalAlignment="Right" VerticalAlignment="Top" FontFamily="Segoe MDL2 Assets" Height="32" Width="46" Margin="0,0,46,0" Click="ReadingModeClose_Copy_Click"/>
+            <Button x:Name="ReadingModeFunction" Content="&#xE123;" HorizontalAlignment="Right" VerticalAlignment="Top" FontFamily="Segoe MDL2 Assets" Height="32" Width="46" Margin="0,0,46,0" Click="ReadingModeFunction_Click"/>
         </Grid>
         <Grid x:Name="MemoGrid" Height="280" Margin="0,48,0,0" VerticalAlignment="Top" HorizontalAlignment="Right" Width="300" Background="#FFBEBEBE" Visibility="Collapsed">
             <TextBox x:Name="TextboxMemoBox" Margin="1,40,1,1" TextWrapping="Wrap" Background="#FFE6E6E6" BorderBrush="#FFE6E6E6" AcceptsReturn="True"/>
