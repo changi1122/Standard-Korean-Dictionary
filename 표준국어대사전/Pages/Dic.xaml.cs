@@ -35,20 +35,6 @@ namespace 표준국어대사전.Pages
             WebViewDic.Navigate(new Uri("http://stdweb2.korean.go.kr/main.jsp"));
         }
 
-        private void BtnBack_Click(object sender, RoutedEventArgs e)
-        {
-            WebViewDic.GoBack();
-            WebViewDic.Visibility = Visibility.Visible;
-            NetNoticeGrid.Visibility = Visibility.Collapsed;
-        }
-
-        private void BtnForward_Click(object sender, RoutedEventArgs e)
-        {
-            WebViewDic.GoForward();
-            WebViewDic.Visibility = Visibility.Visible;
-            NetNoticeGrid.Visibility = Visibility.Collapsed;
-        }
-
         private void BtnRefresh_Click(object sender, RoutedEventArgs e)
         {
             WebViewDic.Refresh();
@@ -73,15 +59,6 @@ namespace 표준국어대사전.Pages
             {
                 MainPageGrid.Visibility = Visibility.Collapsed;
             }
-
-            if (WebViewDic.CanGoBack == true)
-                BtnBack.IsEnabled = true;
-            else
-                BtnBack.IsEnabled = false;
-            if (WebViewDic.CanGoForward == true)
-                BtnForward.IsEnabled = true;
-            else
-                BtnForward.IsEnabled = false;
         }
 
         private void BtnHome_Click(object sender, RoutedEventArgs e)
@@ -204,7 +181,7 @@ namespace 표준국어대사전.Pages
             ReadingModeGrid.Visibility = Visibility.Visible;
 
             string Data = await WebViewDic.InvokeScriptAsync("eval", new string[] { "document.documentElement.outerHTML;" });
-            string Work = "";
+            /*string Work = "";
 
             Data = Data.Substring(Data.IndexOf("<p class=\"exp\">"));
 
@@ -223,7 +200,8 @@ namespace 표준국어대사전.Pages
 
                 //ReadingModeText.Text = Data;
                 //break;
-            }
+            }*/
+            ReadingModeText.Text = Data; //임시
         }
 
         private void ReadingModeClose_Click(object sender, RoutedEventArgs e)

@@ -63,8 +63,6 @@
             <CommandBar.Content>
                 <Grid/>
             </CommandBar.Content>
-            <AppBarButton x:Name="BtnBack" Icon="Back" Label="뒤로" Click="BtnBack_Click" IsEnabled="False"/>
-            <AppBarButton x:Name="BtnForward" Icon="Forward" Label="앞으로" Click="BtnForward_Click" IsEnabled="False"/>
             <AppBarButton x:Name="BtnRefresh" Icon="Refresh" Label="새로 고침" Click="BtnRefresh_Click"/>
             <AppBarButton x:Name="BtnHome" Icon="Home" Label="홈" Click="BtnHome_Click"/>
             <AppBarSeparator/>
@@ -74,7 +72,7 @@
                 </AppBarButton.Icon>
             </AppBarButton>
             <AppBarButton x:Name="BtnMultiSearch" Label="다중 검색" Icon="NewWindow" Click="BtnMultiSearch_Click"/>
-            <AppBarButton x:Name="BtnReadingMode" Label="읽기 모드" Click="BtnReadingMode_Click" IsEnabled="False" Visibility="Collapsed">
+            <AppBarButton x:Name="BtnReadingMode" Label="읽기 모드" Click="BtnReadingMode_Click" IsEnabled="True" Visibility="Visible">
                 <AppBarButton.Icon>
                     <FontIcon Glyph="&#xE7BC;"/>
                 </AppBarButton.Icon>
