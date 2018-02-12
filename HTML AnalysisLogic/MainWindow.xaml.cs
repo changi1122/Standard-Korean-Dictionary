@@ -20,9 +20,37 @@ namespace HTML_AnalysisLogic
     /// </summary>
     public partial class MainWindow : Window
     {
+        struct WordData
+        {
+            public int WordNum;
+            public string WordTitle;
+            public string WordType;
+            public string WordDefinition;
+            public string WordJavascript;
+        }
+
+
         public MainWindow()
         {
             InitializeComponent();
+
+            LabelVersion.Content = "Version " + System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString();
+        }
+
+        private void BtnAnalysis_Click(object sender, RoutedEventArgs e)
+        {
+            int a,  b;
+            String full = TextBoxHTML.Text;
+            String Work;
+            
+            a = full.IndexOf("<td class=\"sword\" background=\"/image/sq_bg.gif\">");
+            b = full.IndexOf("<img src=\"/image/sq_r.gif\">", a);
+            Work = full.Substring(a + 49, b - a - 49 - 29);
+            Work = Work.Remove(Work.IndexOf('<'), Work.LastIndexOf('>') - Work.IndexOf('<') + 1);
+            LabelSearchResult.Text = Work;
+
+            WordData[] w = new WordData[9];
+
         }
     }
 }
