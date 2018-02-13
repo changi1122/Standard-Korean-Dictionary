@@ -11,16 +11,16 @@
         <Button x:Name="BtnAnalysis" Content="Analysis" Margin="10,0,10,318" Height="36" VerticalAlignment="Bottom" Click="BtnAnalysis_Click"/>
         <Button x:Name="BtnLeft" Content="&lt;" HorizontalAlignment="Right" Height="36" Margin="0,0,95,277" VerticalAlignment="Bottom" Width="80"/>
         <Button x:Name="BtnRight" Content="&gt;" HorizontalAlignment="Right" Height="36" Margin="0,0,10,277" VerticalAlignment="Bottom" Width="80"/>
-        <TextBlock x:Name="LabelSearchResult" Margin="10,0,95,256" TextWrapping="Wrap" Text="Search Results Info" VerticalAlignment="Bottom" Height="16"/>
-        <TextBlock x:Name="LabelWordTitle" Margin="10,0,0,227" TextWrapping="Wrap" VerticalAlignment="Bottom" FontSize="18" Height="24" HorizontalAlignment="Left" Width="260" Text="Title"/>
+        <Label x:Name="LabelSearchResult" Margin="10,0,95,246" Content="Search Results Info" VerticalAlignment="Bottom"/>
+        <Label x:Name="LabelWordTitle" Margin="10,0,0,207" VerticalAlignment="Bottom" FontSize="18" HorizontalAlignment="Left" Width="260" Content="Title"/>
         <Label x:Name="LabelVersion" Content="Version" HorizontalAlignment="Left" Margin="10,0,0,287" VerticalAlignment="Bottom"/>
         <Label x:Name="LabelWordNum" Content="Num" HorizontalAlignment="Right" Margin="0,0,180,287" VerticalAlignment="Bottom"/>
-        <Label x:Name="LabelWordType" Content="Type" HorizontalAlignment="Left" Margin="10,0,0,196" VerticalAlignment="Bottom"/>
-        <TextBlock x:Name="LabelJavascript" HorizontalAlignment="Right" Margin="0,0,10,227" TextWrapping="Wrap" Text="Javascript" VerticalAlignment="Bottom" Height="24" Width="467"/>
-        <TextBlock x:Name="LabelWordDefinition" Margin="10,0,10,31" TextWrapping="Wrap" Text="Definition" Height="160" VerticalAlignment="Bottom"/>
-        <TextBlock x:Name="LabelMaxNum" HorizontalAlignment="Right" Margin="0,0,10,256" TextWrapping="Wrap" Text="Word Num" VerticalAlignment="Bottom" Height="16" Width="80"/>
-        <TextBlock x:Name="LabelPageNum" HorizontalAlignment="Left" Margin="10,443,0,0" TextWrapping="Wrap" Text="Page Num" VerticalAlignment="Top"/>
-        <TextBlock x:Name="LabelTest" Margin="360,161,341,0" TextWrapping="Wrap" VerticalAlignment="Top" HorizontalAlignment="Center"/>
+        <Label x:Name="LabelWordType" Content="Type" HorizontalAlignment="Left" Margin="10,0,0,176" VerticalAlignment="Bottom" Width="68"/>
+        <Label x:Name="LabelJavascript" HorizontalAlignment="Right" Margin="0,0,10,207" Content="Javascript" VerticalAlignment="Bottom" Height="34" Width="467"/>
+        <Label x:Name="LabelWordDefinition" Margin="10,0,10,41" Content="Definition" Height="130" VerticalAlignment="Bottom"/>
+        <Label x:Name="LabelMaxNum" HorizontalAlignment="Right" Margin="0,0,10,246" Content="Word Num" VerticalAlignment="Bottom" Width="80"/>
+        <Label x:Name="LabelPageNum" HorizontalAlignment="Left" Margin="10,0,0,10" Content="Page Num" VerticalAlignment="Bottom"/>
+        <Label x:Name="LabelTest" Margin="360,161,341,0" VerticalAlignment="Top" HorizontalAlignment="Center"/>
 
     </Grid>
 </Window>

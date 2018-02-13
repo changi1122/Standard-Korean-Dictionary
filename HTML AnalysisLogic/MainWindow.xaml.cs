@@ -44,10 +44,13 @@ namespace HTML_AnalysisLogic
             String Work;
             
             a = full.IndexOf("<td class=\"sword\" background=\"/image/sq_bg.gif\">");
-            b = full.IndexOf("<img src=\"/image/sq_r.gif\">", a);
-            Work = full.Substring(a + 49, b - a - 49 - 29);
+            b = full.IndexOf("</span>", a);
+            Work = full.Substring(a + 49, b - a - 49);
             Work = Work.Remove(Work.IndexOf('<'), Work.LastIndexOf('>') - Work.IndexOf('<') + 1);
-            LabelSearchResult.Text = Work;
+            LabelSearchResult.Content = Work;
+
+            LabelMaxNum.Content = Work.Substring(Work.IndexOf('(') + 1, Work.LastIndexOf('건') - Work.IndexOf('(') - 1);
+            LabelWordNum.Content = 1;
 
             WordData[] w = new WordData[9];
 
