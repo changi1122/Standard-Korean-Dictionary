@@ -6,4 +6,5 @@ The analysis algorithm takes HTML from the Standard Korean dictionary search web
 
 ## Universal Windows Platform development
 Universal Windows Platform App project uses C# and requires Visual Studio 2017 or higher and the Windows Software Development Kit (SDK) version 16299 for Windows 10.
+
 HTML AnalysisLogic project uses C# and requires Visual Studio and Windows Presentation Foundation (WPF) Development Kit.
