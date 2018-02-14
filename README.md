@@ -5,4 +5,5 @@ This repo contains Universal Windows Platform (UWP) App that can connect to the 
 The analysis algorithm takes HTML from the Standard Korean dictionary search web page, selects the necessary information, and stores it in the struct for the word.
 
 ## Universal Windows Platform development
-These projects use C# and require Visual Studio 2017 or higher and the Windows Software Development Kit (SDK) version 16299 for Windows 10.
+Universal Windows Platform App project uses C# and requires Visual Studio 2017 or higher and the Windows Software Development Kit (SDK) version 16299 for Windows 10.
+HTML AnalysisLogic project uses C# and requires Visual Studio and Windows Presentation Foundation (WPF) Development Kit.
