@@ -22,9 +22,8 @@ namespace HTML_AnalysisLogic
     {
         struct WordData
         {
-            public int WordNum;
             public string WordTitle;
-            public string WordType;
+            public string WordPronounce;
             public string WordDefinition;
             public string WordJavascript;
         }
@@ -56,7 +55,7 @@ namespace HTML_AnalysisLogic
             Work = Work.Remove(Work.IndexOf('<'), Work.LastIndexOf('>') - Work.IndexOf('<') + 1);
             LabelSearchResult.Content = Work;
 
-            LabelMaxNum.Content = Work.Substring(Work.IndexOf('(') + 1, Work.LastIndexOf('건') - Work.IndexOf('(') - 1);
+            LabelMaxNum.Content = Work.Substring(Work.IndexOf('(') + 1, Work.LastIndexOf('건') - Work.IndexOf('(') - 1) + "개";
 
             Work = full.Substring(full.IndexOf("<span id=\"print_area\">"));
             for (a = 0; a < 10; a++)
@@ -75,13 +74,32 @@ namespace HTML_AnalysisLogic
 
             for(a = 0; a < Wordamount; a++)
             {
-                string[] wp = WordList[a].Split('&');
+                string[] wp = new string[2];
+                wp[0] = WordList[a].Substring(0, WordList[a].IndexOf("&nbsp;&nbsp;<a"));
+                wp[1] = WordList[a].Replace(wp[0] + "&nbsp;&nbsp;", "");
 
                 w[a].WordJavascript = wp[0].Substring(wp[0].IndexOf("javascript"), wp[0].LastIndexOf(';') - wp[0].IndexOf("javascript") + 1);
-                w[a].WordTitle = wp[0].Substring(wp[0].IndexOf("<font face=\"새굴림\""), wp[0].LastIndexOf("13px\">") + 6 - wp[0].IndexOf("<font face=\"새굴림\""));
-                w[a].WordTitle = DeletePart(w[a].WordTitle);
+                w[a].WordTitle = DeletePart(wp[0]);
+                if(w[a].WordTitle.IndexOf('[') != -1)
+                    w[a].WordPronounce = w[a].WordTitle.Substring(w[a].WordTitle.IndexOf('['), w[a].WordTitle.IndexOf(']') + 1 - w[a].WordTitle.IndexOf('['));
+                w[a].WordDefinition = DeletePart(wp[1]);
             }
-            
+
+            ShowWord(0);
+
+            Work = full.Substring(full.IndexOf("<img align=\"middle\" alt=\"\" src=\"../image/icon_pre.gif\" hspace=\"5\">", full.IndexOf("<!-- paging.jsp -->")), full.IndexOf("<img align=\"middle\" alt=\"\" src=\"../image/icon_end.gif\" hspace=\"5\">", full.IndexOf("<!-- paging.jsp -->")) - full.IndexOf("<img align=\"middle\" alt=\"\" src=\"../image/icon_pre.gif\" hspace=\"5\">", full.IndexOf("<!-- paging.jsp -->") - 1));
+
+            int BarCount = (Work.Length - Work.Replace("|", "").Length) / "|".Length; //Count "|"
+            string[] page = Work.Split('|');
+
+            for (a = 0; a <= BarCount; a++)
+            {
+                page[a] = DeletePart(page[a]);
+                page[a] = page[a].Replace("|", "");
+                page[a] = page[a].Replace(" ", "");
+            }
+
+            LabelPageNum.Content = page.Aggregate((cur, next) => cur + " " + next); //Combine pages' number
         }
 
         public string DeletePart(string Work)
@@ -131,19 +149,49 @@ namespace HTML_AnalysisLogic
 
             while (true)
             {
+                if (Work.IndexOf("<img") == -1)
+                    break;
+                Work = Work.Remove(Work.IndexOf("<img"), Work.IndexOf('>', Work.IndexOf("<img")) - Work.IndexOf("<img") + 1);
+            }
+
+            while (true)
+            {
                 if (Work.IndexOf("<imgsrc") == -1)
                     break;
                 Work = Work.Remove(Work.IndexOf("<imgsrc"), Work.IndexOf('>', Work.IndexOf("<imgsrc")) - Work.IndexOf("<imgsrc") + 1);
             }
 
-            /*while (true)
+            while (true)
+            {
+                if (Work.IndexOf("&nbsp;") == -1)
+                    break;
+                Work = Work.Replace("&nbsp;", " ");
+            }
+
+            while (true)
             {
                 if (Work.IndexOf("<strong>") == -1)
                     break;
                 Work = Work.Replace("<strong>", "");
-            }*/
+            }
+
+            while (true)
+            {
+                if (Work.IndexOf("<br>") == -1)
+                    break;
+                Work = Work.Replace("<br>", Environment.NewLine);
+            }
 
             return Work;
+        }
+
+        public void ShowWord(int a)
+        {
+            LabelWordNum.Content = a;
+            LabelWordTitle.Content = w[a].WordTitle;
+            LabelJavascript.Content = w[a].WordJavascript;
+            LabelWordPronounce.Content = w[a].WordPronounce;
+            LabelWordDefinition.Text = w[a].WordDefinition;
         }
 
         private void BtnLeft_Click(object sender, RoutedEventArgs e)
@@ -156,8 +204,7 @@ namespace HTML_AnalysisLogic
 
             if (WordNowNum > 0)
             {
-                LabelWordNum.Content = WordNowNum - 1;
-                LabelWordDefinition.Text = WordList[WordNowNum - 1];
+                ShowWord(WordNowNum - 1);
             }
         }
 
@@ -171,8 +218,7 @@ namespace HTML_AnalysisLogic
 
             if (WordNowNum < Wordamount - 1)
             {
-                LabelWordNum.Content = WordNowNum + 1;
-                LabelWordDefinition.Text = WordList[WordNowNum + 1];
+                ShowWord(WordNowNum + 1);
             }
         }
     }

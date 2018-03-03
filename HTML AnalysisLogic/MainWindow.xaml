@@ -15,7 +15,7 @@
         <Label x:Name="LabelWordTitle" Margin="10,0,0,207" VerticalAlignment="Bottom" FontSize="18" HorizontalAlignment="Left" Width="260" Content="Title"/>
         <Label x:Name="LabelVersion" Content="Version" HorizontalAlignment="Left" Margin="10,0,0,287" VerticalAlignment="Bottom"/>
         <Label x:Name="LabelWordNum" Content="Num" HorizontalAlignment="Right" Margin="0,0,180,287" VerticalAlignment="Bottom"/>
-        <Label x:Name="LabelWordType" Content="Type" HorizontalAlignment="Left" Margin="10,0,0,176" VerticalAlignment="Bottom" Width="68"/>
+        <Label x:Name="LabelWordPronounce" Content="Pronounce" HorizontalAlignment="Left" Margin="10,0,0,176" VerticalAlignment="Bottom" Width="68"/>
         <Label x:Name="LabelJavascript" HorizontalAlignment="Right" Margin="0,0,10,207" Content="Javascript" VerticalAlignment="Bottom" Height="34" Width="467"/>
         <TextBlock x:Name="LabelWordDefinition" Margin="10,0,10,41" Text="Definition" TextWrapping="Wrap" Height="130" VerticalAlignment="Bottom"/>
         <Label x:Name="LabelMaxNum" HorizontalAlignment="Right" Margin="0,0,10,246" Content="Word Num" VerticalAlignment="Bottom" Width="80"/>
