@@ -102,9 +102,6 @@
     <Compile Include="Controls\ConMultiSearch.xaml.cs">
       <DependentUpon>ConMultiSearch.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Main - 복사본.xaml.cs">
-      <DependentUpon>Main - 복사본.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Main.xaml.cs">
       <DependentUpon>Main.xaml</DependentUpon>
     </Compile>
@@ -198,10 +195,6 @@
     <Page Include="Controls\ConMultiSearch.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Main - 복사본.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
     </Page>
     <Page Include="Main.xaml">
       <Generator>MSBuild:Compile</Generator>

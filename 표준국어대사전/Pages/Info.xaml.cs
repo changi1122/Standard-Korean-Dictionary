@@ -13,6 +13,7 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 using System.Reflection;
+using Windows.Storage;
 
 // 빈 페이지 항목 템플릿에 대한 설명은 https://go.microsoft.com/fwlink/?LinkId=234238에 나와 있습니다.
 
@@ -26,6 +27,14 @@ namespace 표준국어대사전.Pages
         public Info()
         {
             this.InitializeComponent();
+
+            ApplicationDataContainer localSettings = ApplicationData.Current.LocalSettings;
+            var value = localSettings.Values["#UseOriginWeb"];
+            if (value == null)
+            {
+                localSettings.Values["#UseOriginWeb"] = false;
+            }
+            CheckOriginWeb.IsChecked = (bool)localSettings.Values["#UseOriginWeb"];
 
             Version.Text = "버전 " + typeof(App).GetTypeInfo().Assembly.GetName().Version;
         }
@@ -46,6 +55,24 @@ namespace 표준국어대사전.Pages
         private async void BtnMail_Click(object sender, RoutedEventArgs e)
         {
             bool result = await Windows.System.Launcher.LaunchUriAsync(new Uri(@"mailto:changi112242@gmail.com"));
+        }
+
+        private void CheckOriginWeb_Click(object sender, RoutedEventArgs e)
+        {
+            //Check if setting #UseOriginWeb exists and create it if it does not
+            ApplicationDataContainer localSettings = ApplicationData.Current.LocalSettings;
+            var value = localSettings.Values["#UseOriginWeb"];
+
+            localSettings.Values["#UseOriginWeb"] = CheckOriginWeb.IsChecked;
+        }
+
+        private void BtnResetSetting_Click(object sender, RoutedEventArgs e)
+        {
+            ApplicationDataContainer localSettings = ApplicationData.Current.LocalSettings;
+            localSettings.Values.Clear();
+
+            localSettings.Values["#UseOriginWeb"] = false;
+            CheckOriginWeb.IsChecked = (bool)localSettings.Values["#UseOriginWeb"];
         }
     }
 }

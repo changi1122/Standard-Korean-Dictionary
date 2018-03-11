@@ -15,6 +15,7 @@ using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
+using Windows.Storage;
 
 // 빈 페이지 항목 템플릿에 대한 설명은 https://go.microsoft.com/fwlink/?LinkId=234238에 나와 있습니다.
 
@@ -31,6 +32,15 @@ namespace 표준국어대사전.Pages
         public Dic()
         {
             this.InitializeComponent();
+
+            ApplicationDataContainer localSettings = ApplicationData.Current.LocalSettings;
+            var value = localSettings.Values["#UseOriginWeb"];
+            if (value == null)
+            {
+                localSettings.Values["#UseOriginWeb"] = false;
+            }
+            IsOpenOriginWeb = (bool)localSettings.Values["#UseOriginWeb"];
+            ToggleOriginWeb.IsChecked = (bool)localSettings.Values["#UseOriginWeb"];
 
             WebViewDic.Navigate(new Uri("http://stdweb2.korean.go.kr/main.jsp"));
         }
@@ -227,6 +237,8 @@ namespace 표준국어대사전.Pages
             if (ToggleOriginWeb.IsChecked == true)
             {
                 IsOpenOriginWeb = true;
+                ApplicationDataContainer localSettings = ApplicationData.Current.LocalSettings;
+                localSettings.Values["#UseOriginWeb"] = IsOpenOriginWeb;
                 BtnSearchOriginWeb.Visibility = Visibility.Collapsed;
                 if (WebViewDic.Source == new Uri("http://stdweb2.korean.go.kr/main.jsp"))
                     WebViewDic.Refresh();
@@ -234,6 +246,8 @@ namespace 표준국어대사전.Pages
             else
             {
                 IsOpenOriginWeb = false;
+                ApplicationDataContainer localSettings = ApplicationData.Current.LocalSettings;
+                localSettings.Values["#UseOriginWeb"] = IsOpenOriginWeb;
                 BtnSearchOriginWeb.Visibility = Visibility.Visible;
                 if (WebViewDic.Source == new Uri("http://stdweb2.korean.go.kr/main.jsp"))
                     WebViewDic.Refresh();
@@ -334,7 +348,7 @@ namespace 표준국어대사전.Pages
         // WebView
         //||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
 
-        private void WebViewDic_LoadCompleted(object sender, NavigationEventArgs e)
+        private void WebViewDic_NavigationStarting(WebView sender, WebViewNavigationStartingEventArgs args)
         {
             if (WebViewDic.Source == new Uri("http://stdweb2.korean.go.kr/main.jsp"))
             {

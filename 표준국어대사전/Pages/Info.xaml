@@ -15,25 +15,39 @@
         </CommandBar>
 
         <Grid Height="48" VerticalAlignment="Top">
-            <TextBlock x:Name="PageTitle" Text="정보" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="20,0,0,0"/>
+            <TextBlock x:Name="PageTitle" Text="설정" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="20,0,0,0"/>
         </Grid>
-        <TextBlock HorizontalAlignment="Left" Margin="20,68,0,0" TextWrapping="Wrap" Text="국립국어원 표준국어대사전" VerticalAlignment="Top" FontSize="24"/>
-        <TextBlock HorizontalAlignment="Left" Margin="20,105,0,0" TextWrapping="Wrap" Text="Studio1122" VerticalAlignment="Top" FontSize="12"/>
-        <TextBlock x:Name="Version" HorizontalAlignment="Left" Margin="20,121,0,0" TextWrapping="Wrap" Text="버전 0.0.0.0" VerticalAlignment="Top" FontSize="12"/>
-        <TextBlock HorizontalAlignment="Left" Margin="20,142,0,0" TextWrapping="Wrap" Text="국립국어원에서 제공하는 표준국어대사전 웹을 유니버설 Windows 플랫폼 앱으로 연결합니다." VerticalAlignment="Top"/>
-        <HyperlinkButton x:Name="Mail" Content="changi112242@gmail.com" HorizontalAlignment="Left" Margin="120,210,0,0" VerticalAlignment="Top" Click="Mail_Click"/>
-        <TextBlock HorizontalAlignment="Left" Margin="20,216,0,0" TextWrapping="Wrap" Text="프로그램 문의" VerticalAlignment="Top"/>
-        <TextBlock HorizontalAlignment="Left" Margin="20,241,0,0" TextWrapping="Wrap" Text="홈페이지" VerticalAlignment="Top"/>
-        <HyperlinkButton x:Name="HomePage" Content="https://costudio1122.blogspot.com/" HorizontalAlignment="Left" Margin="120,235,0,0" VerticalAlignment="Top" NavigateUri="https://costudio1122.blogspot.com/"/>
-        <TextBlock HorizontalAlignment="Left" Margin="20,332,0,0" TextWrapping="Wrap" Text="국립국어원" VerticalAlignment="Top" FontWeight="Bold"/>
-        <TextBlock HorizontalAlignment="Left" Margin="20,357,0,0" TextWrapping="Wrap" Text=" 대표 전화" VerticalAlignment="Top"/>
-        <TextBlock HorizontalAlignment="Left" Margin="20,382,0,0" TextWrapping="Wrap" Text=" 주소" VerticalAlignment="Top"/>
-        <HyperlinkButton Content="02-2669-9775" HorizontalAlignment="Left" Margin="120,351,0,0" VerticalAlignment="Top"/>
-        <HyperlinkButton Content="서울특별시 강서구 금낭화로 154 국립국어원(서울특별시 강서구 방화3동 827)" HorizontalAlignment="Left" Margin="120,380,0,0" VerticalAlignment="Top"/>
-        <HyperlinkButton Content="우편 번호 : 07511" HorizontalAlignment="Left" Margin="120,403,0,0" VerticalAlignment="Top"/>
-        <TextBlock HorizontalAlignment="Left" Margin="20,191,0,0" TextWrapping="Wrap" Text="Studio1122" VerticalAlignment="Top" FontWeight="Bold"/>
-        <Button x:Name="BtnReview" Content="평점 및 리뷰" HorizontalAlignment="Left" Margin="20,278,0,0" VerticalAlignment="Top" Width="120" Click="BtnReview_Click"/>
-        <Button x:Name="BtnMail" Content="메일" HorizontalAlignment="Left" Margin="150,278,0,0" VerticalAlignment="Top" Width="60" Click="BtnMail_Click"/>
+        <Pivot Margin="10,52,10,0">
+            <PivotItem Header="일반">
+                <Grid>
+                    <TextBlock HorizontalAlignment="Left" Margin="10,10,0,0" TextWrapping="Wrap" Text="옵션" VerticalAlignment="Top" FontSize="24"/>
+                    <CheckBox x:Name="CheckOriginWeb" Margin="10,60,0,0" VerticalAlignment="Top" Content="검색 메인 페이지를 웹 페이지로 보기" Click="CheckOriginWeb_Click"/>
+                    <TextBlock HorizontalAlignment="Left" Margin="10,140,0,0" TextWrapping="Wrap" Text="앱 초기화" VerticalAlignment="Top" FontSize="24"/>
+                    <Button x:Name="BtnResetSetting" Margin="10,200,0,0" VerticalAlignment="Top" Content="설정 초기화" Click="BtnResetSetting_Click"/>
+                </Grid>
+            </PivotItem>
+            <PivotItem Header="정보">
+                <Grid>
+                    <TextBlock HorizontalAlignment="Left" Margin="10,10,0,0" TextWrapping="Wrap" Text="국립국어원 표준국어대사전" VerticalAlignment="Top" FontSize="24"/>
+                    <TextBlock HorizontalAlignment="Left" Margin="10,47,0,0" TextWrapping="Wrap" Text="Studio1122" VerticalAlignment="Top" FontSize="12" Foreground="Gray"/>
+                    <TextBlock x:Name="Version" HorizontalAlignment="Left" Margin="10,63,0,0" TextWrapping="Wrap" Text="버전 0.0.0.0" VerticalAlignment="Top" FontSize="12" Foreground="Gray"/>
+                    <TextBlock HorizontalAlignment="Left" Margin="10,94,0,0" TextWrapping="Wrap" Text="국립국어원에서 제공하는 표준국어대사전 웹을 유니버설 Windows 플랫폼 앱으로 연결합니다." VerticalAlignment="Top"/>
+                    <TextBlock HorizontalAlignment="Left" Margin="10,143,0,0" TextWrapping="Wrap" Text="Studio1122" VerticalAlignment="Top" FontWeight="Bold"/>
+                    <TextBlock HorizontalAlignment="Left" Margin="10,168,0,0" TextWrapping="Wrap" Text="프로그램 문의" VerticalAlignment="Top"/>
+                    <HyperlinkButton x:Name="Mail" Content="changi112242@gmail.com" HorizontalAlignment="Left" Margin="110,162,0,0" VerticalAlignment="Top" Click="Mail_Click"/>
+                    <TextBlock HorizontalAlignment="Left" Margin="10,193,0,0" TextWrapping="Wrap" Text="홈페이지" VerticalAlignment="Top"/>
+                    <HyperlinkButton x:Name="HomePage" Content="https://costudio1122.blogspot.com/" HorizontalAlignment="Left" Margin="110,187,0,0" VerticalAlignment="Top" NavigateUri="https://costudio1122.blogspot.com/"/>
+                    <Button x:Name="BtnReview" Content="평점 및 리뷰" HorizontalAlignment="Left" Margin="10,230,0,0" VerticalAlignment="Top" Width="120" Click="BtnReview_Click"/>
+                    <Button x:Name="BtnMail" Content="메일" HorizontalAlignment="Left" Margin="140,230,0,0" VerticalAlignment="Top" Width="60" Click="BtnMail_Click"/>
+                    <TextBlock HorizontalAlignment="Left" Margin="10,284,0,0" TextWrapping="Wrap" Text="국립국어원" VerticalAlignment="Top" FontWeight="Bold"/>
+                    <TextBlock HorizontalAlignment="Left" Margin="10,309,0,0" TextWrapping="Wrap" Text=" 대표 전화" VerticalAlignment="Top"/>
+                    <HyperlinkButton Content="02-2669-9775" HorizontalAlignment="Left" Margin="110,303,0,0" VerticalAlignment="Top"/>
+                    <TextBlock HorizontalAlignment="Left" Margin="10,334,0,0" TextWrapping="Wrap" Text=" 주소" VerticalAlignment="Top"/>
+                    <HyperlinkButton Content="서울특별시 강서구 금낭화로 154 국립국어원(서울특별시 강서구 방화3동 827)" HorizontalAlignment="Left" Margin="110,332,0,0" VerticalAlignment="Top"/>
+                    <HyperlinkButton Content="우편 번호 : 07511" HorizontalAlignment="Left" Margin="110,355,0,0" VerticalAlignment="Top"/>
+                </Grid>
+            </PivotItem>
+        </Pivot>
 
     </Grid>
 </Page>

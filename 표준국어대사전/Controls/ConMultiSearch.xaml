@@ -9,6 +9,7 @@
     d:DesignHeight="300"
     d:DesignWidth="600">
 
+
     <Grid>
         <CommandBar Background="#FFE6E6E6" IsOpen="False" DefaultLabelPosition="Right" Margin="1,0,1,0">
             <AppBarButton x:Name="BtnRefresh" Icon="Refresh" Label="새로 고침" Click="BtnRefresh_Click"/>

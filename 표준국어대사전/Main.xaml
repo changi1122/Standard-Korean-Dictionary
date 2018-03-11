@@ -8,6 +8,7 @@
     mc:Ignorable="d">
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
         <NavigationView Loaded="NavigationView_Loaded" Margin="0,0,0,0" Grid.Row="1" SelectionChanged="NavigationView_SelectionChanged" x:Name="Main_Navigation" IsSettingsVisible="{Binding ElementName=settingsCheck,Path=IsChecked}" IsTabStop="False" Header="" IsPaneOpen="True" AlwaysShowHeader="False" CompositeMode="SourceOver" ItemInvoked="Main_Navigation_ItemInvoked">
             <NavigationView.MenuItems>
                 <NavigationViewItem  Content="단어 검색" Tag="Pages.Dic">
@@ -44,6 +45,11 @@
                 </NavigationViewItem>
             </NavigationView.MenuItems>
             <Frame x:Name="ContentFrame">
+                <Frame.ContentTransitions>
+                    <TransitionCollection>
+                        <NavigationThemeTransition />
+                    </TransitionCollection>
+                </Frame.ContentTransitions>
             </Frame>
         </NavigationView>
     </Grid>
