@@ -21,7 +21,7 @@
 
     <Grid x:Name="BasicGrid" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" SizeChanged="Grid_SizeChanged" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
 
-        <WebView x:Name="WebViewDic" Margin="0,48,0,0" ScrollViewer.HorizontalScrollBarVisibility="Auto" NewWindowRequested="WebViewDic_NewWindowRequested" NavigationFailed="WebViewDic_NavigationFailed" FlyoutBase.AttachedFlyout="{StaticResource Basic}" RightTapped="WebViewDic_RightTapped" NavigationStarting="WebViewDic_NavigationStarting"/>
+        <WebView x:Name="WebViewDic" Margin="0,48,0,0" ScrollViewer.HorizontalScrollBarVisibility="Auto" NewWindowRequested="WebViewDic_NewWindowRequested" NavigationFailed="WebViewDic_NavigationFailed" FlyoutBase.AttachedFlyout="{StaticResource Basic}" RightTapped="WebViewDic_RightTapped" NavigationCompleted="WebViewDic_NavigationCompleted"/>
 
         <Grid x:Name="NetNoticeGrid" Margin="10,59,0,0" Height="295" VerticalAlignment="Center" HorizontalAlignment="Center" Width="463" Visibility="Collapsed">
             <TextBlock TextWrapping="Wrap" Text="연결되어 있지 않음" FontSize="24" HorizontalAlignment="Left" VerticalAlignment="Top" Height="33" Margin="90,0,0,0"/>

@@ -42,6 +42,15 @@ namespace 표준국어대사전.Pages
             IsOpenOriginWeb = (bool)localSettings.Values["#UseOriginWeb"];
             ToggleOriginWeb.IsChecked = (bool)localSettings.Values["#UseOriginWeb"];
 
+            if (IsOpenOriginWeb == false)
+            {
+                MainPageGrid.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                MainPageGrid.Visibility = Visibility.Collapsed;
+            }
+
             WebViewDic.Navigate(new Uri("http://stdweb2.korean.go.kr/main.jsp"));
         }
 
@@ -348,7 +357,7 @@ namespace 표준국어대사전.Pages
         // WebView
         //||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
 
-        private void WebViewDic_NavigationStarting(WebView sender, WebViewNavigationStartingEventArgs args)
+        private void WebViewDic_NavigationCompleted(WebView sender, WebViewNavigationCompletedEventArgs args)
         {
             if (WebViewDic.Source == new Uri("http://stdweb2.korean.go.kr/main.jsp"))
             {
