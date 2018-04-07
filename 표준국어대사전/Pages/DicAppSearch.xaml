@@ -1,0 +1,45 @@
+﻿<Page
+    x:Class="표준국어대사전.Pages.DicAppSearch"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:표준국어대사전.Pages"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <Grid x:Name="BasicGrid" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+        <CommandBar>
+            <CommandBar.SecondaryCommands>
+                <AppBarButton Icon="Globe" Label="다른 브라우저에서 열기"/>
+                <AppBarToggleButton x:Name="ToggleOriginWeb" Label="웹 페이지로 보기" Icon="Page2" IsChecked="False"/>
+            </CommandBar.SecondaryCommands>
+            <CommandBar.Content>
+                <Grid/>
+            </CommandBar.Content>
+            <AppBarButton x:Name="BtnRefresh" Icon="Refresh" Label="새로 고침"/>
+            <AppBarButton x:Name="BtnHome" Icon="Home" Label="홈"/>
+            <AppBarSeparator/>
+            <AppBarButton x:Name="BtnMemo" Label="메모">
+                <AppBarButton.Icon>
+                    <FontIcon Glyph="&#xE70B;"/>
+                </AppBarButton.Icon>
+            </AppBarButton>
+            <AppBarButton x:Name="BtnMultiSearch" Label="다중 검색" Icon="NewWindow"/>
+            <AppBarButton x:Name="BtnReadingMode" Label="읽기 모드" IsEnabled="True" Visibility="Collapsed">
+                <AppBarButton.Icon>
+                    <FontIcon Glyph="&#xE7BC;"/>
+                </AppBarButton.Icon>
+            </AppBarButton>
+            <AppBarButton x:Name="BtnClip" Label="저장" IsEnabled="False" Visibility="Collapsed">
+                <AppBarButton.Icon>
+                    <FontIcon Glyph="&#xE105;"/>
+                </AppBarButton.Icon>
+            </AppBarButton>
+        </CommandBar>
+
+        <Grid Height="48" VerticalAlignment="Top">
+            <TextBlock x:Name="PageTitle" Text="검색" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="20,0,0,0"/>
+        </Grid>
+    </Grid>
+</Page>

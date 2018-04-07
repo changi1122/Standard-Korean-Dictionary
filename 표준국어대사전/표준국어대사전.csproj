@@ -114,6 +114,9 @@
     <Compile Include="Pages\Dic.xaml.cs">
       <DependentUpon>Dic.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Pages\DicAppSearch.xaml.cs">
+      <DependentUpon>DicAppSearch.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Pages\ForeignLanguageNotation.xaml.cs">
       <DependentUpon>ForeignLanguageNotation.xaml</DependentUpon>
     </Compile>
@@ -210,6 +213,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Pages\Dic.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\DicAppSearch.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
