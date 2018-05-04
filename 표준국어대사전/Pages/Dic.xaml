@@ -63,6 +63,7 @@
             <CommandBar.Content>
                 <Grid/>
             </CommandBar.Content>
+            <AppBarButton x:Name="BtnBack" Icon="Back" Label="뒤로" Click="BtnBack_Click"/>
             <AppBarButton x:Name="BtnRefresh" Icon="Refresh" Label="새로 고침" Click="BtnRefresh_Click"/>
             <AppBarButton x:Name="BtnHome" Icon="Home" Label="홈" Click="BtnHome_Click"/>
             <AppBarSeparator/>

@@ -50,10 +50,42 @@ namespace 표준국어대사전.Controls
             NetNoticeGrid.Visibility = Visibility.Collapsed;
         }
 
+        private void BtnBack_Click(object sender, RoutedEventArgs e)
+        {
+            if (SubWebView.CanGoBack == true)
+                SubWebView.GoBack();
+        }
+
         private void SubWebView_NewWindowRequested(WebView sender, WebViewNewWindowRequestedEventArgs args)
         {
+            string address = args.Uri.ToString();
+
+            if (address.IndexOf("DicSoundPlayWordNo") != -1)
+            {
+                args.Handled = true;
+
+                var DicSoundPlay = new WebView
+                {
+                    Name = "WebViewDicSoundPlay",
+                    Visibility = Visibility.Collapsed
+                };
+                BasicGrid.Children.Add(DicSoundPlay);
+                var view = (WebView)FindName("WebViewDicSoundPlay");
+                view.NavigationCompleted += PlayDic;
+                view.Navigate(args.Uri);
+                return;
+            }
             SubWebView.Navigate(args.Uri);
             args.Handled = true;
+        }
+
+        private async void PlayDic(WebView sender, WebViewNavigationCompletedEventArgs args)
+        {
+            var view = (WebView)FindName("WebViewDicSoundPlay");
+            var functionString = string.Format(@"document.getElementsByTagName('img').item(1).click()");
+            await view.InvokeScriptAsync("eval", new string[] { functionString });
+
+            BasicGrid.Children.Remove((UIElement)this.FindName("WebViewDicSoundPlay"));
         }
 
         private void SubWebView_NavigationFailed(object sender, WebViewNavigationFailedEventArgs e)

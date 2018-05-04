@@ -16,6 +16,7 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 using Windows.Storage;
+using System.Threading.Tasks;
 
 // 빈 페이지 항목 템플릿에 대한 설명은 https://go.microsoft.com/fwlink/?LinkId=234238에 나와 있습니다.
 
@@ -85,6 +86,12 @@ namespace 표준국어대사전.Pages
             {
 
             }
+        }
+
+        private void BtnBack_Click(object sender, RoutedEventArgs e)
+        {
+            if(WebViewDic.CanGoBack == true)
+                WebViewDic.GoBack();
         }
 
         //||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
@@ -378,8 +385,34 @@ namespace 표준국어대사전.Pages
 
         private void WebViewDic_NewWindowRequested(WebView sender, WebViewNewWindowRequestedEventArgs args)
         {
+            string address = args.Uri.ToString();
+
+            if (address.IndexOf("DicSoundPlayWordNo") != -1)
+            {
+                args.Handled = true;
+
+                var DicSoundPlay = new WebView
+                {
+                    Name = "WebViewDicSoundPlay",
+                    Visibility = Visibility.Collapsed
+                };
+                BasicGrid.Children.Add(DicSoundPlay);
+                var view = (WebView)FindName("WebViewDicSoundPlay");
+                view.NavigationCompleted += PlayDic;
+                view.Navigate(args.Uri);
+                return;
+            }
             WebViewDic.Navigate(args.Uri);
             args.Handled = true;
+        }
+
+        private async void PlayDic(WebView sender, WebViewNavigationCompletedEventArgs args)
+        {
+            var view = (WebView)FindName("WebViewDicSoundPlay");
+            var functionString = string.Format(@"document.getElementsByTagName('img').item(1).click()");
+            await view.InvokeScriptAsync("eval", new string[] { functionString });
+
+            BasicGrid.Children.Remove((UIElement)this.FindName("WebViewDicSoundPlay"));
         }
 
         private void WebViewDic_NavigationFailed(object sender, WebViewNavigationFailedEventArgs e)
@@ -401,16 +434,16 @@ namespace 표준국어대사전.Pages
 
             BasicMenuFlyout.ShowAt((UIElement)e.OriginalSource, Position);*/
 
-            /*MenuFlyout myFlyout = new MenuFlyout();
-            MenuFlyoutItem firstItem = new MenuFlyoutItem { Text = "OneIt" };
-            MenuFlyoutItem secondItem = new MenuFlyoutItem { Text = "TwoIt" };
-            myFlyout.Items.Add(firstItem);
-            myFlyout.Items.Add(secondItem);*/
+                /*MenuFlyout myFlyout = new MenuFlyout();
+                MenuFlyoutItem firstItem = new MenuFlyoutItem { Text = "OneIt" };
+                MenuFlyoutItem secondItem = new MenuFlyoutItem { Text = "TwoIt" };
+                myFlyout.Items.Add(firstItem);
+                myFlyout.Items.Add(secondItem);*/
 
-            //if you only want to show in left or buttom 
-            //myFlyout.Placement = FlyoutPlacementMode.Left;
+                //if you only want to show in left or buttom 
+                //myFlyout.Placement = FlyoutPlacementMode.Left;
 
-            FrameworkElement senderElement = sender as FrameworkElement;
+                FrameworkElement senderElement = sender as FrameworkElement;
 
             //the code can show the flyout in your mouse click 
             BasicMenuFlyout.ShowAt(sender as UIElement, e.GetPosition(sender as UIElement));
