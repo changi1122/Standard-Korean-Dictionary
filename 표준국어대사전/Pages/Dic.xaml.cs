@@ -440,61 +440,6 @@ namespace 표준국어대사전.Pages
 
         
         //||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
-        // WebView Right Click MenuFlyout
-        //||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
-
-        private void WebViewDic_RightTapped(object sender, RightTappedRoutedEventArgs e)
-        {
-            /*var pointerPosition = Windows.UI.Core.CoreWindow.GetForCurrentThread().PointerPosition;
-            var Position = new Point(pointerPosition.X - Window.Current.Bounds.X - 48, pointerPosition.Y - Window.Current.Bounds.Y - 48);
-
-            BasicMenuFlyout.ShowAt((UIElement)e.OriginalSource, Position);*/
-
-                /*MenuFlyout myFlyout = new MenuFlyout();
-                MenuFlyoutItem firstItem = new MenuFlyoutItem { Text = "OneIt" };
-                MenuFlyoutItem secondItem = new MenuFlyoutItem { Text = "TwoIt" };
-                myFlyout.Items.Add(firstItem);
-                myFlyout.Items.Add(secondItem);*/
-
-                //if you only want to show in left or buttom 
-                //myFlyout.Placement = FlyoutPlacementMode.Left;
-
-                FrameworkElement senderElement = sender as FrameworkElement;
-
-            //the code can show the flyout in your mouse click 
-            BasicMenuFlyout.ShowAt(sender as UIElement, e.GetPosition(sender as UIElement));
-        }
-
-        private async void MenuFlyoutCopy_ClickAsync(object sender, RoutedEventArgs e)
-        {
-            DataPackage dataPackage = await WebViewDic.CaptureSelectedContentToDataPackageAsync();
-
-            dataPackage.RequestedOperation = DataPackageOperation.Copy;
-        }
-
-        private async void MenuFlyoutCut_ClickAsync(object sender, RoutedEventArgs e)
-        {
-            DataPackage dataPackage = await WebViewDic.CaptureSelectedContentToDataPackageAsync();
-
-            dataPackage.RequestedOperation = DataPackageOperation.Move;
-        }
-
-        //private async void MenuFlyoutSearch_ClickAsync(object sender, RoutedEventArgs e)
-        //{
-        /* 텍스트를 웹뷰에 넣기 */
-        //DataPackage dataPackage = await WebViewDic.CaptureSelectedContentToDataPackageAsync();
-        //dataPackage.RequestedOperation = DataPackageOperation.Copy;
-
-        //string SearchText = String.Format("document.getElementByid('nameDiv').innerText = 'Hello, {0}';", await Clipboard.GetContent().GetTextAsync()); //await Clipboard.GetContent().GetTextAsync();
-
-        //await WebViewDic.InvokeScriptAsync("SearchText", SearchText);
-
-        /* 모두 선택 - 작동안함*/
-        //await WebViewDic.InvokeScriptAsync("execScript", new string[] { "document.body.createTextRange().select();" });
-        //}
-
-
-        //||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
         // Layout
         //||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
 
