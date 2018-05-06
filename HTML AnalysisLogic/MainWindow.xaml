@@ -8,7 +8,8 @@
         Title="HTML Analysis Logic Development" Height="500" Width="760">
     <Grid>
         <TextBox x:Name="TextBoxHTML" Margin="10,10,10,359" VerticalScrollBarVisibility="Visible"/>
-        <Button x:Name="BtnAnalysis" Content="Analysis" Margin="10,0,10,318" Height="36" VerticalAlignment="Bottom" Click="BtnAnalysis_Click"/>
+        <Button x:Name="BtnAnalysis" Content="Analysis" Margin="10,0,95,318" Height="36" VerticalAlignment="Bottom" Click="BtnAnalysis_Click"/>
+        <Button x:Name="BtnDelete" Content="Delete" HorizontalAlignment="Right" Margin="0,0,10,318" Width="80" Height="36" VerticalAlignment="Bottom" Click="BtnDelete_Click"/>
         <Button x:Name="BtnLeft" Content="&lt;" HorizontalAlignment="Right" Height="36" Margin="0,0,95,277" VerticalAlignment="Bottom" Width="80" Click="BtnLeft_Click"/>
         <Button x:Name="BtnRight" Content="&gt;" HorizontalAlignment="Right" Height="36" Margin="0,0,10,277" VerticalAlignment="Bottom" Width="80" Click="BtnRight_Click"/>
         <Label x:Name="LabelSearchResult" Margin="10,0,95,246" Content="Search Results Info" VerticalAlignment="Bottom"/>
@@ -21,6 +22,6 @@
         <Label x:Name="LabelMaxNum" HorizontalAlignment="Right" Margin="0,0,10,246" Content="Word Num" VerticalAlignment="Bottom" Width="80"/>
         <Label x:Name="LabelPageNum" HorizontalAlignment="Left" Margin="10,0,0,10" Content="Page Num" VerticalAlignment="Bottom"/>
         <Label x:Name="LabelTest" Margin="360,161,341,0" VerticalAlignment="Top" HorizontalAlignment="Center"/>
-
+        <Label x:Name="LabelPageMax" HorizontalAlignment="Right" Margin="0,0,10,10" Content="Page Max" VerticalAlignment="Bottom"/>
     </Grid>
 </Window>

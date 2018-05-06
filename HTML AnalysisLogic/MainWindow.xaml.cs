@@ -55,7 +55,9 @@ namespace HTML_AnalysisLogic
             Work = Work.Remove(Work.IndexOf('<'), Work.LastIndexOf('>') - Work.IndexOf('<') + 1);
             LabelSearchResult.Content = Work;
 
+            int MaxNum = Convert.ToInt32(Work.Substring(Work.IndexOf('(') + 1, Work.LastIndexOf('건') - Work.IndexOf('(') - 1));
             LabelMaxNum.Content = Work.Substring(Work.IndexOf('(') + 1, Work.LastIndexOf('건') - Work.IndexOf('(') - 1) + "개";
+            LabelPageMax.Content = Math.Ceiling((double)MaxNum / 10);
 
             Work = full.Substring(full.IndexOf("<span id=\"print_area\">"));
             for (a = 0; a < 10; a++)
@@ -220,6 +222,11 @@ namespace HTML_AnalysisLogic
             {
                 ShowWord(WordNowNum + 1);
             }
+        }
+
+        private void BtnDelete_Click(object sender, RoutedEventArgs e)
+        {
+            TextBoxHTML.Text = "";
         }
     }
 }
