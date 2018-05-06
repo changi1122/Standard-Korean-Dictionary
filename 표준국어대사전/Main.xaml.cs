@@ -5,6 +5,7 @@ using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.Storage;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -25,6 +26,12 @@ namespace 표준국어대사전
         public MainPage()
         {
             InitializeComponent();
+
+            ApplicationDataContainer localSettings = ApplicationData.Current.LocalSettings;
+            if (localSettings.Values["#SearchEngine"] == null)
+            {
+                localSettings.Values["#SearchEngine"] = 0;
+            }
         }
 
         private void NavigationView_Loaded(object sender, RoutedEventArgs e)
@@ -42,6 +49,8 @@ namespace 표준국어대사전
 
         private void Main_Navigation_ItemInvoked(NavigationView sender, NavigationViewItemInvokedEventArgs args)
         {
+            ApplicationDataContainer localSettings = ApplicationData.Current.LocalSettings;
+
             if (args.IsSettingsInvoked)
             {
                 ContentFrame.Navigate(typeof(Pages.Info));
@@ -51,7 +60,10 @@ namespace 표준국어대사전
                 switch (args.InvokedItem)
                 {
                     case "Pages.Dic":  //검색
-                        ContentFrame.Navigate(typeof(Pages.Dic));
+                        if ((int)localSettings.Values["#SearchEngine"] == 0)
+                            ContentFrame.Navigate(typeof(Pages.Dic));
+                        else
+                            ContentFrame.Navigate(typeof(Pages.DicAppSearch));
                         break;
 
                     case "Pages.HangulSpelling":  //한글 맞춤법
@@ -79,6 +91,8 @@ namespace 표준국어대사전
 
         private void NavigationView_SelectionChanged(NavigationView sender, NavigationViewSelectionChangedEventArgs args)
         {
+            ApplicationDataContainer localSettings = ApplicationData.Current.LocalSettings;
+
             if (args.IsSettingsSelected)
             {
                 ContentFrame.Navigate(typeof(Pages.Info));
@@ -91,7 +105,10 @@ namespace 표준국어대사전
                 switch (item.Tag)
                 {
                     case "Pages.Dic":  //검색
-                        ContentFrame.Navigate(typeof(Pages.Dic));
+                        if ((int)localSettings.Values["#SearchEngine"] == 0)
+                            ContentFrame.Navigate(typeof(Pages.Dic));
+                        else
+                            ContentFrame.Navigate(typeof(Pages.DicAppSearch));
                         break;
 
                     case "Pages.HangulSpelling":  //한글 맞춤법

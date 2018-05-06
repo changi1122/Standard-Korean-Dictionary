@@ -21,7 +21,7 @@
 
     <Grid x:Name="BasicGrid" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" SizeChanged="Grid_SizeChanged" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
 
-        <WebView x:Name="WebViewDic" Margin="0,48,0,0" ScrollViewer.HorizontalScrollBarVisibility="Auto" NewWindowRequested="WebViewDic_NewWindowRequested" NavigationFailed="WebViewDic_NavigationFailed" FlyoutBase.AttachedFlyout="{StaticResource Basic}" RightTapped="WebViewDic_RightTapped" NavigationCompleted="WebViewDic_NavigationCompleted"/>
+        <WebView x:Name="WebViewDic" Margin="0,48,0,0" ScrollViewer.HorizontalScrollBarVisibility="Auto" NewWindowRequested="WebViewDic_NewWindowRequested" NavigationFailed="WebViewDic_NavigationFailed" FlyoutBase.AttachedFlyout="{StaticResource Basic}" RightTapped="WebViewDic_RightTapped" NavigationCompleted="WebViewDic_NavigationCompleted" Visibility="Collapsed"/>
 
         <Grid x:Name="NetNoticeGrid" Margin="10,59,0,0" Height="295" VerticalAlignment="Center" HorizontalAlignment="Center" Width="463" Visibility="Collapsed">
             <TextBlock TextWrapping="Wrap" Text="연결되어 있지 않음" FontSize="24" HorizontalAlignment="Left" VerticalAlignment="Top" Height="33" Margin="90,0,0,0"/>
@@ -59,6 +59,11 @@
             <CommandBar.SecondaryCommands>
                 <AppBarButton Icon="Globe" Label="다른 브라우저에서 열기" Click="BtnOtherApp_Click"/>
                 <AppBarToggleButton x:Name="ToggleOriginWeb" Label="웹 페이지로 보기" Icon="Page2" Click="ToggleOriginWeb_Click" IsChecked="False"/>
+                <AppBarButton x:Name="BtnReadingMode" Label="HTML 보기" Click="BtnReadingMode_Click" IsEnabled="True" Visibility="Collapsed">
+                    <AppBarButton.Icon>
+                        <FontIcon Glyph="&#xE15E;"/>
+                    </AppBarButton.Icon>
+                </AppBarButton>
             </CommandBar.SecondaryCommands>
             <CommandBar.Content>
                 <Grid/>
@@ -73,11 +78,6 @@
                 </AppBarButton.Icon>
             </AppBarButton>
             <AppBarButton x:Name="BtnMultiSearch" Label="다중 검색" Icon="NewWindow" Click="BtnMultiSearch_Click"/>
-            <AppBarButton x:Name="BtnReadingMode" Label="읽기 모드" Click="BtnReadingMode_Click" IsEnabled="True" Visibility="Collapsed">
-                <AppBarButton.Icon>
-                    <FontIcon Glyph="&#xE7BC;"/>
-                </AppBarButton.Icon>
-            </AppBarButton>
             <AppBarButton x:Name="BtnClip" Label="저장" IsEnabled="False" Visibility="Collapsed">
                 <AppBarButton.Icon>
                     <FontIcon Glyph="&#xE105;"/>
@@ -88,10 +88,11 @@
         <Grid Height="48" VerticalAlignment="Top">
             <TextBlock x:Name="PageTitle" Text="검색" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="20,0,0,0"/>
         </Grid>
-        <Grid x:Name="ReadingModeGrid" Margin="100,150,100,144" Padding="0" Background="#FFF1E599" Visibility="Collapsed">
-            <Button x:Name="ReadingModeClose" Content="&#xE10A;" HorizontalAlignment="Right" VerticalAlignment="Top" FontFamily="Segoe MDL2 Assets" Height="32" Width="46" Click="ReadingModeClose_Click"/>
-            <TextBox x:Name="ReadingModeText" Margin="10,37,10,10" TextWrapping="Wrap" Text="Load..." IsReadOnly="True" BorderBrush="{x:Null}" Background="{x:Null}" SelectionHighlightColor="{x:Null}"/>
-            <Button x:Name="ReadingModeFunction" Content="&#xE123;" HorizontalAlignment="Right" VerticalAlignment="Top" FontFamily="Segoe MDL2 Assets" Height="32" Width="46" Margin="0,0,46,0" Click="ReadingModeFunction_Click"/>
+        <Grid x:Name="ReadingModeGrid" Padding="0" Background="#FFBEBEBE" Visibility="Collapsed" VerticalAlignment="Bottom" Height="450">
+            <Button x:Name="ReadingModeCopy" Content="&#xE8C8;" HorizontalAlignment="Left" VerticalAlignment="Top" FontFamily="Segoe MDL2 Assets" Height="40" Width="40" FontSize="20" Click="ReadingModeCopy_Click" Background="{x:Null}"/>
+            <Button x:Name="ReadingModeRefresh" Content="&#xE777;" HorizontalAlignment="Left" VerticalAlignment="Top" FontFamily="Segoe MDL2 Assets" Height="40" Width="40" FontSize="20" Click="ReadingModeRefresh_Click" Background="{x:Null}" Margin="40,0,0,0"/>
+            <Button x:Name="ReadingModeClose" Content="&#xE10A;" HorizontalAlignment="Right" VerticalAlignment="Top" FontFamily="Segoe MDL2 Assets" Height="40" Width="40" FontSize="20" Click="ReadingModeClose_Click" Background="{x:Null}"/>
+            <TextBox x:Name="ReadingModeText" Margin="1,40,1,1" TextWrapping="Wrap" Text="Load..." IsReadOnly="True" BorderBrush="#FFE6E6E6" Background="#FFE6E6E6" SelectionHighlightColor="{x:Null}"/>
         </Grid>
         <Grid x:Name="MemoGrid" Height="280" Margin="0,48,0,0" VerticalAlignment="Top" HorizontalAlignment="Right" Width="300" Background="#FFBEBEBE" Visibility="Collapsed">
             <TextBox x:Name="TextboxMemoBox" Margin="1,40,1,1" TextWrapping="Wrap" Background="#FFE6E6E6" BorderBrush="#FFE6E6E6" AcceptsReturn="True"/>

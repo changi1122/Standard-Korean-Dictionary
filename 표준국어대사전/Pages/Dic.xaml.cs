@@ -40,17 +40,22 @@ namespace 표준국어대사전.Pages
             {
                 localSettings.Values["#UseOriginWeb"] = false;
             }
+            if (localSettings.Values["#UseDevelopermode"] == null)
+            {
+                localSettings.Values["#UseDevelopermode"] = false;
+            }
             IsOpenOriginWeb = (bool)localSettings.Values["#UseOriginWeb"];
             ToggleOriginWeb.IsChecked = (bool)localSettings.Values["#UseOriginWeb"];
 
             if (IsOpenOriginWeb == false)
-            {
                 MainPageGrid.Visibility = Visibility.Visible;
-            }
             else
-            {
                 MainPageGrid.Visibility = Visibility.Collapsed;
-            }
+
+            if ((bool)localSettings.Values["#UseDevelopermode"] == false)
+                BtnReadingMode.Visibility = Visibility.Collapsed;
+            else
+                BtnReadingMode.Visibility = Visibility.Visible;
 
             WebViewDic.Navigate(new Uri("http://stdweb2.korean.go.kr/main.jsp"));
         }
@@ -126,17 +131,25 @@ namespace 표준국어대사전.Pages
             ReadingModeText.Text = Data; //임시
         }
 
+        private void ReadingModeCopy_Click(object sender, RoutedEventArgs e)
+        {
+            DataPackage dataPackage = new DataPackage { RequestedOperation = DataPackageOperation.Copy };
+            dataPackage.SetText(ReadingModeText.Text);
+            Clipboard.SetContent(dataPackage);
+        }
+
+        private async void ReadingModeRefresh_Click(object sender, RoutedEventArgs e)
+        {
+            ReadingModeGrid.Visibility = Visibility.Visible;
+
+            string Data = await WebViewDic.InvokeScriptAsync("eval", new string[] { "document.documentElement.outerHTML;" });
+
+            ReadingModeText.Text = Data;
+        }
+
         private void ReadingModeClose_Click(object sender, RoutedEventArgs e)
         {
             ReadingModeGrid.Visibility = Visibility.Collapsed;
-        }
-
-        private void ReadingModeFunction_Click(object sender, RoutedEventArgs e)
-        {
-            //string Work = "";
-
-            //Work = ReadingModeText.Text.Substring(ReadingModeText.Text.IndexOf('<'), ReadingModeText.Text.IndexOf('>') - ReadingModeText.Text.IndexOf('<') + 1);
-            //ReadingModeText.Text.Replace(Work, "");
         }
 
         //||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
@@ -212,8 +225,9 @@ namespace 표준국어대사전.Pages
                 Name = "BtnSubSearchClose",
                 VerticalAlignment = VerticalAlignment.Top,
                 HorizontalAlignment = HorizontalAlignment.Right,
-                Height = 32,
-                Width = 46,
+                Height = 40,
+                Width = 40,
+                FontSize = 20,
                 Content = "",
                 FontFamily = new FontFamily("Segoe MDL2 Assets"),
                 Background = null,
@@ -225,7 +239,7 @@ namespace 표준국어대사전.Pages
             var SubSearch = new Controls.ConMultiSearch
             {
                 Name = "SubSearch",
-                Margin = new Thickness(0, 32, 0, 0),
+                Margin = new Thickness(1, 40, 1, 1),
                 VerticalAlignment = VerticalAlignment.Stretch,
                 HorizontalAlignment = HorizontalAlignment.Stretch
             };
@@ -374,11 +388,13 @@ namespace 표준국어대사전.Pages
                 }
                 else
                 {
+                    WebViewDic.Visibility = Visibility.Visible;
                     MainPageGrid.Visibility = Visibility.Collapsed;
                 }
             }
             else
             {
+                WebViewDic.Visibility = Visibility.Visible;
                 MainPageGrid.Visibility = Visibility.Collapsed;
             }
         }

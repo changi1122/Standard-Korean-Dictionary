@@ -34,7 +34,20 @@ namespace 표준국어대사전.Pages
             {
                 localSettings.Values["#UseOriginWeb"] = false;
             }
+
+            if (localSettings.Values["#UseDevelopermode"] == null)
+            {
+                localSettings.Values["#UseDevelopermode"] = false;
+            }
+
+            if (localSettings.Values["#SearchEngine"] == null)
+            {
+                localSettings.Values["#SearchEngine"] = 0;
+            }
+
             CheckOriginWeb.IsChecked = (bool)localSettings.Values["#UseOriginWeb"];
+            CheckDevelopermode.IsChecked = (bool)localSettings.Values["#UseDevelopermode"];
+            ComboSearchEngine.SelectedIndex = (int)localSettings.Values["#SearchEngine"];
 
             Version.Text = "버전 " + typeof(App).GetTypeInfo().Assembly.GetName().Version;
         }
@@ -66,6 +79,14 @@ namespace 표준국어대사전.Pages
             localSettings.Values["#UseOriginWeb"] = CheckOriginWeb.IsChecked;
         }
 
+        private void CheckDevelopermode_Click(object sender, RoutedEventArgs e)
+        {
+            ApplicationDataContainer localSettings = ApplicationData.Current.LocalSettings;
+            var value = localSettings.Values["#UseDevelopermode"];
+
+            localSettings.Values["#UseDevelopermode"] = CheckDevelopermode.IsChecked;
+        }
+
         private void BtnResetSetting_Click(object sender, RoutedEventArgs e)
         {
             ApplicationDataContainer localSettings = ApplicationData.Current.LocalSettings;
@@ -73,6 +94,18 @@ namespace 표준국어대사전.Pages
 
             localSettings.Values["#UseOriginWeb"] = false;
             CheckOriginWeb.IsChecked = (bool)localSettings.Values["#UseOriginWeb"];
+            localSettings.Values["#UseDevelopermode"] = false;
+            CheckDevelopermode.IsChecked = (bool)localSettings.Values["#UseDevelopermode"];
+            localSettings.Values["#SearchEngine"] = 0;
+            ComboSearchEngine.SelectedIndex = (int)localSettings.Values["#SearchEngine"];
+        }
+
+        private void ComboSearchEngine_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            ApplicationDataContainer localSettings = ApplicationData.Current.LocalSettings;
+            var value = localSettings.Values["#SearchEngine"];
+
+            localSettings.Values["#SearchEngine"] = ComboSearchEngine.SelectedIndex;
         }
     }
 }

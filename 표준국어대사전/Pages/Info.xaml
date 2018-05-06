@@ -21,9 +21,15 @@
             <PivotItem Header="일반">
                 <Grid>
                     <TextBlock HorizontalAlignment="Left" Margin="10,10,0,0" TextWrapping="Wrap" Text="옵션" VerticalAlignment="Top" FontSize="24"/>
-                    <CheckBox x:Name="CheckOriginWeb" Margin="10,60,0,0" VerticalAlignment="Top" Content="검색 메인 페이지를 웹 페이지로 보기" Click="CheckOriginWeb_Click"/>
-                    <TextBlock HorizontalAlignment="Left" Margin="10,140,0,0" TextWrapping="Wrap" Text="앱 초기화" VerticalAlignment="Top" FontSize="24"/>
-                    <Button x:Name="BtnResetSetting" Margin="10,200,0,0" VerticalAlignment="Top" Content="설정 초기화" Click="BtnResetSetting_Click"/>
+                    <ComboBox x:Name="ComboSearchEngine" Header="검색 엔진" Margin="10,60,0,0" Width="200" SelectionChanged="ComboSearchEngine_SelectionChanged">
+                        <ComboBoxItem Content="웹뷰 기반 검색"/>
+                        <ComboBoxItem Content="앱 내 검색(개발 중)"/>
+                    </ComboBox>
+                    <CheckBox x:Name="CheckOriginWeb" Margin="10,140,0,0" VerticalAlignment="Top" Content="검색 메인 페이지를 웹 페이지로 보기" Click="CheckOriginWeb_Click"/>
+                    <CheckBox x:Name="CheckDevelopermode" Margin="10,180,0,0" VerticalAlignment="Top" Content="개발자 도구 활성화" Click="CheckDevelopermode_Click"/>
+
+                    <TextBlock HorizontalAlignment="Left" Margin="10,260,0,0" TextWrapping="Wrap" Text="앱 초기화" VerticalAlignment="Top" FontSize="24"/>
+                    <Button x:Name="BtnResetSetting" Margin="10,310,0,0" VerticalAlignment="Top" Content="설정 초기화" Click="BtnResetSetting_Click"/>
                 </Grid>
             </PivotItem>
             <PivotItem Header="정보">

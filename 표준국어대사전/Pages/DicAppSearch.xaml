@@ -17,6 +17,7 @@
             <CommandBar.Content>
                 <Grid/>
             </CommandBar.Content>
+            <AppBarButton x:Name="BtnBack" Icon="Back" Label="뒤로"/>
             <AppBarButton x:Name="BtnRefresh" Icon="Refresh" Label="새로 고침"/>
             <AppBarButton x:Name="BtnHome" Icon="Home" Label="홈"/>
             <AppBarSeparator/>
