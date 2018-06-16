@@ -446,21 +446,27 @@ namespace 표준국어대사전.Pages
         private void Grid_SizeChanged(object sender, SizeChangedEventArgs e)
         {
             //반응형
-            if (BasicGrid.ActualWidth > 648)
+            if (BasicGrid.ActualWidth > 700)
             {
                 Logo.FontSize = 48;
             }
-            else if (BasicGrid.ActualWidth <= 648 && 592 <= BasicGrid.ActualWidth)
+            else if (BasicGrid.ActualWidth <= 700 && 592 <= BasicGrid.ActualWidth)
             {
                 Logo.FontSize = 42;
                 TextboxSearch.Width = 415;
                 BtnSearch.Margin = new Thickness(497, 136, 53, 20);
             }
-            else if (BasicGrid.ActualWidth < 592)
+            else if (BasicGrid.ActualWidth < 592 && 550 <= BasicGrid.ActualWidth)
             {
                 Logo.FontSize = 37;
-                TextboxSearch.Width = 355;
-                BtnSearch.Margin = new Thickness(437, 136, 53, 20);
+                TextboxSearch.Width = 330;
+                BtnSearch.Margin = new Thickness(412, 136, 53, 20);
+            }
+            else if (BasicGrid.ActualWidth < 550)
+            {
+                Logo.FontSize = 32;
+                TextboxSearch.Width = 300;
+                BtnSearch.Margin = new Thickness(362, 136, 53, 20);
             }
         }
     }

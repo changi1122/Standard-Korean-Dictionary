@@ -25,6 +25,8 @@ namespace 표준국어대사전.Pages
         public DicAppSearch()
         {
             this.InitializeComponent();
+
+            WebViewMain.Navigate(new Uri("http://stdweb2.korean.go.kr/main.jsp"));
         }
     }
 }

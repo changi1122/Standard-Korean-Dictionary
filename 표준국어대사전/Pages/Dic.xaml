@@ -30,7 +30,7 @@
             <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="&#xE704;" VerticalAlignment="Top" FontSize="80" FontFamily="Segoe MDL2 Assets"/>
             <Button x:Name="NoticeRefresh" Content="다시 시도" HorizontalAlignment="Left" Margin="90,247,0,0" VerticalAlignment="Top" Height="34" Width="94" Click="BtnRefresh_Click"/>
         </Grid>
-        <Grid x:Name="MainPageGrid" Background="#FFE6E6E6" Margin="0,0,0,0" Visibility="Visible">
+        <Grid x:Name="MainPageGrid" Margin="0,0,0,0" Visibility="Visible" Background="White">
             <Grid x:Name="SearchBoxGrid" Height="400" HorizontalAlignment="Center" Width="650" VerticalAlignment="Center">
                 <TextBox x:Name="TextboxSearch" Margin="70,136,165,20" Text="" VerticalAlignment="Center" KeyDown="TextboxSearch_KeyDown" PlaceholderText="검색할 단어를 입력하세요" FontSize="24" Height="44" FontFamily="Segoe UI" HorizontalAlignment="Center" Width="415"/>
                 <Button x:Name="BtnSearch" Content="검색" HorizontalAlignment="Center" Height="44" Margin="497,136,53,20" VerticalAlignment="Center" Width="100" Click="BtnSearch_Click" FontSize="24" MinWidth="100" MaxWidth="100"/>
