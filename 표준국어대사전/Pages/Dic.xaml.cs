@@ -309,7 +309,6 @@ namespace 표준국어대사전.Pages
             await WebViewDic.InvokeScriptAsync("eval", new string[] { functionString_Text });
 
             //검색 버튼을 누릅니다.
-            var inputValue = TextboxSearch.Text;
             var functionString = string.Format(@"document.getElementById('sch1').click()");
             await WebViewDic.InvokeScriptAsync("eval", new string[] { functionString });
 
