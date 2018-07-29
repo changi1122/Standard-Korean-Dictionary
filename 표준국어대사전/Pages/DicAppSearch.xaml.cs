@@ -52,6 +52,9 @@ namespace 표준국어대사전.Pages
         {
             var word = (Word)e.ClickedItem;
             //항목 클릭시 동작
+            WordTitleItem.Content = word.WordTitle;
+            WordPronounceItem.Content = word.WordPronounce;
+            WordDefinitionItemTextBlock.Text = word.WordDefinition;
         }
 
         private async void BtnSearch_Click(object sender, RoutedEventArgs e)
@@ -76,9 +79,18 @@ namespace 표준국어대사전.Pages
             await WebViewMain.InvokeScriptAsync("eval", new string[] { functionString });
         }
 
+        private void WebViewMain_NavigationStarting(WebView sender, WebViewNavigationStartingEventArgs args)
+        {
+            TextboxSearch.IsEnabled = false;
+            BtnSearch.IsEnabled = false;
+        }
+
         private async void WebViewMain_NavigationCompletedAsync(WebView sender, WebViewNavigationCompletedEventArgs args)
         {
             Words.Clear();
+            WordTitleItem.Content = "";
+            WordPronounceItem.Content = "";
+            WordDefinitionItemTextBlock.Text = "";
 
             int a, b;
             string full = await WebViewMain.InvokeScriptAsync("eval", new string[] { "document.documentElement.outerHTML;" });
@@ -87,12 +99,18 @@ namespace 표준국어대사전.Pages
             full = full.Replace(Environment.NewLine, " ");
 
             if (full.IndexOf("<p class=\"exp\">") == -1)
+            {
+                TextboxSearch.IsEnabled = true;
+                BtnSearch.IsEnabled = true;
                 return;
+            }
 
             if (full.IndexOf("<td class=\"sword\" background=\"/image/sq_bg.gif\">") == -1)
             {
                 var messageDialog = new MessageDialog("검색 실패. (Code1)");
                 await messageDialog.ShowAsync();
+                TextboxSearch.IsEnabled = true;
+                BtnSearch.IsEnabled = true;
                 return;
             }
 
@@ -126,11 +144,16 @@ namespace 표준국어대사전.Pages
                 w[a].WordJavascript = wp[0].Substring(wp[0].IndexOf("javascript"), wp[0].LastIndexOf(';') - wp[0].IndexOf("javascript") + 1);
                 w[a].WordTitle = DeletePart(wp[0]);
                 if (w[a].WordTitle.IndexOf('[') != -1)
+                {
                     w[a].WordPronounce = w[a].WordTitle.Substring(w[a].WordTitle.IndexOf('['), w[a].WordTitle.IndexOf(']') + 1 - w[a].WordTitle.IndexOf('['));
+                    w[a].WordTitle = w[a].WordTitle.Remove(w[a].WordTitle.IndexOf('['));
+                }
                 w[a].WordDefinition = DeletePart(wp[1]);
 
                 Words.Add(new Word { WordTitle = w[a].WordTitle, Javascript = w[a].WordJavascript, WordPronounce = w[a].WordPronounce, WordDefinition = w[a].WordDefinition });
             }
+            TextboxSearch.IsEnabled = true;
+            BtnSearch.IsEnabled = true;
         }
 
         public string DeletePart(string Work)

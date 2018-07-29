@@ -83,7 +83,10 @@ namespace HTML_AnalysisLogic
                 w[a].WordJavascript = wp[0].Substring(wp[0].IndexOf("javascript"), wp[0].LastIndexOf(';') - wp[0].IndexOf("javascript") + 1);
                 w[a].WordTitle = DeletePart(wp[0]);
                 if(w[a].WordTitle.IndexOf('[') != -1)
+                {
                     w[a].WordPronounce = w[a].WordTitle.Substring(w[a].WordTitle.IndexOf('['), w[a].WordTitle.IndexOf(']') + 1 - w[a].WordTitle.IndexOf('['));
+                    w[a].WordTitle = w[a].WordTitle.Remove(w[a].WordTitle.IndexOf('['));
+                }
                 w[a].WordDefinition = DeletePart(wp[1]);
             }
 

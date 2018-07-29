@@ -23,7 +23,7 @@
                     <TextBlock HorizontalAlignment="Left" Margin="10,10,0,0" TextWrapping="Wrap" Text="옵션" VerticalAlignment="Top" FontSize="24"/>
                     <ComboBox x:Name="ComboSearchEngine" Header="검색 엔진" Margin="10,60,0,0" Width="200" SelectionChanged="ComboSearchEngine_SelectionChanged">
                         <ComboBoxItem Content="웹뷰 기반 검색"/>
-                        <ComboBoxItem Content="앱 내 검색(개발 중)"/>
+                        <ComboBoxItem Content="앱 내 검색(시험 판)"/>
                     </ComboBox>
                     <CheckBox x:Name="CheckOriginWeb" Margin="10,140,0,0" VerticalAlignment="Top" Content="검색 메인 페이지를 웹 페이지로 보기" Click="CheckOriginWeb_Click"/>
                     <CheckBox x:Name="CheckDevelopermode" Margin="10,180,0,0" VerticalAlignment="Top" Content="개발자 도구 활성화" Click="CheckDevelopermode_Click"/>
