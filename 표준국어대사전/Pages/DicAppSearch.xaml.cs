@@ -91,6 +91,7 @@ namespace 표준국어대사전.Pages
             WordTitleItem.Content = "";
             WordPronounceItem.Content = "";
             WordDefinitionItemTextBlock.Text = "";
+            w = new WordData[10];
 
             int a, b;
             string full = await WebViewMain.InvokeScriptAsync("eval", new string[] { "document.documentElement.outerHTML;" });
