@@ -46,9 +46,9 @@
                     <Button x:Name="BtnReview" Content="평점 및 리뷰" HorizontalAlignment="Left" Margin="10,230,0,0" VerticalAlignment="Top" Width="120" Click="BtnReview_Click"/>
                     <Button x:Name="BtnMail" Content="메일" HorizontalAlignment="Left" Margin="140,230,0,0" VerticalAlignment="Top" Width="60" Click="BtnMail_Click"/>
                     <TextBlock HorizontalAlignment="Left" Margin="10,284,0,0" TextWrapping="Wrap" Text="국립국어원" VerticalAlignment="Top" FontWeight="Bold"/>
-                    <TextBlock HorizontalAlignment="Left" Margin="10,309,0,0" TextWrapping="Wrap" Text=" 대표 전화" VerticalAlignment="Top"/>
+                    <TextBlock HorizontalAlignment="Left" Margin="10,309,0,0" TextWrapping="Wrap" Text="대표 전화" VerticalAlignment="Top"/>
                     <HyperlinkButton Content="02-2669-9775" HorizontalAlignment="Left" Margin="110,303,0,0" VerticalAlignment="Top"/>
-                    <TextBlock HorizontalAlignment="Left" Margin="10,334,0,0" TextWrapping="Wrap" Text=" 주소" VerticalAlignment="Top"/>
+                    <TextBlock HorizontalAlignment="Left" Margin="10,334,0,0" TextWrapping="Wrap" Text="주소" VerticalAlignment="Top"/>
                     <HyperlinkButton Content="서울특별시 강서구 금낭화로 154 국립국어원(서울특별시 강서구 방화3동 827)" HorizontalAlignment="Left" Margin="110,332,0,0" VerticalAlignment="Top"/>
                     <HyperlinkButton Content="우편 번호 : 07511" HorizontalAlignment="Left" Margin="110,355,0,0" VerticalAlignment="Top"/>
                 </Grid>
