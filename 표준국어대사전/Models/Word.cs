@@ -19,7 +19,6 @@ namespace 표준국어대사전.Models
             get;
             set;
         }
-
         public string WordPronounce
         {
             get;
@@ -38,8 +37,8 @@ namespace 표준국어대사전.Models
         {
             var words = new List<Word>();
 
-            words.Add(new Word { WordTitle = "예시01(例示)", Javascript = "javascript:fncGoPage('/search/View.jsp','458683','1','');", WordPronounce = "", WordDefinition = ""});
             words.Add(new Word { WordTitle = "예시02(例時)", Javascript = "javascript:fncGoPage('/search/View.jsp','240740','1','');", WordPronounce = "", WordDefinition = "" });
+            words.Add(new Word { WordTitle = "예시01(例示)", Javascript = "javascript:fncGoPage('/search/View.jsp','458683','1','');", WordPronounce = "", WordDefinition = ""});
             words.Add(new Word { WordTitle = "예시03(睨視)", Javascript = "javascript:fncGoPage('/search/View.jsp','240741','1','');", WordPronounce = "", WordDefinition = "" });
             words.Add(new Word { WordTitle = "예시04(豫示)", Javascript = "javascript:fncGoPage('/search/View.jsp','458685','1','');", WordPronounce = "", WordDefinition = "" });
             words.Add(new Word { WordTitle = "예시05(豫試)", Javascript = "javascript:fncGoPage('/search/View.jsp','240746','1','');", WordPronounce = "", WordDefinition = "" });
