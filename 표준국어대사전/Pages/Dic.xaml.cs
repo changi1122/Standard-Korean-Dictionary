@@ -233,7 +233,7 @@ namespace 표준국어대사전.Pages
                 Background = null,
                 Foreground = (SolidColorBrush)Resources["Black"]
             };
-            CloseBtn.Click += new RoutedEventHandler(BtnSubSearchClose_Click);
+            CloseBtn.Click += BtnSubSearchClose_Click;
             SubGrid.Children.Add(CloseBtn);
 
             var SubSearch = new Controls.ConMultiSearch

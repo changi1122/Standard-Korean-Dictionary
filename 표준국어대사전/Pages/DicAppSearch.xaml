@@ -84,6 +84,8 @@
             </Setter>
         </Style>
         <Style x:Key="MasterListViewItemContainerStyle" BasedOn="{StaticResource ListViewItemRevealStyle}" TargetType="ListViewItem"/>
+        <SolidColorBrush x:Key="BarColor" Color="#FFBEBEBE"/>
+        <SolidColorBrush x:Key="Black" Color="Black"/>
     </Page.Resources>
 
     <Grid x:Name="BasicGrid" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
@@ -113,12 +115,18 @@
             <ListView x:Name="ListviewWordDetail" SelectionMode="None">
                 <ListViewItem x:Name="WordTitleItem" HorizontalAlignment="Stretch" Margin="20,20,20,0" VerticalAlignment="Top" FontSize="24"/>
                 <ListViewItem x:Name="WordPronounceItem" HorizontalAlignment="Stretch" Margin="20,0,20,0" VerticalAlignment="Top" FontSize="15" VerticalContentAlignment="Top" MinHeight="28" Height="26" Foreground="Gray"/>
-                <ListViewItem x:Name="WordDefinitionItem" HorizontalAlignment="Stretch" Margin="20,0,20,0" VerticalAlignment="Top" FontSize="18">
+                <ListViewItem x:Name="WordDefinitionItem" HorizontalAlignment="Stretch" Margin="20,0,20,0" VerticalAlignment="Top" FontSize="18" FontFamily="Segoe UI">
                     <StackPanel>
                         <TextBlock x:Name="WordDefinitionItemTextBlock" TextWrapping="WrapWholeWords"/>
                     </StackPanel>
                 </ListViewItem>
+                <ListViewItem HorizontalAlignment="Stretch" Margin="20,0,20,0" VerticalAlignment="Top">
+                    <CommandBar Background="Transparent" IsOpen="False" DefaultLabelPosition="Right">
+                        <AppBarButton x:Name="BtnWebOpen" Icon="Globe" Label="웹에서 보기" Click="BtnWebOpen_Click" Visibility="Collapsed"/>
+                    </CommandBar>
+                </ListViewItem>
             </ListView>
+            <TextBlock x:Name="WordJavascriptItem" Visibility="Collapsed"/>
         </Grid>
 
     </Grid>

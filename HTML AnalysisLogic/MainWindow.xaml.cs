@@ -80,14 +80,14 @@ namespace HTML_AnalysisLogic
                 string[] wp = new string[2];
                 wp[0] = WordList[a].Substring(0, WordList[a].IndexOf("&nbsp;&nbsp;<a"));
                 wp[1] = WordList[a].Replace(wp[0] + "&nbsp;&nbsp;", "");
-                w[a].WordJavascript = wp[0].Substring(wp[0].IndexOf("javascript"), wp[0].LastIndexOf(';') - wp[0].IndexOf("javascript") + 1);
-                if(wp[0].IndexOf("<span class=\"sdblue\">") != -1)
+                w[a].WordJavascript = wp[0].Substring(wp[0].IndexOf("javascript") + 11, wp[0].IndexOf(';') - wp[0].IndexOf("javascript") - 11 + 1);
+                if (wp[0].IndexOf("<span class=\"sdblue\">") != -1)
                 {
                     w[a].WordPronounce = wp[0].Substring(wp[0].IndexOf("<span class=\"sdblue\">"), wp[0].IndexOf("</span>") - wp[0].IndexOf("<span class=\"sdblue\">"));
                     w[a].WordPronounce = DeletePart(w[a].WordPronounce);
                     wp[0] = wp[0].Remove(wp[0].IndexOf("<span class=\"sdblue\">"));
                 }
-                if(wp[1].IndexOf('〔') != -1)
+                if (wp[1].IndexOf('〔') != -1)
                 {
                     w[a].WordSubDefinition = wp[1].Substring(wp[1].IndexOf('〔'), wp[1].LastIndexOf('〕') + 1 - wp[1].IndexOf('〔'));
                     wp[1] = wp[1].Replace(w[a].WordSubDefinition, "");

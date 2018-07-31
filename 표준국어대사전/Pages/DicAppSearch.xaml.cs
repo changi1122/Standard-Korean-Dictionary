@@ -56,6 +56,8 @@ namespace 표준국어대사전.Pages
             WordTitleItem.Content = word.WordTitle;
             WordPronounceItem.Content = word.WordPronounce;
             WordDefinitionItemTextBlock.Text = word.WordDefinition;
+            WordJavascriptItem.Text = word.Javascript;
+            BtnWebOpen.Visibility = Visibility.Visible;
         }
 
         private async void BtnSearch_Click(object sender, RoutedEventArgs e)
@@ -89,9 +91,11 @@ namespace 표준국어대사전.Pages
         private async void WebViewMain_NavigationCompletedAsync(WebView sender, WebViewNavigationCompletedEventArgs args)
         {
             Words.Clear();
+            BtnWebOpen.Visibility = Visibility.Collapsed;
             WordTitleItem.Content = "";
             WordPronounceItem.Content = "";
             WordDefinitionItemTextBlock.Text = "";
+            WordJavascriptItem.Text = "";
             w = new WordData[10];
 
             int a, b;
@@ -142,7 +146,7 @@ namespace 표준국어대사전.Pages
                 string[] wp = new string[2];
                 wp[0] = WordList[a].Substring(0, WordList[a].IndexOf("&nbsp;&nbsp;<a"));
                 wp[1] = WordList[a].Replace(wp[0] + "&nbsp;&nbsp;", "");
-                w[a].WordJavascript = wp[0].Substring(wp[0].IndexOf("javascript"), wp[0].LastIndexOf(';') - wp[0].IndexOf("javascript") + 1);
+                w[a].WordJavascript = wp[0].Substring(wp[0].IndexOf("javascript") + 11, wp[0].IndexOf(';') - wp[0].IndexOf("javascript") - 11 + 1);
                 if (wp[0].IndexOf("<span class=\"sdblue\">") != -1)
                 {
                     w[a].WordPronounce = wp[0].Substring(wp[0].IndexOf("<span class=\"sdblue\">"), wp[0].IndexOf("</span>") - wp[0].IndexOf("<span class=\"sdblue\">"));
@@ -270,6 +274,64 @@ namespace 표준국어대사전.Pages
             {
                 BtnSearch_Click(this, new RoutedEventArgs());
             }
+        }
+
+        private void BtnWebOpen_Click(object sender, RoutedEventArgs e)
+        {
+            var SubGrid = new Grid
+            {
+                Name = "SubGrid",
+                Margin = new Thickness(0, 0, 0, 0),
+                VerticalAlignment = VerticalAlignment.Stretch,
+                HorizontalAlignment = HorizontalAlignment.Stretch,
+            };
+
+            var CloseBtn = new Button
+            {
+                Name = "BtnSubSearchClose",
+                VerticalAlignment = VerticalAlignment.Top,
+                HorizontalAlignment = HorizontalAlignment.Right,
+                Height = 40,
+                Width = 40,
+                FontSize = 20,
+                Content = "",
+                FontFamily = new FontFamily("Segoe MDL2 Assets"),
+                Background = null,
+                Foreground = (SolidColorBrush)Resources["Black"]
+            };
+            CloseBtn.Click += BtnSubSearchClose_Click;
+            SubGrid.Children.Add(CloseBtn);
+
+            var SubSearch = new WebView
+            {
+                Name = "SubSearch",
+                Margin = new Thickness(1, 40, 1, 1),
+                VerticalAlignment = VerticalAlignment.Stretch,
+                HorizontalAlignment = HorizontalAlignment.Stretch,
+                Source = new Uri("http://stdweb2.korean.go.kr/search/List_dic.jsp")
+            };
+            SubSearch.NavigationCompleted += SubSearch_NavigationCompletedAsync;
+            SubGrid.Children.Add(SubSearch);
+
+            DetailGrid.Children.Add(SubGrid);
+        }
+
+        private async void SubSearch_NavigationCompletedAsync(WebView sender, WebViewNavigationCompletedEventArgs args)
+        {
+            if(sender.Source == new Uri("http://stdweb2.korean.go.kr/search/List_dic.jsp"))
+            {
+                var functionString_Text = string.Format(WordJavascriptItem.Text);
+                await sender.InvokeScriptAsync("eval", new string[] { functionString_Text });
+
+                Grid g = (Grid)DetailGrid.FindName("SubGrid");
+                g.Background = (SolidColorBrush)Resources["BarColor"];
+            }
+        }
+
+
+        private void BtnSubSearchClose_Click(object sender, RoutedEventArgs e)
+        {
+            DetailGrid.Children.Remove((UIElement)this.FindName("SubGrid"));
         }
     }
 }
