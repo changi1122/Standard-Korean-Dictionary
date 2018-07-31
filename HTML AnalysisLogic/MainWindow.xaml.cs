@@ -25,6 +25,7 @@ namespace HTML_AnalysisLogic
             public string WordTitle;
             public string WordPronounce;
             public string WordDefinition;
+            public string WordSubDefinition;
             public string WordJavascript;
         }
 
@@ -79,14 +80,20 @@ namespace HTML_AnalysisLogic
                 string[] wp = new string[2];
                 wp[0] = WordList[a].Substring(0, WordList[a].IndexOf("&nbsp;&nbsp;<a"));
                 wp[1] = WordList[a].Replace(wp[0] + "&nbsp;&nbsp;", "");
-
                 w[a].WordJavascript = wp[0].Substring(wp[0].IndexOf("javascript"), wp[0].LastIndexOf(';') - wp[0].IndexOf("javascript") + 1);
-                w[a].WordTitle = DeletePart(wp[0]);
-                if(w[a].WordTitle.IndexOf('[') != -1)
+                if(wp[0].IndexOf("<span class=\"sdblue\">") != -1)
                 {
-                    w[a].WordPronounce = w[a].WordTitle.Substring(w[a].WordTitle.IndexOf('['), w[a].WordTitle.IndexOf(']') + 1 - w[a].WordTitle.IndexOf('['));
-                    w[a].WordTitle = w[a].WordTitle.Remove(w[a].WordTitle.IndexOf('['));
+                    w[a].WordPronounce = wp[0].Substring(wp[0].IndexOf("<span class=\"sdblue\">"), wp[0].IndexOf("</span>") - wp[0].IndexOf("<span class=\"sdblue\">"));
+                    w[a].WordPronounce = DeletePart(w[a].WordPronounce);
+                    wp[0] = wp[0].Remove(wp[0].IndexOf("<span class=\"sdblue\">"));
                 }
+                if(wp[1].IndexOf('〔') != -1)
+                {
+                    w[a].WordSubDefinition = wp[1].Substring(wp[1].IndexOf('〔'), wp[1].LastIndexOf('〕') + 1 - wp[1].IndexOf('〔'));
+                    wp[1] = wp[1].Replace(w[a].WordSubDefinition, "");
+                    w[a].WordSubDefinition = DeletePart(w[a].WordSubDefinition);
+                }
+                w[a].WordTitle = DeletePart(wp[0]);
                 w[a].WordDefinition = DeletePart(wp[1]);
             }
 
@@ -117,11 +124,14 @@ namespace HTML_AnalysisLogic
                 </ >
                 <imgsrc >
                 <span >
+                <b>
             
             Replace
                 (( )) -> +Space
                 &nbsp; -> Space
                 <br> -> Enter
+                &lt; -> <
+                &gt; -> >
             */
 
             while (true)
@@ -182,9 +192,30 @@ namespace HTML_AnalysisLogic
 
             while (true)
             {
+                if (Work.IndexOf("<b>") == -1)
+                    break;
+                Work = Work.Replace("<b>", "");
+            }
+
+            while (true)
+            {
                 if (Work.IndexOf("<br>") == -1)
                     break;
                 Work = Work.Replace("<br>", Environment.NewLine);
+            }
+
+            while (true)
+            {
+                if (Work.IndexOf("&lt;") == -1)
+                    break;
+                Work = Work.Replace("&lt;", "<");
+            }
+
+            while (true)
+            {
+                if (Work.IndexOf("&gt;") == -1)
+                    break;
+                Work = Work.Replace("&gt;", ">");
             }
 
             return Work;
@@ -195,7 +226,12 @@ namespace HTML_AnalysisLogic
             LabelWordNum.Content = a;
             LabelWordTitle.Content = w[a].WordTitle;
             LabelJavascript.Content = w[a].WordJavascript;
-            LabelWordPronounce.Content = w[a].WordPronounce;
+            string Pronounce = w[a].WordPronounce + " " + w[a].WordSubDefinition;
+            if(Pronounce.StartsWith(" "))
+            {
+                Pronounce = Pronounce.Substring(1);
+            }
+            LabelWordPronounce.Content = Pronounce;
             LabelWordDefinition.Text = w[a].WordDefinition;
         }
 
