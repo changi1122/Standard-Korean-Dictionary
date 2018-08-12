@@ -357,5 +357,12 @@ namespace 표준국어대사전.Pages
         {
             DetailGrid.Children.Remove((UIElement)this.FindName("SubGrid"));
         }
+
+        private void WebViewMain_NavigationFailed(object sender, WebViewNavigationFailedEventArgs e)
+        {
+            ListviewWordDetail.Visibility = Visibility.Collapsed;
+            
+            //인터넷 없을 시 상황 구현
+        }
     }
 }

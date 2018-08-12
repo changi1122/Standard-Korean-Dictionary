@@ -37,7 +37,7 @@
                     <TextBlock HorizontalAlignment="Left" Margin="10,10,0,0" TextWrapping="Wrap" Text="국립국어원 표준국어대사전" VerticalAlignment="Top" FontSize="24"/>
                     <TextBlock HorizontalAlignment="Left" Margin="10,47,0,0" TextWrapping="Wrap" Text="Studio1122" VerticalAlignment="Top" FontSize="12" Foreground="Gray"/>
                     <TextBlock x:Name="Version" HorizontalAlignment="Left" Margin="10,63,0,0" TextWrapping="Wrap" Text="버전 0.0.0.0" VerticalAlignment="Top" FontSize="12" Foreground="Gray"/>
-                    <TextBlock HorizontalAlignment="Left" Margin="10,94,0,0" TextWrapping="Wrap" Text="국립국어원에서 제공하는 표준국어대사전 웹을 유니버설 Windows 플랫폼 앱으로 연결합니다." VerticalAlignment="Top"/>
+                    <TextBlock HorizontalAlignment="Left" Margin="10,94,0,0" TextWrapping="Wrap" Text="국립국어원에서 제공하는 표준국어대사전 웹을 유니버설 Windows 플랫폼 앱으로 연결합니다. 이 앱은 나눔바른고딕 옛한글체를 포함하고 있습니다." VerticalAlignment="Top"/>
                     <TextBlock HorizontalAlignment="Left" Margin="10,143,0,0" TextWrapping="Wrap" Text="Studio1122" VerticalAlignment="Top" FontWeight="Bold"/>
                     <TextBlock HorizontalAlignment="Left" Margin="10,168,0,0" TextWrapping="Wrap" Text="프로그램 문의" VerticalAlignment="Top"/>
                     <HyperlinkButton x:Name="Mail" Content="changi112242@gmail.com" HorizontalAlignment="Left" Margin="110,162,0,0" VerticalAlignment="Top" Click="Mail_Click"/>
