@@ -49,9 +49,24 @@ namespace 표준국어대사전.Pages
             WebViewMain.Navigate(new Uri("http://stdweb2.korean.go.kr/search/List_dic.jsp"));
         }
 
-        private void ListView_ItemClick(object sender, ItemClickEventArgs e)
+        private async void ListView_ItemClick(object sender, ItemClickEventArgs e)
         {
             var word = (Word)e.ClickedItem;
+
+            if(word.Javascript.StartsWith("fncGoPage('/search/List_dic.jsp'") == true)
+            {
+                ListviewWordDetail.Visibility = Visibility.Collapsed;
+
+                var functionString_Text = string.Format(word.Javascript);
+                await WebViewMain.InvokeScriptAsync("eval", new string[] { functionString_Text });
+
+                Words.Remove(word);
+
+                return;
+            }
+
+            ListviewWordDetail.Visibility = Visibility.Visible;
+
             //항목 클릭시 동작
             WordTitleItemTextBlock.Text = word.WordTitle;
             WordPronounceItemTextBlock.Text = word.WordPronounce;
@@ -80,6 +95,8 @@ namespace 표준국어대사전.Pages
             //검색 버튼을 누릅니다.
             var functionString = string.Format(@"fncTopSearch()");
             await WebViewMain.InvokeScriptAsync("eval", new string[] { functionString });
+
+            Words.Clear();
         }
 
         private void WebViewMain_NavigationStarting(WebView sender, WebViewNavigationStartingEventArgs args)
@@ -90,7 +107,6 @@ namespace 표준국어대사전.Pages
 
         private async void WebViewMain_NavigationCompletedAsync(WebView sender, WebViewNavigationCompletedEventArgs args)
         {
-            Words.Clear();
             BtnWebOpen.Visibility = Visibility.Collapsed;
             WordTitleItemTextBlock.Text = "";
             WordPronounceItemTextBlock.Text = "";
@@ -126,8 +142,10 @@ namespace 표준국어대사전.Pages
             Work = Work.Remove(Work.IndexOf('<'), Work.LastIndexOf('>') - Work.IndexOf('<') + 1);
 
             int MaxNum = Convert.ToInt32(Work.Substring(Work.IndexOf('(') + 1, Work.LastIndexOf('건') - Work.IndexOf('(') - 1));
-            double LabelPageMax = Math.Ceiling((double)MaxNum / 10);
-            
+            int PageMax = Convert.ToInt32(Math.Ceiling((double)MaxNum / 10));
+
+            int NowPageNum = Convert.ToInt32(full.Substring(full.IndexOf("<span class=\"page_on\">") + 22, full.IndexOf("</span>", full.IndexOf("<span class=\"page_on\">")) - full.IndexOf("<span class=\"page_on\">") - 22));
+
             Work = full.Substring(full.IndexOf("<span id=\"print_area\">"));
             for (a = 0; a < 10; a++)
             {
@@ -170,6 +188,12 @@ namespace 표준국어대사전.Pages
 
                 Words.Add(new Word { WordTitle = w[a].WordTitle, Javascript = w[a].WordJavascript, WordPronounce = Pronounce, WordDefinition = w[a].WordDefinition });
             }
+
+            if (NowPageNum < PageMax)
+            {
+                Words.Add(new Word { WordTitle = "                  ∨", Javascript = "fncGoPage('/search/List_dic.jsp','','" + (NowPageNum + 1) + "','')", WordPronounce = "", WordDefinition = "" });
+            }
+
             TextboxSearch.IsEnabled = true;
             BtnSearch.IsEnabled = true;
         }
