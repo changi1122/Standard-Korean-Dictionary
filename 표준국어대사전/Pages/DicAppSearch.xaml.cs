@@ -53,8 +53,8 @@ namespace 표준국어대사전.Pages
         {
             var word = (Word)e.ClickedItem;
             //항목 클릭시 동작
-            WordTitleItem.Content = word.WordTitle;
-            WordPronounceItem.Content = word.WordPronounce;
+            WordTitleItemTextBlock.Text = word.WordTitle;
+            WordPronounceItemTextBlock.Text = word.WordPronounce;
             WordDefinitionItemTextBlock.Text = word.WordDefinition;
             WordJavascriptItem.Text = word.Javascript;
             BtnWebOpen.Visibility = Visibility.Visible;
@@ -92,8 +92,8 @@ namespace 표준국어대사전.Pages
         {
             Words.Clear();
             BtnWebOpen.Visibility = Visibility.Collapsed;
-            WordTitleItem.Content = "";
-            WordPronounceItem.Content = "";
+            WordTitleItemTextBlock.Text = "";
+            WordPronounceItemTextBlock.Text = "";
             WordDefinitionItemTextBlock.Text = "";
             WordJavascriptItem.Text = "";
             w = new WordData[10];
