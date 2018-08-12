@@ -20,7 +20,7 @@
         <Label x:Name="LabelJavascript" HorizontalAlignment="Right" Margin="0,0,10,207" Content="Javascript" VerticalAlignment="Bottom" Height="34" Width="414"/>
         <TextBlock x:Name="LabelWordDefinition" Margin="10,0,10,41" Text="Definition" TextWrapping="Wrap" Height="130" VerticalAlignment="Bottom"/>
         <Label x:Name="LabelMaxNum" HorizontalAlignment="Right" Margin="0,0,10,246" Content="Word Num" VerticalAlignment="Bottom" Width="80"/>
-        <Label x:Name="LabelPageNum" HorizontalAlignment="Left" Margin="10,0,0,10" Content="Page Num" VerticalAlignment="Bottom"/>
+        <Label x:Name="LabelNowPageNum" HorizontalAlignment="Left" Margin="10,0,0,10" Content="Now Page Num" VerticalAlignment="Bottom"/>
         <Label x:Name="LabelTest" Margin="360,161,341,0" VerticalAlignment="Top" HorizontalAlignment="Center"/>
         <Label x:Name="LabelPageMax" HorizontalAlignment="Right" Margin="0,0,10,10" Content="Page Max" VerticalAlignment="Bottom"/>
     </Grid>

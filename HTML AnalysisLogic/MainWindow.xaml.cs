@@ -60,6 +60,9 @@ namespace HTML_AnalysisLogic
             LabelMaxNum.Content = Work.Substring(Work.IndexOf('(') + 1, Work.LastIndexOf('건') - Work.IndexOf('(') - 1) + "개";
             LabelPageMax.Content = Math.Ceiling((double)MaxNum / 10);
 
+            int NowNum = Convert.ToInt32(full.Substring(full.IndexOf("<span class=\"page_on\">") + 22, full.IndexOf("</span>", full.IndexOf("<span class=\"page_on\">")) - full.IndexOf("<span class=\"page_on\">") - 22));
+            LabelNowPageNum.Content = NowNum;
+
             Work = full.Substring(full.IndexOf("<span id=\"print_area\">"));
             for (a = 0; a < 10; a++)
             {
@@ -110,8 +113,6 @@ namespace HTML_AnalysisLogic
                 page[a] = page[a].Replace("|", "");
                 page[a] = page[a].Replace(" ", "");
             }
-
-            LabelPageNum.Content = page.Aggregate((cur, next) => cur + " " + next); //Combine pages' number
         }
 
         public string DeletePart(string Work)
