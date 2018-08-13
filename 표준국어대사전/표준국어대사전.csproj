@@ -17,11 +17,11 @@
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{A5A43C5B-DE2A-4C0C-9213-0A381AF9435A};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <WindowsXamlEnableOverview>true</WindowsXamlEnableOverview>
-    <PackageCertificateKeyFile>표준국어대사전_StoreKey.pfx</PackageCertificateKeyFile>
+    <PackageCertificateKeyFile>표준국어대사전_TemporaryKey.pfx</PackageCertificateKeyFile>
     <AppxAutoIncrementPackageRevision>False</AppxAutoIncrementPackageRevision>
     <AppxBundle>Always</AppxBundle>
     <AppxBundlePlatforms>x86|x64|arm</AppxBundlePlatforms>
-    <PackageCertificateThumbprint>8E47D0F70D8D98BB4EF43B4A84379F48F8C6FD1A</PackageCertificateThumbprint>
+    <PackageCertificateThumbprint>6242AA283610FCE491CD5D4BD044E2D43AA2F149</PackageCertificateThumbprint>
     <GenerateAppInstallerFile>False</GenerateAppInstallerFile>
     <AppInstallerUpdateFrequency>1</AppInstallerUpdateFrequency>
     <AppInstallerCheckForUpdateFrequency>OnApplicationRun</AppInstallerCheckForUpdateFrequency>
@@ -142,6 +142,7 @@
     <AppxManifest Include="Package.appxmanifest">
       <SubType>Designer</SubType>
     </AppxManifest>
+    <Content Include="Assets\NanumBarunGothic-YetHangul.ttf" />
     <None Include="표준국어대사전_StoreKey.pfx" />
     <None Include="표준국어대사전_TemporaryKey.pfx" />
   </ItemGroup>

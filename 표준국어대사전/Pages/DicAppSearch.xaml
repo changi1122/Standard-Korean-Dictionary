@@ -115,17 +115,17 @@
             <ListView x:Name="ListviewWordDetail" SelectionMode="None" Visibility="Collapsed">
                 <ListViewItem x:Name="WordTitleItem" HorizontalAlignment="Stretch" Margin="20,20,20,0" VerticalAlignment="Top">
                     <StackPanel>
-                        <TextBlock x:Name="WordTitleItemTextBlock" TextWrapping="WrapWholeWords" IsTextSelectionEnabled="True" FontSize="24" FontFamily="Assets/NanumBarunGothic-YetHangul.ttf#NanumBarunGothic YetHangul"/>
+                        <TextBlock x:Name="WordTitleItemTextBlock" TextWrapping="WrapWholeWords" IsTextSelectionEnabled="True" FontSize="24" FontFamily="/Assets/NanumBarunGothic-YetHangul.ttf#NanumBarunGothic YetHangul"/>
                     </StackPanel>
                 </ListViewItem>
                 <ListViewItem x:Name="WordPronounceItem" HorizontalAlignment="Stretch" Margin="20,0,20,0" VerticalAlignment="Top" VerticalContentAlignment="Top" MinHeight="28" Height="26">
                     <StackPanel>
-                        <TextBlock x:Name="WordPronounceItemTextBlock" TextWrapping="WrapWholeWords" IsTextSelectionEnabled="True" Foreground="Gray" FontSize="15" FontFamily="Assets/NanumBarunGothic-YetHangul.ttf#NanumBarunGothic YetHangul"/>
+                        <TextBlock x:Name="WordPronounceItemTextBlock" TextWrapping="WrapWholeWords" IsTextSelectionEnabled="True" Foreground="Gray" FontSize="15" FontFamily="/Assets/NanumBarunGothic-YetHangul.ttf#NanumBarunGothic YetHangul"/>
                     </StackPanel>
                 </ListViewItem>
-                <ListViewItem x:Name="WordDefinitionItem" HorizontalAlignment="Stretch" Margin="20,0,20,0" VerticalAlignment="Top" FontSize="18" FontFamily="Segoe UI">
+                <ListViewItem x:Name="WordDefinitionItem" HorizontalAlignment="Stretch" Margin="20,0,20,0" VerticalAlignment="Top" FontSize="18">
                     <StackPanel>
-                        <TextBlock x:Name="WordDefinitionItemTextBlock" TextWrapping="WrapWholeWords" IsTextSelectionEnabled="True" FontFamily="Assets/NanumBarunGothic-YetHangul.ttf#NanumBarunGothic YetHangul"/>
+                        <TextBlock x:Name="WordDefinitionItemTextBlock" TextWrapping="WrapWholeWords" IsTextSelectionEnabled="True" FontFamily="/Assets/NanumBarunGothic-YetHangul.ttf#NanumBarunGothic YetHangul"/>
                     </StackPanel>
                 </ListViewItem>
                 <ListViewItem HorizontalAlignment="Stretch" Margin="20,0,20,0" VerticalAlignment="Top">
