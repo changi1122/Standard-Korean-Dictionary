@@ -75,9 +75,9 @@ namespace 표준국어대사전.Pages
             BtnWebOpen.Visibility = Visibility.Visible;
         }
 
-        private async void BtnSearch_Click(object sender, RoutedEventArgs e)
+        private async void SearchBox_QuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
         {
-            if (TextboxSearch.Text == "")
+            if (SearchBox.Text == "")
             {
                 // Create a MessageDialog
                 var messageDialog = new MessageDialog("찾을 말 또는 단어를 입력하세요.");
@@ -88,7 +88,7 @@ namespace 표준국어대사전.Pages
             }
 
             //텍스트를 웹뷰에 입력합니다.
-            var inputValue_Text = TextboxSearch.Text;
+            var inputValue_Text = SearchBox.Text;
             var functionString_Text = string.Format(@"document.getElementById('SearchText').value = '{0}';", inputValue_Text);
             await WebViewMain.InvokeScriptAsync("eval", new string[] { functionString_Text });
 
@@ -99,10 +99,19 @@ namespace 표준국어대사전.Pages
             Words.Clear();
         }
 
+        private void SearchBox_KeyDown(object sender, KeyRoutedEventArgs e)
+        {
+            if (e.Key == Windows.System.VirtualKey.Enter)
+            {
+                SearchBox_QuerySubmitted(SearchBox, new AutoSuggestBoxQuerySubmittedEventArgs());
+            }
+        }
+
         private void WebViewMain_NavigationStarting(WebView sender, WebViewNavigationStartingEventArgs args)
         {
-            TextboxSearch.IsEnabled = false;
-            BtnSearch.IsEnabled = false;
+            SearchBox.IsEnabled = false;
+            ProgressBar.ShowError = false;
+            ProgressBar.Visibility = Visibility.Visible;
         }
 
         private async void WebViewMain_NavigationCompletedAsync(WebView sender, WebViewNavigationCompletedEventArgs args)
@@ -122,8 +131,8 @@ namespace 표준국어대사전.Pages
 
             if (full.IndexOf("<p class=\"exp\">") == -1)
             {
-                TextboxSearch.IsEnabled = true;
-                BtnSearch.IsEnabled = true;
+                ProgressBar.Visibility = Visibility.Collapsed;
+                SearchBox.IsEnabled = true;
                 return;
             }
 
@@ -131,8 +140,7 @@ namespace 표준국어대사전.Pages
             {
                 var messageDialog = new MessageDialog("검색 실패. (Code1)");
                 await messageDialog.ShowAsync();
-                TextboxSearch.IsEnabled = true;
-                BtnSearch.IsEnabled = true;
+                SearchBox.IsEnabled = true;
                 return;
             }
 
@@ -194,8 +202,8 @@ namespace 표준국어대사전.Pages
                 Words.Add(new Word { WordTitle = "                  ∨", Javascript = "fncGoPage('/search/List_dic.jsp','','" + (NowPageNum + 1) + "','')", WordPronounce = "", WordDefinition = "" });
             }
 
-            TextboxSearch.IsEnabled = true;
-            BtnSearch.IsEnabled = true;
+            ProgressBar.Visibility = Visibility.Collapsed;
+            SearchBox.IsEnabled = true;
         }
 
         public string DeletePart(string Work)
@@ -292,14 +300,6 @@ namespace 표준국어대사전.Pages
             return Work;
         }
 
-        private void TextboxSearch_KeyDown(object sender, KeyRoutedEventArgs e)
-        {
-            if (e.Key == Windows.System.VirtualKey.Enter)
-            {
-                BtnSearch_Click(this, new RoutedEventArgs());
-            }
-        }
-
         private void BtnWebOpen_Click(object sender, RoutedEventArgs e)
         {
             var SubGrid = new Grid
@@ -361,7 +361,8 @@ namespace 표준국어대사전.Pages
         private void WebViewMain_NavigationFailed(object sender, WebViewNavigationFailedEventArgs e)
         {
             ListviewWordDetail.Visibility = Visibility.Collapsed;
-            
+            ProgressBar.ShowError = true;
+
             //인터넷 없을 시 상황 구현
         }
     }

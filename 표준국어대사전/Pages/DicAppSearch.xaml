@@ -101,15 +101,13 @@
         <WebView x:Name="WebViewMain" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="2,0,0,0" Visibility="Collapsed" NavigationCompleted="WebViewMain_NavigationCompletedAsync" NavigationStarting="WebViewMain_NavigationStarting" NavigationFailed="WebViewMain_NavigationFailed"/>
 
         <Grid x:Name="MasterGrid" Margin="0,48,0,0" HorizontalAlignment="Left" Width="320" BorderThickness="0,0,1,0" BorderBrush="LightGray">
-            <Grid x:Name="SearchBoxGrid" HorizontalAlignment="Stretch" VerticalAlignment="Top" Margin="10,10,10,0" Height="40" Width="300">
-                <TextBox x:Name="TextboxSearch" Text="" VerticalAlignment="Center" PlaceholderText="검색할 단어를 입력하세요" FontSize="14" FontFamily="Segoe UI" HorizontalAlignment="Left" Width="236" KeyDown="TextboxSearch_KeyDown" IsEnabled="False"/>
-                <Button x:Name="BtnSearch" Content="검색" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="14" Height="32" Width="56" Click="BtnSearch_Click" IsEnabled="False" Margin="241,0,0,0"/>
-            </Grid>
             <ListView ItemContainerStyle="{StaticResource MasterListViewItemContainerStyle}" x:Name="ListviewSearchResult" HorizontalAlignment="Stretch" Margin="0,60,0,0" 
                       ItemClick="ListView_ItemClick" 
                       IsItemClickEnabled="True"
                       ItemsSource="{x:Bind Words}"
                       ItemTemplate="{StaticResource WordListDataTemplate}"/>
+            <ProgressBar x:Name="ProgressBar" IsIndeterminate="True" ShowPaused="False" ShowError="False" VerticalAlignment="Top" Visibility="Collapsed" Margin="0,2,0,0"/>
+            <AutoSuggestBox x:Name="SearchBox" VerticalAlignment="Top" Margin="10,16,10,0" HorizontalAlignment="Stretch" PlaceholderText="검색할 단어를 입력하세요" QueryIcon="Find" QuerySubmitted="SearchBox_QuerySubmitted" KeyDown="SearchBox_KeyDown"/>
         </Grid>
         <Grid x:Name="DetailGrid" HorizontalAlignment="Stretch" Margin="321,48,0,0" VerticalAlignment="Stretch">
             <ListView x:Name="ListviewWordDetail" SelectionMode="None" Visibility="Collapsed">
