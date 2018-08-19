@@ -15,6 +15,7 @@ using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 using Windows.UI.Popups;
 using System.Collections.ObjectModel;
+using System.Net.NetworkInformation;
 
 // 빈 페이지 항목 템플릿에 대한 설명은 https://go.microsoft.com/fwlink/?LinkId=234238에 나와 있습니다.
 
@@ -47,6 +48,18 @@ namespace 표준국어대사전.Pages
             Words = new ObservableCollection<Word>();
 
             WebViewMain.Navigate(new Uri("http://stdweb2.korean.go.kr/search/List_dic.jsp"));
+
+            while (true)
+            {
+                if (NetworkInterface.GetIsNetworkAvailable() == false)
+                {
+                    WebViewMain.Navigate(new Uri("http://stdweb2.korean.go.kr/search/List_dic.jsp"));
+                }
+                else
+                {
+                    return;
+                }
+            }
         }
 
         private async void ListView_ItemClick(object sender, ItemClickEventArgs e)
@@ -111,6 +124,7 @@ namespace 표준국어대사전.Pages
         {
             SearchBox.IsEnabled = false;
             ProgressBar.ShowError = false;
+            TextBlockErrorMessage.Visibility = Visibility.Collapsed;
             ProgressBar.Visibility = Visibility.Visible;
         }
 
@@ -123,6 +137,18 @@ namespace 표준국어대사전.Pages
             WordJavascriptItem.Text = "";
             w = new WordData[10];
 
+            if (NetworkInterface.GetIsNetworkAvailable() == false)
+            {
+                ListviewWordDetail.Visibility = Visibility.Collapsed;
+                ProgressBar.ShowError = true;
+                SearchBox.IsEnabled = true;
+
+                Words.Clear();
+                TextBlockErrorMessage.Text = "인터넷 연결 없음.";
+                TextBlockErrorMessage.Visibility = Visibility.Visible;
+                return;
+            }
+
             int a, b;
             string full = await WebViewMain.InvokeScriptAsync("eval", new string[] { "document.documentElement.outerHTML;" });
             string Work;
@@ -133,6 +159,11 @@ namespace 표준국어대사전.Pages
             {
                 ProgressBar.Visibility = Visibility.Collapsed;
                 SearchBox.IsEnabled = true;
+
+                Words.Clear();
+                TextBlockErrorMessage.Text = "검색 결과 없음.";
+                TextBlockErrorMessage.Visibility = Visibility.Visible;
+
                 return;
             }
 
@@ -140,6 +171,7 @@ namespace 표준국어대사전.Pages
             {
                 var messageDialog = new MessageDialog("검색 실패. (Code1)");
                 await messageDialog.ShowAsync();
+                ProgressBar.ShowError = true;
                 SearchBox.IsEnabled = true;
                 return;
             }
@@ -151,6 +183,11 @@ namespace 표준국어대사전.Pages
 
             int MaxNum = Convert.ToInt32(Work.Substring(Work.IndexOf('(') + 1, Work.LastIndexOf('건') - Work.IndexOf('(') - 1));
             int PageMax = Convert.ToInt32(Math.Ceiling((double)MaxNum / 10));
+
+            if (MaxNum == 0)
+            {
+
+            }
 
             int NowPageNum = Convert.ToInt32(full.Substring(full.IndexOf("<span class=\"page_on\">") + 22, full.IndexOf("</span>", full.IndexOf("<span class=\"page_on\">")) - full.IndexOf("<span class=\"page_on\">") - 22));
 
@@ -356,14 +393,6 @@ namespace 표준국어대사전.Pages
         private void BtnSubSearchClose_Click(object sender, RoutedEventArgs e)
         {
             DetailGrid.Children.Remove((UIElement)this.FindName("SubGrid"));
-        }
-
-        private void WebViewMain_NavigationFailed(object sender, WebViewNavigationFailedEventArgs e)
-        {
-            ListviewWordDetail.Visibility = Visibility.Collapsed;
-            ProgressBar.ShowError = true;
-
-            //인터넷 없을 시 상황 구현
         }
     }
 }
