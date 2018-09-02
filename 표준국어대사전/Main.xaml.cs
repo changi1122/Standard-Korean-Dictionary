@@ -28,9 +28,19 @@ namespace 표준국어대사전
             InitializeComponent();
 
             ApplicationDataContainer localSettings = ApplicationData.Current.LocalSettings;
+
+            if (localSettings.Values["#FirstSetup"] == null)
+                localSettings.Values["#FirstSetup"] = 0;
+
+            if((int)localSettings.Values["#FirstSetup"] < 1)
+            {
+                localSettings.Values["#SearchEngine"] = "DicAppSearch";
+                localSettings.Values["#FirstSetup"] = 1;
+            }
+
             if (localSettings.Values["#SearchEngine"] == null)
             {
-                localSettings.Values["#SearchEngine"] = 0;
+                localSettings.Values["#SearchEngine"] = "DicAppSearch";
             }
         }
 
@@ -60,10 +70,10 @@ namespace 표준국어대사전
                 switch (args.InvokedItem)
                 {
                     case "Pages.Dic":  //검색
-                        if ((int)localSettings.Values["#SearchEngine"] == 0)
-                            ContentFrame.Navigate(typeof(Pages.Dic));
-                        else
+                        if ((string)localSettings.Values["#SearchEngine"] == "DicAppSearch")
                             ContentFrame.Navigate(typeof(Pages.DicAppSearch));
+                        else
+                            ContentFrame.Navigate(typeof(Pages.Dic));
                         break;
 
                     case "Pages.HangulSpelling":  //한글 맞춤법
@@ -105,10 +115,10 @@ namespace 표준국어대사전
                 switch (item.Tag)
                 {
                     case "Pages.Dic":  //검색
-                        if ((int)localSettings.Values["#SearchEngine"] == 0)
-                            ContentFrame.Navigate(typeof(Pages.Dic));
-                        else
+                        if ((string)localSettings.Values["#SearchEngine"] == "DicAppSearch")
                             ContentFrame.Navigate(typeof(Pages.DicAppSearch));
+                        else
+                            ContentFrame.Navigate(typeof(Pages.Dic));
                         break;
 
                     case "Pages.HangulSpelling":  //한글 맞춤법

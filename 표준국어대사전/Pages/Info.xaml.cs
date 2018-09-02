@@ -42,12 +42,16 @@ namespace 표준국어대사전.Pages
 
             if (localSettings.Values["#SearchEngine"] == null)
             {
-                localSettings.Values["#SearchEngine"] = 0;
+                localSettings.Values["#SearchEngine"] = "DicAppSearch";
             }
 
-            CheckOriginWeb.IsChecked = (bool)localSettings.Values["#UseOriginWeb"];
             CheckDevelopermode.IsChecked = (bool)localSettings.Values["#UseDevelopermode"];
-            ComboSearchEngine.SelectedIndex = (int)localSettings.Values["#SearchEngine"];
+            if ((string)localSettings.Values["#SearchEngine"] == "DicAppSearch")
+                RadioButtonDicAppSearch.IsChecked = true;
+            else if ((string)localSettings.Values["#SearchEngine"] == "Dic" && (bool)localSettings.Values["#UseOriginWeb"] == false)
+                RadioButtonDic.IsChecked = true;
+            else
+                RadioButtonDicWeb.IsChecked = true;
 
             Version.Text = "버전 " + typeof(App).GetTypeInfo().Assembly.GetName().Version;
         }
@@ -70,15 +74,6 @@ namespace 표준국어대사전.Pages
             bool result = await Windows.System.Launcher.LaunchUriAsync(new Uri(@"mailto:changi112242@gmail.com"));
         }
 
-        private void CheckOriginWeb_Click(object sender, RoutedEventArgs e)
-        {
-            //Check if setting #UseOriginWeb exists and create it if it does not
-            ApplicationDataContainer localSettings = ApplicationData.Current.LocalSettings;
-            var value = localSettings.Values["#UseOriginWeb"];
-
-            localSettings.Values["#UseOriginWeb"] = CheckOriginWeb.IsChecked;
-        }
-
         private void CheckDevelopermode_Click(object sender, RoutedEventArgs e)
         {
             ApplicationDataContainer localSettings = ApplicationData.Current.LocalSettings;
@@ -93,19 +88,36 @@ namespace 표준국어대사전.Pages
             localSettings.Values.Clear();
 
             localSettings.Values["#UseOriginWeb"] = false;
-            CheckOriginWeb.IsChecked = (bool)localSettings.Values["#UseOriginWeb"];
             localSettings.Values["#UseDevelopermode"] = false;
             CheckDevelopermode.IsChecked = (bool)localSettings.Values["#UseDevelopermode"];
-            localSettings.Values["#SearchEngine"] = 0;
-            ComboSearchEngine.SelectedIndex = (int)localSettings.Values["#SearchEngine"];
+            localSettings.Values["#SearchEngine"] = "DicAppSearch";
+            RadioButtonDicAppSearch.IsChecked = true;
         }
 
-        private void ComboSearchEngine_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void RadioButtonDicAppSearch_Checked(object sender, RoutedEventArgs e)
         {
             ApplicationDataContainer localSettings = ApplicationData.Current.LocalSettings;
             var value = localSettings.Values["#SearchEngine"];
 
-            localSettings.Values["#SearchEngine"] = ComboSearchEngine.SelectedIndex;
+            localSettings.Values["#SearchEngine"] = "DicAppSearch";
+        }
+
+        private void RadioButtonDic_Checked(object sender, RoutedEventArgs e)
+        {
+            ApplicationDataContainer localSettings = ApplicationData.Current.LocalSettings;
+            var value = localSettings.Values["#SearchEngine"];
+
+            localSettings.Values["#SearchEngine"] = "Dic";
+            localSettings.Values["#UseOriginWeb"] = false;
+        }
+
+        private void RadioButtonDicWeb_Checked(object sender, RoutedEventArgs e)
+        {
+            ApplicationDataContainer localSettings = ApplicationData.Current.LocalSettings;
+            var value = localSettings.Values["#SearchEngine"];
+
+            localSettings.Values["#SearchEngine"] = "Dic";
+            localSettings.Values["#UseOriginWeb"] = true;
         }
     }
 }

@@ -394,5 +394,10 @@ namespace 표준국어대사전.Pages
         {
             DetailGrid.Children.Remove((UIElement)this.FindName("SubGrid"));
         }
+
+        private void MainSearchBox_QuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
+        {
+
+        }
     }
 }
