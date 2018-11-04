@@ -118,28 +118,34 @@
                 <NavigationViewItemSeparator/>
                 <NavigationViewItem Content="한글 맞춤법" Tag="Pages.HangulSpelling" >
                     <NavigationViewItem.Icon>
-                        <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE97D;"/>
+                        <BitmapIcon UriSource="/Assets/icon_n_h.png"/>
                     </NavigationViewItem.Icon>
                 </NavigationViewItem>
                 <NavigationViewItem Content="표준어 규정" Tag="Pages.StandardLanguageSpecification" >
                     <NavigationViewItem.Icon>
-                        <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xF180;"/>
+                        <BitmapIcon UriSource="/Assets/icon_n_p.png"/>
                     </NavigationViewItem.Icon>
                 </NavigationViewItem>
                 <NavigationViewItem Content="외래어 표기법" Tag="Pages.ForeignLanguageNotation" >
                     <NavigationViewItem.Icon>
-                        <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE1BC;"/>
+                        <BitmapIcon UriSource="/Assets/icon_n_y.png"/>
                     </NavigationViewItem.Icon>
                 </NavigationViewItem>
                 <NavigationViewItem Content="국어의 로마자 표기법" Tag="Pages.KoreanRomanization" >
                     <NavigationViewItem.Icon>
-                        <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE1B4;"/>
+                        <BitmapIcon UriSource="/Assets/icon_n_r.png"/>
                     </NavigationViewItem.Icon>
                 </NavigationViewItem>
                 <NavigationViewItemSeparator/>
                 <NavigationViewItem Content="수정 내용" Tag="Pages.Adjustment" >
                     <NavigationViewItem.Icon>
                         <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE82E;"/>
+                    </NavigationViewItem.Icon>
+                </NavigationViewItem>
+                <NavigationViewItemSeparator/>
+                <NavigationViewItem Content="맞춤법/문법 검사기" Tag="Pages.SpellingChecker" >
+                    <NavigationViewItem.Icon>
+                        <BitmapIcon UriSource="/Assets/icon_n_m.png"/>
                     </NavigationViewItem.Icon>
                 </NavigationViewItem>
             </NavigationView.MenuItems>

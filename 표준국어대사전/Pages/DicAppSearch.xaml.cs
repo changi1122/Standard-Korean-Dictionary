@@ -16,6 +16,9 @@ using Windows.UI.Xaml.Navigation;
 using Windows.UI.Popups;
 using System.Collections.ObjectModel;
 using System.Net.NetworkInformation;
+using Windows.Management.Deployment;
+using System.Threading.Tasks;
+using Windows.ApplicationModel.Core;
 
 // 빈 페이지 항목 템플릿에 대한 설명은 https://go.microsoft.com/fwlink/?LinkId=234238에 나와 있습니다.
 
@@ -41,6 +44,8 @@ namespace 표준국어대사전.Pages
         private ObservableCollection<Word> Words;
         //private List<Word> Words;
         //Words = WordManager.GetWords();
+
+        bool IsWebViewOpen = false;
 
         public DicAppSearch()
         {
@@ -86,6 +91,7 @@ namespace 표준국어대사전.Pages
             WordDefinitionItemTextBlock.Text = word.WordDefinition;
             WordJavascriptItem.Text = word.Javascript;
             BtnWebOpen.Visibility = Visibility.Visible;
+            BtnMemo.Visibility = Visibility.Visible;
         }
 
         private async void SearchBox_QuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
@@ -102,6 +108,15 @@ namespace 표준국어대사전.Pages
 
             //텍스트를 웹뷰에 입력합니다.
             var inputValue_Text = SearchBox.Text;
+            while (true)
+            {
+                int n;
+                if (int.TryParse(inputValue_Text.Substring(inputValue_Text.Length - 1), out n) || inputValue_Text.Substring(inputValue_Text.Length - 1) == " ")
+                    inputValue_Text = inputValue_Text.Remove(inputValue_Text.Length - 1);
+                else
+                    break;
+            }
+
             var functionString_Text = string.Format(@"document.getElementById('SearchText').value = '{0}';", inputValue_Text);
             await WebViewMain.InvokeScriptAsync("eval", new string[] { functionString_Text });
 
@@ -131,6 +146,7 @@ namespace 표준국어대사전.Pages
         private async void WebViewMain_NavigationCompletedAsync(WebView sender, WebViewNavigationCompletedEventArgs args)
         {
             BtnWebOpen.Visibility = Visibility.Collapsed;
+            BtnMemo.Visibility = Visibility.Collapsed;
             WordTitleItemTextBlock.Text = "";
             WordPronounceItemTextBlock.Text = "";
             WordDefinitionItemTextBlock.Text = "";
@@ -224,6 +240,17 @@ namespace 표준국어대사전.Pages
                 }
                 w[a].WordTitle = DeletePart(wp[0]);
                 w[a].WordDefinition = DeletePart(wp[1]);
+
+                while (true)
+                {
+                    if (w[a].WordDefinition.Substring(w[a].WordDefinition.Length - 1) == " ")
+                        w[a].WordDefinition = w[a].WordDefinition.Remove(w[a].WordDefinition.Length - 1);
+                    else
+                        break;
+                }
+
+                if (w[a].WordDefinition.Substring(w[a].WordDefinition.Length - 1) != Environment.NewLine)
+                    w[a].WordDefinition = w[a].WordDefinition + Environment.NewLine;
 
                 string Pronounce = w[a].WordPronounce + " " + w[a].WordSubDefinition;
                 if (Pronounce.StartsWith(" "))
@@ -339,42 +366,7 @@ namespace 표준국어대사전.Pages
 
         private void BtnWebOpen_Click(object sender, RoutedEventArgs e)
         {
-            var SubGrid = new Grid
-            {
-                Name = "SubGrid",
-                Margin = new Thickness(0, 0, 0, 0),
-                VerticalAlignment = VerticalAlignment.Stretch,
-                HorizontalAlignment = HorizontalAlignment.Stretch,
-            };
-
-            var CloseBtn = new Button
-            {
-                Name = "BtnSubSearchClose",
-                VerticalAlignment = VerticalAlignment.Top,
-                HorizontalAlignment = HorizontalAlignment.Right,
-                Height = 40,
-                Width = 40,
-                FontSize = 20,
-                Content = "",
-                FontFamily = new FontFamily("Segoe MDL2 Assets"),
-                Background = null,
-                Foreground = (SolidColorBrush)Resources["Black"]
-            };
-            CloseBtn.Click += BtnSubSearchClose_Click;
-            SubGrid.Children.Add(CloseBtn);
-
-            var SubSearch = new WebView
-            {
-                Name = "SubSearch",
-                Margin = new Thickness(1, 40, 1, 1),
-                VerticalAlignment = VerticalAlignment.Stretch,
-                HorizontalAlignment = HorizontalAlignment.Stretch,
-                Source = new Uri("http://stdweb2.korean.go.kr/search/List_dic.jsp")
-            };
-            SubSearch.NavigationCompleted += SubSearch_NavigationCompletedAsync;
-            SubGrid.Children.Add(SubSearch);
-
-            DetailGrid.Children.Add(SubGrid);
+            WebViewOpen(new Uri("http://stdweb2.korean.go.kr/search/List_dic.jsp"));
         }
 
         private async void SubSearch_NavigationCompletedAsync(WebView sender, WebViewNavigationCompletedEventArgs args)
@@ -383,21 +375,122 @@ namespace 표준국어대사전.Pages
             {
                 var functionString_Text = string.Format(WordJavascriptItem.Text);
                 await sender.InvokeScriptAsync("eval", new string[] { functionString_Text });
-
-                Grid g = (Grid)DetailGrid.FindName("SubGrid");
-                g.Background = (SolidColorBrush)Resources["BarColor"];
             }
+            Grid g = (Grid)BasicGrid.FindName("SubGrid");
+            g.Background = (SolidColorBrush)Resources["BarColor"];
         }
 
 
         private void BtnSubSearchClose_Click(object sender, RoutedEventArgs e)
         {
-            DetailGrid.Children.Remove((UIElement)this.FindName("SubGrid"));
+            BasicGrid.Children.Remove((UIElement)this.FindName("SubGrid"));
+            IsWebViewOpen = false;
         }
 
         private void MainSearchBox_QuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
         {
 
+        }
+
+        private async void BtnMemo_Click(object sender, RoutedEventArgs e)
+        {
+            var app = await GetAppByPackageFamilyNameAsync("Microsoft.MicrosoftStickyNotes_8wekyb3d8bbwe");
+
+            if (app != null)
+            {
+                await app.LaunchAsync();
+            }
+            else
+            {
+                await Windows.System.Launcher.LaunchUriAsync(new Uri("ms-windows-store://pdp/?ProductId=9nblggh4qghw"));
+            }
+
+            async Task<AppListEntry> GetAppByPackageFamilyNameAsync(string packageFamilyName)
+            {
+                var pkgManager = new PackageManager();
+                var pkg = pkgManager.FindPackagesForUser("", packageFamilyName).FirstOrDefault();
+
+                if (pkg == null) return null;
+
+                var apps = await pkg.GetAppListEntriesAsync();
+                var firstApp = apps.FirstOrDefault();
+                return firstApp;
+            }
+        }
+
+        private void WebViewOpen(Uri uri)
+        {
+            if (IsWebViewOpen == true)
+            {
+                Grid g = (Grid)BasicGrid.FindName("SubGrid");
+                WebView w = (WebView)g.FindName("SubSearch");
+                w.Navigate(uri);
+            }
+            else
+            {
+                var SubGrid = new Grid
+                {
+                    Name = "SubGrid",
+                    Margin = new Thickness(0, 48, 0, 0),
+                    VerticalAlignment = VerticalAlignment.Stretch,
+                    HorizontalAlignment = HorizontalAlignment.Stretch,
+                };
+
+                var CloseBtn = new Button
+                {
+                    Name = "BtnSubSearchClose",
+                    VerticalAlignment = VerticalAlignment.Top,
+                    HorizontalAlignment = HorizontalAlignment.Right,
+                    Height = 40,
+                    Width = 40,
+                    FontSize = 20,
+                    Content = "",
+                    FontFamily = new FontFamily("Segoe MDL2 Assets"),
+                    Background = null,
+                    Foreground = (SolidColorBrush)Resources["Black"]
+                };
+                CloseBtn.Click += BtnSubSearchClose_Click;
+                SubGrid.Children.Add(CloseBtn);
+
+                var SubSearch = new WebView
+                {
+                    Name = "SubSearch",
+                    Margin = new Thickness(1, 40, 1, 1),
+                    VerticalAlignment = VerticalAlignment.Stretch,
+                    HorizontalAlignment = HorizontalAlignment.Stretch,
+                    Source = uri
+                };
+                SubSearch.NavigationCompleted += SubSearch_NavigationCompletedAsync;
+                SubGrid.Children.Add(SubSearch);
+
+                BasicGrid.Children.Add(SubGrid);
+                IsWebViewOpen = true;
+            }
+        }
+
+        private void MenuFlyoutIdiom_Click(object sender, RoutedEventArgs e)
+        {
+            WebViewOpen(new Uri("http://stdweb2.korean.go.kr/section/idiom_list.jsp"));
+        }
+
+        private void MenuFlyoutDialect_Click(object sender, RoutedEventArgs e)
+        {
+            WebViewOpen(new Uri("http://stdweb2.korean.go.kr/section/region_list.jsp"));
+        }
+
+        private void MenuFlyoutProverb_Click(object sender, RoutedEventArgs e)
+        {
+            WebViewOpen(new Uri("http://stdweb2.korean.go.kr/section/proverb_list.jsp"));
+        }
+
+        private void MenuFlyoutCulture_Click(object sender, RoutedEventArgs e)
+        {
+            WebViewOpen(new Uri("http://stdweb2.korean.go.kr/section/north_list.jsp"));
+        }
+
+        private void MenuFlyoutKoreaOrigin_Click(object sender, RoutedEventArgs e)
+        {
+            WebViewOpen(new Uri("http://stdweb2.korean.go.kr/section/origin_list.jsp"));
         }
     }
 }

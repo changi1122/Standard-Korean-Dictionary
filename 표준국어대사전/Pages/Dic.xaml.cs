@@ -17,6 +17,8 @@ using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 using Windows.Storage;
 using System.Threading.Tasks;
+using Windows.ApplicationModel.Core;
+using Windows.Management.Deployment;
 
 // 빈 페이지 항목 템플릿에 대한 설명은 https://go.microsoft.com/fwlink/?LinkId=234238에 나와 있습니다.
 
@@ -99,6 +101,32 @@ namespace 표준국어대사전.Pages
                 WebViewDic.GoBack();
         }
 
+        private async void BtnMemo_Click(object sender, RoutedEventArgs e)
+        {
+            var app = await GetAppByPackageFamilyNameAsync("Microsoft.MicrosoftStickyNotes_8wekyb3d8bbwe");
+
+            if (app != null)
+            {
+                await app.LaunchAsync();
+            }
+            else
+            {
+                await Windows.System.Launcher.LaunchUriAsync(new Uri("ms-windows-store://pdp/?ProductId=9nblggh4qghw"));
+            }
+
+            async Task<AppListEntry> GetAppByPackageFamilyNameAsync(string packageFamilyName)
+            {
+                var pkgManager = new PackageManager();
+                var pkg = pkgManager.FindPackagesForUser("", packageFamilyName).FirstOrDefault();
+
+                if (pkg == null) return null;
+
+                var apps = await pkg.GetAppListEntriesAsync();
+                var firstApp = apps.FirstOrDefault();
+                return firstApp;
+            }
+        }
+
         //||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
         // AppBarButton - WebView Html Read
         //||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
@@ -150,53 +178,6 @@ namespace 표준국어대사전.Pages
         private void ReadingModeClose_Click(object sender, RoutedEventArgs e)
         {
             ReadingModeGrid.Visibility = Visibility.Collapsed;
-        }
-
-        //||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
-        // AppBarButton - Memo
-        //||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
-
-        private void BtnMemo_Click(object sender, RoutedEventArgs e)
-        {
-            if (MemoGrid.Visibility == Visibility.Collapsed)
-                MemoGrid.Visibility = Visibility.Visible;
-            else
-                MemoGrid.Visibility = Visibility.Collapsed;
-        }
-
-        private void BtnMemoCopy_Click(object sender, RoutedEventArgs e)
-        {
-            DataPackage dataPackage = new DataPackage { RequestedOperation = DataPackageOperation.Copy };
-            dataPackage.SetText(TextboxMemoBox.Text);
-            Clipboard.SetContent(dataPackage);
-        }
-
-        private void BtnMemoDelete_Click(object sender, RoutedEventArgs e)
-        {
-            TextboxMemoBox.Text = "";
-        }
-
-        private void BtnMemoMax_Click(object sender, RoutedEventArgs e)
-        {
-            if (MemoGrid.Width < 600)
-            {
-                MemoGrid.Width = MemoGrid.Width + 60;
-                MemoGrid.Height = MemoGrid.Height + 56;
-            }
-        }
-
-        private void BtnMemoMin_Click(object sender, RoutedEventArgs e)
-        {
-            if (MemoGrid.Width > 300)
-            {
-                MemoGrid.Width = MemoGrid.Width - 60;
-                MemoGrid.Height = MemoGrid.Height - 56;
-            }
-        }
-
-        private void BtnMemoClose_Click(object sender, RoutedEventArgs e)
-        {
-            MemoGrid.Visibility = Visibility.Collapsed;
         }
 
         //||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
@@ -352,14 +333,14 @@ namespace 표준국어대사전.Pages
             WebViewDic.Navigate(new Uri("http://stdweb2.korean.go.kr/section/idiom_list.jsp"));
         }
 
-        private void MenuFlyoutProverb_Click(object sender, RoutedEventArgs e)
-        {
-            WebViewDic.Navigate(new Uri("http://stdweb2.korean.go.kr/section/proverb_list.jsp"));
-        }
-
         private void MenuFlyoutDialect_Click(object sender, RoutedEventArgs e)
         {
             WebViewDic.Navigate(new Uri("http://stdweb2.korean.go.kr/section/region_list.jsp"));
+        }
+
+        private void MenuFlyoutProverb_Click(object sender, RoutedEventArgs e)
+        {
+            WebViewDic.Navigate(new Uri("http://stdweb2.korean.go.kr/section/proverb_list.jsp"));
         }
 
         private void MenuFlyoutCulture_Click(object sender, RoutedEventArgs e)

@@ -335,7 +335,17 @@
     <Grid x:Name="BasicGrid" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
         <CommandBar>
-
+            <AppBarButton x:Name="BtnFilter" Icon="Filter" Label="따로 보기">
+                <AppBarButton.Flyout>
+                    <MenuFlyout x:Name="SeparateSearchFlyout" Placement="Top">
+                        <MenuFlyoutItem x:Name="MenuFlyoutIdiom" Text="관용구" Click="MenuFlyoutIdiom_Click"/>
+                        <MenuFlyoutItem x:Name="MenuFlyoutDialect" Text="방언" Click="MenuFlyoutDialect_Click"/>
+                        <MenuFlyoutItem x:Name="MenuFlyoutProverb" Text="속담" Click="MenuFlyoutProverb_Click"/>
+                        <MenuFlyoutItem x:Name="MenuFlyoutCulture" Text="북한어" Click="MenuFlyoutCulture_Click"/>
+                        <MenuFlyoutItem x:Name="MenuFlyoutKoreaOrigin" Text="고유어" Click="MenuFlyoutKoreaOrigin_Click"/>
+                    </MenuFlyout>
+                </AppBarButton.Flyout>
+            </AppBarButton>
         </CommandBar>
 
         <Grid Height="48" VerticalAlignment="Top">
@@ -373,31 +383,16 @@
                 </ListViewItem>
                 <ListViewItem HorizontalAlignment="Stretch" Margin="20,0,20,0" VerticalAlignment="Top">
                     <CommandBar Background="Transparent" IsOpen="False" DefaultLabelPosition="Right">
-                        <AppBarButton x:Name="BtnWebOpen" Icon="Globe" Label="웹에서 보기" Click="BtnWebOpen_Click" Visibility="Collapsed"/>
+                        <AppBarButton x:Name="BtnWebOpen" Icon="Globe" Label="자세히 보기" Click="BtnWebOpen_Click" Visibility="Collapsed"/>
+                        <AppBarButton x:Name="BtnMemo" Label="메모" Click="BtnMemo_Click" Visibility="Collapsed">
+                            <AppBarButton.Icon>
+                                <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE70B;"/>
+                            </AppBarButton.Icon>
+                        </AppBarButton>
                     </CommandBar>
                 </ListViewItem>
             </ListView>
             <TextBlock x:Name="WordJavascriptItem" Visibility="Collapsed"/>
         </Grid>
-
-        <Grid x:Name="MainPageGrid" Margin="0,48,0,0" Visibility="Collapsed" Background="White">
-            <Grid x:Name="SearchBoxGrid" Height="400" HorizontalAlignment="Center" Width="650" VerticalAlignment="Center">
-                <AutoSuggestBox Style="{StaticResource MainSearchBoxStyle}" x:Name="MainSearchBox" PlaceholderText="검색할 단어를 입력하세요" Margin="70,166,53,20" VerticalAlignment="Center" Height="44" QueryIcon="Find" QuerySubmitted="MainSearchBox_QuerySubmitted" FontSize="24" FontFamily="Segoe MDL2 Assets"/>
-                <TextBlock x:Name="Logo" Text="국립국어원 표준국어대사전" TextWrapping="Wrap" VerticalAlignment="Center" Margin="16,20,5,60" FontSize="48" FontWeight="Bold" HorizontalAlignment="Center" FontFamily="Segoe UI"/>
-                <HyperlinkButton x:Name="BtnSeparate" Content="따로 보기" HorizontalAlignment="Center" Margin="333,347,255,21" VerticalAlignment="Center" Height="32" Width="63">
-                    <HyperlinkButton.ContextFlyout>
-                        <MenuFlyout x:Name="SeparateSearchFlyout" Placement="Bottom">
-                            <MenuFlyoutItem x:Name="MenuFlyoutIdiom" Text="관용구"/>
-                            <MenuFlyoutItem x:Name="MenuFlyoutProverb" Text="속담"/>
-                            <MenuFlyoutItem x:Name="MenuFlyoutDialect" Text="방언"/>
-                            <MenuFlyoutItem x:Name="MenuFlyoutCulture" Text="북한어"/>
-                            <MenuFlyoutItem x:Name="MenuFlyoutKoreaOrigin" Text="고유어"/>
-                        </MenuFlyout>
-                    </HyperlinkButton.ContextFlyout>
-                </HyperlinkButton>
-                <HyperlinkButton x:Name="BtnInform" Content="일러두기" HorizontalAlignment="Center" Margin="249,347,342,21" VerticalAlignment="Center" Height="32"/>
-            </Grid>
-        </Grid>
-
     </Grid>
 </Page>

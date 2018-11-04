@@ -95,6 +95,10 @@ namespace 표준국어대사전
                     case "Pages.Adjustment":  //수정 내용
                         ContentFrame.Navigate(typeof(Pages.Adjustment));
                         break;
+
+                    case "Pages.SpellingChecker":  //맞춤법/문법 검사기
+                        ContentFrame.Navigate(typeof(Pages.SpellingChecker));
+                        break;
                 }
             }
         }
@@ -139,6 +143,10 @@ namespace 표준국어대사전
 
                     case "Pages.Adjustment":  //수정 내용
                         ContentFrame.Navigate(typeof(Pages.Adjustment));
+                        break;
+
+                    case "Pages.SpellingChecker":  //맞춤법/문법 검사기
+                        ContentFrame.Navigate(typeof(Pages.SpellingChecker));
                         break;
                 }
             }

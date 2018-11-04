@@ -66,12 +66,12 @@ namespace 표준국어대사전.Pages
 
         private async void BtnReview_Click(object sender, RoutedEventArgs e)
         {
-            bool result = await Windows.System.Launcher.LaunchUriAsync(new Uri("ms-windows-store://review/?ProductId=9PPS9L58110J"));
+            await Windows.System.Launcher.LaunchUriAsync(new Uri("ms-windows-store://review/?ProductId=9PPS9L58110J"));
         }
 
         private async void BtnMail_Click(object sender, RoutedEventArgs e)
         {
-            bool result = await Windows.System.Launcher.LaunchUriAsync(new Uri(@"mailto:changi112242@gmail.com"));
+            await Windows.System.Launcher.LaunchUriAsync(new Uri(@"mailto:changi112242@gmail.com"));
         }
 
         private void CheckDevelopermode_Click(object sender, RoutedEventArgs e)
