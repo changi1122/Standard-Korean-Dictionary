@@ -19,6 +19,16 @@
             <TextBlock x:Name="PageTitle" Text="수정 내용" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="20,0,0,0"/>
         </Grid>
         <ListView Margin="20,68,0,30" SelectionMode="None">
+            <ListViewHeaderItem Content="2018년"/>
+            <ListViewItem>
+                <StackPanel>
+                    <TextBlock Text="2018년 1/4-3/4분기 수정 내용 공개 (2018. 10. 16.)"/>
+                    <StackPanel Margin="20,10,0,10" Orientation="Horizontal">
+                        <Button Content="Microsoft Edge에서 보기" Click="Button_Click_32"/>
+                        <Button Content="기본 브라우저에서 보기" Margin="10,0,0,0" Click="Button_Click_33"/>
+                    </StackPanel>
+                </StackPanel>
+            </ListViewItem>
             <ListViewHeaderItem Content="2017년"/>
             <ListViewItem>
                 <StackPanel>

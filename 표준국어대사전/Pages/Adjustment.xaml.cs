@@ -231,5 +231,17 @@ namespace 표준국어대사전.Pages
             var uri = new Uri("http://stdweb1.korean.go.kr:8080/AttachFiles/notice/2017_4_4.pdf");
             OpenWithDefaultBrowser(uri);
         }
+
+        private void Button_Click_32(object sender, RoutedEventArgs e)
+        {
+            var uri = new Uri("http://stdweb1.korean.go.kr:8080/AttachFiles/notice/2018_1-3_4.pdf");
+            OpenWithEdge(uri);
+        }
+
+        private void Button_Click_33(object sender, RoutedEventArgs e)
+        {
+            var uri = new Uri("http://stdweb1.korean.go.kr:8080/AttachFiles/notice/2018_1-3_4.pdf");
+            OpenWithDefaultBrowser(uri);
+        }
     }
 }
