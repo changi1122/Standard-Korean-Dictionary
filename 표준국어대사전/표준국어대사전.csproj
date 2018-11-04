@@ -21,7 +21,7 @@
     <AppxAutoIncrementPackageRevision>False</AppxAutoIncrementPackageRevision>
     <AppxBundle>Always</AppxBundle>
     <AppxBundlePlatforms>x86|x64|arm</AppxBundlePlatforms>
-    <PackageCertificateThumbprint>6242AA283610FCE491CD5D4BD044E2D43AA2F149</PackageCertificateThumbprint>
+    <PackageCertificateThumbprint>BAEF8BCBE1FB459A048C1DCC1A5A4D2174F39CB7</PackageCertificateThumbprint>
     <GenerateAppInstallerFile>False</GenerateAppInstallerFile>
     <AppInstallerUpdateFrequency>1</AppInstallerUpdateFrequency>
     <AppInstallerCheckForUpdateFrequency>OnApplicationRun</AppInstallerCheckForUpdateFrequency>
@@ -124,6 +124,9 @@
     <Compile Include="Pages\ForeignLanguageNotation.xaml.cs">
       <DependentUpon>ForeignLanguageNotation.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Pages\SpellingChecker.xaml.cs">
+      <DependentUpon>SpellingChecker.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Pages\HangulSpelling.xaml.cs">
       <DependentUpon>HangulSpelling.xaml</DependentUpon>
     </Compile>
@@ -142,6 +145,10 @@
     <AppxManifest Include="Package.appxmanifest">
       <SubType>Designer</SubType>
     </AppxManifest>
+    <Content Include="Assets\icon_n_y.png" />
+    <Content Include="Assets\icon_n_r.png" />
+    <Content Include="Assets\icon_n_m.png" />
+    <Content Include="Assets\icon_n_h.png" />
     <Content Include="Assets\NanumBarunGothic-YetHangul.ttf" />
     <None Include="표준국어대사전_StoreKey.pfx" />
     <None Include="표준국어대사전_TemporaryKey.pfx" />
@@ -194,6 +201,7 @@
     <Content Include="Assets\Wide310x150Logo.scale-400.png" />
     <None Include="Package.StoreAssociation.xml" />
     <None Include="Package.xml" />
+    <Content Include="Assets\icon_n_p.png" />
     <Content Include="Properties\Default.rd.xml" />
   </ItemGroup>
   <ItemGroup>
@@ -228,6 +236,10 @@
     <Page Include="Pages\ForeignLanguageNotation.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\SpellingChecker.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Pages\HangulSpelling.xaml">
       <SubType>Designer</SubType>
