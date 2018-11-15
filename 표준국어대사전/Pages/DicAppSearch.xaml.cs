@@ -91,7 +91,7 @@ namespace 표준국어대사전.Pages
             WordDefinitionItemTextBlock.Text = word.WordDefinition;
             WordJavascriptItem.Text = word.Javascript;
             BtnWebOpen.Visibility = Visibility.Visible;
-            BtnMemo.Visibility = Visibility.Visible;
+            BtnMemo.Visibility = Visibility.Collapsed; //visible
         }
 
         private async void SearchBox_QuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
@@ -394,28 +394,7 @@ namespace 표준국어대사전.Pages
 
         private async void BtnMemo_Click(object sender, RoutedEventArgs e)
         {
-            var app = await GetAppByPackageFamilyNameAsync("Microsoft.MicrosoftStickyNotes_8wekyb3d8bbwe");
-
-            if (app != null)
-            {
-                await app.LaunchAsync();
-            }
-            else
-            {
-                await Windows.System.Launcher.LaunchUriAsync(new Uri("ms-windows-store://pdp/?ProductId=9nblggh4qghw"));
-            }
-
-            async Task<AppListEntry> GetAppByPackageFamilyNameAsync(string packageFamilyName)
-            {
-                var pkgManager = new PackageManager();
-                var pkg = pkgManager.FindPackagesForUser("", packageFamilyName).FirstOrDefault();
-
-                if (pkg == null) return null;
-
-                var apps = await pkg.GetAppListEntriesAsync();
-                var firstApp = apps.FirstOrDefault();
-                return firstApp;
-            }
+            
         }
 
         private void WebViewOpen(Uri uri)

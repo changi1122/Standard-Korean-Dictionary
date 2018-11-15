@@ -68,7 +68,7 @@
             <AppBarButton x:Name="BtnRefresh" Icon="Refresh" Label="새로 고침" Click="BtnRefresh_Click"/>
             <AppBarButton x:Name="BtnHome" Icon="Home" Label="홈" Click="BtnHome_Click"/>
             <AppBarSeparator/>
-            <AppBarButton x:Name="BtnMemo" Label="메모" Click="BtnMemo_Click">
+            <AppBarButton x:Name="BtnMemo" Label="메모" Click="BtnMemo_Click" Visibility="Collapsed">
                 <AppBarButton.Icon>
                     <FontIcon Glyph="&#xE70B;"/>
                 </AppBarButton.Icon>
