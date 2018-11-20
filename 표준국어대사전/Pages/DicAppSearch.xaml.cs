@@ -471,5 +471,10 @@ namespace 표준국어대사전.Pages
         {
             WebViewOpen(new Uri("http://stdweb2.korean.go.kr/section/origin_list.jsp"));
         }
+
+        private void BtnInform_Click(object sender, RoutedEventArgs e)
+        {
+            WebViewOpen(new Uri("http://stdweb2.korean.go.kr/guide/entry.jsp"));
+        }
     }
 }

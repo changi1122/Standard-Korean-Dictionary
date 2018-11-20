@@ -335,6 +335,11 @@
     <Grid x:Name="BasicGrid" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
         <CommandBar>
+            <AppBarButton x:Name="BtnInform" Label="일러두기" Click="BtnInform_Click">
+                <AppBarButton.Icon>
+                    <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE946;" />
+                </AppBarButton.Icon>
+            </AppBarButton>
             <AppBarButton x:Name="BtnFilter" Icon="Filter" Label="따로 보기">
                 <AppBarButton.Flyout>
                     <MenuFlyout x:Name="SeparateSearchFlyout" Placement="Top">
