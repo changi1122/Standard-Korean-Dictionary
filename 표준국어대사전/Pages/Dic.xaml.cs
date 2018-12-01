@@ -19,6 +19,7 @@ using Windows.Storage;
 using System.Threading.Tasks;
 using Windows.ApplicationModel.Core;
 using Windows.Management.Deployment;
+using System.Net.NetworkInformation;
 
 // 빈 페이지 항목 템플릿에 대한 설명은 https://go.microsoft.com/fwlink/?LinkId=234238에 나와 있습니다.
 
@@ -29,6 +30,7 @@ namespace 표준국어대사전.Pages
     /// </summary>
     public sealed partial class Dic : Page
     {
+        bool FirstLoad = false;
         bool IsOpenOriginWeb = false;
         bool IsSubSearchOpen = false;
 
@@ -59,9 +61,27 @@ namespace 표준국어대사전.Pages
             else
                 BtnReadingMode.Visibility = Visibility.Visible;
 
-            WebViewDic.Navigate(new Uri("http://stdweb2.korean.go.kr/main.jsp"));
+            if (NetworkCheck() == true)
+            {
+                WebViewDic.Navigate(new Uri("http://stdweb2.korean.go.kr/main.jsp"));
+                FirstLoad = true;
+            }
         }
 
+        private bool NetworkCheck()
+        {
+            if (NetworkInterface.GetIsNetworkAvailable() == true)
+            {
+                return true;
+            }
+            else
+            {
+                NetNoticeGrid.Visibility = Visibility.Visible;
+                MainPageGrid.Visibility = Visibility.Collapsed;
+                WebViewDic.Visibility = Visibility.Collapsed;
+                return false;
+            }
+        }
 
         //||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
         // AppBarButton
@@ -69,16 +89,36 @@ namespace 표준국어대사전.Pages
 
         private void BtnRefresh_Click(object sender, RoutedEventArgs e)
         {
-            WebViewDic.Refresh();
-            WebViewDic.Visibility = Visibility.Visible;
-            NetNoticeGrid.Visibility = Visibility.Collapsed;
+            if(NetworkCheck() == true)
+            {
+                if (FirstLoad == false)
+                {
+                    WebViewDic.Navigate(new Uri("http://stdweb2.korean.go.kr/main.jsp"));
+                    FirstLoad = true;
+                    WebViewDic.Visibility = Visibility.Visible;
+                    NetNoticeGrid.Visibility = Visibility.Collapsed;
+                    return;
+                }
+
+                WebViewDic.Refresh();
+                WebViewDic.Visibility = Visibility.Visible;
+                NetNoticeGrid.Visibility = Visibility.Collapsed;
+            }
         }
 
         private void BtnHome_Click(object sender, RoutedEventArgs e)
         {
-            WebViewDic.Navigate(new Uri("http://stdweb2.korean.go.kr/main.jsp"));
-            WebViewDic.Visibility = Visibility.Visible;
-            NetNoticeGrid.Visibility = Visibility.Collapsed;
+            if (NetworkCheck() == true)
+            {
+                if (FirstLoad == false)
+                {
+                    FirstLoad = true;
+                }
+
+                WebViewDic.Navigate(new Uri("http://stdweb2.korean.go.kr/main.jsp"));
+                WebViewDic.Visibility = Visibility.Visible;
+                NetNoticeGrid.Visibility = Visibility.Collapsed;
+            }
         }
 
         private async void BtnOtherApp_Click(object sender, RoutedEventArgs e)
@@ -101,9 +141,17 @@ namespace 표준국어대사전.Pages
                 WebViewDic.GoBack();
         }
 
-        private async void BtnMemo_Click(object sender, RoutedEventArgs e)
+        private void BtnMemo_Click(object sender, RoutedEventArgs e)
         {
+            if (MemoGrid.Visibility == Visibility.Collapsed)
+                MemoGrid.Visibility = Visibility.Visible;
+            else
+                MemoGrid.Visibility = Visibility.Collapsed;
+        }
 
+        private void BtnMemoClose_Click(object sender, RoutedEventArgs e)
+        {
+            BtnMemo_Click(sender, e);
         }
 
         //||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
@@ -253,6 +301,9 @@ namespace 표준국어대사전.Pages
 
         private async void BtnSearch_Click(object sender, RoutedEventArgs e)
         {
+            if(NetworkCheck() == false)
+                return;
+
             if (TextboxSearch.Text == "")
             {
                 // Create a MessageDialog
@@ -405,11 +456,11 @@ namespace 표준국어대사전.Pages
         private void Grid_SizeChanged(object sender, SizeChangedEventArgs e)
         {
             //반응형
-            if (BasicGrid.ActualWidth > 700)
+            if (BasicGrid.ActualWidth > 686)
             {
                 Logo.FontSize = 48;
             }
-            else if (BasicGrid.ActualWidth <= 700 && 592 <= BasicGrid.ActualWidth)
+            else if (BasicGrid.ActualWidth <= 686 && 592 <= BasicGrid.ActualWidth)
             {
                 Logo.FontSize = 42;
                 TextboxSearch.Width = 415;

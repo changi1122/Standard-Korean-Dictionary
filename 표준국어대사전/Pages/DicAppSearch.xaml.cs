@@ -19,6 +19,7 @@ using System.Net.NetworkInformation;
 using Windows.Management.Deployment;
 using System.Threading.Tasks;
 using Windows.ApplicationModel.Core;
+using Windows.Networking.Connectivity;
 
 // 빈 페이지 항목 템플릿에 대한 설명은 https://go.microsoft.com/fwlink/?LinkId=234238에 나와 있습니다.
 
@@ -29,6 +30,8 @@ namespace 표준국어대사전.Pages
     /// </summary>
     public sealed partial class DicAppSearch : Page
     {
+        const int MASTERGRID_WIDTH = 320;
+
         struct WordData
         {
             public string WordTitle;
@@ -46,24 +49,50 @@ namespace 표준국어대사전.Pages
         //Words = WordManager.GetWords();
 
         bool IsWebViewOpen = false;
+        bool IsSubSearchProgressed = false;
 
         public DicAppSearch()
         {
             this.InitializeComponent();
             Words = new ObservableCollection<Word>();
 
-            WebViewMain.Navigate(new Uri("http://stdweb2.korean.go.kr/search/List_dic.jsp"));
+            NetworkCheck();
 
-            while (true)
+            return;
+        }
+
+        private bool NetworkCheck()
+        {
+            if (NetworkInterface.GetIsNetworkAvailable() == true)
             {
-                if (NetworkInterface.GetIsNetworkAvailable() == false)
-                {
+                if(WebViewMain.Source != new Uri("http://stdweb2.korean.go.kr/search/List_dic.jsp"))
                     WebViewMain.Navigate(new Uri("http://stdweb2.korean.go.kr/search/List_dic.jsp"));
-                }
-                else
-                {
-                    return;
-                }
+                return true;
+            }
+            else
+            {
+                ListviewWordDetail.Visibility = Visibility.Collapsed;
+                ProgressBar.ShowError = true;
+                SearchBox.IsEnabled = false;
+
+                Words.Clear();
+                TextBlockErrorMessage.Text = "인터넷 연결 없음.";
+                TextBlockErrorMessage.Visibility = Visibility.Visible;
+                BtnNetStatusRefresh.Visibility = Visibility.Visible;
+                return false;
+            }
+        }
+
+        private void BtnNetStatusRefresh_Click(object sender, RoutedEventArgs e)
+        {
+            if(NetworkCheck() == true)
+            {
+                ProgressBar.ShowError = false;
+                SearchBox.IsEnabled = true;
+
+                Words.Clear();
+                TextBlockErrorMessage.Visibility = Visibility.Collapsed;
+                BtnNetStatusRefresh.Visibility = Visibility.Collapsed;
             }
         }
 
@@ -73,8 +102,6 @@ namespace 표준국어대사전.Pages
 
             if(word.Javascript.StartsWith("fncGoPage('/search/List_dic.jsp'") == true)
             {
-                ListviewWordDetail.Visibility = Visibility.Collapsed;
-
                 var functionString_Text = string.Format(word.Javascript);
                 await WebViewMain.InvokeScriptAsync("eval", new string[] { functionString_Text });
 
@@ -91,11 +118,21 @@ namespace 표준국어대사전.Pages
             WordDefinitionItemTextBlock.Text = word.WordDefinition;
             WordJavascriptItem.Text = word.Javascript;
             BtnWebOpen.Visibility = Visibility.Visible;
-            BtnMemo.Visibility = Visibility.Collapsed; //visible
+            BtnMemo.Visibility = Visibility.Visible;
+
+            if (BasicGrid.ActualWidth < 686)
+            {
+                Separator.Visibility = Visibility.Visible;
+                BtnMasterDetail.Visibility = Visibility.Visible;
+                DetailGrid.Visibility = Visibility.Visible;
+            }
         }
 
         private async void SearchBox_QuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
         {
+            if (NetworkCheck() == false)
+                return;
+
             if (SearchBox.Text == "")
             {
                 // Create a MessageDialog
@@ -141,29 +178,18 @@ namespace 표준국어대사전.Pages
             ProgressBar.ShowError = false;
             TextBlockErrorMessage.Visibility = Visibility.Collapsed;
             ProgressBar.Visibility = Visibility.Visible;
-        }
 
-        private async void WebViewMain_NavigationCompletedAsync(WebView sender, WebViewNavigationCompletedEventArgs args)
-        {
             BtnWebOpen.Visibility = Visibility.Collapsed;
             BtnMemo.Visibility = Visibility.Collapsed;
             WordTitleItemTextBlock.Text = "";
             WordPronounceItemTextBlock.Text = "";
             WordDefinitionItemTextBlock.Text = "";
             WordJavascriptItem.Text = "";
+        }
+
+        private async void WebViewMain_NavigationCompletedAsync(WebView sender, WebViewNavigationCompletedEventArgs args)
+        {
             w = new WordData[10];
-
-            if (NetworkInterface.GetIsNetworkAvailable() == false)
-            {
-                ListviewWordDetail.Visibility = Visibility.Collapsed;
-                ProgressBar.ShowError = true;
-                SearchBox.IsEnabled = true;
-
-                Words.Clear();
-                TextBlockErrorMessage.Text = "인터넷 연결 없음.";
-                TextBlockErrorMessage.Visibility = Visibility.Visible;
-                return;
-            }
 
             int a, b;
             string full = await WebViewMain.InvokeScriptAsync("eval", new string[] { "document.documentElement.outerHTML;" });
@@ -263,7 +289,7 @@ namespace 표준국어대사전.Pages
 
             if (NowPageNum < PageMax)
             {
-                Words.Add(new Word { WordTitle = "                  ∨", Javascript = "fncGoPage('/search/List_dic.jsp','','" + (NowPageNum + 1) + "','')", WordPronounce = "", WordDefinition = "" });
+                Words.Add(new Word { WordTitle = "[더 보기]", Javascript = "fncGoPage('/search/List_dic.jsp','','" + (NowPageNum + 1) + "','')", WordPronounce = "", WordDefinition = "" });
             }
 
             ProgressBar.Visibility = Visibility.Collapsed;
@@ -371,10 +397,11 @@ namespace 표준국어대사전.Pages
 
         private async void SubSearch_NavigationCompletedAsync(WebView sender, WebViewNavigationCompletedEventArgs args)
         {
-            if(sender.Source == new Uri("http://stdweb2.korean.go.kr/search/List_dic.jsp"))
+            if(sender.Source == new Uri("http://stdweb2.korean.go.kr/search/List_dic.jsp") && IsSubSearchProgressed == false)
             {
                 var functionString_Text = string.Format(WordJavascriptItem.Text);
                 await sender.InvokeScriptAsync("eval", new string[] { functionString_Text });
+                IsSubSearchProgressed = true;
             }
             Grid g = (Grid)BasicGrid.FindName("SubGrid");
             g.Background = (SolidColorBrush)Resources["BarColor"];
@@ -387,18 +414,17 @@ namespace 표준국어대사전.Pages
             IsWebViewOpen = false;
         }
 
-        private void MainSearchBox_QuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
+        private void BtnMemo_Click(object sender, RoutedEventArgs e)
         {
-
-        }
-
-        private async void BtnMemo_Click(object sender, RoutedEventArgs e)
-        {
-            
+            if (ItemMemo.Visibility == Visibility.Collapsed)
+                ItemMemo.Visibility = Visibility.Visible;
+            else
+                ItemMemo.Visibility = Visibility.Collapsed;
         }
 
         private void WebViewOpen(Uri uri)
         {
+            IsSubSearchProgressed = false;
             if (IsWebViewOpen == true)
             {
                 Grid g = (Grid)BasicGrid.FindName("SubGrid");
@@ -475,6 +501,40 @@ namespace 표준국어대사전.Pages
         private void BtnInform_Click(object sender, RoutedEventArgs e)
         {
             WebViewOpen(new Uri("http://stdweb2.korean.go.kr/guide/entry.jsp"));
+        }
+
+        private void BtnMemoClose_Click(object sender, RoutedEventArgs e)
+        {
+            ItemMemo.Visibility = Visibility.Collapsed;
+        }
+
+        private void BasicGrid_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            //반응형
+            if (BasicGrid.ActualWidth >= 686)
+            {
+                MasterGrid.Margin = new Thickness(0, 48, 0, 0);
+                MasterGrid.Width = MASTERGRID_WIDTH;
+                MasterGrid.HorizontalAlignment = HorizontalAlignment.Left;
+                DetailGrid.Margin = new Thickness(321, 48, 0, 0);
+                DetailGrid.Visibility = Visibility.Visible;
+            }
+
+            else if (BasicGrid.ActualWidth < 686)
+            {
+                MasterGrid.Margin = new Thickness(0, 48, 0, 0);
+                MasterGrid.ClearValue(WidthProperty);
+                MasterGrid.HorizontalAlignment = HorizontalAlignment.Stretch;
+                DetailGrid.Margin = new Thickness(0, 48, 0, 0);
+                DetailGrid.Visibility = Visibility.Collapsed;
+            }
+        }
+
+        private void BtnMasterDetail_Click(object sender, RoutedEventArgs e)
+        {
+            DetailGrid.Visibility = Visibility.Collapsed;
+            Separator.Visibility = Visibility.Collapsed;
+            BtnMasterDetail.Visibility = Visibility.Collapsed;
         }
     }
 }
