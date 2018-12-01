@@ -61,24 +61,16 @@
                     </AppBarButton.Icon>
                 </AppBarButton>
             </CommandBar.SecondaryCommands>
-            <CommandBar.Content>
-                <Grid/>
-            </CommandBar.Content>
-            <AppBarButton x:Name="BtnBack" Icon="Back" Label="뒤로" Click="BtnBack_Click"/>
-            <AppBarButton x:Name="BtnRefresh" Icon="Refresh" Label="새로 고침" Click="BtnRefresh_Click"/>
-            <AppBarButton x:Name="BtnHome" Icon="Home" Label="홈" Click="BtnHome_Click"/>
+            <AppBarButton x:Name="BtnBack" Icon="Back" Label="뒤로" ToolTipService.ToolTip="뒤로" Click="BtnBack_Click"/>
+            <AppBarButton x:Name="BtnRefresh" Icon="Refresh" Label="새로 고침" ToolTipService.ToolTip="새로 고침" Click="BtnRefresh_Click"/>
+            <AppBarButton x:Name="BtnHome" Icon="Home" Label="홈" ToolTipService.ToolTip="홈" Click="BtnHome_Click"/>
             <AppBarSeparator/>
-            <AppBarButton x:Name="BtnMemo" Label="메모" Click="BtnMemo_Click" Visibility="Collapsed">
+            <AppBarButton x:Name="BtnMemo" Label="메모" ToolTipService.ToolTip="메모" Click="BtnMemo_Click" Visibility="Visible">
                 <AppBarButton.Icon>
                     <FontIcon Glyph="&#xE70B;"/>
                 </AppBarButton.Icon>
             </AppBarButton>
-            <AppBarButton x:Name="BtnMultiSearch" Label="다중 검색" Icon="NewWindow" Click="BtnMultiSearch_Click"/>
-            <AppBarButton x:Name="BtnClip" Label="저장" IsEnabled="False" Visibility="Collapsed">
-                <AppBarButton.Icon>
-                    <FontIcon Glyph="&#xE105;"/>
-                </AppBarButton.Icon>
-            </AppBarButton>
+            <AppBarButton x:Name="BtnMultiSearch" Label="다중 검색" ToolTipService.ToolTip="다중 검색" Icon="NewWindow" Click="BtnMultiSearch_Click"/>
         </CommandBar>
 
         <Grid Height="48" VerticalAlignment="Top">
@@ -89,6 +81,10 @@
             <Button x:Name="ReadingModeRefresh" Content="&#xE777;" HorizontalAlignment="Left" VerticalAlignment="Top" FontFamily="Segoe MDL2 Assets" Height="40" Width="40" FontSize="20" Click="ReadingModeRefresh_Click" Background="{x:Null}" Margin="40,0,0,0"/>
             <Button x:Name="ReadingModeClose" Content="&#xE10A;" HorizontalAlignment="Right" VerticalAlignment="Top" FontFamily="Segoe MDL2 Assets" Height="40" Width="40" FontSize="20" Click="ReadingModeClose_Click" Background="{x:Null}"/>
             <TextBox x:Name="ReadingModeText" Margin="1,40,1,1" TextWrapping="Wrap" Text="Load..." IsReadOnly="True" BorderBrush="#FFE6E6E6" Background="#FFE6E6E6" SelectionHighlightColor="{x:Null}"/>
+        </Grid>
+        <Grid x:Name="MemoGrid" Margin="0,48,0,0" VerticalAlignment="Top" HorizontalAlignment="Right" Width="400" Background="#FFBEBEBE" Visibility="Collapsed">
+            <Button x:Name="BtnMemoClose" Content="&#xE10A;" HorizontalAlignment="Right" VerticalAlignment="Top" Height="40" Width="40" Margin="0,0,0,0" Background="{x:Null}" FontFamily="Segoe MDL2 Assets" FontSize="20" Click="BtnMemoClose_Click"/>
+            <Controls:ConMemo MinHeight="200" MaxHeight="360" Margin="0,40,0,0"/>
         </Grid>
     </Grid>
 </Page>
