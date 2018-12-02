@@ -338,7 +338,7 @@
 
         <CommandBar>
             <CommandBar.SecondaryCommands>
-                <AppBarButton x:Name="BtnMultiSearch" Label="다중 검색">
+                <AppBarButton x:Name="BtnMultiSearch" Label="다중 검색" Click="BtnMultiSearch_Click">
                     <AppBarButton.Icon>
                         <FontIcon Glyph="&#xE8A0;"/>
                     </AppBarButton.Icon>

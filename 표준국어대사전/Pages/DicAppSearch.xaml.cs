@@ -31,6 +31,7 @@ namespace 표준국어대사전.Pages
     public sealed partial class DicAppSearch : Page
     {
         const int MASTERGRID_WIDTH = 320;
+        const int MULTISEARCHGRID_WIDTH = 400;
 
         struct WordData
         {
@@ -65,7 +66,7 @@ namespace 표준국어대사전.Pages
         {
             if (NetworkInterface.GetIsNetworkAvailable() == true)
             {
-                if(WebViewMain.Source != new Uri("http://stdweb2.korean.go.kr/search/List_dic.jsp"))
+                if (WebViewMain.Source != new Uri("http://stdweb2.korean.go.kr/search/List_dic.jsp"))
                     WebViewMain.Navigate(new Uri("http://stdweb2.korean.go.kr/search/List_dic.jsp"));
                 return true;
             }
@@ -85,7 +86,7 @@ namespace 표준국어대사전.Pages
 
         private void BtnNetStatusRefresh_Click(object sender, RoutedEventArgs e)
         {
-            if(NetworkCheck() == true)
+            if (NetworkCheck() == true)
             {
                 ProgressBar.ShowError = false;
                 SearchBox.IsEnabled = true;
@@ -100,7 +101,7 @@ namespace 표준국어대사전.Pages
         {
             var word = (Word)e.ClickedItem;
 
-            if(word.Javascript.StartsWith("fncGoPage('/search/List_dic.jsp'") == true)
+            if (word.Javascript.StartsWith("fncGoPage('/search/List_dic.jsp'") == true)
             {
                 var functionString_Text = string.Format(word.Javascript);
                 await WebViewMain.InvokeScriptAsync("eval", new string[] { functionString_Text });
@@ -245,7 +246,7 @@ namespace 표준국어대사전.Pages
                 WordList[a] = Work.Substring(Work.IndexOf("<p class=\"exp\">") + 15, Work.IndexOf("</p>") - Work.IndexOf("<p class=\"exp\">") - 15);
             }
             int Wordamount = a;
-            
+
             for (a = 0; a < Wordamount; a++)
             {
                 string[] wp = new string[2];
@@ -397,7 +398,7 @@ namespace 표준국어대사전.Pages
 
         private async void SubSearch_NavigationCompletedAsync(WebView sender, WebViewNavigationCompletedEventArgs args)
         {
-            if(sender.Source == new Uri("http://stdweb2.korean.go.kr/search/List_dic.jsp") && IsSubSearchProgressed == false)
+            if (sender.Source == new Uri("http://stdweb2.korean.go.kr/search/List_dic.jsp") && IsSubSearchProgressed == false)
             {
                 var functionString_Text = string.Format(WordJavascriptItem.Text);
                 await sender.InvokeScriptAsync("eval", new string[] { functionString_Text });
@@ -438,7 +439,7 @@ namespace 표준국어대사전.Pages
                     Name = "SubGrid",
                     Margin = new Thickness(0, 48, 0, 0),
                     VerticalAlignment = VerticalAlignment.Stretch,
-                    HorizontalAlignment = HorizontalAlignment.Stretch,
+                    HorizontalAlignment = HorizontalAlignment.Stretch
                 };
 
                 var CloseBtn = new Button
@@ -518,6 +519,12 @@ namespace 표준국어대사전.Pages
                 MasterGrid.HorizontalAlignment = HorizontalAlignment.Left;
                 DetailGrid.Margin = new Thickness(321, 48, 0, 0);
                 DetailGrid.Visibility = Visibility.Visible;
+                if (BasicGrid.FindName("MultiSearchGrid") != null)
+                {
+                    Grid g = (Grid)BasicGrid.FindName("MultiSearchGrid");
+                    g.HorizontalAlignment = HorizontalAlignment.Right;
+                    g.Width = MULTISEARCHGRID_WIDTH;
+                }
             }
 
             else if (BasicGrid.ActualWidth < 686)
@@ -527,7 +534,17 @@ namespace 표준국어대사전.Pages
                 MasterGrid.HorizontalAlignment = HorizontalAlignment.Stretch;
                 DetailGrid.Margin = new Thickness(0, 48, 0, 0);
                 DetailGrid.Visibility = Visibility.Collapsed;
+                if (BasicGrid.FindName("MultiSearchGrid") != null)
+                {
+                    Grid g = (Grid)BasicGrid.FindName("MultiSearchGrid");
+                    g.HorizontalAlignment = HorizontalAlignment.Stretch;
+                    g.ClearValue(WidthProperty);
+                }
             }
+
+            //뒤로가기 키 지우기
+            Separator.Visibility = Visibility.Collapsed;
+            BtnMasterDetail.Visibility = Visibility.Collapsed;
         }
 
         private void BtnMasterDetail_Click(object sender, RoutedEventArgs e)
@@ -535,6 +552,64 @@ namespace 표준국어대사전.Pages
             DetailGrid.Visibility = Visibility.Collapsed;
             Separator.Visibility = Visibility.Collapsed;
             BtnMasterDetail.Visibility = Visibility.Collapsed;
+        }
+
+        private void BtnMultiSearch_Click(object sender, RoutedEventArgs e)
+        {
+            if (BasicGrid.FindName("MultiSearchGrid") != null)
+            {
+                BtnMultiSearchClose_Click(sender, e);
+                return;
+            }
+
+            var MultiSearchGrid = new Grid
+            {
+                Name = "MultiSearchGrid",
+                Margin = new Thickness(0, 48, 0, 0),
+                VerticalAlignment = VerticalAlignment.Stretch,
+                HorizontalAlignment = HorizontalAlignment.Right,
+                Background = (SolidColorBrush)Resources["BarColor"],
+                Width = MULTISEARCHGRID_WIDTH
+            };
+
+            if (BasicGrid.ActualWidth < 686)
+            {
+                MultiSearchGrid.HorizontalAlignment = HorizontalAlignment.Stretch;
+                MultiSearchGrid.ClearValue(WidthProperty);
+            }
+
+            var CloseBtn = new Button
+            {
+                Name = "BtnMultiSearchClose",
+                VerticalAlignment = VerticalAlignment.Top,
+                HorizontalAlignment = HorizontalAlignment.Right,
+                Height = 40,
+                Width = 40,
+                FontSize = 20,
+                Content = "",
+                FontFamily = new FontFamily("Segoe MDL2 Assets"),
+                Background = null,
+                Foreground = (SolidColorBrush)Resources["Black"]
+            };
+            CloseBtn.Click += BtnMultiSearchClose_Click;
+            MultiSearchGrid.Children.Add(CloseBtn);
+
+            var MultiSearchFrame = new Frame
+            {
+                Name = "MultiSearchFrame",
+                Margin = new Thickness(1, 40, 1, 1),
+                VerticalAlignment = VerticalAlignment.Stretch,
+                HorizontalAlignment = HorizontalAlignment.Stretch,
+            };
+            MultiSearchFrame.Navigate(typeof(Pages.DicAppSearch));
+            MultiSearchGrid.Children.Add(MultiSearchFrame);
+
+            BasicGrid.Children.Add(MultiSearchGrid);
+        }
+
+        private void BtnMultiSearchClose_Click(object sender, RoutedEventArgs e)
+        {
+            BasicGrid.Children.Remove((UIElement)this.FindName("MultiSearchGrid"));
         }
     }
 }
