@@ -17,8 +17,8 @@
             <AppBarButton Icon="Home" Label="홈" Click="AppBarButton_Click"/>
         </CommandBar>
 
-        <Grid Background="White" Margin="1,48,1,1"/>
-        <WebView x:Name="SubWebView" HorizontalAlignment="Stretch" Margin="1,48,1,1" NewWindowRequested="SubWebView_NewWindowRequested" NavigationFailed="SubWebView_NavigationFailed" LoadCompleted="SubWebView_LoadCompleted"/>
+        <Grid Background="White" Margin="1,40,1,1"/>
+        <WebView x:Name="SubWebView" HorizontalAlignment="Stretch" Margin="1,40,1,1" NewWindowRequested="SubWebView_NewWindowRequested" NavigationFailed="SubWebView_NavigationFailed" LoadCompleted="SubWebView_LoadCompleted"/>
 
         <Grid x:Name="NetNoticeGrid" Margin="10,59,0,0" Height="240" VerticalAlignment="Center" HorizontalAlignment="Center" Width="463" Visibility="Collapsed">
             <TextBlock TextWrapping="Wrap" Text="연결되어 있지 않음" FontSize="24" HorizontalAlignment="Left" VerticalAlignment="Top" Height="33" Margin="90,0,0,0"/>
@@ -32,7 +32,7 @@
             <Button Content="다시 시도" HorizontalAlignment="Left" Margin="90,196,0,0" VerticalAlignment="Top" Height="34" Width="94" Click="BtnRefresh_Click"/>
         </Grid>
 
-        <Grid x:Name="MainPageGrid" Background="#FFE6E6E6" Margin="1,48,1,1" Visibility="Visible">
+        <Grid x:Name="MainPageGrid" Background="#FFE6E6E6" Margin="1,40,1,1" Visibility="Visible">
             <Grid x:Name="SearchBoxGrid" Height="240" HorizontalAlignment="Center" Width="650" VerticalAlignment="Center">
                 <TextBox x:Name="TextboxSearch" Margin="131,160,199,44" Text="" VerticalAlignment="Center" KeyDown="TextboxSearch_KeyDown" PlaceholderText="검색할 단어를 입력하세요" FontSize="18" FontFamily="Segoe UI" HorizontalAlignment="Center" Width="320"/>
                 <Button x:Name="BtnSearch" Content="검색" HorizontalAlignment="Center" Height="36" Margin="460,160,110,44" VerticalAlignment="Center" Width="80" Click="BtnSearch_Click" FontSize="18" MinWidth="80" MaxWidth="80"/>

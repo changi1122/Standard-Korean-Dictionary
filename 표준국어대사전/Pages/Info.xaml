@@ -14,10 +14,7 @@
             </CommandBar.Content>
         </CommandBar>
 
-        <Grid Height="48" VerticalAlignment="Top">
-            <TextBlock x:Name="PageTitle" Text="설정" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="20,0,0,0"/>
-        </Grid>
-        <Pivot Margin="10,52,10,0">
+        <Pivot Margin="10,44,10,0">
             <PivotItem Header="일반">
                 <Grid>
                     <TextBlock HorizontalAlignment="Left" Margin="10,10,0,0" TextWrapping="Wrap" Text="옵션" VerticalAlignment="Top" FontSize="24"/>

@@ -1,0 +1,97 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
+  <file datatype="xml" source-language="ko-KR" target-language="en" original="표준국어대사전/STRINGS/KO-KR/RESOURCES.RESW" tool-id="MultilingualAppToolkit" product-name="n/a" product-version="n/a" build-num="n/a">
+    <header>
+      <tool tool-id="MultilingualAppToolkit" tool-name="Multilingual App Toolkit" tool-version="4.0.6900.0" tool-company="Microsoft" />
+    </header>
+    <body>
+      <group id="표준국어대사전/STRINGS/KO-KR/RESOURCES.RESW" datatype="resx">
+        <trans-unit id="NaviItem1.Content" translate="yes" xml:space="preserve">
+          <source>단어 검색</source>
+          <target state="translated">Word search</target>
+        </trans-unit>
+        <trans-unit id="DA_BtnFilter.Label" translate="yes" xml:space="preserve">
+          <source>따로 보기</source>
+          <target state="translated">Filter
+</target>
+        </trans-unit>
+        <trans-unit id="DA_BtnInform.Label" translate="yes" xml:space="preserve">
+          <source>일러두기</source>
+          <target state="translated">Preface</target>
+        </trans-unit>
+        <trans-unit id="DA_BtnMasterDetail.Label" translate="yes" xml:space="preserve">
+          <source>검색</source>
+          <target state="translated">Search</target>
+        </trans-unit>
+        <trans-unit id="DA_BtnMultiSearch.Label" translate="yes" xml:space="preserve">
+          <source>다중 검색</source>
+          <target state="translated">Multi search</target>
+        </trans-unit>
+        <trans-unit id="DA_MenuFlyoutCulture.Text" translate="yes" xml:space="preserve">
+          <source>북한어</source>
+          <target state="translated">North Korean word</target>
+        </trans-unit>
+        <trans-unit id="DA_MenuFlyoutDialect.Text" translate="yes" xml:space="preserve">
+          <source>방언</source>
+          <target state="translated">Dialect</target>
+        </trans-unit>
+        <trans-unit id="DA_MenuFlyoutIdiom.Text" translate="yes" xml:space="preserve">
+          <source>관용구</source>
+          <target state="translated">Idiom</target>
+        </trans-unit>
+        <trans-unit id="DA_MenuFlyoutKoreaOrigin.Text" translate="yes" xml:space="preserve">
+          <source>고유어</source>
+          <target state="translated">Native word</target>
+        </trans-unit>
+        <trans-unit id="DA_MenuFlyoutProverb.Text" translate="yes" xml:space="preserve">
+          <source>속담</source>
+          <target state="translated">Proverb</target>
+        </trans-unit>
+        <trans-unit id="NaviItem2.Content" translate="yes" xml:space="preserve">
+          <source>한글 맞춤법</source>
+          <target state="translated">Hangul orthography</target>
+        </trans-unit>
+        <trans-unit id="NaviItem3.Content" translate="yes" xml:space="preserve">
+          <source>표준어 규정</source>
+          <target state="translated">Standard language regulations</target>
+        </trans-unit>
+        <trans-unit id="NaviItem4.Content" translate="yes" xml:space="preserve">
+          <source>외래어 표기법</source>
+          <target state="translated">Loanword notation</target>
+        </trans-unit>
+        <trans-unit id="NaviItem5.Content" translate="yes" xml:space="preserve">
+          <source>국어의 로마자 표기법</source>
+          <target state="translated">Romanization of Korean</target>
+        </trans-unit>
+        <trans-unit id="NaviItem6.Content" translate="yes" xml:space="preserve">
+          <source>수정 내용</source>
+          <target state="translated">Modifications</target>
+        </trans-unit>
+        <trans-unit id="NaviItem7.Content" translate="yes" xml:space="preserve">
+          <source>맞춤법/문법 검사기</source>
+          <target state="translated">Spelling/grammar inspector</target>
+        </trans-unit>
+        <trans-unit id="DA_PageTitle.Text" translate="yes" xml:space="preserve">
+          <source>단어 검색</source>
+          <target state="translated">Word search</target>
+        </trans-unit>
+        <trans-unit id="DA_BtnMemo.Label" translate="yes" xml:space="preserve">
+          <source>메모</source>
+          <target state="translated">Memo</target>
+        </trans-unit>
+        <trans-unit id="DA_BtnNetStatusRefresh.Content" translate="yes" xml:space="preserve">
+          <source>다시 시도</source>
+          <target state="translated">Refresh</target>
+        </trans-unit>
+        <trans-unit id="DA_BtnWebOpen.Label" translate="yes" xml:space="preserve">
+          <source>자세히 보기</source>
+          <target state="translated">See more</target>
+        </trans-unit>
+        <trans-unit id="DA_SearchBox.PlaceholderText" translate="yes" xml:space="preserve">
+          <source>검색할 단어를 입력하세요</source>
+          <target state="translated">Enter words to search</target>
+        </trans-unit>
+      </group>
+    </body>
+  </file>
+</xliff>

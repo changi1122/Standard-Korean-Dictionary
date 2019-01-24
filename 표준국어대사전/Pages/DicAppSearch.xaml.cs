@@ -437,7 +437,7 @@ namespace 표준국어대사전.Pages
                 var SubGrid = new Grid
                 {
                     Name = "SubGrid",
-                    Margin = new Thickness(0, 48, 0, 0),
+                    Margin = new Thickness(0, 40, 0, 0),
                     VerticalAlignment = VerticalAlignment.Stretch,
                     HorizontalAlignment = HorizontalAlignment.Stretch
                 };
@@ -565,7 +565,7 @@ namespace 표준국어대사전.Pages
             var MultiSearchGrid = new Grid
             {
                 Name = "MultiSearchGrid",
-                Margin = new Thickness(0, 48, 0, 0),
+                Margin = new Thickness(0, 40, 0, 0),
                 VerticalAlignment = VerticalAlignment.Stretch,
                 HorizontalAlignment = HorizontalAlignment.Right,
                 Background = (SolidColorBrush)Resources["BarColor"],

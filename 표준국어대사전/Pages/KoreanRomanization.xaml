@@ -31,9 +31,6 @@
 
         </CommandBar>
 
-        <Grid Height="48" VerticalAlignment="Top">
-            <TextBlock x:Name="PageTitle" Text="국어의 로마자 표기법" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="20,0,0,0"/>
-        </Grid>
-        <WebView x:Name="WebViewMain" Margin="0,48,0,0" ScrollViewer.HorizontalScrollBarVisibility="Auto" NewWindowRequested="WebViewMain_NewWindowRequested" NavigationFailed="WebViewMain_NavigationFailed" FlyoutBase.AttachedFlyout="{StaticResource Basic}" RightTapped="WebViewMain_RightTapped"/>
+        <WebView x:Name="WebViewMain" Margin="0,40,0,0" ScrollViewer.HorizontalScrollBarVisibility="Auto" NewWindowRequested="WebViewMain_NewWindowRequested" NavigationFailed="WebViewMain_NavigationFailed" FlyoutBase.AttachedFlyout="{StaticResource Basic}" RightTapped="WebViewMain_RightTapped"/>
     </Grid>
 </Page>

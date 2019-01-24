@@ -108,42 +108,42 @@
     </Page.Resources>
 
     <Grid Background="#FFE6E6E6">
-        <NavigationView Loaded="NavigationView_Loaded" Margin="0,0,0,0" Grid.Row="1" SelectionChanged="NavigationView_SelectionChanged" x:Name="Main_Navigation" IsSettingsVisible="{Binding ElementName=settingsCheck,Path=IsChecked}" IsTabStop="False" IsPaneOpen="True" AlwaysShowHeader="False" CompositeMode="SourceOver" ItemInvoked="Main_Navigation_ItemInvoked">
+        <NavigationView Loaded="NavigationView_Loaded" Margin="0,0,0,0" Grid.Row="1" SelectionChanged="NavigationView_SelectionChanged" x:Name="Main_Navigation" IsSettingsVisible="{Binding ElementName=settingsCheck,Path=IsChecked}" IsTabStop="False" IsPaneOpen="True" AlwaysShowHeader="False" CompositeMode="SourceOver" ItemInvoked="Main_Navigation_ItemInvoked" IsBackButtonVisible="Collapsed">
             <NavigationView.MenuItems>
-                <NavigationViewItem  Content="단어 검색" Tag="Pages.Dic">
+                <NavigationViewItem x:Uid="NaviItem1" Content="단어 검색" Tag="Pages.Dic">
                     <NavigationViewItem.Icon>
                         <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE094;"/>
                     </NavigationViewItem.Icon>
                 </NavigationViewItem>
                 <NavigationViewItemSeparator/>
-                <NavigationViewItem Content="한글 맞춤법" Tag="Pages.HangulSpelling" >
+                <NavigationViewItem x:Uid="NaviItem2" Content="한글 맞춤법" Tag="Pages.HangulSpelling" >
                     <NavigationViewItem.Icon>
                         <BitmapIcon UriSource="/Assets/icon_n_h.png"/>
                     </NavigationViewItem.Icon>
                 </NavigationViewItem>
-                <NavigationViewItem Content="표준어 규정" Tag="Pages.StandardLanguageSpecification" >
+                <NavigationViewItem x:Uid="NaviItem3" Content="표준어 규정" Tag="Pages.StandardLanguageSpecification" >
                     <NavigationViewItem.Icon>
                         <BitmapIcon UriSource="/Assets/icon_n_p.png"/>
                     </NavigationViewItem.Icon>
                 </NavigationViewItem>
-                <NavigationViewItem Content="외래어 표기법" Tag="Pages.ForeignLanguageNotation" >
+                <NavigationViewItem x:Uid="NaviItem4" Content="외래어 표기법" Tag="Pages.ForeignLanguageNotation" >
                     <NavigationViewItem.Icon>
                         <BitmapIcon UriSource="/Assets/icon_n_y.png"/>
                     </NavigationViewItem.Icon>
                 </NavigationViewItem>
-                <NavigationViewItem Content="국어의 로마자 표기법" Tag="Pages.KoreanRomanization" >
+                <NavigationViewItem x:Uid="NaviItem5" Content="국어의 로마자 표기법" Tag="Pages.KoreanRomanization" >
                     <NavigationViewItem.Icon>
                         <BitmapIcon UriSource="/Assets/icon_n_r.png"/>
                     </NavigationViewItem.Icon>
                 </NavigationViewItem>
                 <NavigationViewItemSeparator/>
-                <NavigationViewItem Content="수정 내용" Tag="Pages.Adjustment" >
+                <NavigationViewItem x:Uid="NaviItem6" Content="수정 내용" Tag="Pages.Adjustment" >
                     <NavigationViewItem.Icon>
                         <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE82E;"/>
                     </NavigationViewItem.Icon>
                 </NavigationViewItem>
                 <NavigationViewItemSeparator/>
-                <NavigationViewItem Content="맞춤법/문법 검사기" Tag="Pages.SpellingChecker" >
+                <NavigationViewItem x:Uid="NaviItem7" Content="맞춤법/문법 검사기" Tag="Pages.SpellingChecker" >
                     <NavigationViewItem.Icon>
                         <BitmapIcon UriSource="/Assets/icon_n_m.png"/>
                     </NavigationViewItem.Icon>

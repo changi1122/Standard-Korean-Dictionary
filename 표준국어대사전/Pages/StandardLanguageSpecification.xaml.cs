@@ -27,7 +27,7 @@ namespace 표준국어대사전.Pages
         {
             this.InitializeComponent();
 
-            WebViewMain.Navigate(new Uri("http://korean.go.kr/front/page/pageView.do?page_id=P000085&mn_id=94"));
+            //WebViewMain.Navigate(new Uri("http://korean.go.kr/front/page/pageView.do?page_id=P000085&mn_id=94"));
         }
 
         private void WebViewMain_NewWindowRequested(WebView sender, WebViewNewWindowRequestedEventArgs args)
@@ -83,6 +83,31 @@ namespace 표준국어대사전.Pages
             WebViewMain.Refresh();
             WebViewMain.Visibility = Visibility.Visible;
             NetNoticeGrid.Visibility = Visibility.Collapsed;
+        }
+
+        public async void OpenWithEdge(Uri uri)
+        {
+            var options = new Windows.System.LauncherOptions();
+            options.TargetApplicationPackageFamilyName = "Microsoft.MicrosoftEdge_8wekyb3d8bbwe";
+
+            await Windows.System.Launcher.LaunchUriAsync(uri, options);
+        }
+
+        public async void OpenWithDefaultBrowser(Uri uri)
+        {
+            await Windows.System.Launcher.LaunchUriAsync(uri);
+        }
+
+        private void Button_Click_1(object sender, RoutedEventArgs e)
+        {
+            var uri = new Uri("http://www.korean.go.kr/common/download.do?file_path=reportData&c_file_name=1da1b06c-2dec-4949-88cb-5e8dd28738a5_0.pdf&o_file_name=한글맞춤법%20표준어규정%20해설.pdf&downGubun=reportDataViewForm&report_seq=944");
+            OpenWithEdge(uri);
+        }
+
+        private void Button_Click_2(object sender, RoutedEventArgs e)
+        {
+            var uri = new Uri("http://www.korean.go.kr/common/download.do?file_path=reportData&c_file_name=1da1b06c-2dec-4949-88cb-5e8dd28738a5_0.pdf&o_file_name=한글맞춤법%20표준어규정%20해설.pdf&downGubun=reportDataViewForm&report_seq=944");
+            OpenWithDefaultBrowser(uri);
         }
     }
 }

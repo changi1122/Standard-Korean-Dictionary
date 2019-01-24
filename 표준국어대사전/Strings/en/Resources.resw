@@ -1,0 +1,79 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="NaviItem1.Content" xml:space="preserve">
+    <value>Word search</value>
+  </data>
+  <data name="DA_BtnFilter.Label" xml:space="preserve">
+    <value>Filter
+</value>
+  </data>
+  <data name="DA_BtnInform.Label" xml:space="preserve">
+    <value>Preface</value>
+  </data>
+  <data name="DA_BtnMasterDetail.Label" xml:space="preserve">
+    <value>Search</value>
+  </data>
+  <data name="DA_BtnMultiSearch.Label" xml:space="preserve">
+    <value>Multi search</value>
+  </data>
+  <data name="DA_MenuFlyoutCulture.Text" xml:space="preserve">
+    <value>North Korean word</value>
+  </data>
+  <data name="DA_MenuFlyoutDialect.Text" xml:space="preserve">
+    <value>Dialect</value>
+  </data>
+  <data name="DA_MenuFlyoutIdiom.Text" xml:space="preserve">
+    <value>Idiom</value>
+  </data>
+  <data name="DA_MenuFlyoutKoreaOrigin.Text" xml:space="preserve">
+    <value>Native word</value>
+  </data>
+  <data name="DA_MenuFlyoutProverb.Text" xml:space="preserve">
+    <value>Proverb</value>
+  </data>
+  <data name="NaviItem2.Content" xml:space="preserve">
+    <value>Hangul orthography</value>
+  </data>
+  <data name="NaviItem3.Content" xml:space="preserve">
+    <value>Standard language regulations</value>
+  </data>
+  <data name="NaviItem4.Content" xml:space="preserve">
+    <value>Loanword notation</value>
+  </data>
+  <data name="NaviItem5.Content" xml:space="preserve">
+    <value>Romanization of Korean</value>
+  </data>
+  <data name="NaviItem6.Content" xml:space="preserve">
+    <value>Modifications</value>
+  </data>
+  <data name="NaviItem7.Content" xml:space="preserve">
+    <value>Spelling/grammar inspector</value>
+  </data>
+  <data name="DA_PageTitle.Text" xml:space="preserve">
+    <value>Word search</value>
+  </data>
+  <data name="DA_BtnMemo.Label" xml:space="preserve">
+    <value>Memo</value>
+  </data>
+  <data name="DA_BtnNetStatusRefresh.Content" xml:space="preserve">
+    <value>Refresh</value>
+  </data>
+  <data name="DA_BtnWebOpen.Label" xml:space="preserve">
+    <value>See more</value>
+  </data>
+  <data name="DA_SearchBox.PlaceholderText" xml:space="preserve">
+    <value>Enter words to search</value>
+  </data>
+</root>
