@@ -201,6 +201,72 @@
   <data name="NaviItem7.Content" xml:space="preserve">
     <value>맞춤법/문법 검사기</value>
   </data>
+  <data name="Info_AboutText.Text" xml:space="preserve">
+    <value>국립국어원에서 제공하는 표준국어대사전 웹을 유니버설 Windows 플랫폼 앱으로 연결합니다.</value>
+  </data>
+  <data name="Info_Address.Text" xml:space="preserve">
+    <value>주소</value>
+  </data>
+  <data name="Info_BtnMail.Content" xml:space="preserve">
+    <value>메일</value>
+  </data>
+  <data name="Info_BtnReview.Content" xml:space="preserve">
+    <value>평점 및 리뷰</value>
+  </data>
+  <data name="Info_Call.Text" xml:space="preserve">
+    <value>대표 전화</value>
+  </data>
+  <data name="Info_CheckDevelopermode.Content" xml:space="preserve">
+    <value>개발자 도구 활성화</value>
+  </data>
+  <data name="Info_Contact.Text" xml:space="preserve">
+    <value>프로그램 문의</value>
+  </data>
+  <data name="Info_Homepage.Text" xml:space="preserve">
+    <value>홈페이지</value>
+  </data>
+  <data name="Info_Include.Text" xml:space="preserve">
+    <value>이 앱은 아래 항목을 포함하고 있습니다.</value>
+  </data>
+  <data name="Info_Institute.Text" xml:space="preserve">
+    <value>국립국어원</value>
+  </data>
+  <data name="Info_Option.Text" xml:space="preserve">
+    <value>옵션</value>
+  </data>
+  <data name="Info_OptionReset.Text" xml:space="preserve">
+    <value>앱 초기화</value>
+  </data>
+  <data name="Info_Pivotitem1.Header" xml:space="preserve">
+    <value>일반</value>
+  </data>
+  <data name="Info_Pivotitem2.Header" xml:space="preserve">
+    <value>라이선스</value>
+  </data>
+  <data name="Info_Pivotitem3.Header" xml:space="preserve">
+    <value>정보</value>
+  </data>
+  <data name="Info_RadioButtonDic.Content" xml:space="preserve">
+    <value>웹뷰 기반 검색</value>
+  </data>
+  <data name="Info_RadioButtonDicAppSearch.Content" xml:space="preserve">
+    <value>인앱 검색</value>
+  </data>
+  <data name="Info_RadioButtonDicAppSearchText.Text" xml:space="preserve">
+    <value>앱 내에서 단어를 검색하고, 웹뷰에서 앱으로 검색 결과를 가져와 표시합니다.</value>
+  </data>
+  <data name="Info_RadioButtonDicText.Text" xml:space="preserve">
+    <value>앱 내에서 단어를 검색하고, 웹뷰에 검색 결과를 표시합니다.</value>
+  </data>
+  <data name="Info_RadioButtonDicWeb.Content" xml:space="preserve">
+    <value>웹 페이지로 보기</value>
+  </data>
+  <data name="Info_RadioButtonDicWebText.Text" xml:space="preserve">
+    <value>웹뷰를 통해 웹 페이지를 표시합니다.</value>
+  </data>
+  <data name="Info_SearchEngine.Text" xml:space="preserve">
+    <value>검색 엔진</value>
+  </data>
   <data name="SPC_Agree" xml:space="preserve">
     <value>동의함</value>
   </data>
@@ -212,5 +278,8 @@
   </data>
   <data name="SPC_Disagree" xml:space="preserve">
     <value>동의하지 않음</value>
+  </data>
+  <data name="Info_BtnResetSetting.Content" xml:space="preserve">
+    <value>설정 초기화</value>
   </data>
 </root>

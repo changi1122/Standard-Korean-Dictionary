@@ -53,7 +53,7 @@ namespace 표준국어대사전.Pages
             else
                 RadioButtonDicWeb.IsChecked = true;
 
-            Version.Text = "버전 " + typeof(App).GetTypeInfo().Assembly.GetName().Version;
+            Version.Text = "Version " + typeof(App).GetTypeInfo().Assembly.GetName().Version;
         }
 
         private async void Mail_Click(object sender, RoutedEventArgs e)
