@@ -16,27 +16,27 @@
         </CommandBar>
 
         <Pivot Margin="10,44,10,0">
-            <PivotItem Header="2018년">
+            <PivotItem x:Uid="ADJ_Pivotitem2018" Header="2018년">
                 <ListView Margin="10,20,0,30" SelectionMode="None">
                     <ListViewItem>
                         <StackPanel>
                             <TextBlock Text="2018년 1/4-3/4분기 수정 내용 공개 (2018. 10. 16.)" TextWrapping="Wrap" Margin="0,10,0,0"/>
                             <StackPanel Margin="20,10,0,10" Orientation="Horizontal">
-                                <Button Content="Microsoft Edge에서 보기" Click="Button_Click_32"/>
-                                <Button Content="기본 브라우저에서 보기" Margin="10,0,0,0" Click="Button_Click_33"/>
+                                <Button x:Uid="ADJ_BtnMSEdge" Content="Microsoft Edge에서 보기" Click="Button_Click_32"/>
+                                <Button x:Uid="ADJ_BtnDefaultbrowser" Content="기본 브라우저에서 보기" Margin="10,0,0,0" Click="Button_Click_33"/>
                             </StackPanel>
                         </StackPanel>
                     </ListViewItem>
                 </ListView>
             </PivotItem>
-            <PivotItem Header="2017년">
+            <PivotItem x:Uid="ADJ_Pivotitem2017" Header="2017년">
                 <ListView Margin="10,20,0,30" SelectionMode="None">
                     <ListViewItem>
                         <StackPanel>
                             <TextBlock Text="2017년 4/4분기 수정 내용 공개 (2018. 3. 9.)" TextWrapping="Wrap" Margin="0,10,0,0"/>
                             <StackPanel Margin="20,10,0,10" Orientation="Horizontal">
-                                <Button Content="Microsoft Edge에서 보기" Click="Button_Click_30"/>
-                                <Button Content="기본 브라우저에서 보기" Margin="10,0,0,0" Click="Button_Click_31"/>
+                                <Button x:Uid="ADJ_BtnMSEdge" Content="Microsoft Edge에서 보기" Click="Button_Click_30"/>
+                                <Button x:Uid="ADJ_BtnDefaultbrowser" Content="기본 브라우저에서 보기" Margin="10,0,0,0" Click="Button_Click_31"/>
                             </StackPanel>
                         </StackPanel>
                     </ListViewItem>
@@ -44,8 +44,8 @@
                         <StackPanel>
                             <TextBlock Text="2017년 3/4분기 수정 내용 공개 (2017. 12. 1.)" TextWrapping="Wrap" Margin="0,10,0,0"/>
                             <StackPanel Margin="20,10,0,10" Orientation="Horizontal">
-                                <Button Content="Microsoft Edge에서 보기" Click="Button_Click_28"/>
-                                <Button Content="기본 브라우저에서 보기" Margin="10,0,0,0" Click="Button_Click_29"/>
+                                <Button x:Uid="ADJ_BtnMSEdge" Content="Microsoft Edge에서 보기" Click="Button_Click_28"/>
+                                <Button x:Uid="ADJ_BtnDefaultbrowser" Content="기본 브라우저에서 보기" Margin="10,0,0,0" Click="Button_Click_29"/>
                             </StackPanel>
                         </StackPanel>
                     </ListViewItem>
@@ -53,8 +53,8 @@
                         <StackPanel>
                             <TextBlock Text="2017년 2/4분기 수정 내용 공개 (2017. 7. 14.)" TextWrapping="Wrap" Margin="0,10,0,0"/>
                             <StackPanel Margin="20,10,0,10" Orientation="Horizontal">
-                                <Button Content="Microsoft Edge에서 보기" Click="Button_Click_26"/>
-                                <Button Content="기본 브라우저에서 보기" Margin="10,0,0,0" Click="Button_Click_27"/>
+                                <Button x:Uid="ADJ_BtnMSEdge" Content="Microsoft Edge에서 보기" Click="Button_Click_26"/>
+                                <Button x:Uid="ADJ_BtnDefaultbrowser" Content="기본 브라우저에서 보기" Margin="10,0,0,0" Click="Button_Click_27"/>
                             </StackPanel>
                         </StackPanel>
                     </ListViewItem>
@@ -62,8 +62,8 @@
                         <StackPanel>
                             <TextBlock Text="외래어 표기법 일부 개정에 따른 띄어쓰기 변경 내용 안내 (2017. 5. 29.)" TextWrapping="Wrap" Margin="0,10,0,0"/>
                             <StackPanel Margin="20,10,0,10" Orientation="Horizontal">
-                                <Button Content="Microsoft Edge에서 보기" Click="Button_Click_24"/>
-                                <Button Content="기본 브라우저에서 보기" Margin="10,0,0,0" Click="Button_Click_25"/>
+                                <Button x:Uid="ADJ_BtnMSEdge" Content="Microsoft Edge에서 보기" Click="Button_Click_24"/>
+                                <Button x:Uid="ADJ_BtnDefaultbrowser" Content="기본 브라우저에서 보기" Margin="10,0,0,0" Click="Button_Click_25"/>
                             </StackPanel>
                         </StackPanel>
                     </ListViewItem>
@@ -71,21 +71,21 @@
                         <StackPanel>
                             <TextBlock Text="2017년 1/4분기 수정 내용 공개 (2017. 4. 3.)" TextWrapping="Wrap" Margin="0,10,0,0"/>
                             <StackPanel Margin="20,10,0,10" Orientation="Horizontal">
-                                <Button Content="Microsoft Edge에서 보기" Click="Button_Click_22"/>
-                                <Button Content="기본 브라우저에서 보기" Margin="10,0,0,0" Click="Button_Click_23"/>
+                                <Button x:Uid="ADJ_BtnMSEdge" Content="Microsoft Edge에서 보기" Click="Button_Click_22"/>
+                                <Button x:Uid="ADJ_BtnDefaultbrowser" Content="기본 브라우저에서 보기" Margin="10,0,0,0" Click="Button_Click_23"/>
                             </StackPanel>
                         </StackPanel>
                     </ListViewItem>
                 </ListView>
             </PivotItem>
-            <PivotItem Header="2016년">
+            <PivotItem x:Uid="ADJ_Pivotitem2016" Header="2016년">
                 <ListView Margin="10,20,0,30" SelectionMode="None">
                     <ListViewItem>
                         <StackPanel>
                             <TextBlock Text="2016년 4/4분기 수정 내용 공개 (2017. 2. 21.)" TextWrapping="Wrap" Margin="0,10,0,0"/>
                             <StackPanel Margin="20,10,0,10" Orientation="Horizontal">
-                                <Button Content="Microsoft Edge에서 보기" Click="Button_Click_20"/>
-                                <Button Content="기본 브라우저에서 보기" Margin="10,0,0,0" Click="Button_Click_21"/>
+                                <Button x:Uid="ADJ_BtnMSEdge" Content="Microsoft Edge에서 보기" Click="Button_Click_20"/>
+                                <Button x:Uid="ADJ_BtnDefaultbrowser" Content="기본 브라우저에서 보기" Margin="10,0,0,0" Click="Button_Click_21"/>
                             </StackPanel>
                         </StackPanel>
                     </ListViewItem>
@@ -93,8 +93,8 @@
                         <StackPanel>
                             <TextBlock Text="2016년 3/4분기 수정 내용 공개 (2016. 11. 15.)" TextWrapping="Wrap" Margin="0,10,0,0"/>
                             <StackPanel Margin="20,10,0,10" Orientation="Horizontal">
-                                <Button Content="Microsoft Edge에서 보기" Click="Button_Click_18"/>
-                                <Button Content="기본 브라우저에서 보기" Margin="10,0,0,0" Click="Button_Click_19"/>
+                                <Button x:Uid="ADJ_BtnMSEdge" Content="Microsoft Edge에서 보기" Click="Button_Click_18"/>
+                                <Button x:Uid="ADJ_BtnDefaultbrowser" Content="기본 브라우저에서 보기" Margin="10,0,0,0" Click="Button_Click_19"/>
                             </StackPanel>
                         </StackPanel>
                     </ListViewItem>
@@ -102,8 +102,8 @@
                         <StackPanel>
                             <TextBlock Text="2016년 2/4분기 수정 내용 공개 (2016. 8. 29.)" TextWrapping="Wrap" Margin="0,10,0,0"/>
                             <StackPanel Margin="20,10,0,10" Orientation="Horizontal">
-                                <Button Content="Microsoft Edge에서 보기" Click="Button_Click_16"/>
-                                <Button Content="기본 브라우저에서 보기" Margin="10,0,0,0" Click="Button_Click_17"/>
+                                <Button x:Uid="ADJ_BtnMSEdge" Content="Microsoft Edge에서 보기" Click="Button_Click_16"/>
+                                <Button x:Uid="ADJ_BtnDefaultbrowser" Content="기본 브라우저에서 보기" Margin="10,0,0,0" Click="Button_Click_17"/>
                             </StackPanel>
                         </StackPanel>
                     </ListViewItem>
@@ -111,21 +111,21 @@
                         <StackPanel>
                             <TextBlock Text="2016년 1/4분기 수정 내용 공개 (2016. 4. 11.)" TextWrapping="Wrap" Margin="0,10,0,0"/>
                             <StackPanel Margin="20,10,0,10" Orientation="Horizontal">
-                                <Button Content="Microsoft Edge에서 보기" Click="Button_Click_14"/>
-                                <Button Content="기본 브라우저에서 보기" Margin="10,0,0,0" Click="Button_Click_15"/>
+                                <Button x:Uid="ADJ_BtnMSEdge" Content="Microsoft Edge에서 보기" Click="Button_Click_14"/>
+                                <Button x:Uid="ADJ_BtnDefaultbrowser" Content="기본 브라우저에서 보기" Margin="10,0,0,0" Click="Button_Click_15"/>
                             </StackPanel>
                         </StackPanel>
                     </ListViewItem>
                 </ListView>
             </PivotItem>
-            <PivotItem Header="2015년">
+            <PivotItem x:Uid="ADJ_Pivotitem2015" Header="2015년">
                 <ListView Margin="10,20,0,30" SelectionMode="None">
                     <ListViewItem>
                         <StackPanel>
                             <TextBlock Text="2015년 4/4분기 수정 내용 공개 (2015. 12. 30.)" TextWrapping="Wrap" Margin="0,10,0,0"/>
                             <StackPanel Margin="20,10,0,10" Orientation="Horizontal">
-                                <Button Content="Microsoft Edge에서 보기" Click="Button_Click_12"/>
-                                <Button Content="기본 브라우저에서 보기" Margin="10,0,0,0" Click="Button_Click_13"/>
+                                <Button x:Uid="ADJ_BtnMSEdge" Content="Microsoft Edge에서 보기" Click="Button_Click_12"/>
+                                <Button x:Uid="ADJ_BtnDefaultbrowser" Content="기본 브라우저에서 보기" Margin="10,0,0,0" Click="Button_Click_13"/>
                             </StackPanel>
                         </StackPanel>
                     </ListViewItem>
@@ -133,8 +133,8 @@
                         <StackPanel>
                             <TextBlock Text="2015년 3/4분기 수정 내용 공개 (2015. 9. 26.)" TextWrapping="Wrap" Margin="0,10,0,0"/>
                             <StackPanel Margin="20,10,0,10" Orientation="Horizontal">
-                                <Button Content="Microsoft Edge에서 보기" Click="Button_Click_10"/>
-                                <Button Content="기본 브라우저에서 보기" Margin="10,0,0,0" Click="Button_Click_11"/>
+                                <Button x:Uid="ADJ_BtnMSEdge" Content="Microsoft Edge에서 보기" Click="Button_Click_10"/>
+                                <Button x:Uid="ADJ_BtnDefaultbrowser" Content="기본 브라우저에서 보기" Margin="10,0,0,0" Click="Button_Click_11"/>
                             </StackPanel>
                         </StackPanel>
                     </ListViewItem>
@@ -142,8 +142,8 @@
                         <StackPanel>
                             <TextBlock Text="2015년 2/4분기 수정 내용 공개 (2015. 6. 22.)" TextWrapping="Wrap" Margin="0,10,0,0"/>
                             <StackPanel Margin="20,10,0,10" Orientation="Horizontal">
-                                <Button Content="Microsoft Edge에서 보기" Click="Button_Click_8"/>
-                                <Button Content="기본 브라우저에서 보기" Margin="10,0,0,0" Click="Button_Click_9"/>
+                                <Button x:Uid="ADJ_BtnMSEdge" Content="Microsoft Edge에서 보기" Click="Button_Click_8"/>
+                                <Button x:Uid="ADJ_BtnDefaultbrowser" Content="기본 브라우저에서 보기" Margin="10,0,0,0" Click="Button_Click_9"/>
                             </StackPanel>
                         </StackPanel>
                     </ListViewItem>
@@ -151,21 +151,21 @@
                         <StackPanel>
                             <TextBlock Text="2015년 1/4분기 수정 내용 공개 (2015. 3. 5.)" TextWrapping="Wrap" Margin="0,10,0,0"/>
                             <StackPanel Margin="20,10,0,10" Orientation="Horizontal">
-                                <Button Content="Microsoft Edge에서 보기" Click="Button_Click_6"/>
-                                <Button Content="기본 브라우저에서 보기" Margin="10,0,0,0" Click="Button_Click_7"/>
+                                <Button x:Uid="ADJ_BtnMSEdge" Content="Microsoft Edge에서 보기" Click="Button_Click_6"/>
+                                <Button x:Uid="ADJ_BtnDefaultbrowser" Content="기본 브라우저에서 보기" Margin="10,0,0,0" Click="Button_Click_7"/>
                             </StackPanel>
                         </StackPanel>
                     </ListViewItem>
                 </ListView>
             </PivotItem>
-            <PivotItem Header="2014년">
+            <PivotItem x:Uid="ADJ_Pivotitem2014" Header="2014년">
                 <ListView Margin="10,20,0,30" SelectionMode="None">
                     <ListViewItem>
                         <StackPanel>
                             <TextBlock Text="2014년 4/4분기 수정 내용 공개 (2014. 12. 12.)" TextWrapping="Wrap" Margin="0,10,0,0"/>
                             <StackPanel Margin="20,10,0,10" Orientation="Horizontal">
-                                <Button Content="Microsoft Edge에서 보기" Click="Button_Click_4"/>
-                                <Button Content="기본 브라우저에서 보기" Margin="10,0,0,0" Click="Button_Click_5"/>
+                                <Button x:Uid="ADJ_BtnMSEdge" Content="Microsoft Edge에서 보기" Click="Button_Click_4"/>
+                                <Button x:Uid="ADJ_BtnDefaultbrowser" Content="기본 브라우저에서 보기" Margin="10,0,0,0" Click="Button_Click_5"/>
                             </StackPanel>
                         </StackPanel>
                     </ListViewItem>
@@ -173,8 +173,8 @@
                         <StackPanel>
                             <TextBlock Text="2014년 3/4분기 수정 내용 공개 (2014. 11. 10.)" TextWrapping="Wrap" Margin="0,10,0,0"/>
                             <StackPanel Margin="20,10,0,10" Orientation="Horizontal">
-                                <Button Content="Microsoft Edge에서 보기" Click="Button_Click_2"/>
-                                <Button Content="기본 브라우저에서 보기" Margin="10,0,0,0" Click="Button_Click_3"/>
+                                <Button x:Uid="ADJ_BtnMSEdge" Content="Microsoft Edge에서 보기" Click="Button_Click_2"/>
+                                <Button x:Uid="ADJ_BtnDefaultbrowser" Content="기본 브라우저에서 보기" Margin="10,0,0,0" Click="Button_Click_3"/>
                             </StackPanel>
                         </StackPanel>
                     </ListViewItem>
@@ -182,8 +182,8 @@
                         <StackPanel>
                             <TextBlock Text="2014년 1/4, 2/4분기 수정 내용 공개 (2014. 9. 5.)" TextWrapping="Wrap" Margin="0,10,0,0"/>
                             <StackPanel Margin="20,10,0,10" Orientation="Horizontal">
-                                <Button Content="Microsoft Edge에서 보기" Click="Button_Click"/>
-                                <Button Content="기본 브라우저에서 보기" Margin="10,0,0,0" Click="Button_Click_1"/>
+                                <Button x:Uid="ADJ_BtnMSEdge" Content="Microsoft Edge에서 보기" Click="Button_Click"/>
+                                <Button x:Uid="ADJ_BtnDefaultbrowser" Content="기본 브라우저에서 보기" Margin="10,0,0,0" Click="Button_Click_1"/>
                             </StackPanel>
                         </StackPanel>
                     </ListViewItem>

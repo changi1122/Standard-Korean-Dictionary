@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.ApplicationModel.DataTransfer;
+using Windows.ApplicationModel.Resources;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.Storage;
@@ -48,10 +49,11 @@ namespace 표준국어대사전.Pages
             }
             else
             {
-                var messageDialog = new MessageDialog("한국어 맞춤법/문법 검사기는 부산대학교 인공지능연구실과 (주)나라인포테크가 만들고, 운영합니다. 이 앱은 해당 웹 페이지에 연결할 뿐 어떠한 권리도 가지고 있지 않습니다." + Environment.NewLine + "이 검사기는 개인이나 학생만 무료로 사용할 수 있습니다.");
+                var res = ResourceLoader.GetForCurrentView();
+                var messageDialog = new MessageDialog(res.GetString("SPC_DialogText"));
 
-                messageDialog.Commands.Add(new UICommand("동의하지 않음", new UICommandInvokedHandler(this.CommandInvokedHandler)));
-                messageDialog.Commands.Add(new UICommand("동의함", new UICommandInvokedHandler(this.CommandInvokedHandler)));
+                messageDialog.Commands.Add(new UICommand(res.GetString("SPC_Disagree"), new UICommandInvokedHandler(this.CommandInvokedHandler)));
+                messageDialog.Commands.Add(new UICommand(res.GetString("SPC_Agree"), new UICommandInvokedHandler(this.CommandInvokedHandler)));
                 messageDialog.DefaultCommandIndex = 1;
                 messageDialog.CancelCommandIndex = 0;
 
@@ -61,46 +63,32 @@ namespace 표준국어대사전.Pages
 
         private void CommandInvokedHandler(IUICommand command)
         {
-            if(command.Label == "동의함")
+            var res = ResourceLoader.GetForCurrentView();
+
+            if (command.Label == res.GetString("SPC_Agree"))
             {
                 ApplicationDataContainer localSettings = ApplicationData.Current.LocalSettings;
                 localSettings.Values["#SpellingCheckerAgreement"] = true;
                 WebViewMain.Navigate(new Uri("http://speller.cs.pusan.ac.kr/PnuWebSpeller/Default.htm"));
+                BtnAgree.Visibility = Visibility.Collapsed;
             }
-            else if(command.Label == "동의하지 않음")
+            else if(command.Label == res.GetString("SPC_Disagree"))
             {
-                AppBarButton btn = new AppBarButton();
-                btn.Name = "BtnAgree";
-                btn.Icon = new SymbolIcon(Symbol.View);
-                btn.Label = "동의";
-                btn.Click += BtnAgree_Click;
-
-                PageCommandBar.PrimaryCommands.Add(btn);
+                BtnAgree.Visibility = Visibility.Visible;
             }
         }
 
         private async void BtnAgree_Click(object sender, RoutedEventArgs e)
         {
-            var messageDialog = new MessageDialog("한국어 맞춤법/문법 검사기는 부산대학교 인공지능연구실과 (주)나라인포테크가 만들고, 운영합니다. 이 앱은 해당 웹 페이지에 연결할 뿐 어떠한 권리도 가지고 있지 않습니다." + Environment.NewLine + "이 검사기는 개인이나 학생만 무료로 사용할 수 있습니다.");
+            var res = ResourceLoader.GetForCurrentView();
+            var messageDialog = new MessageDialog(res.GetString("SPC_DialogText"));
 
-            messageDialog.Commands.Add(new UICommand("동의하지 않음", new UICommandInvokedHandler(this.CommandInvokedHandler2)));
-            messageDialog.Commands.Add(new UICommand("동의함", new UICommandInvokedHandler(this.CommandInvokedHandler2)));
+            messageDialog.Commands.Add(new UICommand(res.GetString("SPC_Disagree"), new UICommandInvokedHandler(this.CommandInvokedHandler)));
+            messageDialog.Commands.Add(new UICommand(res.GetString("SPC_Agree"), new UICommandInvokedHandler(this.CommandInvokedHandler)));
             messageDialog.DefaultCommandIndex = 1;
             messageDialog.CancelCommandIndex = 0;
 
             await messageDialog.ShowAsync();
-        }
-
-        private void CommandInvokedHandler2(IUICommand command)
-        {
-            if (command.Label == "동의함")
-            {
-                ApplicationDataContainer localSettings = ApplicationData.Current.LocalSettings;
-                localSettings.Values["#SpellingCheckerAgreement"] = true;
-                WebViewMain.Navigate(new Uri("http://speller.cs.pusan.ac.kr/PnuWebSpeller/Default.htm"));
-
-                PageCommandBar.PrimaryCommands.Clear();
-            }
         }
 
         private void WebViewMain_NewWindowRequested(WebView sender, WebViewNewWindowRequestedEventArgs args)

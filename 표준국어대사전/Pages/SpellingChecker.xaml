@@ -28,7 +28,7 @@
         </Grid>
 
         <CommandBar x:Name="PageCommandBar">
-            
+            <AppBarButton x:Name="BtnAgree" x:Uid="SPC_BtnAgreement" Icon="View" Label="동의" Click="BtnAgree_Click" Visibility="Collapsed"/>
         </CommandBar>
 
         <WebView x:Name="WebViewMain" Margin="0,40,0,0" ScrollViewer.HorizontalScrollBarVisibility="Auto" NewWindowRequested="WebViewMain_NewWindowRequested" NavigationFailed="WebViewMain_NavigationFailed" FlyoutBase.AttachedFlyout="{StaticResource Basic}" RightTapped="WebViewMain_RightTapped" Loaded="WebViewMain_Loaded"/>
