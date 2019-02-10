@@ -75,7 +75,7 @@
 
         <Grid x:Name="ReadingModeGrid" Padding="0" Background="#FFBEBEBE" Visibility="Collapsed" VerticalAlignment="Bottom" Height="450">
             <Button x:Name="ReadingModeCopy" Content="&#xE8C8;" HorizontalAlignment="Left" VerticalAlignment="Top" FontFamily="Segoe MDL2 Assets" Height="40" Width="40" FontSize="20" Click="ReadingModeCopy_Click" Background="{x:Null}"/>
-            <Button x:Name="ReadingModeRefresh" Content="&#xE777;" HorizontalAlignment="Left" VerticalAlignment="Top" FontFamily="Segoe MDL2 Assets" Height="40" Width="40" FontSize="20" Click="ReadingModeRefresh_Click" Background="{x:Null}" Margin="40,0,0,0"/>
+            <Button x:Name="ReadingModeRefresh" Content="&#xE777;" HorizontalAlignment="Left" VerticalAlignment="Top" FontFamily="Segoe MDL2 Assets" Height="40" Width="40" FontSize="18" Click="ReadingModeRefresh_Click" Background="{x:Null}" Margin="40,0,0,0"/>
             <Button x:Name="ReadingModeClose" Content="&#xE10A;" HorizontalAlignment="Right" VerticalAlignment="Top" FontFamily="Segoe MDL2 Assets" Height="40" Width="40" FontSize="20" Click="ReadingModeClose_Click" Background="{x:Null}"/>
             <TextBox x:Name="ReadingModeText" Margin="1,40,1,1" TextWrapping="Wrap" Text="Load..." IsReadOnly="True" BorderBrush="#FFE6E6E6" Background="#FFE6E6E6" SelectionHighlightColor="{x:Null}"/>
         </Grid>
