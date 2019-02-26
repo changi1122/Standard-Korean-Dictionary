@@ -76,6 +76,7 @@ namespace 표준국어대사전.Pages
             {
                 ListviewWordDetail.Visibility = Visibility.Collapsed;
                 ProgressBar.ShowError = true;
+                DetailProgressBar.ShowError = true;
                 SearchBox.IsEnabled = false;
 
                 Words.Clear();
@@ -653,6 +654,7 @@ namespace 표준국어대사전.Pages
         {
             ListviewSearchResult.IsEnabled = false;
             WordDefinitionItemWebview.Visibility = Visibility.Collapsed;
+            DetailProgressBar.ShowError = false;
             DetailProgressBar.Visibility = Visibility.Visible;
         }
 
