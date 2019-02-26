@@ -366,6 +366,7 @@
         </CommandBar>
 
         <WebView x:Name="WebViewMain" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="2,0,0,0" Visibility="Collapsed" NavigationCompleted="WebViewMain_NavigationCompletedAsync" NavigationStarting="WebViewMain_NavigationStarting"/>
+        <WebView x:Name="WebViewDefinition" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,0,0" Visibility="Collapsed" NavigationCompleted="WebViewDefinition_NavigationCompletedAsync" NavigationStarting="WebViewDefinition_NavigationStarting" NavigationFailed="WebViewDefinition_NavigationFailed" NewWindowRequested="WebViewDefinition_NewWindowRequested"/>
 
         <Grid x:Name="MasterGrid" Margin="0,40,0,0" HorizontalAlignment="Left" Width="320" BorderThickness="0,0,1,0" BorderBrush="LightGray">
             <ListView ItemContainerStyle="{StaticResource MasterListViewItemContainerStyle}" x:Name="ListviewSearchResult" HorizontalAlignment="Stretch" Margin="0,60,0,0" 
@@ -381,25 +382,26 @@
             </StackPanel>
         </Grid>
         <Grid x:Name="DetailGrid" HorizontalAlignment="Stretch" Margin="321,40,0,0" VerticalAlignment="Stretch" Background="White" Visibility="Collapsed">
+            <ProgressBar x:Name="DetailProgressBar" IsIndeterminate="True" ShowPaused="False" ShowError="False" VerticalAlignment="Top" Visibility="Visible" Margin="0,0,0,0"/>
             <ListView x:Name="ListviewWordDetail" SelectionMode="None" Visibility="Visible">
                 <ListViewItem x:Name="WordTitleItem" HorizontalAlignment="Stretch" Margin="20,20,20,0" VerticalAlignment="Top">
                     <StackPanel>
                         <TextBlock x:Name="WordTitleItemTextBlock" TextWrapping="WrapWholeWords" IsTextSelectionEnabled="True" FontSize="24" FontFamily="/Assets/NanumBarunGothic-YetHangul.ttf#NanumBarunGothic YetHangul"/>
                     </StackPanel>
                 </ListViewItem>
-                <ListViewItem x:Name="WordPronounceItem" HorizontalAlignment="Stretch" Margin="20,0,20,0" VerticalAlignment="Top" VerticalContentAlignment="Top" MinHeight="28" Height="26">
+                <ListViewItem x:Name="WordPronounceItem" HorizontalAlignment="Stretch" Margin="20,0,20,0" VerticalAlignment="Top" VerticalContentAlignment="Top" MinHeight="24" Height="24">
                     <StackPanel>
                         <TextBlock x:Name="WordPronounceItemTextBlock" TextWrapping="WrapWholeWords" IsTextSelectionEnabled="True" Foreground="Gray" FontSize="15" FontFamily="/Assets/NanumBarunGothic-YetHangul.ttf#NanumBarunGothic YetHangul"/>
                     </StackPanel>
                 </ListViewItem>
-                <ListViewItem x:Name="WordDefinitionItem" HorizontalAlignment="Stretch" Margin="20,0,20,0" VerticalAlignment="Top" FontSize="18">
-                    <StackPanel>
-                        <TextBlock x:Name="WordDefinitionItemTextBlock" TextWrapping="WrapWholeWords" IsTextSelectionEnabled="True" FontFamily="/Assets/NanumBarunGothic-YetHangul.ttf#NanumBarunGothic YetHangul"/>
-                    </StackPanel>
-                </ListViewItem>
-                <ListViewItem HorizontalAlignment="Stretch" Margin="20,0,20,0" VerticalAlignment="Top">
+                <ListViewItem HorizontalAlignment="Right" Margin="20,0,20,0" VerticalAlignment="Top">
                     <CommandBar Background="Transparent" IsOpen="False" DefaultLabelPosition="Right">
-                        <AppBarButton x:Name="BtnWebOpen" x:Uid="DA_BtnWebOpen" Icon="Globe" Label="자세히 보기" Click="BtnWebOpen_Click" Visibility="Collapsed"/>
+                        <AppBarButton x:Name="BtnDicSoundPlay" x:Uid="DA_BtnDicSoundPlay" Label="발음 듣기" Click="BtnDicSoundPlay_Click" Visibility="Collapsed">
+                            <AppBarButton.Icon>
+                                <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE995;"/>
+                            </AppBarButton.Icon>
+                        </AppBarButton>
+                        <AppBarButton x:Name="BtnWebOpen" x:Uid="DA_BtnWebOpen" Icon="Globe" Label="웹에서 보기" Click="BtnWebOpen_Click" Visibility="Collapsed"/>
                         <AppBarButton x:Name="BtnMemo" x:Uid="DA_BtnMemo" Label="메모" Click="BtnMemo_Click" Visibility="Collapsed">
                             <AppBarButton.Icon>
                                 <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE70B;"/>
@@ -407,14 +409,13 @@
                         </AppBarButton>
                     </CommandBar>
                 </ListViewItem>
-                <ListViewItem x:Name="ItemMemo"  HorizontalAlignment="Stretch" Margin="20,20,20,40" VerticalAlignment="Top" HorizontalContentAlignment="Stretch" Visibility="Collapsed">
-                    <Grid Background="#FFBEBEBE">
-                        <Button x:Name="BtnMemoClose" Content="&#xE10A;" HorizontalAlignment="Right" VerticalAlignment="Top" Height="40" Width="40" Margin="0,0,0,0" Background="{x:Null}" FontFamily="Segoe MDL2 Assets" FontSize="20" Click="BtnMemoClose_Click"/>
-                        <Controls:ConMemo MinHeight="142" Margin="0,40,0,0"/>
-                    </Grid>
-                </ListViewItem>
             </ListView>
+            <WebView x:Name="WordDefinitionItemWebview" Margin="20,130,20,20" HorizontalAlignment="Stretch" />
             <TextBlock x:Name="WordJavascriptItem" Visibility="Collapsed"/>
+            <Grid x:Name="MemoGrid" Background="#FFBEBEBE" Margin="20,130,20,20" VerticalAlignment="Top" Visibility="Collapsed">
+                <Button x:Name="BtnMemoClose" Content="&#xE10A;" HorizontalAlignment="Right" VerticalAlignment="Top" Height="40" Width="40" Margin="0,0,0,0" Background="{x:Null}" FontFamily="Segoe MDL2 Assets" FontSize="20" Click="BtnMemoClose_Click"/>
+                <Controls:ConMemo MinHeight="300" Margin="0,40,0,0"/>
+            </Grid>
         </Grid>
     </Grid>
 </Page>

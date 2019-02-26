@@ -157,7 +157,7 @@
     <value>다시 시도</value>
   </data>
   <data name="DA_BtnWebOpen.Label" xml:space="preserve">
-    <value>자세히 보기</value>
+    <value>웹에서 보기</value>
   </data>
   <data name="DA_MenuFlyoutCulture.Text" xml:space="preserve">
     <value>북한어</value>
@@ -281,5 +281,8 @@
   </data>
   <data name="Info_BtnResetSetting.Content" xml:space="preserve">
     <value>설정 초기화</value>
+  </data>
+  <data name="DA_BtnDicSoundPlay" xml:space="preserve">
+    <value>발음 듣기</value>
   </data>
 </root>

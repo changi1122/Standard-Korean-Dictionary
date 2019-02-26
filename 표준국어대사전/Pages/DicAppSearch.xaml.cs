@@ -68,6 +68,8 @@ namespace 표준국어대사전.Pages
             {
                 if (WebViewMain.Source != new Uri("http://stdweb2.korean.go.kr/search/List_dic.jsp"))
                     WebViewMain.Navigate(new Uri("http://stdweb2.korean.go.kr/search/List_dic.jsp"));
+                if (WebViewDefinition.Source != new Uri("http://stdweb2.korean.go.kr/search/List_dic.jsp"))
+                    WebViewDefinition.Navigate(new Uri("http://stdweb2.korean.go.kr/search/List_dic.jsp"));
                 return true;
             }
             else
@@ -116,8 +118,13 @@ namespace 표준국어대사전.Pages
             //항목 클릭시 동작
             WordTitleItemTextBlock.Text = word.WordTitle;
             WordPronounceItemTextBlock.Text = word.WordPronounce;
-            WordDefinitionItemTextBlock.Text = word.WordDefinition;
+
+            //단어 정의 웹 페이지 로드
+            var functionString = string.Format(word.Javascript);
+            await WebViewDefinition.InvokeScriptAsync("eval", new string[] { functionString });
+
             WordJavascriptItem.Text = word.Javascript;
+            BtnDicSoundPlay.Visibility = Visibility.Collapsed;
             BtnWebOpen.Visibility = Visibility.Visible;
             BtnMemo.Visibility = Visibility.Visible;
 
@@ -180,11 +187,12 @@ namespace 표준국어대사전.Pages
             TextBlockErrorMessage.Visibility = Visibility.Collapsed;
             ProgressBar.Visibility = Visibility.Visible;
 
+            BtnDicSoundPlay.Visibility = Visibility.Collapsed;
             BtnWebOpen.Visibility = Visibility.Collapsed;
             BtnMemo.Visibility = Visibility.Collapsed;
             WordTitleItemTextBlock.Text = "";
             WordPronounceItemTextBlock.Text = "";
-            WordDefinitionItemTextBlock.Text = "";
+            WordDefinitionItemWebview.NavigateToString("");
             WordJavascriptItem.Text = "";
         }
 
@@ -417,10 +425,10 @@ namespace 표준국어대사전.Pages
 
         private void BtnMemo_Click(object sender, RoutedEventArgs e)
         {
-            if (ItemMemo.Visibility == Visibility.Collapsed)
-                ItemMemo.Visibility = Visibility.Visible;
+            if (MemoGrid.Visibility == Visibility.Collapsed)
+                MemoGrid.Visibility = Visibility.Visible;
             else
-                ItemMemo.Visibility = Visibility.Collapsed;
+                MemoGrid.Visibility = Visibility.Collapsed;
         }
 
         private void WebViewOpen(Uri uri)
@@ -506,7 +514,7 @@ namespace 표준국어대사전.Pages
 
         private void BtnMemoClose_Click(object sender, RoutedEventArgs e)
         {
-            ItemMemo.Visibility = Visibility.Collapsed;
+            MemoGrid.Visibility = Visibility.Collapsed;
         }
 
         private void BasicGrid_SizeChanged(object sender, SizeChangedEventArgs e)
@@ -610,6 +618,87 @@ namespace 표준국어대사전.Pages
         private void BtnMultiSearchClose_Click(object sender, RoutedEventArgs e)
         {
             BasicGrid.Children.Remove((UIElement)this.FindName("MultiSearchGrid"));
+        }
+
+        private async void WebViewDefinition_NavigationCompletedAsync(WebView sender, WebViewNavigationCompletedEventArgs args)
+        {
+            DetailProgressBar.Visibility = Visibility.Collapsed;
+            DetailProgressBar.ShowError = false;
+
+            if (args.Uri.ToString() == "http://stdweb2.korean.go.kr/search/View.jsp")
+            {
+                string Html = await WebViewDefinition.InvokeScriptAsync("eval", new string[] { "document.documentElement.outerHTML;" });
+
+                KorDic kd = new KorDic();
+                Windows.UI.Color accentColor = (Windows.UI.Color)this.Resources["SystemAccentColor"];
+                string hex = "#" + accentColor.R.ToString("X2", null) +
+                                    accentColor.G.ToString("X2", null) +
+                                    accentColor.B.ToString("X2", null);
+                kd.SelBackground = hex;
+                if (kd.CanSoundPlay(Html) != "false")
+                {
+                    BtnDicSoundPlay.Visibility = Visibility.Visible;
+                    BtnDicSoundPlay.Content = kd.CanSoundPlay(Html);
+                }
+                else
+                    BtnDicSoundPlay.Visibility = Visibility.Collapsed;
+                WordDefinitionItemWebview.NavigateToString(kd.GetWordDefinitionInHtmlFormat(Html));
+                WebViewDefinition.Navigate(new Uri("http://stdweb2.korean.go.kr/search/List_dic.jsp"));
+            }
+            WordDefinitionItemWebview.Visibility = Visibility.Visible;
+            ListviewSearchResult.IsEnabled = true;
+        }
+
+        private void WebViewDefinition_NavigationStarting(WebView sender, WebViewNavigationStartingEventArgs args)
+        {
+            ListviewSearchResult.IsEnabled = false;
+            WordDefinitionItemWebview.Visibility = Visibility.Collapsed;
+            DetailProgressBar.Visibility = Visibility.Visible;
+        }
+
+        private void WebViewDefinition_NavigationFailed(object sender, WebViewNavigationFailedEventArgs e)
+        {
+            ListviewSearchResult.IsEnabled = true;
+            DetailProgressBar.Visibility = Visibility.Visible;
+            DetailProgressBar.ShowError = true;
+        }
+
+        private void WebViewDefinition_NewWindowRequested(WebView sender, WebViewNewWindowRequestedEventArgs args)
+        {
+            string address = args.Uri.ToString();
+
+            if (address.IndexOf("DicSoundPlayWordNo") != -1)
+            {
+                args.Handled = true;
+
+                var DicSoundPlay = new WebView
+                {
+                    Name = "WebViewDicSoundPlay",
+                    Visibility = Visibility.Collapsed
+                };
+                BasicGrid.Children.Add(DicSoundPlay);
+                var view = (WebView)FindName("WebViewDicSoundPlay");
+                view.NavigationCompleted += PlayDic;
+                view.Navigate(args.Uri);
+                return;
+            }
+            WebViewDefinition.Navigate(args.Uri);
+            args.Handled = true;
+        }
+
+        private async void BtnDicSoundPlay_Click(object sender, RoutedEventArgs e)
+        {
+            var functionString = string.Format((string)BtnDicSoundPlay.Content);
+            await WebViewDefinition.InvokeScriptAsync("eval", new string[] { functionString });
+        }
+
+        private async void PlayDic(WebView sender, WebViewNavigationCompletedEventArgs args)
+        {
+            var view = (WebView)FindName("WebViewDicSoundPlay");
+            var functionString = string.Format(@"document.getElementsByTagName('img').item(1).click()");
+            await view.InvokeScriptAsync("eval", new string[] { functionString });
+
+            BasicGrid.Children.Remove((UIElement)this.FindName("WebViewDicSoundPlay"));
         }
     }
 }

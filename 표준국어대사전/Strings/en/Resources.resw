@@ -176,7 +176,7 @@
     <value>Refresh</value>
   </data>
   <data name="DA_BtnWebOpen.Label" xml:space="preserve">
-    <value>See more</value>
+    <value>View on the web</value>
   </data>
   <data name="DA_SearchBox.PlaceholderText" xml:space="preserve">
     <value>Enter words to search</value>
@@ -282,5 +282,8 @@
   </data>
   <data name="Info_BtnResetSetting.Content" xml:space="preserve">
     <value>Reset settings</value>
+  </data>
+  <data name="DA_BtnDicSoundPlay" xml:space="preserve">
+    <value>Listen</value>
   </data>
 </root>
