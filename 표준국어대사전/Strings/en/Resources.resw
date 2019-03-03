@@ -202,70 +202,70 @@
   <data name="ADJ_BtnMSEdge.Content" xml:space="preserve">
     <value>View on Microsoft Edge</value>
   </data>
-  <data name="Info_AboutText.Text" xml:space="preserve">
+  <data name="Set_AboutText.Text" xml:space="preserve">
     <value>Standard Korean Dictionary is Korean-Korean dictionary. The Korean National Language Institute operates the website of the standard Korean dictionary and this app allows you to search for words without having to access the browser.</value>
   </data>
-  <data name="Info_Address.Text" xml:space="preserve">
+  <data name="Set_Address.Text" xml:space="preserve">
     <value>Address</value>
   </data>
-  <data name="Info_BtnMail.Content" xml:space="preserve">
+  <data name="Set_BtnMail.Content" xml:space="preserve">
     <value>Mail</value>
   </data>
-  <data name="Info_BtnReview.Content" xml:space="preserve">
+  <data name="Set_BtnReview.Content" xml:space="preserve">
     <value>Ratings and Reviews</value>
   </data>
-  <data name="Info_Call.Text" xml:space="preserve">
+  <data name="Set_Call.Text" xml:space="preserve">
     <value>Call</value>
   </data>
-  <data name="Info_CheckDevelopermode.Content" xml:space="preserve">
+  <data name="Set_CheckDevelopermode.Content" xml:space="preserve">
     <value>Enable Developer Tools</value>
   </data>
-  <data name="Info_Contact.Text" xml:space="preserve">
+  <data name="Set_Contact.Text" xml:space="preserve">
     <value>Contact</value>
   </data>
-  <data name="Info_Homepage.Text" xml:space="preserve">
+  <data name="Set_Homepage.Text" xml:space="preserve">
     <value>Home page</value>
   </data>
-  <data name="Info_Include.Text" xml:space="preserve">
+  <data name="Set_Include.Text" xml:space="preserve">
     <value>This app includes:</value>
   </data>
-  <data name="Info_Institute.Text" xml:space="preserve">
+  <data name="Set_Institute.Text" xml:space="preserve">
     <value>The Korean National Language Institute</value>
   </data>
-  <data name="Info_Option.Text" xml:space="preserve">
+  <data name="Set_Option.Text" xml:space="preserve">
     <value>Option</value>
   </data>
-  <data name="Info_OptionReset.Text" xml:space="preserve">
+  <data name="Set_OptionReset.Text" xml:space="preserve">
     <value>App initialization</value>
   </data>
-  <data name="Info_Pivotitem1.Header" xml:space="preserve">
+  <data name="Set_Pivotitem1.Header" xml:space="preserve">
     <value>General</value>
   </data>
-  <data name="Info_Pivotitem2.Header" xml:space="preserve">
+  <data name="Set_Pivotitem2.Header" xml:space="preserve">
     <value>License</value>
   </data>
-  <data name="Info_Pivotitem3.Header" xml:space="preserve">
+  <data name="Set_Pivotitem3.Header" xml:space="preserve">
     <value>About</value>
   </data>
-  <data name="Info_RadioButtonDic.Content" xml:space="preserve">
+  <data name="Set_RadioButtonDic.Content" xml:space="preserve">
     <value>WebView based search</value>
   </data>
-  <data name="Info_RadioButtonDicAppSearch.Content" xml:space="preserve">
+  <data name="Set_RadioButtonDicAppSearch.Content" xml:space="preserve">
     <value>In-App Search</value>
   </data>
-  <data name="Info_RadioButtonDicAppSearchText.Text" xml:space="preserve">
+  <data name="Set_RadioButtonDicAppSearchText.Text" xml:space="preserve">
     <value>Search for words within app, and display search results in app.</value>
   </data>
-  <data name="Info_RadioButtonDicText.Text" xml:space="preserve">
+  <data name="Set_RadioButtonDicText.Text" xml:space="preserve">
     <value>Search for words within the app, and display search results in WebView.</value>
   </data>
-  <data name="Info_RadioButtonDicWeb.Content" xml:space="preserve">
+  <data name="Set_RadioButtonDicWeb.Content" xml:space="preserve">
     <value>View as web page</value>
   </data>
-  <data name="Info_RadioButtonDicWebText.Text" xml:space="preserve">
+  <data name="Set_RadioButtonDicWebText.Text" xml:space="preserve">
     <value>Displays web pages in WebView.</value>
   </data>
-  <data name="Info_SearchEngine.Text" xml:space="preserve">
+  <data name="Set_SearchEngine.Text" xml:space="preserve">
     <value>Search engine</value>
   </data>
   <data name="SPC_Agree" xml:space="preserve">
@@ -280,7 +280,7 @@
   <data name="SPC_Disagree" xml:space="preserve">
     <value>Disagree</value>
   </data>
-  <data name="Info_BtnResetSetting.Content" xml:space="preserve">
+  <data name="Set_BtnResetSetting.Content" xml:space="preserve">
     <value>Reset settings</value>
   </data>
   <data name="DA_BtnDicSoundPlay" xml:space="preserve">
