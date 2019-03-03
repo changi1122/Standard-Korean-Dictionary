@@ -108,6 +108,10 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Class\KorDic.cs" />
+    <Compile Include="Controls\CheckFont.xaml.cs">
+      <DependentUpon>CheckFont.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\ConMultiSearch.xaml.cs">
       <DependentUpon>ConMultiSearch.xaml</DependentUpon>
     </Compile>
@@ -155,7 +159,7 @@
     <Content Include="Assets\icon_n_r.png" />
     <Content Include="Assets\icon_n_m.png" />
     <Content Include="Assets\icon_n_h.png" />
-    <Content Include="Assets\NanumBarunGothic-YetHangul.ttf" />
+    <Content Include="Fonts\NanumBarunGothic-YetHangul.ttf" />
     <PRIResource Include="Strings\ko-KR\Resources.resw" />
     <PRIResource Include="Strings\en\Resources.resw" />
     <None Include="표준국어대사전_StoreKey.pfx" />
@@ -210,7 +214,7 @@
     <None Include="Package.StoreAssociation.xml" />
     <None Include="Package.xml" />
     <Content Include="Assets\icon_n_p.png" />
-    <Content Include="Files\Han.html" />
+    <Content Include="Fonts\README.txt" />
     <Content Include="Properties\Default.rd.xml" />
   </ItemGroup>
   <ItemGroup>
@@ -218,6 +222,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Page Include="Controls\CheckFont.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Controls\ConMultiSearch.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -272,9 +280,14 @@
       <Version>6.1.9</Version>
     </PackageReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Files\" />
+  </ItemGroup>
   <ItemGroup>
     <XliffResource Include="MultilingualResources\표준국어대사전.en.xlf" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>

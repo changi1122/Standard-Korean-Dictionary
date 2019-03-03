@@ -42,6 +42,23 @@ namespace 표준국어대사전
             {
                 localSettings.Values["#SearchEngine"] = "DicAppSearch";
             }
+
+            if (localSettings.Values["#FontCheckNoLater"] == null)
+            {
+                localSettings.Values["#FontCheckNoLater"] = false;
+            }
+
+            if ((bool)localSettings.Values["#FontCheckNoLater"] == false)
+            {
+                Controls.CheckFont cf = new Controls.CheckFont
+                {
+                    Width = 400,
+                    Height = 300,
+                    HorizontalAlignment = HorizontalAlignment.Center,
+                    VerticalAlignment = VerticalAlignment.Center
+                };
+                FirstGrid.Children.Add(cf);
+            }
         }
 
         private void NavigationView_Loaded(object sender, RoutedEventArgs e)

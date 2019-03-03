@@ -3,6 +3,7 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:표준국어대사전"
+    xmlns:Controls="using:표준국어대사전.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
@@ -107,7 +108,7 @@
         </Style>
     </Page.Resources>
 
-    <Grid Background="#FFE6E6E6">
+    <Grid x:Name="FirstGrid" Background="#FFE6E6E6">
         <NavigationView Loaded="NavigationView_Loaded" Margin="0,0,0,0" Grid.Row="1" SelectionChanged="NavigationView_SelectionChanged" x:Name="Main_Navigation" IsSettingsVisible="{Binding ElementName=settingsCheck,Path=IsChecked}" IsTabStop="False" IsPaneOpen="True" AlwaysShowHeader="False" CompositeMode="SourceOver" ItemInvoked="Main_Navigation_ItemInvoked" IsBackButtonVisible="Collapsed">
             <NavigationView.MenuItems>
                 <NavigationViewItem x:Uid="NaviItem1" Content="단어 검색" Tag="Pages.Dic">

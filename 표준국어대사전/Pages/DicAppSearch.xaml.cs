@@ -20,6 +20,7 @@ using Windows.Management.Deployment;
 using System.Threading.Tasks;
 using Windows.ApplicationModel.Core;
 using Windows.Networking.Connectivity;
+using Windows.Storage;
 
 // 빈 페이지 항목 템플릿에 대한 설명은 https://go.microsoft.com/fwlink/?LinkId=234238에 나와 있습니다.
 
@@ -56,6 +57,17 @@ namespace 표준국어대사전.Pages
         {
             this.InitializeComponent();
             Words = new ObservableCollection<Word>();
+
+            ApplicationDataContainer localSettings = ApplicationData.Current.LocalSettings;
+            if (localSettings.Values["#DisplayFont"] == null)
+            {
+                localSettings.Values["#DisplayFont"] = "나눔바른고딕 옛한글";
+            }
+
+            if (localSettings.Values["#DisplayFontSize"] == null)
+            {
+                localSettings.Values["#DisplayFontSize"] = 18;
+            }
 
             NetworkCheck();
 
@@ -636,6 +648,12 @@ namespace 표준국어대사전.Pages
                                     accentColor.G.ToString("X2", null) +
                                     accentColor.B.ToString("X2", null);
                 kd.SelBackground = hex;
+
+                ApplicationDataContainer localSettings = ApplicationData.Current.LocalSettings;
+                kd.FontName = (string)localSettings.Values["#DisplayFont"];
+
+                kd.FontSize = (int)localSettings.Values["#DisplayFontSize"];
+
                 if (kd.CanSoundPlay(Html) != "false")
                 {
                     BtnDicSoundPlay.Visibility = Visibility.Visible;
