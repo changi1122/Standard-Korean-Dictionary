@@ -274,7 +274,7 @@
     <value>동의</value>
   </data>
   <data name="SPC_DialogText" xml:space="preserve">
-    <value>한국어 맞춤법/문법 검사기는 부산대학교 인공지능연구실과 (주)나라인포테크가 만들고, 운영합니다. 이 앱은 해당 웹 페이지에 연결할 뿐 어떠한 권리도 가지고 있지 않습니다.\n이 검사기는 개인이나 학생만 무료로 사용할 수 있습니다.</value>
+    <value>한국어 맞춤법/문법 검사기는 부산대학교 인공지능연구실과 (주)나라인포테크가 만들고, 운영합니다. 이 앱은 해당 웹 페이지에 연결할 뿐 어떠한 권리도 가지고 있지 않습니다. 이 검사기는 개인이나 학생만 무료로 사용할 수 있습니다.</value>
   </data>
   <data name="SPC_Disagree" xml:space="preserve">
     <value>동의하지 않음</value>
@@ -284,5 +284,38 @@
   </data>
   <data name="DA_BtnDicSoundPlay" xml:space="preserve">
     <value>발음 듣기</value>
+  </data>
+  <data name="CF_BtnClose.Content" xml:space="preserve">
+    <value>닫기</value>
+  </data>
+  <data name="CF_BtnInstall.Content" xml:space="preserve">
+    <value>글꼴 설치</value>
+  </data>
+  <data name="CF_CheckBoxNoLater.Content" xml:space="preserve">
+    <value>다시 보지 않기</value>
+  </data>
+  <data name="CF_Content.Text" xml:space="preserve">
+    <value>A 문구, B 문구, C 문구의 글꼴이 동일하지 않다면, 글꼴 설치가 필요합니다. 아래 글꼴 설치 버튼을 누르면 글꼴을 설치할 수 있습니다.</value>
+  </data>
+  <data name="Set_BtnInstall.Content" xml:space="preserve">
+    <value>글꼴 설치</value>
+  </data>
+  <data name="Set_ComboBoxFontSizeItem0" xml:space="preserve">
+    <value>크게</value>
+  </data>
+  <data name="Set_ComboBoxFontSizeItem1" xml:space="preserve">
+    <value>조금 크게</value>
+  </data>
+  <data name="Set_ComboBoxFontSizeItem2" xml:space="preserve">
+    <value>보통</value>
+  </data>
+  <data name="Set_ComboBoxFontSizeItem3" xml:space="preserve">
+    <value>조금 작게</value>
+  </data>
+  <data name="Set_ComboBoxFontSizeItem4" xml:space="preserve">
+    <value>작게</value>
+  </data>
+  <data name="Set_DisplayFont.Text" xml:space="preserve">
+    <value>표시 글꼴</value>
   </data>
 </root>

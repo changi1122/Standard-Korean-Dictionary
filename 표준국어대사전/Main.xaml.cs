@@ -80,7 +80,7 @@ namespace 표준국어대사전
 
             if (args.IsSettingsInvoked)
             {
-                ContentFrame.Navigate(typeof(Pages.Info));
+                ContentFrame.Navigate(typeof(Pages.Settings));
             }
             else
             {
@@ -126,7 +126,7 @@ namespace 표준국어대사전
 
             if (args.IsSettingsSelected)
             {
-                ContentFrame.Navigate(typeof(Pages.Info));
+                ContentFrame.Navigate(typeof(Pages.Settings));
             }
             else
             {

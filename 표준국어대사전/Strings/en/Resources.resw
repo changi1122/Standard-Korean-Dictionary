@@ -275,7 +275,7 @@
     <value>Agree</value>
   </data>
   <data name="SPC_DialogText" xml:space="preserve">
-    <value>Korean spelling/grammar inspector is created and operated by Pusan National University Artificial Intelligence Laboratory and Nara Infotech Co., Ltd. This app only connects to the webpage and does not have any rights.\nThis inspector is free for individuals or students only.</value>
+    <value>Korean spelling/grammar inspector is created and operated by Pusan National University Artificial Intelligence Laboratory and Nara Infotech Co., Ltd. This app only connects to the webpage and does not have any rights. This inspector is free for individuals or students only.</value>
   </data>
   <data name="SPC_Disagree" xml:space="preserve">
     <value>Disagree</value>
@@ -285,5 +285,38 @@
   </data>
   <data name="DA_BtnDicSoundPlay" xml:space="preserve">
     <value>Listen</value>
+  </data>
+  <data name="CF_BtnClose.Content" xml:space="preserve">
+    <value>Close</value>
+  </data>
+  <data name="CF_BtnInstall.Content" xml:space="preserve">
+    <value>Install</value>
+  </data>
+  <data name="CF_CheckBoxNoLater.Content" xml:space="preserve">
+    <value>Don't show again</value>
+  </data>
+  <data name="CF_Content.Text" xml:space="preserve">
+    <value>If the fonts for A, B, and C are not the same, you need to install the fonts. You can install fonts by clicking the Install Fonts button below.</value>
+  </data>
+  <data name="Set_BtnInstall.Content" xml:space="preserve">
+    <value>Install</value>
+  </data>
+  <data name="Set_ComboBoxFontSizeItem0" xml:space="preserve">
+    <value>large</value>
+  </data>
+  <data name="Set_ComboBoxFontSizeItem1" xml:space="preserve">
+    <value>a bit large</value>
+  </data>
+  <data name="Set_ComboBoxFontSizeItem2" xml:space="preserve">
+    <value>normal</value>
+  </data>
+  <data name="Set_ComboBoxFontSizeItem3" xml:space="preserve">
+    <value>a bit small</value>
+  </data>
+  <data name="Set_ComboBoxFontSizeItem4" xml:space="preserve">
+    <value>small</value>
+  </data>
+  <data name="Set_DisplayFont.Text" xml:space="preserve">
+    <value>Display Font</value>
   </data>
 </root>

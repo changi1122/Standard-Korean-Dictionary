@@ -28,6 +28,13 @@ namespace 표준국어대사전.Pages
         {
             this.InitializeComponent();
 
+            var res = Windows.ApplicationModel.Resources.ResourceLoader.GetForCurrentView();
+            ComboBoxFontSize.Items.Add(res.GetString("Set_ComboBoxFontSizeItem0"));
+            ComboBoxFontSize.Items.Add(res.GetString("Set_ComboBoxFontSizeItem1"));
+            ComboBoxFontSize.Items.Add(res.GetString("Set_ComboBoxFontSizeItem2"));
+            ComboBoxFontSize.Items.Add(res.GetString("Set_ComboBoxFontSizeItem3"));
+            ComboBoxFontSize.Items.Add(res.GetString("Set_ComboBoxFontSizeItem4"));
+
             ApplicationDataContainer localSettings = ApplicationData.Current.LocalSettings;
 
             if (localSettings.Values["#UseOriginWeb"] == null)
