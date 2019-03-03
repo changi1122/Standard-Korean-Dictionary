@@ -22,9 +22,9 @@ namespace 표준국어대사전.Pages
     /// <summary>
     /// 자체적으로 사용하거나 프레임 내에서 탐색할 수 있는 빈 페이지입니다.
     /// </summary>
-    public sealed partial class Info : Page
+    public sealed partial class Settings : Page
     {
-        public Info()
+        public Settings()
         {
             this.InitializeComponent();
 
