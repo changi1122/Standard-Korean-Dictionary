@@ -37,7 +37,7 @@
                             </ComboBox>
                             <ComboBox x:Name="ComboBoxFontSize" SelectionChanged="ComboBoxFontSize_SelectionChanged"  Width="120" Margin="20,0,0,0">
                             </ComboBox>
-                            <Button x:Name="BtnInstall" x:Uid="Set_BtnInstall" Content="글꼴 설치" Margin="20,0,0,0" Click="BtnInstall_Click"/>
+                            <Button x:Name="BtnInstall" x:Uid="Set_BtnInstall" Content="글꼴 설치" Width="80.8" Margin="20,0,0,0" Click="BtnInstall_Click"/>
                         </StackPanel>
                     </StackPanel>
 

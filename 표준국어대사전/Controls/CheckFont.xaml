@@ -35,7 +35,7 @@
         <TextBlock x:Uid="CF_Content" Text="A 문구, B 문구, C 문구의 글꼴이 동일하지 않다면, 글꼴 설치가 필요합니다. 아래 글꼴 설치 버튼을 누르면 글꼴을 설치할 수 있습니다." VerticalAlignment="Bottom" HorizontalAlignment="Stretch" TextWrapping="Wrap" Margin="20,0,20,80"/>
         <CheckBox x:Name="CheckBoxNoLater" x:Uid="CF_CheckBoxNoLater" VerticalAlignment="Bottom" Margin="20,0,0,20" Content="다시 보지 않기"/>
         <StackPanel HorizontalAlignment="Right" VerticalAlignment="Bottom" Orientation="Horizontal">
-            <Button x:Name="BtnInstall" x:Uid="CF_BtnInstall" Margin="0,0,20,20" Content="글꼴 설치" Click="BtnInstall_Click"/>
+            <Button x:Name="BtnInstall" x:Uid="CF_BtnInstall" Margin="0,0,20,20" Content="글꼴 설치" Width="80.8" Click="BtnInstall_Click"/>
             <Button x:Name="BtnClose" x:Uid="CF_BtnClose" Margin="0,0,20,20" Content="닫기" Width="80.8" Click="BtnClose_Click"/>
         </StackPanel>
     </Grid>
