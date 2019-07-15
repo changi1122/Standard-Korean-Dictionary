@@ -32,32 +32,17 @@ namespace 표준국어대사전
             if (localSettings.Values["#FirstSetup"] == null)
                 localSettings.Values["#FirstSetup"] = 0;
 
-            if((int)localSettings.Values["#FirstSetup"] < 1)
+            if ((int)localSettings.Values["#FirstSetup"] < 2)
             {
-                localSettings.Values["#SearchEngine"] = "DicAppSearch";
-                localSettings.Values["#FirstSetup"] = 1;
+                localSettings.Values.Remove("#DisplayFontSize");
+                localSettings.Values.Remove("#FontCheckNoLater");
+                localSettings.Values.Remove("#UseOriginWeb");
+                localSettings.Values["#FirstSetup"] = 2;
             }
 
             if (localSettings.Values["#SearchEngine"] == null)
             {
                 localSettings.Values["#SearchEngine"] = "DicAppSearch";
-            }
-
-            if (localSettings.Values["#FontCheckNoLater"] == null)
-            {
-                localSettings.Values["#FontCheckNoLater"] = false;
-            }
-
-            if ((bool)localSettings.Values["#FontCheckNoLater"] == false)
-            {
-                Controls.CheckFont cf = new Controls.CheckFont
-                {
-                    Width = 400,
-                    Height = 300,
-                    HorizontalAlignment = HorizontalAlignment.Center,
-                    VerticalAlignment = VerticalAlignment.Center
-                };
-                FirstGrid.Children.Add(cf);
             }
         }
 
@@ -97,18 +82,6 @@ namespace 표준국어대사전
                         ContentFrame.Navigate(typeof(Pages.HangulSpelling));
                         break;
 
-                    case "Pages.StandardLanguageSpecification":  //표준어 규정
-                        ContentFrame.Navigate(typeof(Pages.StandardLanguageSpecification));
-                        break;
-
-                    case "Pages.ForeignLanguageNotation":  //외래어 표기법
-                        ContentFrame.Navigate(typeof(Pages.ForeignLanguageNotation));
-                        break;
-
-                    case "Pages.KoreanRomanization":  //국어의 로마자 표기법
-                        ContentFrame.Navigate(typeof(Pages.KoreanRomanization));
-                        break;
-
                     case "Pages.Adjustment":  //수정 내용
                         ContentFrame.Navigate(typeof(Pages.Adjustment));
                         break;
@@ -144,18 +117,6 @@ namespace 표준국어대사전
 
                     case "Pages.HangulSpelling":  //한글 맞춤법
                         ContentFrame.Navigate(typeof(Pages.HangulSpelling));
-                        break;
-
-                    case "Pages.StandardLanguageSpecification":  //표준어 규정
-                        ContentFrame.Navigate(typeof(Pages.StandardLanguageSpecification));
-                        break;
-
-                    case "Pages.ForeignLanguageNotation":  //외래어 표기법
-                        ContentFrame.Navigate(typeof(Pages.ForeignLanguageNotation));
-                        break;
-
-                    case "Pages.KoreanRomanization":  //국어의 로마자 표기법
-                        ContentFrame.Navigate(typeof(Pages.KoreanRomanization));
                         break;
 
                     case "Pages.Adjustment":  //수정 내용

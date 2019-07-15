@@ -12,7 +12,7 @@
     <DefaultLanguage>ko-KR</DefaultLanguage>
     <TargetPlatformIdentifier>UAP</TargetPlatformIdentifier>
     <TargetPlatformVersion Condition=" '$(TargetPlatformVersion)' == '' ">10.0.17763.0</TargetPlatformVersion>
-    <TargetPlatformMinVersion>10.0.16299.0</TargetPlatformMinVersion>
+    <TargetPlatformMinVersion>10.0.17134.0</TargetPlatformMinVersion>
     <MinimumVisualStudioVersion>14</MinimumVisualStudioVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{A5A43C5B-DE2A-4C0C-9213-0A381AF9435A};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -108,10 +108,7 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Class\KorDic.cs" />
-    <Compile Include="Controls\CheckFont.xaml.cs">
-      <DependentUpon>CheckFont.xaml</DependentUpon>
-    </Compile>
+    <Compile Include="Classes\SearchClass.cs" />
     <Compile Include="Controls\ConMultiSearch.xaml.cs">
       <DependentUpon>ConMultiSearch.xaml</DependentUpon>
     </Compile>
@@ -121,7 +118,8 @@
     <Compile Include="Main.xaml.cs">
       <DependentUpon>Main.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Models\Word.cs" />
+    <Compile Include="Classes\DictionaryClass.cs" />
+    <Compile Include="Classes\SearchResultItem.cs" />
     <Compile Include="Pages\Adjustment.xaml.cs">
       <DependentUpon>Adjustment.xaml</DependentUpon>
     </Compile>
@@ -130,9 +128,6 @@
     </Compile>
     <Compile Include="Pages\DicAppSearch.xaml.cs">
       <DependentUpon>DicAppSearch.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Pages\ForeignLanguageNotation.xaml.cs">
-      <DependentUpon>ForeignLanguageNotation.xaml</DependentUpon>
     </Compile>
     <Compile Include="Pages\SpellingChecker.xaml.cs">
       <DependentUpon>SpellingChecker.xaml</DependentUpon>
@@ -143,22 +138,13 @@
     <Compile Include="Pages\Settings.xaml.cs">
       <DependentUpon>Settings.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Pages\KoreanRomanization.xaml.cs">
-      <DependentUpon>KoreanRomanization.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Pages\StandardLanguageSpecification.xaml.cs">
-      <DependentUpon>StandardLanguageSpecification.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest">
       <SubType>Designer</SubType>
     </AppxManifest>
-    <Content Include="Assets\icon_n_y.png" />
-    <Content Include="Assets\icon_n_r.png" />
     <Content Include="Assets\icon_n_m.png" />
-    <Content Include="Assets\icon_n_h.png" />
     <Content Include="Fonts\NanumBarunGothic-YetHangul.ttf" />
     <PRIResource Include="Strings\ko-KR\Resources.resw" />
     <PRIResource Include="Strings\en\Resources.resw" />
@@ -213,7 +199,6 @@
     <Content Include="Assets\Wide310x150Logo.scale-400.png" />
     <None Include="Package.StoreAssociation.xml" />
     <None Include="Package.xml" />
-    <Content Include="Assets\icon_n_p.png" />
     <Content Include="Fonts\README.txt" />
     <Content Include="Properties\Default.rd.xml" />
   </ItemGroup>
@@ -222,10 +207,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Page Include="Controls\CheckFont.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Controls\ConMultiSearch.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -250,10 +231,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Pages\ForeignLanguageNotation.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Pages\SpellingChecker.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -266,23 +243,13 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Pages\KoreanRomanization.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Pages\StandardLanguageSpecification.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform">
       <Version>6.1.9</Version>
     </PackageReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Files\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <XliffResource Include="MultilingualResources\표준국어대사전.en.xlf" />
   </ItemGroup>

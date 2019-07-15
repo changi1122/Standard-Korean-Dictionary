@@ -10,64 +10,27 @@
           <source>단어 검색</source>
           <target state="translated">Word search</target>
         </trans-unit>
-        <trans-unit id="DA_BtnFilter.Label" translate="yes" xml:space="preserve">
-          <source>따로 보기</source>
-          <target state="translated">Filter
-</target>
-        </trans-unit>
         <trans-unit id="DA_BtnInform.Label" translate="yes" xml:space="preserve">
           <source>일러두기</source>
           <target state="translated">Preface</target>
         </trans-unit>
         <trans-unit id="DA_BtnMasterDetail.Label" translate="yes" xml:space="preserve">
-          <source>검색</source>
-          <target state="translated">Search</target>
+          <source>뒤로</source>
+          <target state="translated">Back</target>
         </trans-unit>
         <trans-unit id="DA_BtnMultiSearch.Label" translate="yes" xml:space="preserve">
           <source>다중 검색</source>
-          <target state="translated">Multi search</target>
-        </trans-unit>
-        <trans-unit id="DA_MenuFlyoutCulture.Text" translate="yes" xml:space="preserve">
-          <source>북한어</source>
-          <target state="translated">North Korean word</target>
-        </trans-unit>
-        <trans-unit id="DA_MenuFlyoutDialect.Text" translate="yes" xml:space="preserve">
-          <source>방언</source>
-          <target state="translated">Dialect</target>
-        </trans-unit>
-        <trans-unit id="DA_MenuFlyoutIdiom.Text" translate="yes" xml:space="preserve">
-          <source>관용구</source>
-          <target state="translated">Idiom</target>
-        </trans-unit>
-        <trans-unit id="DA_MenuFlyoutKoreaOrigin.Text" translate="yes" xml:space="preserve">
-          <source>고유어</source>
-          <target state="translated">Native word</target>
-        </trans-unit>
-        <trans-unit id="DA_MenuFlyoutProverb.Text" translate="yes" xml:space="preserve">
-          <source>속담</source>
-          <target state="translated">Proverb</target>
+          <target state="translated">Multi Search</target>
         </trans-unit>
         <trans-unit id="NaviItem2.Content" translate="yes" xml:space="preserve">
           <source>한글 맞춤법</source>
           <target state="translated">Hangul orthography</target>
         </trans-unit>
         <trans-unit id="NaviItem3.Content" translate="yes" xml:space="preserve">
-          <source>표준어 규정</source>
-          <target state="translated">Standard language regulations</target>
-        </trans-unit>
-        <trans-unit id="NaviItem4.Content" translate="yes" xml:space="preserve">
-          <source>외래어 표기법</source>
-          <target state="translated">Loanword notation</target>
-        </trans-unit>
-        <trans-unit id="NaviItem5.Content" translate="yes" xml:space="preserve">
-          <source>국어의 로마자 표기법</source>
-          <target state="translated">Romanization of Korean</target>
-        </trans-unit>
-        <trans-unit id="NaviItem6.Content" translate="yes" xml:space="preserve">
           <source>수정 내용</source>
           <target state="translated">Modifications</target>
         </trans-unit>
-        <trans-unit id="NaviItem7.Content" translate="yes" xml:space="preserve">
+        <trans-unit id="NaviItem4.Content" translate="yes" xml:space="preserve">
           <source>맞춤법/문법 검사기</source>
           <target state="translated">Spelling/grammar inspector</target>
         </trans-unit>
@@ -83,13 +46,301 @@
           <source>다시 시도</source>
           <target state="translated">Refresh</target>
         </trans-unit>
-        <trans-unit id="DA_BtnWebOpen.Label" translate="yes" xml:space="preserve">
-          <source>자세히 보기</source>
-          <target state="translated">See more</target>
-        </trans-unit>
         <trans-unit id="DA_SearchBox.PlaceholderText" translate="yes" xml:space="preserve">
           <source>검색할 단어를 입력하세요</source>
           <target state="translated">Enter words to search</target>
+        </trans-unit>
+        <trans-unit id="ADJ_BtnDefaultbrowser.Content" translate="yes" xml:space="preserve">
+          <source>기본 브라우저에서 보기</source>
+          <target state="translated">View on Default browser</target>
+        </trans-unit>
+        <trans-unit id="ADJ_BtnMSEdge.Content" translate="yes" xml:space="preserve">
+          <source>Microsoft Edge에서 보기</source>
+          <target state="translated">View on Microsoft Edge</target>
+        </trans-unit>
+        <trans-unit id="ADJ_Pivotitem2014.Header" translate="yes" xml:space="preserve">
+          <source>2014년</source>
+          <target state="translated">2014</target>
+        </trans-unit>
+        <trans-unit id="ADJ_Pivotitem2015.Header" translate="yes" xml:space="preserve">
+          <source>2015년</source>
+          <target state="translated">2015</target>
+        </trans-unit>
+        <trans-unit id="ADJ_Pivotitem2016.Header" translate="yes" xml:space="preserve">
+          <source>2016년</source>
+          <target state="translated">2016</target>
+        </trans-unit>
+        <trans-unit id="ADJ_Pivotitem2017.Header" translate="yes" xml:space="preserve">
+          <source>2017년</source>
+          <target state="translated">2017</target>
+        </trans-unit>
+        <trans-unit id="ADJ_Pivotitem2018.Header" translate="yes" xml:space="preserve">
+          <source>2018년</source>
+          <target state="translated">2018</target>
+        </trans-unit>
+        <trans-unit id="Set_AboutText.Text" translate="yes" xml:space="preserve">
+          <source>국립국어원이 만든 표준국어대사전에서 단어를 검색하고, 의미를 보여줍니다.</source>
+          <target state="translated">This app searches words in Standard Korean Language Dictionary created by National Institute of the Korean Language and shows meaning.</target>
+        </trans-unit>
+        <trans-unit id="Set_Address.Text" translate="yes" xml:space="preserve">
+          <source>주소</source>
+          <target state="translated">Address</target>
+        </trans-unit>
+        <trans-unit id="Set_BtnMail.Content" translate="yes" xml:space="preserve">
+          <source>메일</source>
+          <target state="translated">Mail</target>
+        </trans-unit>
+        <trans-unit id="Set_BtnReview.Content" translate="yes" xml:space="preserve">
+          <source>평점 및 리뷰</source>
+          <target state="translated">Ratings and Reviews</target>
+        </trans-unit>
+        <trans-unit id="Set_Call.Text" translate="yes" xml:space="preserve">
+          <source>대표 전화</source>
+          <target state="translated">Call</target>
+        </trans-unit>
+        <trans-unit id="Set_CheckDevelopermode.Content" translate="yes" xml:space="preserve">
+          <source>개발자 도구 활성화</source>
+          <target state="translated">Enable Developer Tools</target>
+        </trans-unit>
+        <trans-unit id="Set_Contact.Text" translate="yes" xml:space="preserve">
+          <source>프로그램 문의</source>
+          <target state="translated">Contact</target>
+        </trans-unit>
+        <trans-unit id="Set_Homepage.Text" translate="yes" xml:space="preserve">
+          <source>홈페이지</source>
+          <target state="translated">Home page</target>
+        </trans-unit>
+        <trans-unit id="Set_Include.Text" translate="yes" xml:space="preserve">
+          <source>이 앱은 아래 항목을 포함하고 있습니다.</source>
+          <target state="translated">This app includes:</target>
+        </trans-unit>
+        <trans-unit id="Set_Institute.Text" translate="yes" xml:space="preserve">
+          <source>국립국어원</source>
+          <target state="translated">National Institute of the Korean Language</target>
+        </trans-unit>
+        <trans-unit id="Set_Option.Text" translate="yes" xml:space="preserve">
+          <source>옵션</source>
+          <target state="translated">Option</target>
+        </trans-unit>
+        <trans-unit id="Set_OptionReset.Text" translate="yes" xml:space="preserve">
+          <source>앱 초기화</source>
+          <target state="translated">App initialization</target>
+        </trans-unit>
+        <trans-unit id="Set_Pivotitem1.Header" translate="yes" xml:space="preserve">
+          <source>일반</source>
+          <target state="translated">General</target>
+        </trans-unit>
+        <trans-unit id="Set_Pivotitem2.Header" translate="yes" xml:space="preserve">
+          <source>라이선스</source>
+          <target state="translated">License</target>
+        </trans-unit>
+        <trans-unit id="Set_Pivotitem3.Header" translate="yes" xml:space="preserve">
+          <source>정보</source>
+          <target state="translated">About</target>
+        </trans-unit>
+        <trans-unit id="Set_RadioButtonDic.Content" translate="yes" xml:space="preserve">
+          <source>웹뷰 기반 검색</source>
+          <target state="translated">WebView based search</target>
+        </trans-unit>
+        <trans-unit id="Set_RadioButtonDicAppSearch.Content" translate="yes" xml:space="preserve">
+          <source>인앱 검색</source>
+          <target state="translated">In-App Search</target>
+        </trans-unit>
+        <trans-unit id="Set_RadioButtonDicAppSearchText.Text" translate="yes" xml:space="preserve">
+          <source>앱 내에서 단어를 검색하고, 검색 결과를 가져와 표시합니다.</source>
+          <target state="translated">Search for words within the app and display their meanings.</target>
+        </trans-unit>
+        <trans-unit id="Set_RadioButtonDicWeb.Content" translate="yes" xml:space="preserve">
+          <source>웹 페이지로 보기</source>
+          <target state="translated">View as web page</target>
+        </trans-unit>
+        <trans-unit id="Set_RadioButtonDicWebText.Text" translate="yes" xml:space="preserve">
+          <source>웹뷰를 통해 웹 페이지를 표시합니다.</source>
+          <target state="translated">Displays web pages in WebView.</target>
+        </trans-unit>
+        <trans-unit id="Set_SearchEngine.Text" translate="yes" xml:space="preserve">
+          <source>검색 방식</source>
+          <target state="translated">Search method</target>
+        </trans-unit>
+        <trans-unit id="SPC_Agree" translate="yes" xml:space="preserve">
+          <source>동의함</source>
+          <target state="translated">Agree</target>
+        </trans-unit>
+        <trans-unit id="SPC_BtnAgreement.Label" translate="yes" xml:space="preserve">
+          <source>동의</source>
+          <target state="translated">Agree</target>
+        </trans-unit>
+        <trans-unit id="SPC_DialogText" translate="yes" xml:space="preserve">
+          <source>한국어 맞춤법/문법 검사기는 부산대학교 인공지능연구실과 (주)나라인포테크가 만들고, 운영합니다. 이 앱은 해당 웹 페이지에 연결할 뿐 어떠한 권리도 가지고 있지 않습니다. 이 검사기는 개인이나 학생만 무료로 사용할 수 있습니다.</source>
+          <target state="translated">Korean spelling/grammar inspector is created and operated by Pusan National University Artificial Intelligence Laboratory and Nara Infotech Co., Ltd. This app only connects to the webpage and does not have any rights. This inspector is free for individuals or students only.</target>
+        </trans-unit>
+        <trans-unit id="SPC_Disagree" translate="yes" xml:space="preserve">
+          <source>동의하지 않음</source>
+          <target state="translated">Disagree</target>
+        </trans-unit>
+        <trans-unit id="Set_BtnResetSetting.Content" translate="yes" xml:space="preserve">
+          <source>설정 초기화</source>
+          <target state="translated">Reset settings</target>
+        </trans-unit>
+        <trans-unit id="Set_DisplayFont.Text" translate="yes" xml:space="preserve">
+          <source>표시 글꼴</source>
+          <target state="translated">Display Font</target>
+        </trans-unit>
+        <trans-unit id="DA_BtnMasterDetail.ToolTipService.ToolTip" translate="yes" xml:space="preserve">
+          <source>뒤로</source>
+          <target state="translated">Back</target>
+        </trans-unit>
+        <trans-unit id="DA_BtnMemo.ToolTipService.ToolTip" translate="yes" xml:space="preserve">
+          <source>메모</source>
+          <target state="translated">Memo</target>
+        </trans-unit>
+        <trans-unit id="DA_BtnMultiSearch.ToolTipService.ToolTip" translate="yes" xml:space="preserve">
+          <source>다중 검색</source>
+          <target state="translated">Multi search</target>
+        </trans-unit>
+        <trans-unit id="Dic_BtnBack.Label" translate="yes" xml:space="preserve">
+          <source>뒤로</source>
+          <target state="translated">Back</target>
+        </trans-unit>
+        <trans-unit id="Dic_BtnBack.ToolTipService.ToolTip" translate="yes" xml:space="preserve">
+          <source>뒤로</source>
+          <target state="translated">Back</target>
+        </trans-unit>
+        <trans-unit id="Dic_BtnHome.Label" translate="yes" xml:space="preserve">
+          <source>홈</source>
+          <target state="translated">Home</target>
+        </trans-unit>
+        <trans-unit id="Dic_BtnHome.ToolTipService.ToolTip" translate="yes" xml:space="preserve">
+          <source>홈</source>
+          <target state="translated">Home</target>
+        </trans-unit>
+        <trans-unit id="Dic_BtnMemo.Label" translate="yes" xml:space="preserve">
+          <source>메모</source>
+          <target state="translated">Memo</target>
+        </trans-unit>
+        <trans-unit id="Dic_BtnMemo.ToolTipService.ToolTip" translate="yes" xml:space="preserve">
+          <source>메모</source>
+          <target state="translated">Memo</target>
+        </trans-unit>
+        <trans-unit id="Dic_BtnMultiSearch.Label" translate="yes" xml:space="preserve">
+          <source>다중 검색</source>
+          <target state="translated">Multi search</target>
+        </trans-unit>
+        <trans-unit id="Dic_BtnOtherApp.Label" translate="yes" xml:space="preserve">
+          <source>다른 브라우저에서 열기</source>
+          <target state="translated">Open in another browser</target>
+        </trans-unit>
+        <trans-unit id="Dic_BtnReadingMode.Label" translate="yes" xml:space="preserve">
+          <source>HTML 보기</source>
+          <target state="translated">View HTML</target>
+        </trans-unit>
+        <trans-unit id="Dic_BtnRefresh.Label" translate="yes" xml:space="preserve">
+          <source>새로 고침</source>
+          <target state="translated">Refresh</target>
+        </trans-unit>
+        <trans-unit id="Dic_BtnRefresh.ToolTipService.ToolTip" translate="yes" xml:space="preserve">
+          <source>새로 고침</source>
+          <target state="translated">Refresh</target>
+        </trans-unit>
+        <trans-unit id="HS_BtnOtherApp.Label" translate="yes" xml:space="preserve">
+          <source>다른 브라우저에서 열기</source>
+          <target state="translated">Open in another browser</target>
+        </trans-unit>
+        <trans-unit id="NNG_c1.Text" translate="yes" xml:space="preserve">
+          <source>  •  네트워크 케이블이 연결되어 있는지 확인합니다.</source>
+          <target state="translated">  •  Make sure the network cable is connected.</target>
+        </trans-unit>
+        <trans-unit id="NNG_c2.Text" translate="yes" xml:space="preserve">
+          <source>  •  비행기 모드가 아닌지 확인하세요.</source>
+          <target state="translated">  •  Make sure it is not in airplane mode.</target>
+        </trans-unit>
+        <trans-unit id="NNG_c3.Text" translate="yes" xml:space="preserve">
+          <source>  •  라우터를 다시 시작하세요.</source>
+          <target state="translated">  •  Restart your router.</target>
+        </trans-unit>
+        <trans-unit id="NNG_c4.Text" translate="yes" xml:space="preserve">
+          <source>  •  무선 스위치가 켜져 있는지 확인하세요.</source>
+          <target state="translated">  •  Make sure the wireless switch is turned on.</target>
+        </trans-unit>
+        <trans-unit id="NNG_NoticeRefresh.Content" translate="yes" xml:space="preserve">
+          <source>다시 시도</source>
+          <target state="translated">Retry</target>
+        </trans-unit>
+        <trans-unit id="NNG_Title.Text" translate="yes" xml:space="preserve">
+          <source>연결되어 있지 않음</source>
+          <target state="translated">Not connected</target>
+        </trans-unit>
+        <trans-unit id="NNG_Todo.Text" translate="yes" xml:space="preserve">
+          <source>다시 온라인 상태가 되도록 합니다.</source>
+          <target state="translated">Bring it back online.</target>
+        </trans-unit>
+        <trans-unit id="NNG_Wait.Text" translate="yes" xml:space="preserve">
+          <source>잠시만 기다려 주세요.</source>
+          <target state="translated">Please wait.</target>
+        </trans-unit>
+        <trans-unit id="ErrorMessageNoInternet" translate="yes" xml:space="preserve">
+          <source>인터넷 연결 없음.</source>
+          <target state="translated">No internet connection.</target>
+        </trans-unit>
+        <trans-unit id="ErrorMessageNoResult" translate="yes" xml:space="preserve">
+          <source>검색 결과 없음.</source>
+          <target state="translated">No search results.</target>
+        </trans-unit>
+        <trans-unit id="HS_BtnBack.Label" translate="yes" xml:space="preserve">
+          <source>뒤로</source>
+          <target state="translated">Back</target>
+        </trans-unit>
+        <trans-unit id="HS_BtnBack.ToolTipService.ToolTip" translate="yes" xml:space="preserve">
+          <source>뒤로</source>
+          <target state="translated">Back</target>
+        </trans-unit>
+        <trans-unit id="HS_BtnHome.Label" translate="yes" xml:space="preserve">
+          <source>홈</source>
+          <target state="translated">Home</target>
+        </trans-unit>
+        <trans-unit id="HS_BtnHome.ToolTipService.ToolTip" translate="yes" xml:space="preserve">
+          <source>홈</source>
+          <target state="translated">Home</target>
+        </trans-unit>
+        <trans-unit id="HS_BtnRefresh.Label" translate="yes" xml:space="preserve">
+          <source>새로 고침</source>
+          <target state="translated">Refresh</target>
+        </trans-unit>
+        <trans-unit id="HS_BtnRefresh.ToolTipService.ToolTip" translate="yes" xml:space="preserve">
+          <source>새로 고침</source>
+          <target state="translated">Refresh</target>
+        </trans-unit>
+        <trans-unit id="Set_APIKey.Text" translate="yes" xml:space="preserve">
+          <source>오픈 API 인증키</source>
+          <target state="translated">Open API authentication key</target>
+        </trans-unit>
+        <trans-unit id="ComboBoxAPIKeyItemCustom" translate="yes" xml:space="preserve">
+          <source>사용자 입력</source>
+          <target state="translated">Custom</target>
+        </trans-unit>
+        <trans-unit id="ComboBoxAPIKeyItemPublic" translate="yes" xml:space="preserve">
+          <source>앱 전용 키</source>
+          <target state="translated">Public key</target>
+        </trans-unit>
+        <trans-unit id="Set_LicenseLink.Content" translate="yes" xml:space="preserve">
+          <source>라이선스 전문</source>
+          <target state="translated">License full text</target>
+        </trans-unit>
+        <trans-unit id="ContentDialogText1" translate="yes" xml:space="preserve">
+          <source>도움말</source>
+          <target state="translated">Help</target>
+        </trans-unit>
+        <trans-unit id="ContentDialogText2" translate="yes" xml:space="preserve">
+          <source>닫기</source>
+          <target state="translated">Close</target>
+        </trans-unit>
+        <trans-unit id="DA_BtnHelp.Label" translate="yes" xml:space="preserve">
+          <source>도움말</source>
+          <target state="translated">Help</target>
+        </trans-unit>
+        <trans-unit id="Dic_BtnHelp.Label" translate="yes" xml:space="preserve">
+          <source>도움말</source>
+          <target state="translated">Help</target>
         </trans-unit>
       </group>
     </body>

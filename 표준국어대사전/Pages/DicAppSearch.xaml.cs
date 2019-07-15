@@ -1,4 +1,4 @@
-﻿using 표준국어대사전.Models;
+﻿using 표준국어대사전.Classes;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -21,78 +21,65 @@ using System.Threading.Tasks;
 using Windows.ApplicationModel.Core;
 using Windows.Networking.Connectivity;
 using Windows.Storage;
+using System.Net.Http;
+using System.Xml.Linq;
 
 // 빈 페이지 항목 템플릿에 대한 설명은 https://go.microsoft.com/fwlink/?LinkId=234238에 나와 있습니다.
 
 namespace 표준국어대사전.Pages
 {
-    /// <summary>
-    /// 자체적으로 사용하거나 프레임 내에서 탐색할 수 있는 빈 페이지입니다.
-    /// </summary>
     public sealed partial class DicAppSearch : Page
     {
         const int MASTERGRID_WIDTH = 320;
         const int MULTISEARCHGRID_WIDTH = 400;
 
-        struct WordData
-        {
-            public string WordTitle;
-            public string WordPronounce;
-            public string WordDefinition;
-            public string WordSubDefinition;
-            public string WordJavascript;
-        }
-
-        string[] WordList = new string[10];
-        WordData[] w = new WordData[10];
-
-        private ObservableCollection<Word> Words;
-        //private List<Word> Words;
-        //Words = WordManager.GetWords();
+        private ObservableCollection<SearchResultItem> SearchResults;
 
         bool IsWebViewOpen = false;
-        bool IsSubSearchProgressed = false;
 
         public DicAppSearch()
         {
             this.InitializeComponent();
-            Words = new ObservableCollection<Word>();
+            SearchResults = new ObservableCollection<SearchResultItem>();
+            //SearchResults = new ObservableCollection<SearchResultItem>(SampleManager.GetWords());
 
             ApplicationDataContainer localSettings = ApplicationData.Current.LocalSettings;
             if (localSettings.Values["#DisplayFont"] == null)
-            {
                 localSettings.Values["#DisplayFont"] = "나눔바른고딕 옛한글";
-            }
-
-            if (localSettings.Values["#DisplayFontSize"] == null)
-            {
-                localSettings.Values["#DisplayFontSize"] = 18;
-            }
+            if (localSettings.Values["#UseCustomAPIKey"] == null)
+                localSettings.Values["#UseCustomAPIKey"] = false;
+            if (localSettings.Values["#APIKey"] == null)
+                localSettings.Values["#APIKey"] = "C58534E2D39CF7CA69BCA193541C1688";
 
             NetworkCheck();
 
             return;
         }
 
+        public static bool IsInternetConnected()
+        {
+            ConnectionProfile connections = NetworkInformation.GetInternetConnectionProfile();
+            bool internet = (connections != null) &&
+                (connections.GetNetworkConnectivityLevel() == NetworkConnectivityLevel.InternetAccess);
+            return internet;
+        }
+
         private bool NetworkCheck()
         {
-            if (NetworkInterface.GetIsNetworkAvailable() == true)
+            if (IsInternetConnected() == true)
             {
-                if (WebViewMain.Source != new Uri("http://stdweb2.korean.go.kr/search/List_dic.jsp"))
-                    WebViewMain.Navigate(new Uri("http://stdweb2.korean.go.kr/search/List_dic.jsp"));
-                if (WebViewDefinition.Source != new Uri("http://stdweb2.korean.go.kr/search/List_dic.jsp"))
-                    WebViewDefinition.Navigate(new Uri("http://stdweb2.korean.go.kr/search/List_dic.jsp"));
                 return true;
             }
             else
             {
-                ListviewWordDetail.Visibility = Visibility.Collapsed;
-                ProgressBar.ShowError = true;
-                DetailProgressBar.ShowError = true;
                 SearchBox.IsEnabled = false;
 
-                Words.Clear();
-                TextBlockErrorMessage.Text = "인터넷 연결 없음.";
+                //검색 결과 Listview 지우기
+                SearchResults.Clear();
+                //정의 Listview 지우기
+                ListviewWordDetail.Items.Clear();
+                var res = Windows.ApplicationModel.Resources.ResourceLoader.GetForCurrentView();
+                TextBlockErrorMessage.Text = res.GetString("ErrorMessageNoInternet");
                 TextBlockErrorMessage.Visibility = Visibility.Visible;
                 BtnNetStatusRefresh.Visibility = Visibility.Visible;
                 return false;
@@ -103,43 +90,38 @@ namespace 표준국어대사전.Pages
         {
             if (NetworkCheck() == true)
             {
-                ProgressBar.ShowError = false;
                 SearchBox.IsEnabled = true;
 
-                Words.Clear();
                 TextBlockErrorMessage.Visibility = Visibility.Collapsed;
                 BtnNetStatusRefresh.Visibility = Visibility.Collapsed;
             }
         }
 
-        private async void ListView_ItemClick(object sender, ItemClickEventArgs e)
+        private void ListView_ItemClick(object sender, ItemClickEventArgs e)
         {
-            var word = (Word)e.ClickedItem;
+            if (NetworkCheck() == false)
+                return;
 
-            if (word.Javascript.StartsWith("fncGoPage('/search/List_dic.jsp'") == true)
+            var clickedItem = (SearchResultItem)e.ClickedItem;
+
+            if (clickedItem.target_code == -321)
             {
-                var functionString_Text = string.Format(word.Javascript);
-                await WebViewMain.InvokeScriptAsync("eval", new string[] { functionString_Text });
+                //더보기 누를 시 동작
 
-                Words.Remove(word);
-
+                SearchClass sc = new SearchClass(ListviewSearchResult, SearchResults, MasterProgressBar, TextBlockErrorMessage);
+                sc.GetSearchResults(clickedItem.sup_no + 1, 10, clickedItem.definition);
+                SearchResults.Remove(clickedItem);
                 return;
             }
 
             ListviewWordDetail.Visibility = Visibility.Visible;
 
             //항목 클릭시 동작
-            WordTitleItemTextBlock.Text = word.WordTitle;
-            WordPronounceItemTextBlock.Text = word.WordPronounce;
 
-            //단어 정의 웹 페이지 로드
-            var functionString = string.Format(word.Javascript);
-            await WebViewDefinition.InvokeScriptAsync("eval", new string[] { functionString });
-
-            WordJavascriptItem.Text = word.Javascript;
-            BtnDicSoundPlay.Visibility = Visibility.Collapsed;
-            BtnWebOpen.Visibility = Visibility.Visible;
-            BtnMemo.Visibility = Visibility.Visible;
+            //정의 Listview 지우기
+            ListviewWordDetail.Items.Clear();
+            DictionaryClass dc = new DictionaryClass(ListviewWordDetail, this, DetailProgressBar);
+            dc.GetWordDetail(clickedItem.target_code.ToString(), clickedItem.word, clickedItem.sup_no);
 
             if (BasicGrid.ActualWidth < 686)
             {
@@ -151,38 +133,31 @@ namespace 표준국어대사전.Pages
 
         private async void SearchBox_QuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
         {
+            TextBlockErrorMessage.Visibility = Visibility.Collapsed; //검색 결과 없음. 표시 지우기
+
             if (NetworkCheck() == false)
                 return;
 
-            if (SearchBox.Text == "")
+            //검색어 숫자 지우기
+            string searchText = SearchBox.Text;
+            while (searchText.Length >= 1 && char.IsNumber(searchText[searchText.Length - 1]))
             {
-                // Create a MessageDialog
-                var messageDialog = new MessageDialog("찾을 말 또는 단어를 입력하세요.");
-                // Show MessageDialog
-                await messageDialog.ShowAsync();
+                searchText = searchText.Substring(0, searchText.Length - 1);
+            }
 
+            if (searchText == "")
+            {
+                var messageDialog = new MessageDialog("찾을 말 또는 단어를 입력하세요.");
+                await messageDialog.ShowAsync();
                 return;
             }
 
-            //텍스트를 웹뷰에 입력합니다.
-            var inputValue_Text = SearchBox.Text;
-            while (true)
-            {
-                int n;
-                if (int.TryParse(inputValue_Text.Substring(inputValue_Text.Length - 1), out n) || inputValue_Text.Substring(inputValue_Text.Length - 1) == " ")
-                    inputValue_Text = inputValue_Text.Remove(inputValue_Text.Length - 1);
-                else
-                    break;
-            }
-
-            var functionString_Text = string.Format(@"document.getElementById('SearchText').value = '{0}';", inputValue_Text);
-            await WebViewMain.InvokeScriptAsync("eval", new string[] { functionString_Text });
-
-            //검색 버튼을 누릅니다.
-            var functionString = string.Format(@"fncTopSearch()");
-            await WebViewMain.InvokeScriptAsync("eval", new string[] { functionString });
-
-            Words.Clear();
+            //검색 결과 Listview 지우기
+            SearchResults.Clear();
+            //정의 Listview 지우기
+            ListviewWordDetail.Items.Clear();
+            SearchClass sc = new SearchClass(ListviewSearchResult, SearchResults, MasterProgressBar, TextBlockErrorMessage);
+            sc.GetSearchResults(1, 10, searchText);
         }
 
         private void SearchBox_KeyDown(object sender, KeyRoutedEventArgs e)
@@ -193,260 +168,14 @@ namespace 표준국어대사전.Pages
             }
         }
 
-        private void WebViewMain_NavigationStarting(WebView sender, WebViewNavigationStartingEventArgs args)
-        {
-            SearchBox.IsEnabled = false;
-            ProgressBar.ShowError = false;
-            TextBlockErrorMessage.Visibility = Visibility.Collapsed;
-            ProgressBar.Visibility = Visibility.Visible;
-
-            BtnDicSoundPlay.Visibility = Visibility.Collapsed;
-            BtnWebOpen.Visibility = Visibility.Collapsed;
-            BtnMemo.Visibility = Visibility.Collapsed;
-            WordTitleItemTextBlock.Text = "";
-            WordPronounceItemTextBlock.Text = "";
-            WordDefinitionItemWebview.NavigateToString("");
-            WordJavascriptItem.Text = "";
-        }
-
-        private async void WebViewMain_NavigationCompletedAsync(WebView sender, WebViewNavigationCompletedEventArgs args)
-        {
-            w = new WordData[10];
-
-            int a, b;
-            string full = await WebViewMain.InvokeScriptAsync("eval", new string[] { "document.documentElement.outerHTML;" });
-            string Work;
-
-            full = full.Replace(Environment.NewLine, " ");
-
-            if (full.IndexOf("<p class=\"exp\">") == -1)
-            {
-                ProgressBar.Visibility = Visibility.Collapsed;
-                SearchBox.IsEnabled = true;
-
-                Words.Clear();
-                TextBlockErrorMessage.Text = "검색 결과 없음.";
-                TextBlockErrorMessage.Visibility = Visibility.Visible;
-
-                return;
-            }
-
-            if (full.IndexOf("<td class=\"sword\" background=\"/image/sq_bg.gif\">") == -1)
-            {
-                var messageDialog = new MessageDialog("검색 실패. (Code1)");
-                await messageDialog.ShowAsync();
-                ProgressBar.ShowError = true;
-                SearchBox.IsEnabled = true;
-                return;
-            }
-
-            a = full.IndexOf("<td class=\"sword\" background=\"/image/sq_bg.gif\">");
-            b = full.IndexOf("</span>", a);
-            Work = full.Substring(a + 49, b - a - 49);
-            Work = Work.Remove(Work.IndexOf('<'), Work.LastIndexOf('>') - Work.IndexOf('<') + 1);
-
-            int MaxNum = Convert.ToInt32(Work.Substring(Work.IndexOf('(') + 1, Work.LastIndexOf('건') - Work.IndexOf('(') - 1));
-            int PageMax = Convert.ToInt32(Math.Ceiling((double)MaxNum / 10));
-
-            if (MaxNum == 0)
-            {
-
-            }
-
-            int NowPageNum = Convert.ToInt32(full.Substring(full.IndexOf("<span class=\"page_on\">") + 22, full.IndexOf("</span>", full.IndexOf("<span class=\"page_on\">")) - full.IndexOf("<span class=\"page_on\">") - 22));
-
-            Work = full.Substring(full.IndexOf("<span id=\"print_area\">"));
-            for (a = 0; a < 10; a++)
-            {
-                if (a != 0)
-                    Work = Work.Replace("<p class=\"exp\">" + WordList[a - 1] + "</p>", "");
-
-                if (Work.IndexOf("<p class=\"exp\">") == -1)
-                    break;
-
-                WordList[a] = Work.Substring(Work.IndexOf("<p class=\"exp\">") + 15, Work.IndexOf("</p>") - Work.IndexOf("<p class=\"exp\">") - 15);
-            }
-            int Wordamount = a;
-
-            for (a = 0; a < Wordamount; a++)
-            {
-                string[] wp = new string[2];
-                wp[0] = WordList[a].Substring(0, WordList[a].IndexOf("&nbsp;&nbsp;<a"));
-                wp[1] = WordList[a].Replace(wp[0] + "&nbsp;&nbsp;", "");
-                w[a].WordJavascript = wp[0].Substring(wp[0].IndexOf("javascript") + 11, wp[0].IndexOf(';') - wp[0].IndexOf("javascript") - 11 + 1);
-                if (wp[0].IndexOf("<span class=\"sdblue\">") != -1)
-                {
-                    w[a].WordPronounce = wp[0].Substring(wp[0].IndexOf("<span class=\"sdblue\">"), wp[0].IndexOf("</span>") - wp[0].IndexOf("<span class=\"sdblue\">"));
-                    w[a].WordPronounce = DeletePart(w[a].WordPronounce);
-                    wp[0] = wp[0].Remove(wp[0].IndexOf("<span class=\"sdblue\">"));
-                }
-                if (wp[1].IndexOf('〔') != -1)
-                {
-                    w[a].WordSubDefinition = wp[1].Substring(wp[1].IndexOf('〔'), wp[1].LastIndexOf('〕') + 1 - wp[1].IndexOf('〔'));
-                    wp[1] = wp[1].Replace(w[a].WordSubDefinition, "");
-                    w[a].WordSubDefinition = DeletePart(w[a].WordSubDefinition);
-                }
-                w[a].WordTitle = DeletePart(wp[0]);
-                w[a].WordDefinition = DeletePart(wp[1]);
-
-                while (true)
-                {
-                    if (w[a].WordDefinition.Substring(w[a].WordDefinition.Length - 1) == " ")
-                        w[a].WordDefinition = w[a].WordDefinition.Remove(w[a].WordDefinition.Length - 1);
-                    else
-                        break;
-                }
-
-                if (w[a].WordDefinition.Substring(w[a].WordDefinition.Length - 1) != Environment.NewLine)
-                    w[a].WordDefinition = w[a].WordDefinition + Environment.NewLine;
-
-                string Pronounce = w[a].WordPronounce + " " + w[a].WordSubDefinition;
-                if (Pronounce.StartsWith(" "))
-                {
-                    Pronounce = Pronounce.Substring(1);
-                }
-
-                Words.Add(new Word { WordTitle = w[a].WordTitle, Javascript = w[a].WordJavascript, WordPronounce = Pronounce, WordDefinition = w[a].WordDefinition });
-            }
-
-            if (NowPageNum < PageMax)
-            {
-                Words.Add(new Word { WordTitle = "[더 보기]", Javascript = "fncGoPage('/search/List_dic.jsp','','" + (NowPageNum + 1) + "','')", WordPronounce = "", WordDefinition = "" });
-            }
-
-            ProgressBar.Visibility = Visibility.Collapsed;
-            SearchBox.IsEnabled = true;
-        }
-
-        public string DeletePart(string Work)
-        {
-            /*
-            Delete
-                <a >
-                <strong>
-                <font >
-                </ >
-                <imgsrc >
-                <span >
-                <b>
-            
-            Replace
-                (( )) -> +Space
-                &nbsp; -> Space
-                <br> -> Enter
-                &lt; -> <
-                &gt; -> >
-            */
-            while (true)
-            {
-                if (Work.IndexOf("<a") == -1)
-                    break;
-                Work = Work.Remove(Work.IndexOf("<a"), Work.IndexOf('>', Work.IndexOf("<a")) - Work.IndexOf("<a") + 1);
-            }
-            while (true)
-            {
-                if (Work.IndexOf("</") == -1)
-                    break;
-                Work = Work.Remove(Work.IndexOf("</"), Work.IndexOf('>', Work.IndexOf("</")) - Work.IndexOf("</") + 1);
-            }
-            while (true)
-            {
-                if (Work.IndexOf("<font") == -1)
-                    break;
-                Work = Work.Remove(Work.IndexOf("<font"), Work.IndexOf('>', Work.IndexOf("<font")) - Work.IndexOf("<font") + 1);
-            }
-            while (true)
-            {
-                if (Work.IndexOf("<span") == -1)
-                    break;
-                Work = Work.Remove(Work.IndexOf("<span"), Work.IndexOf('>', Work.IndexOf("<span")) - Work.IndexOf("<span") + 1);
-            }
-            while (true)
-            {
-                if (Work.IndexOf("<img") == -1)
-                    break;
-                Work = Work.Remove(Work.IndexOf("<img"), Work.IndexOf('>', Work.IndexOf("<img")) - Work.IndexOf("<img") + 1);
-            }
-            while (true)
-            {
-                if (Work.IndexOf("<imgsrc") == -1)
-                    break;
-                Work = Work.Remove(Work.IndexOf("<imgsrc"), Work.IndexOf('>', Work.IndexOf("<imgsrc")) - Work.IndexOf("<imgsrc") + 1);
-            }
-            while (true)
-            {
-                if (Work.IndexOf("&nbsp;") == -1)
-                    break;
-                Work = Work.Replace("&nbsp;", " ");
-            }
-            while (true)
-            {
-                if (Work.IndexOf("<strong>") == -1)
-                    break;
-                Work = Work.Replace("<strong>", "");
-            }
-            while (true)
-            {
-                if (Work.IndexOf("<b>") == -1)
-                    break;
-                Work = Work.Replace("<b>", "");
-            }
-            while (true)
-            {
-                if (Work.IndexOf("<br>") == -1)
-                    break;
-                Work = Work.Replace("<br>", Environment.NewLine);
-            }
-            while (true)
-            {
-                if (Work.IndexOf("&lt;") == -1)
-                    break;
-                Work = Work.Replace("&lt;", "<");
-            }
-            while (true)
-            {
-                if (Work.IndexOf("&gt;") == -1)
-                    break;
-                Work = Work.Replace("&gt;", ">");
-            }
-            return Work;
-        }
-
-        private void BtnWebOpen_Click(object sender, RoutedEventArgs e)
-        {
-            WebViewOpen(new Uri("http://stdweb2.korean.go.kr/search/List_dic.jsp"));
-        }
-
-        private async void SubSearch_NavigationCompletedAsync(WebView sender, WebViewNavigationCompletedEventArgs args)
-        {
-            if (sender.Source == new Uri("http://stdweb2.korean.go.kr/search/List_dic.jsp") && IsSubSearchProgressed == false)
-            {
-                var functionString_Text = string.Format(WordJavascriptItem.Text);
-                await sender.InvokeScriptAsync("eval", new string[] { functionString_Text });
-                IsSubSearchProgressed = true;
-            }
-            Grid g = (Grid)BasicGrid.FindName("SubGrid");
-            g.Background = (SolidColorBrush)Resources["BarColor"];
-        }
-
-
         private void BtnSubSearchClose_Click(object sender, RoutedEventArgs e)
         {
-            BasicGrid.Children.Remove((UIElement)this.FindName("SubGrid"));
+            BasicGrid.Children.Remove((UIElement)FindName("SubGrid"));
             IsWebViewOpen = false;
-        }
-
-        private void BtnMemo_Click(object sender, RoutedEventArgs e)
-        {
-            if (MemoGrid.Visibility == Visibility.Collapsed)
-                MemoGrid.Visibility = Visibility.Visible;
-            else
-                MemoGrid.Visibility = Visibility.Collapsed;
         }
 
         private void WebViewOpen(Uri uri)
         {
-            IsSubSearchProgressed = false;
             if (IsWebViewOpen == true)
             {
                 Grid g = (Grid)BasicGrid.FindName("SubGrid");
@@ -460,8 +189,19 @@ namespace 표준국어대사전.Pages
                     Name = "SubGrid",
                     Margin = new Thickness(0, 40, 0, 0),
                     VerticalAlignment = VerticalAlignment.Stretch,
-                    HorizontalAlignment = HorizontalAlignment.Stretch
+                    HorizontalAlignment = HorizontalAlignment.Stretch,
+                    Background = new SolidColorBrush(Windows.UI.Colors.White)
                 };
+
+                var ColorBar = new Windows.UI.Xaml.Shapes.Rectangle
+                {
+                    Margin = new Thickness(0, 0, 0, 0),
+                    VerticalAlignment = VerticalAlignment.Top,
+                    HorizontalAlignment = HorizontalAlignment.Stretch,
+                    Height = 40,
+                    Fill = (SolidColorBrush)Resources["BarColor"]
+                };
+                SubGrid.Children.Add(ColorBar);
 
                 var CloseBtn = new Button
                 {
@@ -474,7 +214,7 @@ namespace 표준국어대사전.Pages
                     Content = "",
                     FontFamily = new FontFamily("Segoe MDL2 Assets"),
                     Background = null,
-                    Foreground = (SolidColorBrush)Resources["Black"]
+                    Foreground = new SolidColorBrush(Windows.UI.Colors.Black)
                 };
                 CloseBtn.Click += BtnSubSearchClose_Click;
                 SubGrid.Children.Add(CloseBtn);
@@ -487,7 +227,6 @@ namespace 표준국어대사전.Pages
                     HorizontalAlignment = HorizontalAlignment.Stretch,
                     Source = uri
                 };
-                SubSearch.NavigationCompleted += SubSearch_NavigationCompletedAsync;
                 SubGrid.Children.Add(SubSearch);
 
                 BasicGrid.Children.Add(SubGrid);
@@ -495,34 +234,22 @@ namespace 표준국어대사전.Pages
             }
         }
 
-        private void MenuFlyoutIdiom_Click(object sender, RoutedEventArgs e)
-        {
-            WebViewOpen(new Uri("http://stdweb2.korean.go.kr/section/idiom_list.jsp"));
-        }
-
-        private void MenuFlyoutDialect_Click(object sender, RoutedEventArgs e)
-        {
-            WebViewOpen(new Uri("http://stdweb2.korean.go.kr/section/region_list.jsp"));
-        }
-
-        private void MenuFlyoutProverb_Click(object sender, RoutedEventArgs e)
-        {
-            WebViewOpen(new Uri("http://stdweb2.korean.go.kr/section/proverb_list.jsp"));
-        }
-
-        private void MenuFlyoutCulture_Click(object sender, RoutedEventArgs e)
-        {
-            WebViewOpen(new Uri("http://stdweb2.korean.go.kr/section/north_list.jsp"));
-        }
-
-        private void MenuFlyoutKoreaOrigin_Click(object sender, RoutedEventArgs e)
-        {
-            WebViewOpen(new Uri("http://stdweb2.korean.go.kr/section/origin_list.jsp"));
-        }
-
         private void BtnInform_Click(object sender, RoutedEventArgs e)
         {
-            WebViewOpen(new Uri("http://stdweb2.korean.go.kr/guide/entry.jsp"));
+            WebViewOpen(new Uri("https://stdict.korean.go.kr/help/popup/entry.do"));
+        }
+
+        private async void BtnHelp_Click(object sender, RoutedEventArgs e)
+        {
+            await Windows.System.Launcher.LaunchUriAsync(new Uri("https://costudio1122.blogspot.com/p/blog-page_76.html"));
+        }
+
+        private void BtnMemo_Click(object sender, RoutedEventArgs e)
+        {
+            if (MemoGrid.Visibility == Visibility.Collapsed)
+                MemoGrid.Visibility = Visibility.Visible;
+            else
+                MemoGrid.Visibility = Visibility.Collapsed;
         }
 
         private void BtnMemoClose_Click(object sender, RoutedEventArgs e)
@@ -538,7 +265,7 @@ namespace 표준국어대사전.Pages
                 MasterGrid.Margin = new Thickness(0, 48, 0, 0);
                 MasterGrid.Width = MASTERGRID_WIDTH;
                 MasterGrid.HorizontalAlignment = HorizontalAlignment.Left;
-                DetailGrid.Margin = new Thickness(321, 48, 0, 0);
+                DetailGrid.Margin = new Thickness(MASTERGRID_WIDTH, 48, 0, 0);
                 DetailGrid.Visibility = Visibility.Visible;
                 if (BasicGrid.FindName("MultiSearchGrid") != null)
                 {
@@ -570,6 +297,9 @@ namespace 표준국어대사전.Pages
 
         private void BtnMasterDetail_Click(object sender, RoutedEventArgs e)
         {
+            //정의 Listview 지우기
+            ListviewWordDetail.Items.Clear();
+
             DetailGrid.Visibility = Visibility.Collapsed;
             Separator.Visibility = Visibility.Collapsed;
             BtnMasterDetail.Visibility = Visibility.Collapsed;
@@ -610,7 +340,7 @@ namespace 표준국어대사전.Pages
                 Content = "",
                 FontFamily = new FontFamily("Segoe MDL2 Assets"),
                 Background = null,
-                Foreground = (SolidColorBrush)Resources["Black"]
+                Foreground = new SolidColorBrush(Windows.UI.Colors.Black)
             };
             CloseBtn.Click += BtnMultiSearchClose_Click;
             MultiSearchGrid.Children.Add(CloseBtn);
@@ -631,94 +361,6 @@ namespace 표준국어대사전.Pages
         private void BtnMultiSearchClose_Click(object sender, RoutedEventArgs e)
         {
             BasicGrid.Children.Remove((UIElement)this.FindName("MultiSearchGrid"));
-        }
-
-        private async void WebViewDefinition_NavigationCompletedAsync(WebView sender, WebViewNavigationCompletedEventArgs args)
-        {
-            DetailProgressBar.Visibility = Visibility.Collapsed;
-            DetailProgressBar.ShowError = false;
-
-            if (args.Uri.ToString() == "http://stdweb2.korean.go.kr/search/View.jsp")
-            {
-                string Html = await WebViewDefinition.InvokeScriptAsync("eval", new string[] { "document.documentElement.outerHTML;" });
-
-                KorDic kd = new KorDic();
-                Windows.UI.Color accentColor = (Windows.UI.Color)this.Resources["SystemAccentColor"];
-                string hex = "#" + accentColor.R.ToString("X2", null) +
-                                    accentColor.G.ToString("X2", null) +
-                                    accentColor.B.ToString("X2", null);
-                kd.SelBackground = hex;
-
-                ApplicationDataContainer localSettings = ApplicationData.Current.LocalSettings;
-                kd.FontName = (string)localSettings.Values["#DisplayFont"];
-
-                kd.FontSize = (int)localSettings.Values["#DisplayFontSize"];
-
-                if (kd.CanSoundPlay(Html) != "false")
-                {
-                    BtnDicSoundPlay.Visibility = Visibility.Visible;
-                    BtnDicSoundPlay.Content = kd.CanSoundPlay(Html);
-                }
-                else
-                    BtnDicSoundPlay.Visibility = Visibility.Collapsed;
-                WordDefinitionItemWebview.NavigateToString(kd.GetWordDefinitionInHtmlFormat(Html));
-                WebViewDefinition.Navigate(new Uri("http://stdweb2.korean.go.kr/search/List_dic.jsp"));
-            }
-            WordDefinitionItemWebview.Visibility = Visibility.Visible;
-            ListviewSearchResult.IsEnabled = true;
-        }
-
-        private void WebViewDefinition_NavigationStarting(WebView sender, WebViewNavigationStartingEventArgs args)
-        {
-            ListviewSearchResult.IsEnabled = false;
-            WordDefinitionItemWebview.Visibility = Visibility.Collapsed;
-            DetailProgressBar.ShowError = false;
-            DetailProgressBar.Visibility = Visibility.Visible;
-        }
-
-        private void WebViewDefinition_NavigationFailed(object sender, WebViewNavigationFailedEventArgs e)
-        {
-            ListviewSearchResult.IsEnabled = true;
-            DetailProgressBar.Visibility = Visibility.Visible;
-            DetailProgressBar.ShowError = true;
-        }
-
-        private void WebViewDefinition_NewWindowRequested(WebView sender, WebViewNewWindowRequestedEventArgs args)
-        {
-            string address = args.Uri.ToString();
-
-            if (address.IndexOf("DicSoundPlayWordNo") != -1)
-            {
-                args.Handled = true;
-
-                var DicSoundPlay = new WebView
-                {
-                    Name = "WebViewDicSoundPlay",
-                    Visibility = Visibility.Collapsed
-                };
-                BasicGrid.Children.Add(DicSoundPlay);
-                var view = (WebView)FindName("WebViewDicSoundPlay");
-                view.NavigationCompleted += PlayDic;
-                view.Navigate(args.Uri);
-                return;
-            }
-            WebViewDefinition.Navigate(args.Uri);
-            args.Handled = true;
-        }
-
-        private async void BtnDicSoundPlay_Click(object sender, RoutedEventArgs e)
-        {
-            var functionString = string.Format((string)BtnDicSoundPlay.Content);
-            await WebViewDefinition.InvokeScriptAsync("eval", new string[] { functionString });
-        }
-
-        private async void PlayDic(WebView sender, WebViewNavigationCompletedEventArgs args)
-        {
-            var view = (WebView)FindName("WebViewDicSoundPlay");
-            var functionString = string.Format(@"document.getElementsByTagName('img').item(1).click()");
-            await view.InvokeScriptAsync("eval", new string[] { functionString });
-
-            BasicGrid.Children.Remove((UIElement)this.FindName("WebViewDicSoundPlay"));
         }
     }
 }

@@ -1,110 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
-  <!-- 
-    Microsoft ResX Schema 
-    
-    Version 2.0
-    
-    The primary goals of this format is to allow a simple XML format 
-    that is mostly human readable. The generation and parsing of the 
-    various data types are done through the TypeConverter classes 
-    associated with the data types.
-    
-    Example:
-    
-    ... ado.net/XML headers & schema ...
-    <resheader name="resmimetype">text/microsoft-resx</resheader>
-    <resheader name="version">2.0</resheader>
-    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
-    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
-    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
-    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
-    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
-        <value>[base64 mime encoded serialized .NET Framework object]</value>
-    </data>
-    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
-        <comment>This is a comment</comment>
-    </data>
-                
-    There are any number of "resheader" rows that contain simple 
-    name/value pairs.
-    
-    Each data row contains a name, and value. The row also contains a 
-    type or mimetype. Type corresponds to a .NET class that support 
-    text/value conversion through the TypeConverter architecture. 
-    Classes that don't support this are serialized and stored with the 
-    mimetype set.
-    
-    The mimetype is used for serialized objects, and tells the 
-    ResXResourceReader how to depersist the object. This is currently not 
-    extensible. For a given mimetype the value must be set accordingly:
-    
-    Note - application/x-microsoft.net.object.binary.base64 is the format 
-    that the ResXResourceWriter will generate, however the reader can 
-    read any of the formats listed below.
-    
-    mimetype: application/x-microsoft.net.object.binary.base64
-    value   : The object must be serialized with 
-            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
-            : and then encoded with base64 encoding.
-    
-    mimetype: application/x-microsoft.net.object.soap.base64
-    value   : The object must be serialized with 
-            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
-            : and then encoded with base64 encoding.
-
-    mimetype: application/x-microsoft.net.object.bytearray.base64
-    value   : The object must be serialized into a byte array 
-            : using a System.ComponentModel.TypeConverter
-            : and then encoded with base64 encoding.
-    -->
-  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
-    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
-    <xsd:element name="root" msdata:IsDataSet="true">
-      <xsd:complexType>
-        <xsd:choice maxOccurs="unbounded">
-          <xsd:element name="metadata">
-            <xsd:complexType>
-              <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" />
-              </xsd:sequence>
-              <xsd:attribute name="name" use="required" type="xsd:string" />
-              <xsd:attribute name="type" type="xsd:string" />
-              <xsd:attribute name="mimetype" type="xsd:string" />
-              <xsd:attribute ref="xml:space" />
-            </xsd:complexType>
-          </xsd:element>
-          <xsd:element name="assembly">
-            <xsd:complexType>
-              <xsd:attribute name="alias" type="xsd:string" />
-              <xsd:attribute name="name" type="xsd:string" />
-            </xsd:complexType>
-          </xsd:element>
-          <xsd:element name="data">
-            <xsd:complexType>
-              <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
-                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
-              </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
-              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
-              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
-              <xsd:attribute ref="xml:space" />
-            </xsd:complexType>
-          </xsd:element>
-          <xsd:element name="resheader">
-            <xsd:complexType>
-              <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
-              </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required" />
-            </xsd:complexType>
-          </xsd:element>
-        </xsd:choice>
-      </xsd:complexType>
-    </xsd:element>
-  </xsd:schema>
   <resheader name="resmimetype">
     <value>text/microsoft-resx</value>
   </resheader>
@@ -120,50 +15,22 @@
   <data name="NaviItem1.Content" xml:space="preserve">
     <value>Word search</value>
   </data>
-  <data name="DA_BtnFilter.Label" xml:space="preserve">
-    <value>Filter
-</value>
-  </data>
   <data name="DA_BtnInform.Label" xml:space="preserve">
     <value>Preface</value>
   </data>
   <data name="DA_BtnMasterDetail.Label" xml:space="preserve">
-    <value>Search</value>
+    <value>Back</value>
   </data>
   <data name="DA_BtnMultiSearch.Label" xml:space="preserve">
-    <value>Multi search</value>
-  </data>
-  <data name="DA_MenuFlyoutCulture.Text" xml:space="preserve">
-    <value>North Korean word</value>
-  </data>
-  <data name="DA_MenuFlyoutDialect.Text" xml:space="preserve">
-    <value>Dialect</value>
-  </data>
-  <data name="DA_MenuFlyoutIdiom.Text" xml:space="preserve">
-    <value>Idiom</value>
-  </data>
-  <data name="DA_MenuFlyoutKoreaOrigin.Text" xml:space="preserve">
-    <value>Native word</value>
-  </data>
-  <data name="DA_MenuFlyoutProverb.Text" xml:space="preserve">
-    <value>Proverb</value>
+    <value>Multi Search</value>
   </data>
   <data name="NaviItem2.Content" xml:space="preserve">
     <value>Hangul orthography</value>
   </data>
   <data name="NaviItem3.Content" xml:space="preserve">
-    <value>Standard language regulations</value>
-  </data>
-  <data name="NaviItem4.Content" xml:space="preserve">
-    <value>Loanword notation</value>
-  </data>
-  <data name="NaviItem5.Content" xml:space="preserve">
-    <value>Romanization of Korean</value>
-  </data>
-  <data name="NaviItem6.Content" xml:space="preserve">
     <value>Modifications</value>
   </data>
-  <data name="NaviItem7.Content" xml:space="preserve">
+  <data name="NaviItem4.Content" xml:space="preserve">
     <value>Spelling/grammar inspector</value>
   </data>
   <data name="DA_PageTitle.Text" xml:space="preserve">
@@ -175,11 +42,14 @@
   <data name="DA_BtnNetStatusRefresh.Content" xml:space="preserve">
     <value>Refresh</value>
   </data>
-  <data name="DA_BtnWebOpen.Label" xml:space="preserve">
-    <value>View on the web</value>
-  </data>
   <data name="DA_SearchBox.PlaceholderText" xml:space="preserve">
     <value>Enter words to search</value>
+  </data>
+  <data name="ADJ_BtnDefaultbrowser.Content" xml:space="preserve">
+    <value>View on Default browser</value>
+  </data>
+  <data name="ADJ_BtnMSEdge.Content" xml:space="preserve">
+    <value>View on Microsoft Edge</value>
   </data>
   <data name="ADJ_Pivotitem2014.Header" xml:space="preserve">
     <value>2014</value>
@@ -196,14 +66,8 @@
   <data name="ADJ_Pivotitem2018.Header" xml:space="preserve">
     <value>2018</value>
   </data>
-  <data name="ADJ_BtnDefaultbrowser.Content" xml:space="preserve">
-    <value>View on Default browser</value>
-  </data>
-  <data name="ADJ_BtnMSEdge.Content" xml:space="preserve">
-    <value>View on Microsoft Edge</value>
-  </data>
   <data name="Set_AboutText.Text" xml:space="preserve">
-    <value>Standard Korean Dictionary is Korean-Korean dictionary. The Korean National Language Institute operates the website of the standard Korean dictionary and this app allows you to search for words without having to access the browser.</value>
+    <value>This app searches words in Standard Korean Language Dictionary created by National Institute of the Korean Language and shows meaning.</value>
   </data>
   <data name="Set_Address.Text" xml:space="preserve">
     <value>Address</value>
@@ -230,7 +94,7 @@
     <value>This app includes:</value>
   </data>
   <data name="Set_Institute.Text" xml:space="preserve">
-    <value>The Korean National Language Institute</value>
+    <value>National Institute of the Korean Language</value>
   </data>
   <data name="Set_Option.Text" xml:space="preserve">
     <value>Option</value>
@@ -254,10 +118,7 @@
     <value>In-App Search</value>
   </data>
   <data name="Set_RadioButtonDicAppSearchText.Text" xml:space="preserve">
-    <value>Search for words within app, and display search results in app.</value>
-  </data>
-  <data name="Set_RadioButtonDicText.Text" xml:space="preserve">
-    <value>Search for words within the app, and display search results in WebView.</value>
+    <value>Search for words within the app and display their meanings.</value>
   </data>
   <data name="Set_RadioButtonDicWeb.Content" xml:space="preserve">
     <value>View as web page</value>
@@ -266,7 +127,7 @@
     <value>Displays web pages in WebView.</value>
   </data>
   <data name="Set_SearchEngine.Text" xml:space="preserve">
-    <value>Search engine</value>
+    <value>Search method</value>
   </data>
   <data name="SPC_Agree" xml:space="preserve">
     <value>Agree</value>
@@ -283,40 +144,124 @@
   <data name="Set_BtnResetSetting.Content" xml:space="preserve">
     <value>Reset settings</value>
   </data>
-  <data name="DA_BtnDicSoundPlay" xml:space="preserve">
-    <value>Listen</value>
-  </data>
-  <data name="CF_BtnClose.Content" xml:space="preserve">
-    <value>Close</value>
-  </data>
-  <data name="CF_BtnInstall.Content" xml:space="preserve">
-    <value>Install</value>
-  </data>
-  <data name="CF_CheckBoxNoLater.Content" xml:space="preserve">
-    <value>Don't show again</value>
-  </data>
-  <data name="CF_Content.Text" xml:space="preserve">
-    <value>If the fonts for A, B, and C are not the same, you need to install the fonts. You can install fonts by clicking the Install Fonts button below.</value>
-  </data>
-  <data name="Set_BtnInstall.Content" xml:space="preserve">
-    <value>Install</value>
-  </data>
-  <data name="Set_ComboBoxFontSizeItem0" xml:space="preserve">
-    <value>large</value>
-  </data>
-  <data name="Set_ComboBoxFontSizeItem1" xml:space="preserve">
-    <value>a bit large</value>
-  </data>
-  <data name="Set_ComboBoxFontSizeItem2" xml:space="preserve">
-    <value>normal</value>
-  </data>
-  <data name="Set_ComboBoxFontSizeItem3" xml:space="preserve">
-    <value>a bit small</value>
-  </data>
-  <data name="Set_ComboBoxFontSizeItem4" xml:space="preserve">
-    <value>small</value>
-  </data>
   <data name="Set_DisplayFont.Text" xml:space="preserve">
     <value>Display Font</value>
+  </data>
+  <data name="DA_BtnMasterDetail.ToolTipService.ToolTip" xml:space="preserve">
+    <value>Back</value>
+  </data>
+  <data name="DA_BtnMemo.ToolTipService.ToolTip" xml:space="preserve">
+    <value>Memo</value>
+  </data>
+  <data name="DA_BtnMultiSearch.ToolTipService.ToolTip" xml:space="preserve">
+    <value>Multi search</value>
+  </data>
+  <data name="Dic_BtnBack.Label" xml:space="preserve">
+    <value>Back</value>
+  </data>
+  <data name="Dic_BtnBack.ToolTipService.ToolTip" xml:space="preserve">
+    <value>Back</value>
+  </data>
+  <data name="Dic_BtnHome.Label" xml:space="preserve">
+    <value>Home</value>
+  </data>
+  <data name="Dic_BtnHome.ToolTipService.ToolTip" xml:space="preserve">
+    <value>Home</value>
+  </data>
+  <data name="Dic_BtnMemo.Label" xml:space="preserve">
+    <value>Memo</value>
+  </data>
+  <data name="Dic_BtnMemo.ToolTipService.ToolTip" xml:space="preserve">
+    <value>Memo</value>
+  </data>
+  <data name="Dic_BtnMultiSearch.Label" xml:space="preserve">
+    <value>Multi search</value>
+  </data>
+  <data name="Dic_BtnOtherApp.Label" xml:space="preserve">
+    <value>Open in another browser</value>
+  </data>
+  <data name="Dic_BtnReadingMode.Label" xml:space="preserve">
+    <value>View HTML</value>
+  </data>
+  <data name="Dic_BtnRefresh.Label" xml:space="preserve">
+    <value>Refresh</value>
+  </data>
+  <data name="Dic_BtnRefresh.ToolTipService.ToolTip" xml:space="preserve">
+    <value>Refresh</value>
+  </data>
+  <data name="HS_BtnOtherApp.Label" xml:space="preserve">
+    <value>Open in another browser</value>
+  </data>
+  <data name="NNG_c1.Text" xml:space="preserve">
+    <value>  •  Make sure the network cable is connected.</value>
+  </data>
+  <data name="NNG_c2.Text" xml:space="preserve">
+    <value>  •  Make sure it is not in airplane mode.</value>
+  </data>
+  <data name="NNG_c3.Text" xml:space="preserve">
+    <value>  •  Restart your router.</value>
+  </data>
+  <data name="NNG_c4.Text" xml:space="preserve">
+    <value>  •  Make sure the wireless switch is turned on.</value>
+  </data>
+  <data name="NNG_NoticeRefresh.Content" xml:space="preserve">
+    <value>Retry</value>
+  </data>
+  <data name="NNG_Title.Text" xml:space="preserve">
+    <value>Not connected</value>
+  </data>
+  <data name="NNG_Todo.Text" xml:space="preserve">
+    <value>Bring it back online.</value>
+  </data>
+  <data name="NNG_Wait.Text" xml:space="preserve">
+    <value>Please wait.</value>
+  </data>
+  <data name="ErrorMessageNoInternet" xml:space="preserve">
+    <value>No internet connection.</value>
+  </data>
+  <data name="ErrorMessageNoResult" xml:space="preserve">
+    <value>No search results.</value>
+  </data>
+  <data name="HS_BtnBack.Label" xml:space="preserve">
+    <value>Back</value>
+  </data>
+  <data name="HS_BtnBack.ToolTipService.ToolTip" xml:space="preserve">
+    <value>Back</value>
+  </data>
+  <data name="HS_BtnHome.Label" xml:space="preserve">
+    <value>Home</value>
+  </data>
+  <data name="HS_BtnHome.ToolTipService.ToolTip" xml:space="preserve">
+    <value>Home</value>
+  </data>
+  <data name="HS_BtnRefresh.Label" xml:space="preserve">
+    <value>Refresh</value>
+  </data>
+  <data name="HS_BtnRefresh.ToolTipService.ToolTip" xml:space="preserve">
+    <value>Refresh</value>
+  </data>
+  <data name="Set_APIKey.Text" xml:space="preserve">
+    <value>Open API authentication key</value>
+  </data>
+  <data name="ComboBoxAPIKeyItemCustom" xml:space="preserve">
+    <value>Custom</value>
+  </data>
+  <data name="ComboBoxAPIKeyItemPublic" xml:space="preserve">
+    <value>Public key</value>
+  </data>
+  <data name="Set_LicenseLink.Content" xml:space="preserve">
+    <value>License full text</value>
+  </data>
+  <data name="ContentDialogText1" xml:space="preserve">
+    <value>Help</value>
+  </data>
+  <data name="ContentDialogText2" xml:space="preserve">
+    <value>Close</value>
+  </data>
+  <data name="DA_BtnHelp.Label" xml:space="preserve">
+    <value>Help</value>
+  </data>
+  <data name="Dic_BtnHelp.Label" xml:space="preserve">
+    <value>Help</value>
   </data>
 </root>

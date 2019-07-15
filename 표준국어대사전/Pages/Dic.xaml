@@ -15,62 +15,46 @@
         <SolidColorBrush x:Key="Black" Color="Black"/>
     </Page.Resources>
 
-    <Grid x:Name="BasicGrid" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" SizeChanged="Grid_SizeChanged" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+    <Grid x:Name="BasicGrid" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
 
-        <WebView x:Name="WebViewDic" Margin="0,40,0,0" ScrollViewer.HorizontalScrollBarVisibility="Auto" NewWindowRequested="WebViewDic_NewWindowRequested" NavigationFailed="WebViewDic_NavigationFailed" NavigationCompleted="WebViewDic_NavigationCompleted" Visibility="Collapsed"/>
+        <WebView x:Name="WebViewDic" Margin="0,40,0,0" ScrollViewer.HorizontalScrollBarVisibility="Auto" NavigationFailed="WebViewDic_NavigationFailed" NewWindowRequested="WebViewDic_NewWindowRequested"/>
 
         <Grid x:Name="NetNoticeGrid" Margin="10,59,0,0" Height="295" VerticalAlignment="Center" HorizontalAlignment="Center" Width="463" Visibility="Collapsed">
-            <TextBlock TextWrapping="Wrap" Text="연결되어 있지 않음" FontSize="24" HorizontalAlignment="Left" VerticalAlignment="Top" Height="33" Margin="90,0,0,0"/>
-            <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="잠시만 기다려 주세요. " VerticalAlignment="Top" Margin="90,44,0,0"/>
-            <TextBlock HorizontalAlignment="Left" Margin="90,73,0,0" TextWrapping="Wrap" Text="다시 온라인 상태가 되도록 합니다." VerticalAlignment="Top"/>
-            <TextBlock HorizontalAlignment="Left" Margin="90,109,0,0" TextWrapping="Wrap" Text="  •  네트워크 케이블이 연결되어 있는지 확인합니다." VerticalAlignment="Top"/>
-            <TextBlock HorizontalAlignment="Left" Margin="90,142,0,0" TextWrapping="Wrap" Text="  •  비행기 모드가 아닌지 확인하세요." VerticalAlignment="Top"/>
-            <TextBlock HorizontalAlignment="Left" Margin="90,212,0,0" TextWrapping="Wrap" Text="  •  라우터를 다시 시작하세요." VerticalAlignment="Top"/>
-            <TextBlock HorizontalAlignment="Left" Margin="90,177,0,0" TextWrapping="Wrap" Text="  •  무선 스위치가 켜져 있는지 확인하세요." VerticalAlignment="Top"/>
+            <TextBlock x:Uid="NNG_Title" TextWrapping="Wrap" Text="연결되어 있지 않음" FontSize="24" HorizontalAlignment="Left" VerticalAlignment="Top" Height="33" Margin="90,0,0,0"/>
+            <TextBlock x:Uid="NNG_Wait" HorizontalAlignment="Left" TextWrapping="Wrap" Text="잠시만 기다려 주세요." VerticalAlignment="Top" Margin="90,44,0,0"/>
+            <TextBlock x:Uid="NNG_Todo" HorizontalAlignment="Left" Margin="90,73,0,0" TextWrapping="Wrap" Text="다시 온라인 상태가 되도록 합니다." VerticalAlignment="Top"/>
+            <TextBlock x:Uid="NNG_c1" HorizontalAlignment="Left" Margin="90,109,0,0" TextWrapping="Wrap" Text="  •  네트워크 케이블이 연결되어 있는지 확인합니다." VerticalAlignment="Top"/>
+            <TextBlock x:Uid="NNG_c2" HorizontalAlignment="Left" Margin="90,142,0,0" TextWrapping="Wrap" Text="  •  비행기 모드가 아닌지 확인하세요." VerticalAlignment="Top"/>
+            <TextBlock x:Uid="NNG_c3" HorizontalAlignment="Left" Margin="90,212,0,0" TextWrapping="Wrap" Text="  •  라우터를 다시 시작하세요." VerticalAlignment="Top"/>
+            <TextBlock x:Uid="NNG_c4" HorizontalAlignment="Left" Margin="90,177,0,0" TextWrapping="Wrap" Text="  •  무선 스위치가 켜져 있는지 확인하세요." VerticalAlignment="Top"/>
             <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="&#xE704;" VerticalAlignment="Top" FontSize="80" FontFamily="Segoe MDL2 Assets"/>
-            <Button x:Name="NoticeRefresh" Content="다시 시도" HorizontalAlignment="Left" Margin="90,247,0,0" VerticalAlignment="Top" Height="34" Width="94" Click="BtnRefresh_Click"/>
-        </Grid>
-        <Grid x:Name="MainPageGrid" Margin="0,0,0,0" Visibility="Visible" Background="White">
-            <Grid x:Name="SearchBoxGrid" Height="400" HorizontalAlignment="Center" Width="650" VerticalAlignment="Center">
-                <TextBox x:Name="TextboxSearch" Margin="70,136,165,20" Text="" VerticalAlignment="Center" KeyDown="TextboxSearch_KeyDown" PlaceholderText="검색할 단어를 입력하세요" FontSize="24" Height="44" FontFamily="Segoe UI" HorizontalAlignment="Center" Width="415"/>
-                <Button x:Name="BtnSearch" Content="검색" HorizontalAlignment="Center" Height="44" Margin="497,136,53,20" VerticalAlignment="Center" Width="100" Click="BtnSearch_Click" FontSize="24" MinWidth="100" MaxWidth="100"/>
-                <TextBlock x:Name="Logo" Text="국립국어원 표준국어대사전" TextWrapping="Wrap" VerticalAlignment="Center" Margin="16,20,5,60" FontSize="48" FontWeight="Bold" HorizontalAlignment="Center" FontFamily="Segoe UI"/>
-                <HyperlinkButton x:Name="BtnSeparate" Content="따로 보기" HorizontalAlignment="Center" Margin="283,347,304,21" VerticalAlignment="Center" Height="32" Width="63" Click="BtnSeparate_Click">
-                    <HyperlinkButton.ContextFlyout>
-                        <MenuFlyout x:Name="SeparateSearchFlyout" Placement="Bottom">
-                            <MenuFlyoutItem x:Name="MenuFlyoutIdiom" Text="관용구" Click="MenuFlyoutIdiom_Click"/>
-                            <MenuFlyoutItem x:Name="MenuFlyoutProverb" Text="속담" Click="MenuFlyoutProverb_Click"/>
-                            <MenuFlyoutItem x:Name="MenuFlyoutDialect" Text="방언" Click="MenuFlyoutDialect_Click"/>
-                            <MenuFlyoutItem x:Name="MenuFlyoutCulture" Text="북한어" Click="MenuFlyoutCulture_Click"/>
-                            <MenuFlyoutItem x:Name="MenuFlyoutKoreaOrigin" Text="고유어" Click="MenuFlyoutKoreaOrigin_Click"/>
-                        </MenuFlyout>
-                    </HyperlinkButton.ContextFlyout>
-                </HyperlinkButton>
-                <HyperlinkButton x:Name="BtnInform" Content="일러두기" HorizontalAlignment="Center" Margin="198,347,392,21" VerticalAlignment="Center" Height="32" Click="BtnInform_Click"/>
-                <HyperlinkButton x:Name="BtnSearchOriginWeb" Content="웹 페이지로 보기" HorizontalAlignment="Center" Margin="370,347,166,21" VerticalAlignment="Center" Height="32" Click="BtnSearchOriginWeb_Click"/>
-            </Grid>
+            <Button x:Name="NoticeRefresh" x:Uid="NNG_NoticeRefresh" Content="다시 시도" HorizontalAlignment="Left" Margin="90,247,0,0" VerticalAlignment="Top" Height="34" Width="94" Click="BtnRefresh_Click"/>
         </Grid>
 
         <CommandBar>
             <CommandBar.SecondaryCommands>
-                <AppBarButton Icon="Globe" Label="다른 브라우저에서 열기" Click="BtnOtherApp_Click"/>
-                <AppBarToggleButton x:Name="ToggleOriginWeb" Label="웹 페이지로 보기" Icon="Page2" Click="ToggleOriginWeb_Click" IsChecked="False"/>
-                <AppBarButton x:Name="BtnReadingMode" Label="HTML 보기" Click="BtnReadingMode_Click" IsEnabled="True" Visibility="Collapsed">
+                <AppBarButton x:Uid="Dic_BtnOtherApp" Icon="Globe" Label="다른 브라우저에서 열기" Click="BtnOtherApp_Click"/>
+                <AppBarButton x:Name="BtnHelp" x:Uid="Dic_BtnHelp" Label="도움말" Click="BtnHelp_Click">
+                    <AppBarButton.Icon>
+                        <FontIcon Glyph=""/>
+                    </AppBarButton.Icon>
+                </AppBarButton>
+                <AppBarButton x:Name="BtnReadingMode" x:Uid="Dic_BtnReadingMode" Label="HTML 보기" Click="BtnReadingMode_Click" IsEnabled="True" Visibility="Collapsed">
                     <AppBarButton.Icon>
                         <FontIcon Glyph="&#xE15E;"/>
                     </AppBarButton.Icon>
                 </AppBarButton>
             </CommandBar.SecondaryCommands>
-            <AppBarButton x:Name="BtnBack" Icon="Back" Label="뒤로" ToolTipService.ToolTip="뒤로" Click="BtnBack_Click"/>
-            <AppBarButton x:Name="BtnRefresh" Icon="Refresh" Label="새로 고침" ToolTipService.ToolTip="새로 고침" Click="BtnRefresh_Click"/>
-            <AppBarButton x:Name="BtnHome" Icon="Home" Label="홈" ToolTipService.ToolTip="홈" Click="BtnHome_Click"/>
+            <AppBarButton x:Name="BtnBack" x:Uid="Dic_BtnBack" Icon="Back" Label="뒤로" ToolTipService.ToolTip="뒤로" Click="BtnBack_Click"/>
+            <AppBarButton x:Name="BtnRefresh" x:Uid="Dic_BtnRefresh" Icon="Refresh" Label="새로 고침" ToolTipService.ToolTip="새로 고침" Click="BtnRefresh_Click"/>
+            <AppBarButton x:Name="BtnHome" x:Uid="Dic_BtnHome" Icon="Home" Label="홈" ToolTipService.ToolTip="홈" Click="BtnHome_Click"/>
             <AppBarSeparator/>
-            <AppBarButton x:Name="BtnMemo" Label="메모" ToolTipService.ToolTip="메모" Click="BtnMemo_Click" Visibility="Visible">
+            <AppBarButton x:Name="BtnMemo" x:Uid="Dic_BtnMemo" Label="메모" ToolTipService.ToolTip="메모"  Click="BtnMemo_Click" Visibility="Visible">
                 <AppBarButton.Icon>
                     <FontIcon Glyph="&#xE70B;"/>
                 </AppBarButton.Icon>
             </AppBarButton>
-            <AppBarButton x:Name="BtnMultiSearch" Label="다중 검색" ToolTipService.ToolTip="다중 검색" Icon="NewWindow" Click="BtnMultiSearch_Click"/>
+            <AppBarButton x:Name="BtnMultiSearch" x:Uid="Dic_BtnMultiSearch" Label="다중 검색" Icon="NewWindow" Click="BtnMultiSearch_Click"/>
         </CommandBar>
 
         <Grid x:Name="ReadingModeGrid" Padding="0" Background="#FFBEBEBE" Visibility="Collapsed" VerticalAlignment="Bottom" Height="450">

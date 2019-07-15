@@ -29,44 +29,29 @@ namespace 표준국어대사전.Pages
             this.InitializeComponent();
 
             var res = Windows.ApplicationModel.Resources.ResourceLoader.GetForCurrentView();
-            ComboBoxFontSize.Items.Add(res.GetString("Set_ComboBoxFontSizeItem0"));
-            ComboBoxFontSize.Items.Add(res.GetString("Set_ComboBoxFontSizeItem1"));
-            ComboBoxFontSize.Items.Add(res.GetString("Set_ComboBoxFontSizeItem2"));
-            ComboBoxFontSize.Items.Add(res.GetString("Set_ComboBoxFontSizeItem3"));
-            ComboBoxFontSize.Items.Add(res.GetString("Set_ComboBoxFontSizeItem4"));
+            ComboBoxAPIKey.Items.Add(res.GetString("ComboBoxAPIKeyItemPublic"));
+            ComboBoxAPIKey.Items.Add(res.GetString("ComboBoxAPIKeyItemCustom"));
 
             ApplicationDataContainer localSettings = ApplicationData.Current.LocalSettings;
 
-            if (localSettings.Values["#UseOriginWeb"] == null)
-            {
-                localSettings.Values["#UseOriginWeb"] = false;
-            }
-
             if (localSettings.Values["#UseDevelopermode"] == null)
-            {
                 localSettings.Values["#UseDevelopermode"] = false;
-            }
 
             if (localSettings.Values["#SearchEngine"] == null)
-            {
                 localSettings.Values["#SearchEngine"] = "DicAppSearch";
-            }
 
             if (localSettings.Values["#DisplayFont"] == null)
-            {
                 localSettings.Values["#DisplayFont"] = "나눔바른고딕 옛한글";
-            }
 
-            if (localSettings.Values["#DisplayFontSize"] == null)
-            {
-                localSettings.Values["#DisplayFontSize"] = 18;
-            }
+            if (localSettings.Values["#UseCustomAPIKey"] == null)
+                localSettings.Values["#UseCustomAPIKey"] = false;
+
+            if (localSettings.Values["#APIKey"] == null)
+                localSettings.Values["#APIKey"] = "C58534E2D39CF7CA69BCA193541C1688";
 
             CheckDevelopermode.IsChecked = (bool)localSettings.Values["#UseDevelopermode"];
             if ((string)localSettings.Values["#SearchEngine"] == "DicAppSearch")
                 RadioButtonDicAppSearch.IsChecked = true;
-            else if ((string)localSettings.Values["#SearchEngine"] == "Dic" && (bool)localSettings.Values["#UseOriginWeb"] == false)
-                RadioButtonDic.IsChecked = true;
             else
                 RadioButtonDicWeb.IsChecked = true;
 
@@ -75,18 +60,19 @@ namespace 표준국어대사전.Pages
             else if ((string)localSettings.Values["#DisplayFont"] == "맑은 고딕")
                 ComboBoxFont.SelectedIndex = 1;
 
-            if ((int)localSettings.Values["#DisplayFontSize"] == 24)
-                ComboBoxFontSize.SelectedIndex = 0;
-            else if ((int)localSettings.Values["#DisplayFontSize"] == 21)
-                ComboBoxFontSize.SelectedIndex = 1;
-            else if ((int)localSettings.Values["#DisplayFontSize"] == 18)
-                ComboBoxFontSize.SelectedIndex = 2;
-            else if ((int)localSettings.Values["#DisplayFontSize"] == 15)
-                ComboBoxFontSize.SelectedIndex = 3;
-            else if ((int)localSettings.Values["#DisplayFontSize"] == 12)
-                ComboBoxFontSize.SelectedIndex = 4;
+            if ((bool)localSettings.Values["#UseCustomAPIKey"] == false)
+                ComboBoxAPIKey.SelectedIndex = 0;
+            else
+            {
+                ComboBoxAPIKey.SelectedIndex = 1;
+                TextBoxAPIKey.Text = (string)localSettings.Values["#APIKey"];
+            }
 
-            Version.Text = "Version " + typeof(App).GetTypeInfo().Assembly.GetName().Version;
+            var package = Windows.ApplicationModel.Package.Current;
+            var packageId = package.Id;
+            var version = packageId.Version;
+
+            Version.Text = "Version " + $"{version.Major}.{version.Minor}.{version.Build}.{version.Revision}";
         }
 
         private async void Mail_Click(object sender, RoutedEventArgs e)
@@ -120,16 +106,15 @@ namespace 표준국어대사전.Pages
             ApplicationDataContainer localSettings = ApplicationData.Current.LocalSettings;
             localSettings.Values.Clear();
 
-            localSettings.Values["#UseOriginWeb"] = false;
             localSettings.Values["#UseDevelopermode"] = false;
             CheckDevelopermode.IsChecked = (bool)localSettings.Values["#UseDevelopermode"];
             localSettings.Values["#SearchEngine"] = "DicAppSearch";
             RadioButtonDicAppSearch.IsChecked = true;
             localSettings.Values["#DisplayFont"] = "나눔바른고딕 옛한글";
             ComboBoxFont.SelectedIndex = 0;
-            localSettings.Values["#DisplayFontSize"] = 18;
-            ComboBoxFontSize.SelectedIndex = 2;
-            localSettings.Values["#FontCheckNoLater"] = false;
+            localSettings.Values["#UseCustomAPIKey"] = false;
+            ComboBoxAPIKey.SelectedIndex = 0;
+            localSettings.Values["#APIKey"] = "C58534E2D39CF7CA69BCA193541C1688";
         }
 
         private void RadioButtonDicAppSearch_Checked(object sender, RoutedEventArgs e)
@@ -140,22 +125,12 @@ namespace 표준국어대사전.Pages
             localSettings.Values["#SearchEngine"] = "DicAppSearch";
         }
 
-        private void RadioButtonDic_Checked(object sender, RoutedEventArgs e)
-        {
-            ApplicationDataContainer localSettings = ApplicationData.Current.LocalSettings;
-            var value = localSettings.Values["#SearchEngine"];
-
-            localSettings.Values["#SearchEngine"] = "Dic";
-            localSettings.Values["#UseOriginWeb"] = false;
-        }
-
         private void RadioButtonDicWeb_Checked(object sender, RoutedEventArgs e)
         {
             ApplicationDataContainer localSettings = ApplicationData.Current.LocalSettings;
             var value = localSettings.Values["#SearchEngine"];
 
             localSettings.Values["#SearchEngine"] = "Dic";
-            localSettings.Values["#UseOriginWeb"] = true;
         }
 
         private void ComboBoxFont_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -168,26 +143,54 @@ namespace 표준국어대사전.Pages
                 localSettings.Values["#DisplayFont"] = "맑은 고딕";
         }
 
-        private void ComboBoxFontSize_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void ComboBoxAPIKey_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            ApplicationDataContainer localSettings = ApplicationData.Current.LocalSettings;
+            if (ComboBoxAPIKey.SelectedIndex == 0)
+            {
+                TextBoxAPIKey.Text = "";
+                TextBoxAPIKey.IsEnabled = false;
 
-            if (ComboBoxFontSize.SelectedIndex == 0) //크게
-                localSettings.Values["#DisplayFontSize"] = 24;
-            else if (ComboBoxFontSize.SelectedIndex == 1) //조금 크게
-                localSettings.Values["#DisplayFontSize"] = 21;
-            else if (ComboBoxFontSize.SelectedIndex == 2) //보통
-                localSettings.Values["#DisplayFontSize"] = 18;
-            else if (ComboBoxFontSize.SelectedIndex == 3) //조금 작게
-                localSettings.Values["#DisplayFontSize"] = 15;
-            else if (ComboBoxFontSize.SelectedIndex == 4) //작게
-                localSettings.Values["#DisplayFontSize"] = 12;
+                ApplicationDataContainer localSettings = ApplicationData.Current.LocalSettings;
+                localSettings.Values["#UseCustomAPIKey"] = false;
+                localSettings.Values["#APIKey"] = "C58534E2D39CF7CA69BCA193541C1688";
+
+                BtnSaveNHelp.Content = "";
+            }
+            if (ComboBoxAPIKey.SelectedIndex == 1)
+            {
+                TextBoxAPIKey.IsEnabled = true;
+            }
         }
 
-        private void BtnInstall_Click(object sender, RoutedEventArgs e)
+        private void TextBoxAPIKey_TextChanged(object sender, TextChangedEventArgs e)
         {
-            Controls.CheckFont checkFont = new Controls.CheckFont();
-            checkFont.BtnInstall_Click(sender, e);
+            ApplicationDataContainer localSettings = ApplicationData.Current.LocalSettings;
+            if ((TextBoxAPIKey.Text != (string)localSettings.Values["#APIKey"]) && (ComboBoxAPIKey.SelectedIndex == 1))
+            {
+                BtnSaveNHelp.Content = "";
+            }
+        }
+
+        private void BtnSaveNHelp_Click(object sender, RoutedEventArgs e)
+        {
+            if ((string)BtnSaveNHelp.Content == "") //저장
+            {
+                ApplicationDataContainer localSettings = ApplicationData.Current.LocalSettings;
+                localSettings.Values["#APIKey"] = TextBoxAPIKey.Text;
+                localSettings.Values["#UseCustomAPIKey"] = true;
+
+                BtnSaveNHelp.Content = "";
+            }
+            else if ((string)BtnSaveNHelp.Content == "") //도움말
+            {
+                //도움말 링크 열기
+                OpenWithDefaultBrowser(new Uri("https://costudio1122.blogspot.com/p/blog-page_11.html"));
+            }
+        }
+
+        public async void OpenWithDefaultBrowser(Uri uri)
+        {
+            await Windows.System.Launcher.LaunchUriAsync(uri);
         }
     }
 }

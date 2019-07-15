@@ -14,31 +14,22 @@
         <CommandBar Background="#FFE6E6E6" IsOpen="False" DefaultLabelPosition="Right" Margin="1,0,1,0">
             <AppBarButton x:Name="BtnBack" Icon="Back" Label="뒤로" Click="BtnBack_Click"/>
             <AppBarButton x:Name="BtnRefresh" Icon="Refresh" Label="새로 고침" Click="BtnRefresh_Click"/>
-            <AppBarButton Icon="Home" Label="홈" Click="AppBarButton_Click"/>
+            <AppBarButton x:Name="BtnHome" Icon="Home" Label="홈" Click="BtnHome_Click"/>
         </CommandBar>
 
         <Grid Background="White" Margin="1,40,1,1"/>
-        <WebView x:Name="SubWebView" HorizontalAlignment="Stretch" Margin="1,40,1,1" NewWindowRequested="SubWebView_NewWindowRequested" NavigationFailed="SubWebView_NavigationFailed" LoadCompleted="SubWebView_LoadCompleted"/>
+        <WebView x:Name="SubWebView" HorizontalAlignment="Stretch" Margin="1,40,1,1" NavigationFailed="SubWebView_NavigationFailed"/>
 
         <Grid x:Name="NetNoticeGrid" Margin="10,59,0,0" Height="240" VerticalAlignment="Center" HorizontalAlignment="Center" Width="463" Visibility="Collapsed">
-            <TextBlock TextWrapping="Wrap" Text="연결되어 있지 않음" FontSize="24" HorizontalAlignment="Left" VerticalAlignment="Top" Height="33" Margin="90,0,0,0"/>
-            <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="잠시만 기다려 주세요. " VerticalAlignment="Top" Margin="90,38,0,0"/>
-            <TextBlock HorizontalAlignment="Left" Margin="90,60,0,0" TextWrapping="Wrap" Text="다시 온라인 상태가 되도록 합니다." VerticalAlignment="Top"/>
-            <TextBlock HorizontalAlignment="Left" Margin="90,86,0,0" TextWrapping="Wrap" Text="  •  네트워크 케이블이 연결되어 있는지 확인합니다." VerticalAlignment="Top"/>
-            <TextBlock HorizontalAlignment="Left" Margin="90,112,0,0" TextWrapping="Wrap" Text="  •  비행기 모드가 아닌지 확인하세요." VerticalAlignment="Top"/>
-            <TextBlock HorizontalAlignment="Left" Margin="90,138,0,0" TextWrapping="Wrap" Text="  •  라우터를 다시 시작하세요." VerticalAlignment="Top"/>
-            <TextBlock HorizontalAlignment="Left" Margin="90,164,0,0" TextWrapping="Wrap" Text="  •  무선 스위치가 켜져 있는지 확인하세요." VerticalAlignment="Top"/>
+            <TextBlock x:Uid="NNG_Title" TextWrapping="Wrap" Text="연결되어 있지 않음" FontSize="24" HorizontalAlignment="Left" VerticalAlignment="Top" Height="33" Margin="90,0,0,0"/>
+            <TextBlock x:Uid="NNG_Wait" HorizontalAlignment="Left" TextWrapping="Wrap" Text="잠시만 기다려 주세요." VerticalAlignment="Top" Margin="90,38,0,0"/>
+            <TextBlock x:Uid="NNG_Todo" HorizontalAlignment="Left" Margin="90,60,0,0" TextWrapping="Wrap" Text="다시 온라인 상태가 되도록 합니다." VerticalAlignment="Top"/>
+            <TextBlock x:Uid="NNG_c1" HorizontalAlignment="Left" Margin="90,86,0,0" TextWrapping="Wrap" Text="  •  네트워크 케이블이 연결되어 있는지 확인합니다." VerticalAlignment="Top"/>
+            <TextBlock x:Uid="NNG_c2" HorizontalAlignment="Left" Margin="90,112,0,0" TextWrapping="Wrap" Text="  •  비행기 모드가 아닌지 확인하세요." VerticalAlignment="Top"/>
+            <TextBlock x:Uid="NNG_c3" HorizontalAlignment="Left" Margin="90,138,0,0" TextWrapping="Wrap" Text="  •  라우터를 다시 시작하세요." VerticalAlignment="Top"/>
+            <TextBlock x:Uid="NNG_c4" HorizontalAlignment="Left" Margin="90,164,0,0" TextWrapping="Wrap" Text="  •  무선 스위치가 켜져 있는지 확인하세요." VerticalAlignment="Top"/>
             <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="&#xE704;" VerticalAlignment="Top" FontSize="80" FontFamily="Segoe MDL2 Assets"/>
-            <Button Content="다시 시도" HorizontalAlignment="Left" Margin="90,196,0,0" VerticalAlignment="Top" Height="34" Width="94" Click="BtnRefresh_Click"/>
+            <Button x:Uid="NNG_NoticeRefresh" Content="다시 시도" HorizontalAlignment="Left" Margin="90,196,0,0" VerticalAlignment="Top" Height="34" Width="94" Click="BtnRefresh_Click"/>
         </Grid>
-
-        <Grid x:Name="MainPageGrid" Background="#FFE6E6E6" Margin="1,40,1,1" Visibility="Visible">
-            <Grid x:Name="SearchBoxGrid" Height="240" HorizontalAlignment="Center" Width="650" VerticalAlignment="Center">
-                <TextBox x:Name="TextboxSearch" Margin="131,160,199,44" Text="" VerticalAlignment="Center" KeyDown="TextboxSearch_KeyDown" PlaceholderText="검색할 단어를 입력하세요" FontSize="18" FontFamily="Segoe UI" HorizontalAlignment="Center" Width="320"/>
-                <Button x:Name="BtnSearch" Content="검색" HorizontalAlignment="Center" Height="36" Margin="460,160,110,44" VerticalAlignment="Center" Width="80" Click="BtnSearch_Click" FontSize="18" MinWidth="80" MaxWidth="80"/>
-                <TextBlock x:Name="Logo" Text="국립국어원 표준국어대사전" TextWrapping="Wrap" VerticalAlignment="Center" Margin="16,20,5,60" FontSize="32" FontWeight="Bold" HorizontalAlignment="Center" FontFamily="Segoe UI"/>
-            </Grid>
-        </Grid>
-        
     </Grid>
 </UserControl>

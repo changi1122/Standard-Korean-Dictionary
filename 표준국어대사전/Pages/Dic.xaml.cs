@@ -19,7 +19,7 @@ using Windows.Storage;
 using System.Threading.Tasks;
 using Windows.ApplicationModel.Core;
 using Windows.Management.Deployment;
-using System.Net.NetworkInformation;
+using Windows.Networking.Connectivity;
 
 // 빈 페이지 항목 템플릿에 대한 설명은 https://go.microsoft.com/fwlink/?LinkId=234238에 나와 있습니다.
 
@@ -30,8 +30,6 @@ namespace 표준국어대사전.Pages
     /// </summary>
     public sealed partial class Dic : Page
     {
-        bool FirstLoad = false;
-        bool IsOpenOriginWeb = false;
         bool IsSubSearchOpen = false;
 
         public Dic()
@@ -40,44 +38,37 @@ namespace 표준국어대사전.Pages
 
             ApplicationDataContainer localSettings = ApplicationData.Current.LocalSettings;
             var value = localSettings.Values["#UseOriginWeb"];
-            if (value == null)
-            {
-                localSettings.Values["#UseOriginWeb"] = false;
-            }
             if (localSettings.Values["#UseDevelopermode"] == null)
             {
                 localSettings.Values["#UseDevelopermode"] = false;
             }
-            IsOpenOriginWeb = (bool)localSettings.Values["#UseOriginWeb"];
-            ToggleOriginWeb.IsChecked = (bool)localSettings.Values["#UseOriginWeb"];
-
-            if (IsOpenOriginWeb == false)
-                MainPageGrid.Visibility = Visibility.Visible;
-            else
-                MainPageGrid.Visibility = Visibility.Collapsed;
 
             if ((bool)localSettings.Values["#UseDevelopermode"] == false)
                 BtnReadingMode.Visibility = Visibility.Collapsed;
             else
                 BtnReadingMode.Visibility = Visibility.Visible;
 
-            if (NetworkCheck() == true)
-            {
-                WebViewDic.Navigate(new Uri("http://stdweb2.korean.go.kr/main.jsp"));
-                FirstLoad = true;
-            }
+            WebViewDic.Navigate(new Uri("https://stdict.korean.go.kr/main/main.do"));
+            NetworkCheck();
+        }
+
+        public static bool IsInternetConnected()
+        {
+            ConnectionProfile connections = NetworkInformation.GetInternetConnectionProfile();
+            bool internet = (connections != null) &&
+                (connections.GetNetworkConnectivityLevel() == NetworkConnectivityLevel.InternetAccess);
+            return internet;
         }
 
         private bool NetworkCheck()
         {
-            if (NetworkInterface.GetIsNetworkAvailable() == true)
+            if (IsInternetConnected() == true)
             {
                 return true;
             }
             else
             {
                 NetNoticeGrid.Visibility = Visibility.Visible;
-                MainPageGrid.Visibility = Visibility.Collapsed;
                 WebViewDic.Visibility = Visibility.Collapsed;
                 return false;
             }
@@ -91,15 +82,6 @@ namespace 표준국어대사전.Pages
         {
             if(NetworkCheck() == true)
             {
-                if (FirstLoad == false)
-                {
-                    WebViewDic.Navigate(new Uri("http://stdweb2.korean.go.kr/main.jsp"));
-                    FirstLoad = true;
-                    WebViewDic.Visibility = Visibility.Visible;
-                    NetNoticeGrid.Visibility = Visibility.Collapsed;
-                    return;
-                }
-
                 WebViewDic.Refresh();
                 WebViewDic.Visibility = Visibility.Visible;
                 NetNoticeGrid.Visibility = Visibility.Collapsed;
@@ -110,12 +92,7 @@ namespace 표준국어대사전.Pages
         {
             if (NetworkCheck() == true)
             {
-                if (FirstLoad == false)
-                {
-                    FirstLoad = true;
-                }
-
-                WebViewDic.Navigate(new Uri("http://stdweb2.korean.go.kr/main.jsp"));
+                WebViewDic.Navigate(new Uri("https://stdict.korean.go.kr/main/main.do"));
                 WebViewDic.Visibility = Visibility.Visible;
                 NetNoticeGrid.Visibility = Visibility.Collapsed;
             }
@@ -133,6 +110,11 @@ namespace 표준국어대사전.Pages
             {
 
             }
+        }
+
+        private async void BtnHelp_Click(object sender, RoutedEventArgs e)
+        {
+            await Windows.System.Launcher.LaunchUriAsync(new Uri("https://costudio1122.blogspot.com/p/blog-page_76.html"));
         }
 
         private void BtnBack_Click(object sender, RoutedEventArgs e)
@@ -163,27 +145,8 @@ namespace 표준국어대사전.Pages
             ReadingModeGrid.Visibility = Visibility.Visible;
 
             string Data = await WebViewDic.InvokeScriptAsync("eval", new string[] { "document.documentElement.outerHTML;" });
-            /*string Work = "";
 
-            Data = Data.Substring(Data.IndexOf("<p class=\"exp\">"));
-
-            Work = Data.Substring(Data.IndexOf("</span>"));  //"</span>"으로 자르면 안됨. <p>, </p>
-            Data = Data.Replace(Work, "");
-
-            //구현 방향 : <p> </p>로 뜻 하나 단위로 자름. 그 뒤 수정.
-
-            while (true)
-            {
-                //if (Data.IndexOf('<') == -1)
-                //break;
-
-                //Work = Data.Substring(Data.IndexOf('<'), Data.IndexOf('>') - Data.IndexOf('<') + 1);
-                //Data.Replace(Work, "");
-
-                //ReadingModeText.Text = Data;
-                //break;
-            }*/
-            ReadingModeText.Text = Data; //임시
+            ReadingModeText.Text = Data;
         }
 
         private void ReadingModeCopy_Click(object sender, RoutedEventArgs e)
@@ -265,219 +228,20 @@ namespace 표준국어대사전.Pages
             IsSubSearchOpen = false;
         }
 
-
-        //||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
-        // MainPageGrid
-        //||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
-
-        private void ToggleOriginWeb_Click(object sender, RoutedEventArgs e)
-        {
-            if (ToggleOriginWeb.IsChecked == true)
-            {
-                IsOpenOriginWeb = true;
-                ApplicationDataContainer localSettings = ApplicationData.Current.LocalSettings;
-                localSettings.Values["#UseOriginWeb"] = IsOpenOriginWeb;
-                BtnSearchOriginWeb.Visibility = Visibility.Collapsed;
-                if (WebViewDic.Source == new Uri("http://stdweb2.korean.go.kr/main.jsp"))
-                    WebViewDic.Refresh();
-            }
-            else
-            {
-                IsOpenOriginWeb = false;
-                ApplicationDataContainer localSettings = ApplicationData.Current.LocalSettings;
-                localSettings.Values["#UseOriginWeb"] = IsOpenOriginWeb;
-                BtnSearchOriginWeb.Visibility = Visibility.Visible;
-                if (WebViewDic.Source == new Uri("http://stdweb2.korean.go.kr/main.jsp"))
-                    WebViewDic.Refresh();
-            }
-        }
-
-        private void BtnSearchOriginWeb_Click(object sender, RoutedEventArgs e)
-        {
-            ToggleOriginWeb.IsChecked = !ToggleOriginWeb.IsChecked;
-            ToggleOriginWeb_Click(this, new RoutedEventArgs());
-        }
-
-
-        private async void BtnSearch_Click(object sender, RoutedEventArgs e)
-        {
-            if(NetworkCheck() == false)
-                return;
-
-            if (TextboxSearch.Text == "")
-            {
-                // Create a MessageDialog
-                var messageDialog = new MessageDialog("찾을 말 또는 단어를 입력하세요.");
-                // Show MessageDialog
-                await messageDialog.ShowAsync();
-
-                return;
-            }
-
-            //텍스트를 웹뷰에 입력합니다.
-            var inputValue_Text = TextboxSearch.Text;
-            var functionString_Text = string.Format(@"document.getElementsByClassName('word_ins')[0].value = '{0}';", inputValue_Text);
-            await WebViewDic.InvokeScriptAsync("eval", new string[] { functionString_Text });
-
-            //검색 버튼을 누릅니다.
-            var functionString = string.Format(@"document.getElementById('sch1').click()");
-            await WebViewDic.InvokeScriptAsync("eval", new string[] { functionString });
-
-            TextboxSearch.Text = "";
-            /*var inputValue = TextboxSearch.Text;
-            var functionString = string.Format(@"document.getElementsByClassName('word_ins')[0].value = '{0}';", inputValue);
-            await WebViewDic.InvokeScriptAsync("eval", new string[] { functionString });*/
-
-            /*var inputValue = TextboxSearch.Text;
-            var functionString = string.Format(@"document.getElementById('SearchText').value = '{0}';", inputValue);
-            await WebViewDic.InvokeScriptAsync("eval", new string[] { functionString });*/
-
-            /*var functionString_Text = string.Format(@"document.getElementsByClassName('word_ins')[0].parentElement.click();");
-            await WebViewDic.InvokeScriptAsync("eval", new string[] { functionString_Text });*/
-        }
-
-        private void TextboxSearch_KeyDown(object sender, KeyRoutedEventArgs e)
-        {
-            if (e.Key == Windows.System.VirtualKey.Enter)
-            {
-                BtnSearch_Click(this, new RoutedEventArgs());
-            }
-        }
-
-        private void BtnInform_Click(object sender, RoutedEventArgs e)
-        {
-            WebViewDic.Navigate(new Uri("http://stdweb2.korean.go.kr/guide/entry.jsp"));
-        }
-
-        private void BtnSeparate_Click(object sender, RoutedEventArgs e)
-        {
-            SeparateSearchFlyout.ShowAt(BtnSeparate);
-        }
-
-        //||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
-        // MainPageGrid - SeparateSearchFlyout
-        //||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
-
-        private void MenuFlyoutIdiom_Click(object sender, RoutedEventArgs e)
-        {
-            WebViewDic.Navigate(new Uri("http://stdweb2.korean.go.kr/section/idiom_list.jsp"));
-        }
-
-        private void MenuFlyoutDialect_Click(object sender, RoutedEventArgs e)
-        {
-            WebViewDic.Navigate(new Uri("http://stdweb2.korean.go.kr/section/region_list.jsp"));
-        }
-
-        private void MenuFlyoutProverb_Click(object sender, RoutedEventArgs e)
-        {
-            WebViewDic.Navigate(new Uri("http://stdweb2.korean.go.kr/section/proverb_list.jsp"));
-        }
-
-        private void MenuFlyoutCulture_Click(object sender, RoutedEventArgs e)
-        {
-            WebViewDic.Navigate(new Uri("http://stdweb2.korean.go.kr/section/north_list.jsp"));
-        }
-
-        private void MenuFlyoutKoreaOrigin_Click(object sender, RoutedEventArgs e)
-        {
-            WebViewDic.Navigate(new Uri("http://stdweb2.korean.go.kr/section/origin_list.jsp"));
-        }
-
-
         //||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
         // WebView
         //||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
 
-        private void WebViewDic_NavigationCompleted(WebView sender, WebViewNavigationCompletedEventArgs args)
+        private void WebViewDic_NavigationFailed(object sender, WebViewNavigationFailedEventArgs e)
         {
-            if (WebViewDic.Source == new Uri("http://stdweb2.korean.go.kr/main.jsp"))
-            {
-                if (IsOpenOriginWeb == false)
-                {
-                    MainPageGrid.Visibility = Visibility.Visible;
-                }
-                else
-                {
-                    WebViewDic.Visibility = Visibility.Visible;
-                    MainPageGrid.Visibility = Visibility.Collapsed;
-                }
-            }
-            else
-            {
-                WebViewDic.Visibility = Visibility.Visible;
-                MainPageGrid.Visibility = Visibility.Collapsed;
-            }
+            NetNoticeGrid.Visibility = Visibility.Visible;
+            WebViewDic.Visibility = Visibility.Collapsed;
         }
 
         private void WebViewDic_NewWindowRequested(WebView sender, WebViewNewWindowRequestedEventArgs args)
         {
-            string address = args.Uri.ToString();
-
-            if (address.IndexOf("DicSoundPlayWordNo") != -1)
-            {
-                args.Handled = true;
-
-                var DicSoundPlay = new WebView
-                {
-                    Name = "WebViewDicSoundPlay",
-                    Visibility = Visibility.Collapsed
-                };
-                BasicGrid.Children.Add(DicSoundPlay);
-                var view = (WebView)FindName("WebViewDicSoundPlay");
-                view.NavigationCompleted += PlayDic;
-                view.Navigate(args.Uri);
-                return;
-            }
             WebViewDic.Navigate(args.Uri);
             args.Handled = true;
-        }
-
-        private async void PlayDic(WebView sender, WebViewNavigationCompletedEventArgs args)
-        {
-            var view = (WebView)FindName("WebViewDicSoundPlay");
-            var functionString = string.Format(@"document.getElementsByTagName('img').item(1).click()");
-            await view.InvokeScriptAsync("eval", new string[] { functionString });
-
-            BasicGrid.Children.Remove((UIElement)this.FindName("WebViewDicSoundPlay"));
-        }
-
-        private void WebViewDic_NavigationFailed(object sender, WebViewNavigationFailedEventArgs e)
-        {
-            NetNoticeGrid.Visibility = Visibility.Visible;
-            MainPageGrid.Visibility = Visibility.Collapsed;
-            WebViewDic.Visibility = Visibility.Collapsed;
-        }
-
-        
-        //||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
-        // Layout
-        //||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
-
-        private void Grid_SizeChanged(object sender, SizeChangedEventArgs e)
-        {
-            //반응형
-            if (BasicGrid.ActualWidth > 686)
-            {
-                Logo.FontSize = 48;
-            }
-            else if (BasicGrid.ActualWidth <= 686 && 592 <= BasicGrid.ActualWidth)
-            {
-                Logo.FontSize = 42;
-                TextboxSearch.Width = 415;
-                BtnSearch.Margin = new Thickness(497, 136, 53, 20);
-            }
-            else if (BasicGrid.ActualWidth < 592 && 550 <= BasicGrid.ActualWidth)
-            {
-                Logo.FontSize = 37;
-                TextboxSearch.Width = 330;
-                BtnSearch.Margin = new Thickness(412, 136, 53, 20);
-            }
-            else if (BasicGrid.ActualWidth < 550)
-            {
-                Logo.FontSize = 32;
-                TextboxSearch.Width = 300;
-                BtnSearch.Margin = new Thickness(362, 136, 53, 20);
-            }
         }
     }
 }

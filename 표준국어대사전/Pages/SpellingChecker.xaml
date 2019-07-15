@@ -6,31 +6,25 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
-    <Page.Resources>
-        <MenuFlyout x:Name="BasicMenuFlyout" x:Key="Basic" Placement="Bottom">
-            <MenuFlyoutItem x:Name="MenuFlyoutCopy" Text="복사" Click="MenuFlyoutCopy_ClickAsync"/>
-            <MenuFlyoutItem x:Name="MenuFlyoutCut" Text="잘라내기" Click="MenuFlyoutCut_ClickAsync"/>
-        </MenuFlyout>
-    </Page.Resources>
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
         <Grid x:Name="NetNoticeGrid" Margin="10,59,0,0" Height="295" VerticalAlignment="Center" HorizontalAlignment="Center" Width="463" Visibility="Collapsed">
-            <TextBlock TextWrapping="Wrap" Text="연결되어 있지 않음" FontSize="24" HorizontalAlignment="Left" VerticalAlignment="Top" Height="33" Margin="90,0,0,0"/>
-            <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="잠시만 기다려 주세요. " VerticalAlignment="Top" Margin="90,44,0,0"/>
-            <TextBlock HorizontalAlignment="Left" Margin="90,73,0,0" TextWrapping="Wrap" Text="다시 온라인 상태가 되도록 합니다." VerticalAlignment="Top"/>
-            <TextBlock HorizontalAlignment="Left" Margin="90,109,0,0" TextWrapping="Wrap" Text="  •  네트워크 케이블이 연결되어 있는지 확인합니다." VerticalAlignment="Top"/>
-            <TextBlock HorizontalAlignment="Left" Margin="90,142,0,0" TextWrapping="Wrap" Text="  •  비행기 모드가 아닌지 확인하세요." VerticalAlignment="Top"/>
-            <TextBlock HorizontalAlignment="Left" Margin="90,212,0,0" TextWrapping="Wrap" Text="  •  라우터를 다시 시작하세요." VerticalAlignment="Top"/>
-            <TextBlock HorizontalAlignment="Left" Margin="90,177,0,0" TextWrapping="Wrap" Text="  •  무선 스위치가 켜져 있는지 확인하세요." VerticalAlignment="Top"/>
+            <TextBlock x:Uid="NNG_Title" TextWrapping="Wrap" Text="연결되어 있지 않음" FontSize="24" HorizontalAlignment="Left" VerticalAlignment="Top" Height="33" Margin="90,0,0,0"/>
+            <TextBlock x:Uid="NNG_Wait" HorizontalAlignment="Left" TextWrapping="Wrap" Text="잠시만 기다려 주세요." VerticalAlignment="Top" Margin="90,44,0,0"/>
+            <TextBlock x:Uid="NNG_Todo" HorizontalAlignment="Left" Margin="90,73,0,0" TextWrapping="Wrap" Text="다시 온라인 상태가 되도록 합니다." VerticalAlignment="Top"/>
+            <TextBlock x:Uid="NNG_c1" HorizontalAlignment="Left" Margin="90,109,0,0" TextWrapping="Wrap" Text="  •  네트워크 케이블이 연결되어 있는지 확인합니다." VerticalAlignment="Top"/>
+            <TextBlock x:Uid="NNG_c2" HorizontalAlignment="Left" Margin="90,142,0,0" TextWrapping="Wrap" Text="  •  비행기 모드가 아닌지 확인하세요." VerticalAlignment="Top"/>
+            <TextBlock x:Uid="NNG_c3" HorizontalAlignment="Left" Margin="90,212,0,0" TextWrapping="Wrap" Text="  •  라우터를 다시 시작하세요." VerticalAlignment="Top"/>
+            <TextBlock x:Uid="NNG_c4" HorizontalAlignment="Left" Margin="90,177,0,0" TextWrapping="Wrap" Text="  •  무선 스위치가 켜져 있는지 확인하세요." VerticalAlignment="Top"/>
             <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="&#xE704;" VerticalAlignment="Top" FontSize="80" FontFamily="Segoe MDL2 Assets"/>
-            <Button Content="다시 시도" HorizontalAlignment="Left" Margin="90,247,0,0" VerticalAlignment="Top" Height="34" Width="94" Click="Button_Click"/>
+            <Button x:Uid="NNG_NoticeRefresh" Content="다시 시도" HorizontalAlignment="Left" Margin="90,247,0,0" VerticalAlignment="Top" Height="34" Width="94" Click="BtnRefresh_Click"/>
         </Grid>
 
         <CommandBar x:Name="PageCommandBar">
             <AppBarButton x:Name="BtnAgree" x:Uid="SPC_BtnAgreement" Icon="View" Label="동의" Click="BtnAgree_Click" Visibility="Collapsed"/>
         </CommandBar>
 
-        <WebView x:Name="WebViewMain" Margin="0,40,0,0" ScrollViewer.HorizontalScrollBarVisibility="Auto" NewWindowRequested="WebViewMain_NewWindowRequested" NavigationFailed="WebViewMain_NavigationFailed" FlyoutBase.AttachedFlyout="{StaticResource Basic}" RightTapped="WebViewMain_RightTapped" Loaded="WebViewMain_Loaded"/>
+        <WebView x:Name="WebViewMain" Margin="0,40,0,0" ScrollViewer.HorizontalScrollBarVisibility="Auto" NewWindowRequested="WebViewMain_NewWindowRequested" NavigationFailed="WebViewMain_NavigationFailed" Loaded="WebViewMain_Loaded"/>
     </Grid>
 </Page>

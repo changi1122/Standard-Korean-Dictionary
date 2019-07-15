@@ -84,7 +84,6 @@
                                     <VisualState x:Name="IconCollapsed">
                                         <VisualState.Setters>
                                             <Setter Target="IconBox.Visibility" Value="Collapsed"/>
-                                            <Setter Target="IconColumn.Width" Value="16"/>
                                         </VisualState.Setters>
                                     </VisualState>
                                 </VisualStateGroup>
@@ -93,12 +92,12 @@
                                 <Rectangle x:Name="SelectionIndicator" Fill="{ThemeResource NavigationViewSelectionIndicatorForeground}" Height="24" Opacity="0.0" Width="6"/>
                             </Grid>
                             <Border x:Name="RevealBorder" BorderThickness="{TemplateBinding BorderThickness}" BorderBrush="{TemplateBinding BorderBrush}"/>
-                            <Grid HorizontalAlignment="Left" Height="40">
+                            <Grid HorizontalAlignment="Left" Height="50">
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition x:Name="IconColumn" Width="48"/>
+                                    <ColumnDefinition x:Name="IconColumn" Width="40"/>
                                     <ColumnDefinition Width="*"/>
                                 </Grid.ColumnDefinitions>
-                                <Viewbox x:Name="IconBox" Child="{TemplateBinding Icon}" Margin="16,12"/>
+                                <Viewbox x:Name="IconBox" Child="{TemplateBinding Icon}" Margin="12,12"/>
                                 <ContentPresenter x:Name="ContentPresenter" ContentTemplate="{TemplateBinding ContentTemplate}" Content="{TemplateBinding Content}" ContentTransitions="{TemplateBinding ContentTransitions}" Grid.Column="1" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
                             </Grid>
                         </Grid>
@@ -119,32 +118,16 @@
                 <NavigationViewItemSeparator/>
                 <NavigationViewItem x:Uid="NaviItem2" Content="한글 맞춤법" Tag="Pages.HangulSpelling" >
                     <NavigationViewItem.Icon>
-                        <BitmapIcon UriSource="/Assets/icon_n_h.png"/>
+                        <FontIcon Glyph="&#xE97D;" FontFamily="Segoe MDL2 Assets"/>
                     </NavigationViewItem.Icon>
                 </NavigationViewItem>
-                <NavigationViewItem x:Uid="NaviItem3" Content="표준어 규정" Tag="Pages.StandardLanguageSpecification" >
-                    <NavigationViewItem.Icon>
-                        <BitmapIcon UriSource="/Assets/icon_n_p.png"/>
-                    </NavigationViewItem.Icon>
-                </NavigationViewItem>
-                <NavigationViewItem x:Uid="NaviItem4" Content="외래어 표기법" Tag="Pages.ForeignLanguageNotation" >
-                    <NavigationViewItem.Icon>
-                        <BitmapIcon UriSource="/Assets/icon_n_y.png"/>
-                    </NavigationViewItem.Icon>
-                </NavigationViewItem>
-                <NavigationViewItem x:Uid="NaviItem5" Content="국어의 로마자 표기법" Tag="Pages.KoreanRomanization" >
-                    <NavigationViewItem.Icon>
-                        <BitmapIcon UriSource="/Assets/icon_n_r.png"/>
-                    </NavigationViewItem.Icon>
-                </NavigationViewItem>
-                <NavigationViewItemSeparator/>
-                <NavigationViewItem x:Uid="NaviItem6" Content="수정 내용" Tag="Pages.Adjustment" >
+                <NavigationViewItem x:Uid="NaviItem3" Content="수정 내용" Tag="Pages.Adjustment" >
                     <NavigationViewItem.Icon>
                         <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE82E;"/>
                     </NavigationViewItem.Icon>
                 </NavigationViewItem>
                 <NavigationViewItemSeparator/>
-                <NavigationViewItem x:Uid="NaviItem7" Content="맞춤법/문법 검사기" Tag="Pages.SpellingChecker" >
+                <NavigationViewItem x:Uid="NaviItem4" Content="맞춤법/문법 검사기" Tag="Pages.SpellingChecker" >
                     <NavigationViewItem.Icon>
                         <BitmapIcon UriSource="/Assets/icon_n_m.png"/>
                     </NavigationViewItem.Icon>

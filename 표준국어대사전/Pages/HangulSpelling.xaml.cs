@@ -6,6 +6,7 @@ using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.ApplicationModel.DataTransfer;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.Networking.Connectivity;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -27,8 +28,30 @@ namespace 표준국어대사전.Pages
         {
             this.InitializeComponent();
 
-            //WebViewMain.Navigate(new Uri("ms-appx-web:///Files/Han.html"));
-            //WebViewMain.Navigate(new Uri("http://korean.go.kr/front/page/pageView.do?page_id=P000060&mn_id=30"));
+            WebViewMain.Navigate(new Uri("http://kornorms.korean.go.kr/regltn/regltnView.do"));
+            NetworkCheck();
+        }
+
+        public static bool IsInternetConnected()
+        {
+            ConnectionProfile connections = NetworkInformation.GetInternetConnectionProfile();
+            bool internet = (connections != null) &&
+                (connections.GetNetworkConnectivityLevel() == NetworkConnectivityLevel.InternetAccess);
+            return internet;
+        }
+
+        private bool NetworkCheck()
+        {
+            if (IsInternetConnected() == true)
+            {
+                return true;
+            }
+            else
+            {
+                NetNoticeGrid.Visibility = Visibility.Visible;
+                WebViewMain.Visibility = Visibility.Collapsed;
+                return false;
+            }
         }
 
         private void WebViewMain_NewWindowRequested(WebView sender, WebViewNewWindowRequestedEventArgs args)
@@ -43,84 +66,35 @@ namespace 표준국어대사전.Pages
             WebViewMain.Visibility = Visibility.Collapsed;
         }
 
-        private void WebViewMain_RightTapped(object sender, RightTappedRoutedEventArgs e)
+        private void BtnRefresh_Click(object sender, RoutedEventArgs e)
         {
-            /*var pointerPosition = Windows.UI.Core.CoreWindow.GetForCurrentThread().PointerPosition;
-                        var Position = new Point(pointerPosition.X - Window.Current.Bounds.X - 48, pointerPosition.Y - Window.Current.Bounds.Y - 48);
-
-                        BasicMenuFlyout.ShowAt((UIElement)e.OriginalSource, Position);*/
-
-            /*MenuFlyout myFlyout = new MenuFlyout();
-            MenuFlyoutItem firstItem = new MenuFlyoutItem { Text = "OneIt" };
-            MenuFlyoutItem secondItem = new MenuFlyoutItem { Text = "TwoIt" };
-            myFlyout.Items.Add(firstItem);
-            myFlyout.Items.Add(secondItem);*/
-
-            //if you only want to show in left or buttom 
-            //myFlyout.Placement = FlyoutPlacementMode.Left;
-
-            FrameworkElement senderElement = sender as FrameworkElement;
-
-            //the code can show the flyout in your mouse click 
-            BasicMenuFlyout.ShowAt(sender as UIElement, e.GetPosition(sender as UIElement));
+            if (NetworkCheck() == true)
+            {
+                WebViewMain.Refresh();
+                WebViewMain.Visibility = Visibility.Visible;
+                NetNoticeGrid.Visibility = Visibility.Collapsed;
+            }
         }
 
-        private async void MenuFlyoutCopy_ClickAsync(object sender, RoutedEventArgs e)
+        private void BtnBack_Click(object sender, RoutedEventArgs e)
         {
-            DataPackage dataPackage = await WebViewMain.CaptureSelectedContentToDataPackageAsync();
-
-            dataPackage.RequestedOperation = DataPackageOperation.Copy;
+            if (WebViewMain.CanGoBack == true)
+                WebViewMain.GoBack();
         }
 
-        private async void MenuFlyoutCut_ClickAsync(object sender, RoutedEventArgs e)
+        private void BtnHome_Click(object sender, RoutedEventArgs e)
         {
-            DataPackage dataPackage = await WebViewMain.CaptureSelectedContentToDataPackageAsync();
-
-            dataPackage.RequestedOperation = DataPackageOperation.Move;
+            if (NetworkCheck() == true)
+            {
+                WebViewMain.Navigate(new Uri("http://kornorms.korean.go.kr/regltn/regltnView.do"));
+                WebViewMain.Visibility = Visibility.Visible;
+                NetNoticeGrid.Visibility = Visibility.Collapsed;
+            }
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private async void BtnOtherApp_Click(object sender, RoutedEventArgs e)
         {
-            WebViewMain.Refresh();
-            WebViewMain.Visibility = Visibility.Visible;
-            NetNoticeGrid.Visibility = Visibility.Collapsed;
-        }
-
-        public async void OpenWithEdge(Uri uri)
-        {
-            var options = new Windows.System.LauncherOptions();
-            options.TargetApplicationPackageFamilyName = "Microsoft.MicrosoftEdge_8wekyb3d8bbwe";
-
-            await Windows.System.Launcher.LaunchUriAsync(uri, options);
-        }
-
-        public async void OpenWithDefaultBrowser(Uri uri)
-        {
-            await Windows.System.Launcher.LaunchUriAsync(uri);
-        }
-
-        private void Button_Click_1(object sender, RoutedEventArgs e)
-        {
-            var uri = new Uri("http://www.korean.go.kr/common/download.do?file_path=reportData&c_file_name=1da1b06c-2dec-4949-88cb-5e8dd28738a5_0.pdf&o_file_name=한글맞춤법%20표준어규정%20해설.pdf&downGubun=reportDataViewForm&report_seq=944");
-            OpenWithEdge(uri);
-        }
-
-        private void Button_Click_2(object sender, RoutedEventArgs e)
-        {
-            var uri = new Uri("http://www.korean.go.kr/common/download.do?file_path=reportData&c_file_name=1da1b06c-2dec-4949-88cb-5e8dd28738a5_0.pdf&o_file_name=한글맞춤법%20표준어규정%20해설.pdf&downGubun=reportDataViewForm&report_seq=944");
-            OpenWithDefaultBrowser(uri);
-        }
-
-        private void Button_Click_3(object sender, RoutedEventArgs e)
-        {
-            var uri = new Uri("http://www.korean.go.kr/common/download.do?file_path=etcData&c_file_name=7a06ab7c-0caa-4164-956b-eba0a049b8a9_0.pdf&o_file_name=문장%20부호%20해설(2014년).pdf");
-            OpenWithEdge(uri);
-        }
-
-        private void Button_Click_4(object sender, RoutedEventArgs e)
-        {
-            var uri = new Uri("http://www.korean.go.kr/common/download.do?file_path=etcData&c_file_name=7a06ab7c-0caa-4164-956b-eba0a049b8a9_0.pdf&o_file_name=문장%20부호%20해설(2014년).pdf");
-            OpenWithDefaultBrowser(uri);
+            await Windows.System.Launcher.LaunchUriAsync(WebViewMain.Source);
         }
     }
 }

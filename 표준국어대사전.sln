@@ -1,20 +1,20 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.27130.2027
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29020.237
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "표준국어대사전", "표준국어대사전\표준국어대사전.csproj", "{289AEB63-E7D7-49C1-AAC0-E41E15D9B7A1}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HTML AnalysisLogic", "HTML AnalysisLogic\HTML AnalysisLogic.csproj", "{C9896C0E-19CD-4A33-BD16-DD4C6339E478}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Debug|ARM = Debug|ARM
+		Debug|ARM64 = Debug|ARM64
 		Debug|x64 = Debug|x64
 		Debug|x86 = Debug|x86
 		Release|Any CPU = Release|Any CPU
 		Release|ARM = Release|ARM
+		Release|ARM64 = Release|ARM64
 		Release|x64 = Release|x64
 		Release|x86 = Release|x86
 	EndGlobalSection
@@ -23,6 +23,7 @@ Global
 		{289AEB63-E7D7-49C1-AAC0-E41E15D9B7A1}.Debug|ARM.ActiveCfg = Debug|ARM
 		{289AEB63-E7D7-49C1-AAC0-E41E15D9B7A1}.Debug|ARM.Build.0 = Debug|ARM
 		{289AEB63-E7D7-49C1-AAC0-E41E15D9B7A1}.Debug|ARM.Deploy.0 = Debug|ARM
+		{289AEB63-E7D7-49C1-AAC0-E41E15D9B7A1}.Debug|ARM64.ActiveCfg = Debug|x86
 		{289AEB63-E7D7-49C1-AAC0-E41E15D9B7A1}.Debug|x64.ActiveCfg = Debug|x64
 		{289AEB63-E7D7-49C1-AAC0-E41E15D9B7A1}.Debug|x64.Build.0 = Debug|x64
 		{289AEB63-E7D7-49C1-AAC0-E41E15D9B7A1}.Debug|x64.Deploy.0 = Debug|x64
@@ -35,28 +36,13 @@ Global
 		{289AEB63-E7D7-49C1-AAC0-E41E15D9B7A1}.Release|ARM.ActiveCfg = Release|ARM
 		{289AEB63-E7D7-49C1-AAC0-E41E15D9B7A1}.Release|ARM.Build.0 = Release|ARM
 		{289AEB63-E7D7-49C1-AAC0-E41E15D9B7A1}.Release|ARM.Deploy.0 = Release|ARM
+		{289AEB63-E7D7-49C1-AAC0-E41E15D9B7A1}.Release|ARM64.ActiveCfg = Release|x86
 		{289AEB63-E7D7-49C1-AAC0-E41E15D9B7A1}.Release|x64.ActiveCfg = Release|x64
 		{289AEB63-E7D7-49C1-AAC0-E41E15D9B7A1}.Release|x64.Build.0 = Release|x64
 		{289AEB63-E7D7-49C1-AAC0-E41E15D9B7A1}.Release|x64.Deploy.0 = Release|x64
 		{289AEB63-E7D7-49C1-AAC0-E41E15D9B7A1}.Release|x86.ActiveCfg = Release|x86
 		{289AEB63-E7D7-49C1-AAC0-E41E15D9B7A1}.Release|x86.Build.0 = Release|x86
 		{289AEB63-E7D7-49C1-AAC0-E41E15D9B7A1}.Release|x86.Deploy.0 = Release|x86
-		{C9896C0E-19CD-4A33-BD16-DD4C6339E478}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C9896C0E-19CD-4A33-BD16-DD4C6339E478}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C9896C0E-19CD-4A33-BD16-DD4C6339E478}.Debug|ARM.ActiveCfg = Debug|Any CPU
-		{C9896C0E-19CD-4A33-BD16-DD4C6339E478}.Debug|ARM.Build.0 = Debug|Any CPU
-		{C9896C0E-19CD-4A33-BD16-DD4C6339E478}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{C9896C0E-19CD-4A33-BD16-DD4C6339E478}.Debug|x64.Build.0 = Debug|Any CPU
-		{C9896C0E-19CD-4A33-BD16-DD4C6339E478}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{C9896C0E-19CD-4A33-BD16-DD4C6339E478}.Debug|x86.Build.0 = Debug|Any CPU
-		{C9896C0E-19CD-4A33-BD16-DD4C6339E478}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C9896C0E-19CD-4A33-BD16-DD4C6339E478}.Release|Any CPU.Build.0 = Release|Any CPU
-		{C9896C0E-19CD-4A33-BD16-DD4C6339E478}.Release|ARM.ActiveCfg = Release|Any CPU
-		{C9896C0E-19CD-4A33-BD16-DD4C6339E478}.Release|ARM.Build.0 = Release|Any CPU
-		{C9896C0E-19CD-4A33-BD16-DD4C6339E478}.Release|x64.ActiveCfg = Release|Any CPU
-		{C9896C0E-19CD-4A33-BD16-DD4C6339E478}.Release|x64.Build.0 = Release|Any CPU
-		{C9896C0E-19CD-4A33-BD16-DD4C6339E478}.Release|x86.ActiveCfg = Release|Any CPU
-		{C9896C0E-19CD-4A33-BD16-DD4C6339E478}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

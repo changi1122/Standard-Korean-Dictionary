@@ -7,6 +7,7 @@ using Windows.ApplicationModel.DataTransfer;
 using Windows.ApplicationModel.Resources;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.Networking.Connectivity;
 using Windows.Storage;
 using Windows.UI.Popups;
 using Windows.UI.Xaml;
@@ -38,6 +39,28 @@ namespace 표준국어대사전.Pages
             }
         }
 
+        public static bool IsInternetConnected()
+        {
+            ConnectionProfile connections = NetworkInformation.GetInternetConnectionProfile();
+            bool internet = (connections != null) &&
+                (connections.GetNetworkConnectivityLevel() == NetworkConnectivityLevel.InternetAccess);
+            return internet;
+        }
+
+        private bool NetworkCheck()
+        {
+            if (IsInternetConnected() == true)
+            {
+                return true;
+            }
+            else
+            {
+                NetNoticeGrid.Visibility = Visibility.Visible;
+                WebViewMain.Visibility = Visibility.Collapsed;
+                return false;
+            }
+        }
+
         private async void WebViewMain_Loaded(object sender, RoutedEventArgs e)
         {
             ApplicationDataContainer localSettings = ApplicationData.Current.LocalSettings;
@@ -45,7 +68,8 @@ namespace 표준국어대사전.Pages
 
             if ((bool)value == true)
             {
-                WebViewMain.Navigate(new Uri("http://speller.cs.pusan.ac.kr/PnuWebSpeller/Default.htm"));
+                WebViewMain.Navigate(new Uri("http://speller.cs.pusan.ac.kr/"));
+                NetworkCheck();
             }
             else
             {
@@ -69,7 +93,7 @@ namespace 표준국어대사전.Pages
             {
                 ApplicationDataContainer localSettings = ApplicationData.Current.LocalSettings;
                 localSettings.Values["#SpellingCheckerAgreement"] = true;
-                WebViewMain.Navigate(new Uri("http://speller.cs.pusan.ac.kr/PnuWebSpeller/Default.htm"));
+                WebViewMain.Navigate(new Uri("http://speller.cs.pusan.ac.kr/"));
                 BtnAgree.Visibility = Visibility.Collapsed;
             }
             else if(command.Label == res.GetString("SPC_Disagree"))
@@ -103,33 +127,14 @@ namespace 표준국어대사전.Pages
             WebViewMain.Visibility = Visibility.Collapsed;
         }
 
-        private void WebViewMain_RightTapped(object sender, RightTappedRoutedEventArgs e)
+        private void BtnRefresh_Click(object sender, RoutedEventArgs e)
         {
-            FrameworkElement senderElement = sender as FrameworkElement;
-
-            //the code can show the flyout in your mouse click 
-            BasicMenuFlyout.ShowAt(sender as UIElement, e.GetPosition(sender as UIElement));
-        }
-
-        private async void MenuFlyoutCopy_ClickAsync(object sender, RoutedEventArgs e)
-        {
-            DataPackage dataPackage = await WebViewMain.CaptureSelectedContentToDataPackageAsync();
-
-            dataPackage.RequestedOperation = DataPackageOperation.Copy;
-        }
-
-        private async void MenuFlyoutCut_ClickAsync(object sender, RoutedEventArgs e)
-        {
-            DataPackage dataPackage = await WebViewMain.CaptureSelectedContentToDataPackageAsync();
-
-            dataPackage.RequestedOperation = DataPackageOperation.Move;
-        }
-
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-            WebViewMain.Refresh();
-            WebViewMain.Visibility = Visibility.Visible;
-            NetNoticeGrid.Visibility = Visibility.Collapsed;
+            if (NetworkCheck() == true)
+            {
+                WebViewMain.Refresh();
+                WebViewMain.Visibility = Visibility.Visible;
+                NetNoticeGrid.Visibility = Visibility.Collapsed;
+            }
         }
     }
 }

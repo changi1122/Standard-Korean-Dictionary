@@ -5,6 +5,7 @@ using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.Networking.Connectivity;
 using Windows.UI.Popups;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -33,21 +34,50 @@ namespace 표준국어대사전.Controls
         {
             this.InitializeComponent();
 
-            SubWebView.Navigate(new Uri("http://stdweb2.korean.go.kr/main.jsp"));
+            SubWebView.Navigate(new Uri("https://stdict.korean.go.kr/main/main.do"));
+            NetworkCheck();
         }
 
-        private void AppBarButton_Click(object sender, RoutedEventArgs e)
+        public static bool IsInternetConnected()
         {
-            SubWebView.Navigate(new Uri("http://stdweb2.korean.go.kr/main.jsp"));
-            SubWebView.Visibility = Visibility.Visible;
-            NetNoticeGrid.Visibility = Visibility.Collapsed;
+            ConnectionProfile connections = NetworkInformation.GetInternetConnectionProfile();
+            bool internet = (connections != null) &&
+                (connections.GetNetworkConnectivityLevel() == NetworkConnectivityLevel.InternetAccess);
+            return internet;
+        }
+
+        private bool NetworkCheck()
+        {
+            if (IsInternetConnected() == true)
+            {
+                return true;
+            }
+            else
+            {
+                NetNoticeGrid.Visibility = Visibility.Visible;
+                SubWebView.Visibility = Visibility.Collapsed;
+                return false;
+            }
+        }
+
+        private void BtnHome_Click(object sender, RoutedEventArgs e)
+        {
+            if (NetworkCheck() == true)
+            {
+                SubWebView.Navigate(new Uri("https://stdict.korean.go.kr/main/main.do"));
+                SubWebView.Visibility = Visibility.Visible;
+                NetNoticeGrid.Visibility = Visibility.Collapsed;
+            }
         }
 
         private void BtnRefresh_Click(object sender, RoutedEventArgs e)
         {
-            SubWebView.Refresh();
-            SubWebView.Visibility = Visibility.Visible;
-            NetNoticeGrid.Visibility = Visibility.Collapsed;
+            if (NetworkCheck() == true)
+            {
+                SubWebView.Refresh();
+                SubWebView.Visibility = Visibility.Visible;
+                NetNoticeGrid.Visibility = Visibility.Collapsed;
+            }
         }
 
         private void BtnBack_Click(object sender, RoutedEventArgs e)
@@ -56,88 +86,10 @@ namespace 표준국어대사전.Controls
                 SubWebView.GoBack();
         }
 
-        private void SubWebView_NewWindowRequested(WebView sender, WebViewNewWindowRequestedEventArgs args)
-        {
-            string address = args.Uri.ToString();
-
-            if (address.IndexOf("DicSoundPlayWordNo") != -1)
-            {
-                args.Handled = true;
-
-                var DicSoundPlay = new WebView
-                {
-                    Name = "WebViewDicSoundPlay",
-                    Visibility = Visibility.Collapsed
-                };
-                BasicGrid.Children.Add(DicSoundPlay);
-                var view = (WebView)FindName("WebViewDicSoundPlay");
-                view.NavigationCompleted += PlayDic;
-                view.Navigate(args.Uri);
-                return;
-            }
-            SubWebView.Navigate(args.Uri);
-            args.Handled = true;
-        }
-
-        private async void PlayDic(WebView sender, WebViewNavigationCompletedEventArgs args)
-        {
-            var view = (WebView)FindName("WebViewDicSoundPlay");
-            var functionString = string.Format(@"document.getElementsByTagName('img').item(1).click()");
-            await view.InvokeScriptAsync("eval", new string[] { functionString });
-
-            BasicGrid.Children.Remove((UIElement)this.FindName("WebViewDicSoundPlay"));
-        }
-
         private void SubWebView_NavigationFailed(object sender, WebViewNavigationFailedEventArgs e)
         {
             NetNoticeGrid.Visibility = Visibility.Visible;
-            MainPageGrid.Visibility = Visibility.Collapsed;
             SubWebView.Visibility = Visibility.Collapsed;
-        }
-
-        private void SubWebView_LoadCompleted(object sender, NavigationEventArgs e)
-        {
-            if (SubWebView.Source == new Uri("http://stdweb2.korean.go.kr/main.jsp"))
-            {
-                MainPageGrid.Visibility = Visibility.Visible;
-            }
-            else
-            {
-                MainPageGrid.Visibility = Visibility.Collapsed;
-            }
-        }
-
-        private void TextboxSearch_KeyDown(object sender, KeyRoutedEventArgs e)
-        {
-            if (e.Key == Windows.System.VirtualKey.Enter)
-            {
-                BtnSearch_Click(this, new RoutedEventArgs());
-            }
-        }
-
-        private async void BtnSearch_Click(object sender, RoutedEventArgs e)
-        {
-            if (TextboxSearch.Text == "")
-            {
-                // Create a MessageDialog
-                var messageDialog = new MessageDialog("찾을 말 또는 단어를 입력하세요.");
-                // Show MessageDialog
-                await messageDialog.ShowAsync();
-
-                return;
-            }
-
-            //텍스트를 웹뷰에 입력합니다.
-            var inputValue_Text = TextboxSearch.Text;
-            var functionString_Text = string.Format(@"document.getElementsByClassName('word_ins')[0].value = '{0}';", inputValue_Text);
-            await SubWebView.InvokeScriptAsync("eval", new string[] { functionString_Text });
-
-            //검색 버튼을 누릅니다.
-            var inputValue = TextboxSearch.Text;
-            var functionString = string.Format(@"document.getElementById('sch1').click()");
-            await SubWebView.InvokeScriptAsync("eval", new string[] { functionString });
-
-            TextboxSearch.Text = "";
         }
     }
 }
