@@ -133,7 +133,6 @@ namespace 표준국어대사전.Classes
                 SearchResults.Add(new SearchResultItem { target_code = -321, word = "[더 보기]", sup_no = start, display_sup_no = "", definition = Search_Text });
             }
 
-            ListviewSearchResult.ItemsSource = SearchResults;
             MasterProgressBar.Visibility = Visibility.Collapsed;
         }
 
