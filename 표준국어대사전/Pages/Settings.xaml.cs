@@ -13,7 +13,7 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 using System.Reflection;
-using Windows.Storage;
+using 표준국어대사전.Classes;
 
 // 빈 페이지 항목 템플릿에 대한 설명은 https://go.microsoft.com/fwlink/?LinkId=234238에 나와 있습니다.
 
@@ -24,6 +24,64 @@ namespace 표준국어대사전.Pages
     /// </summary>
     public sealed partial class Settings : Page
     {
+        public bool RadioBtnDicAppSearch
+        {
+            get
+            {
+                if (new DataStorageClass().GetSetting<string>(DataStorageClass.SearchEngine) == "DicAppSearch") return true;
+                else return false;
+            }
+            set
+            {
+                if (value == true) new DataStorageClass().SetSetting<string>(DataStorageClass.SearchEngine, "DicAppSearch");
+                else new DataStorageClass().SetSetting<string>(DataStorageClass.SearchEngine, "Dic");
+            }
+        }
+        public bool RadioBtnDic
+        {
+            get
+            {
+                if (new DataStorageClass().GetSetting<string>(DataStorageClass.SearchEngine) == "Dic") return true;
+                else return false;
+            }
+            set
+            {
+                if (value == true) new DataStorageClass().SetSetting<string>(DataStorageClass.SearchEngine, "Dic");
+                else new DataStorageClass().SetSetting<string>(DataStorageClass.SearchEngine, "DicAppSearch");
+            }
+        }
+        public bool IsEnableDevelopermode
+        {
+            get { return new DataStorageClass().GetSetting<bool>(DataStorageClass.UseDevelopermode); }
+            set { new DataStorageClass().SetSetting<bool>(DataStorageClass.UseDevelopermode, value); }
+        }
+        public int ComboBoxFontSelectedIndex
+        {
+            get
+            {
+                if (new DataStorageClass().GetSetting<string>(DataStorageClass.DisplayFont) == "나눔바른고딕 옛한글") return 0;
+                else return 1;
+            }
+            set
+            {
+                if (value == 0) new DataStorageClass().SetSetting<string>(DataStorageClass.DisplayFont, "나눔바른고딕 옛한글");
+                else new DataStorageClass().SetSetting<string>(DataStorageClass.DisplayFont, "맑은 고딕");
+            }
+        }
+        public int ComboBoxAPIKeyIndex
+        {
+            get
+            {
+                if (new DataStorageClass().GetSetting<bool>(DataStorageClass.UseCustomAPIKey) == false) return 0;
+                else return 1;
+            }
+            set
+            {
+                if (value == 0) { new DataStorageClass().SetSetting<bool>(DataStorageClass.UseCustomAPIKey, false);
+                                  new DataStorageClass().SetSetting<string>(DataStorageClass.APIKey, "C58534E2D39CF7CA69BCA193541C1688"); }
+            }
+        }
+
         public Settings()
         {
             this.InitializeComponent();
@@ -32,40 +90,14 @@ namespace 표준국어대사전.Pages
             ComboBoxAPIKey.Items.Add(res.GetString("ComboBoxAPIKeyItemPublic"));
             ComboBoxAPIKey.Items.Add(res.GetString("ComboBoxAPIKeyItemCustom"));
 
-            ApplicationDataContainer localSettings = ApplicationData.Current.LocalSettings;
+            DataStorageClass data = new DataStorageClass();
 
-            if (localSettings.Values["#UseDevelopermode"] == null)
-                localSettings.Values["#UseDevelopermode"] = false;
-
-            if (localSettings.Values["#SearchEngine"] == null)
-                localSettings.Values["#SearchEngine"] = "DicAppSearch";
-
-            if (localSettings.Values["#DisplayFont"] == null)
-                localSettings.Values["#DisplayFont"] = "나눔바른고딕 옛한글";
-
-            if (localSettings.Values["#UseCustomAPIKey"] == null)
-                localSettings.Values["#UseCustomAPIKey"] = false;
-
-            if (localSettings.Values["#APIKey"] == null)
-                localSettings.Values["#APIKey"] = "C58534E2D39CF7CA69BCA193541C1688";
-
-            CheckDevelopermode.IsChecked = (bool)localSettings.Values["#UseDevelopermode"];
-            if ((string)localSettings.Values["#SearchEngine"] == "DicAppSearch")
-                RadioButtonDicAppSearch.IsChecked = true;
-            else
-                RadioButtonDicWeb.IsChecked = true;
-
-            if ((string)localSettings.Values["#DisplayFont"] == "나눔바른고딕 옛한글")
-                ComboBoxFont.SelectedIndex = 0;
-            else if ((string)localSettings.Values["#DisplayFont"] == "맑은 고딕")
-                ComboBoxFont.SelectedIndex = 1;
-
-            if ((bool)localSettings.Values["#UseCustomAPIKey"] == false)
+            if (data.GetSetting<bool>(DataStorageClass.UseCustomAPIKey) == false)
                 ComboBoxAPIKey.SelectedIndex = 0;
             else
             {
                 ComboBoxAPIKey.SelectedIndex = 1;
-                TextBoxAPIKey.Text = (string)localSettings.Values["#APIKey"];
+                TextBoxAPIKey.Text = data.GetSetting<string>(DataStorageClass.APIKey);
             }
 
             var package = Windows.ApplicationModel.Package.Current;
@@ -93,54 +125,26 @@ namespace 표준국어대사전.Pages
             await Windows.System.Launcher.LaunchUriAsync(new Uri(@"mailto:changi112242@gmail.com"));
         }
 
-        private void CheckDevelopermode_Click(object sender, RoutedEventArgs e)
-        {
-            ApplicationDataContainer localSettings = ApplicationData.Current.LocalSettings;
-            var value = localSettings.Values["#UseDevelopermode"];
-
-            localSettings.Values["#UseDevelopermode"] = CheckDevelopermode.IsChecked;
-        }
-
         private void BtnResetSetting_Click(object sender, RoutedEventArgs e)
         {
-            ApplicationDataContainer localSettings = ApplicationData.Current.LocalSettings;
-            localSettings.Values.Clear();
-
-            localSettings.Values["#UseDevelopermode"] = false;
-            CheckDevelopermode.IsChecked = (bool)localSettings.Values["#UseDevelopermode"];
-            localSettings.Values["#SearchEngine"] = "DicAppSearch";
+            new DataStorageClass().Clear();
+            new DataStorageClass().StartUpSetup();
             RadioButtonDicAppSearch.IsChecked = true;
-            localSettings.Values["#DisplayFont"] = "나눔바른고딕 옛한글";
-            ComboBoxFont.SelectedIndex = 0;
-            localSettings.Values["#UseCustomAPIKey"] = false;
+            CheckDevelopermode.IsChecked = false;
+            ComboBoxFont.SelectedIndex = 0; ;
             ComboBoxAPIKey.SelectedIndex = 0;
-            localSettings.Values["#APIKey"] = "C58534E2D39CF7CA69BCA193541C1688";
         }
 
         private void RadioButtonDicAppSearch_Checked(object sender, RoutedEventArgs e)
         {
-            ApplicationDataContainer localSettings = ApplicationData.Current.LocalSettings;
-            var value = localSettings.Values["#SearchEngine"];
-
-            localSettings.Values["#SearchEngine"] = "DicAppSearch";
+            RadioBtnDicAppSearch = true;
+            RadioBtnDic = false;
         }
 
         private void RadioButtonDicWeb_Checked(object sender, RoutedEventArgs e)
         {
-            ApplicationDataContainer localSettings = ApplicationData.Current.LocalSettings;
-            var value = localSettings.Values["#SearchEngine"];
-
-            localSettings.Values["#SearchEngine"] = "Dic";
-        }
-
-        private void ComboBoxFont_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            ApplicationDataContainer localSettings = ApplicationData.Current.LocalSettings;
-
-            if (ComboBoxFont.SelectedIndex == 0)
-                localSettings.Values["#DisplayFont"] = "나눔바른고딕 옛한글";
-            else if (ComboBoxFont.SelectedIndex == 1)
-                localSettings.Values["#DisplayFont"] = "맑은 고딕";
+            RadioBtnDicAppSearch = false;
+            RadioBtnDic = true;
         }
 
         private void ComboBoxAPIKey_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -149,10 +153,6 @@ namespace 표준국어대사전.Pages
             {
                 TextBoxAPIKey.Text = "";
                 TextBoxAPIKey.IsEnabled = false;
-
-                ApplicationDataContainer localSettings = ApplicationData.Current.LocalSettings;
-                localSettings.Values["#UseCustomAPIKey"] = false;
-                localSettings.Values["#APIKey"] = "C58534E2D39CF7CA69BCA193541C1688";
 
                 BtnSaveNHelp.Content = "";
             }
@@ -164,8 +164,7 @@ namespace 표준국어대사전.Pages
 
         private void TextBoxAPIKey_TextChanged(object sender, TextChangedEventArgs e)
         {
-            ApplicationDataContainer localSettings = ApplicationData.Current.LocalSettings;
-            if ((TextBoxAPIKey.Text != (string)localSettings.Values["#APIKey"]) && (ComboBoxAPIKey.SelectedIndex == 1))
+            if ((TextBoxAPIKey.Text != new DataStorageClass().GetSetting<string>(DataStorageClass.APIKey)) && (ComboBoxAPIKey.SelectedIndex == 1))
             {
                 BtnSaveNHelp.Content = "";
             }
@@ -175,9 +174,8 @@ namespace 표준국어대사전.Pages
         {
             if ((string)BtnSaveNHelp.Content == "") //저장
             {
-                ApplicationDataContainer localSettings = ApplicationData.Current.LocalSettings;
-                localSettings.Values["#APIKey"] = TextBoxAPIKey.Text;
-                localSettings.Values["#UseCustomAPIKey"] = true;
+                new DataStorageClass().SetSetting<string>(DataStorageClass.APIKey, TextBoxAPIKey.Text);
+                new DataStorageClass().SetSetting<bool>(DataStorageClass.UseCustomAPIKey, true);
 
                 BtnSaveNHelp.Content = "";
             }

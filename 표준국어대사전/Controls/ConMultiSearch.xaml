@@ -9,7 +9,6 @@
     d:DesignHeight="300"
     d:DesignWidth="600">
 
-
     <Grid x:Name="BasicGrid">
         <CommandBar Background="#FFE6E6E6" IsOpen="False" DefaultLabelPosition="Right" Margin="1,0,1,0">
             <AppBarButton x:Name="BtnBack" Icon="Back" Label="뒤로" Click="BtnBack_Click"/>

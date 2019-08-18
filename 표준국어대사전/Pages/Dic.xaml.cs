@@ -15,11 +15,11 @@ using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
-using Windows.Storage;
 using System.Threading.Tasks;
 using Windows.ApplicationModel.Core;
 using Windows.Management.Deployment;
 using Windows.Networking.Connectivity;
+using 표준국어대사전.Classes;
 
 // 빈 페이지 항목 템플릿에 대한 설명은 https://go.microsoft.com/fwlink/?LinkId=234238에 나와 있습니다.
 
@@ -36,14 +36,7 @@ namespace 표준국어대사전.Pages
         {
             this.InitializeComponent();
 
-            ApplicationDataContainer localSettings = ApplicationData.Current.LocalSettings;
-            var value = localSettings.Values["#UseOriginWeb"];
-            if (localSettings.Values["#UseDevelopermode"] == null)
-            {
-                localSettings.Values["#UseDevelopermode"] = false;
-            }
-
-            if ((bool)localSettings.Values["#UseDevelopermode"] == false)
+            if (new DataStorageClass().GetSetting<bool>(DataStorageClass.UseDevelopermode) == false)
                 BtnReadingMode.Visibility = Visibility.Collapsed;
             else
                 BtnReadingMode.Visibility = Visibility.Visible;

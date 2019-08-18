@@ -30,6 +30,7 @@ namespace 표준국어대사전
         {
             this.InitializeComponent();
             this.Suspending += OnSuspending;
+            new 표준국어대사전.Classes.DataStorageClass().StartUpSetup();
         }
 
         /// <summary>
@@ -39,6 +40,11 @@ namespace 표준국어대사전
         /// <param name="e">시작 요청 및 프로세스에 대한 정보입니다.</param>
         protected override void OnLaunched(LaunchActivatedEventArgs e)
         {
+            /*Windows.Globalization.ApplicationLanguages.PrimaryLanguageOverride =
+            true ?
+            "en(특정 언어)" :
+            Windows.System.UserProfile.GlobalizationPreferences.Languages[0];*/
+
             Frame rootFrame = Window.Current.Content as Frame;
 
             // 창에 콘텐츠가 이미 있는 경우 앱 초기화를 반복하지 말고,

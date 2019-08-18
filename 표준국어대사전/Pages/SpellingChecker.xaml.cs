@@ -8,7 +8,6 @@ using Windows.ApplicationModel.Resources;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.Networking.Connectivity;
-using Windows.Storage;
 using Windows.UI.Popups;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -17,6 +16,7 @@ using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
+using 표준국어대사전.Classes;
 
 // 빈 페이지 항목 템플릿에 대한 설명은 https://go.microsoft.com/fwlink/?LinkId=234238에 나와 있습니다.
 
@@ -30,13 +30,6 @@ namespace 표준국어대사전.Pages
         public SpellingChecker()
         {
             this.InitializeComponent();
-
-            ApplicationDataContainer localSettings = ApplicationData.Current.LocalSettings;
-            var value = localSettings.Values["#SpellingCheckerAgreement"];
-            if (value == null)
-            {
-                localSettings.Values["#SpellingCheckerAgreement"] = false;
-            }
         }
 
         public static bool IsInternetConnected()
@@ -63,8 +56,7 @@ namespace 표준국어대사전.Pages
 
         private async void WebViewMain_Loaded(object sender, RoutedEventArgs e)
         {
-            ApplicationDataContainer localSettings = ApplicationData.Current.LocalSettings;
-            var value = localSettings.Values["#SpellingCheckerAgreement"];
+            bool value = new DataStorageClass().GetSetting<bool>(DataStorageClass.SpellingCheckerAgreement);
 
             if ((bool)value == true)
             {
@@ -91,8 +83,7 @@ namespace 표준국어대사전.Pages
 
             if (command.Label == res.GetString("SPC_Agree"))
             {
-                ApplicationDataContainer localSettings = ApplicationData.Current.LocalSettings;
-                localSettings.Values["#SpellingCheckerAgreement"] = true;
+                new DataStorageClass().SetSetting<bool>(DataStorageClass.SpellingCheckerAgreement, true);
                 WebViewMain.Navigate(new Uri("http://speller.cs.pusan.ac.kr/"));
                 BtnAgree.Visibility = Visibility.Collapsed;
             }

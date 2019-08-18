@@ -30,14 +30,13 @@ namespace 표준국어대사전.Classes
             DetailProgressBar = pbar;
 
             //글꼴
-            Windows.Storage.ApplicationDataContainer localSettings = Windows.Storage.ApplicationData.Current.LocalSettings;
-            if ((string)localSettings.Values["#DisplayFont"] == "맑은 고딕")
+            if (new DataStorageClass().GetSetting<string>(DataStorageClass.DisplayFont) == "맑은 고딕")
                 FONTFAMILY = "#Malgun Gothic";
             else
                 FONTFAMILY = "/Fonts/NanumBarunGothic-YetHangul.ttf#NanumBarunGothic YetHangul";
 
             //API 키 처리
-            API_KEY = (string)localSettings.Values["#APIKey"];
+            API_KEY = new DataStorageClass().GetSetting<string>(DataStorageClass.APIKey);
         }
 
         public async void GetWordDetail(string target_code, string wordname, int sup_no)

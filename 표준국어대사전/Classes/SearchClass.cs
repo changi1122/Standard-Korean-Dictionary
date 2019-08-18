@@ -31,8 +31,7 @@ namespace 표준국어대사전.Classes
             TextBlockErrorMessage = textBlock;
 
             //API 키 처리
-            Windows.Storage.ApplicationDataContainer localSettings = Windows.Storage.ApplicationData.Current.LocalSettings;
-            API_KEY = (string)localSettings.Values["#APIKey"];
+            API_KEY = new DataStorageClass().GetSetting<string>(DataStorageClass.APIKey);
         }
 
         public async void GetSearchResults(int start, int num, string Search_Text)

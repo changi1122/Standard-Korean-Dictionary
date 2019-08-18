@@ -20,7 +20,6 @@ using Windows.Management.Deployment;
 using System.Threading.Tasks;
 using Windows.ApplicationModel.Core;
 using Windows.Networking.Connectivity;
-using Windows.Storage;
 using System.Net.Http;
 using System.Xml.Linq;
 
@@ -42,14 +41,6 @@ namespace 표준국어대사전.Pages
             this.InitializeComponent();
             SearchResults = new ObservableCollection<SearchResultItem>();
             //SearchResults = new ObservableCollection<SearchResultItem>(SampleManager.GetWords());
-
-            ApplicationDataContainer localSettings = ApplicationData.Current.LocalSettings;
-            if (localSettings.Values["#DisplayFont"] == null)
-                localSettings.Values["#DisplayFont"] = "나눔바른고딕 옛한글";
-            if (localSettings.Values["#UseCustomAPIKey"] == null)
-                localSettings.Values["#UseCustomAPIKey"] = false;
-            if (localSettings.Values["#APIKey"] == null)
-                localSettings.Values["#APIKey"] = "C58534E2D39CF7CA69BCA193541C1688";
 
             NetworkCheck();
 

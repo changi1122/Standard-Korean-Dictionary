@@ -13,6 +13,7 @@ using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
+using 표준국어대사전.Classes;
 
 // 빈 페이지 항목 템플릿에 대한 설명은 https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x412에 나와 있습니다.
 
@@ -26,24 +27,6 @@ namespace 표준국어대사전
         public MainPage()
         {
             InitializeComponent();
-
-            ApplicationDataContainer localSettings = ApplicationData.Current.LocalSettings;
-
-            if (localSettings.Values["#FirstSetup"] == null)
-                localSettings.Values["#FirstSetup"] = 0;
-
-            if ((int)localSettings.Values["#FirstSetup"] < 2)
-            {
-                localSettings.Values.Remove("#DisplayFontSize");
-                localSettings.Values.Remove("#FontCheckNoLater");
-                localSettings.Values.Remove("#UseOriginWeb");
-                localSettings.Values["#FirstSetup"] = 2;
-            }
-
-            if (localSettings.Values["#SearchEngine"] == null)
-            {
-                localSettings.Values["#SearchEngine"] = "DicAppSearch";
-            }
         }
 
         private void NavigationView_Loaded(object sender, RoutedEventArgs e)
@@ -61,8 +44,6 @@ namespace 표준국어대사전
 
         private void Main_Navigation_ItemInvoked(NavigationView sender, NavigationViewItemInvokedEventArgs args)
         {
-            ApplicationDataContainer localSettings = ApplicationData.Current.LocalSettings;
-
             if (args.IsSettingsInvoked)
             {
                 ContentFrame.Navigate(typeof(Pages.Settings));
@@ -72,7 +53,7 @@ namespace 표준국어대사전
                 switch (args.InvokedItem)
                 {
                     case "Pages.Dic":  //검색
-                        if ((string)localSettings.Values["#SearchEngine"] == "DicAppSearch")
+                        if (new DataStorageClass().GetSetting<string>(DataStorageClass.SearchEngine) == "DicAppSearch")
                             ContentFrame.Navigate(typeof(Pages.DicAppSearch));
                         else
                             ContentFrame.Navigate(typeof(Pages.Dic));
@@ -109,7 +90,7 @@ namespace 표준국어대사전
                 switch (item.Tag)
                 {
                     case "Pages.Dic":  //검색
-                        if ((string)localSettings.Values["#SearchEngine"] == "DicAppSearch")
+                        if (new DataStorageClass().GetSetting<string>(DataStorageClass.SearchEngine) == "DicAppSearch")
                             ContentFrame.Navigate(typeof(Pages.DicAppSearch));
                         else
                             ContentFrame.Navigate(typeof(Pages.Dic));
