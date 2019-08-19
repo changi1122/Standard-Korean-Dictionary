@@ -493,6 +493,40 @@ namespace 표준국어대사전.Classes
                 }
             }
 
+            //이탤릭체
+            for (int i = 0; i < OutputList.Count; ++i)
+            {
+                while (true)
+                {
+                    if (!OutputList[i].Contains("<I>") && !OutputList[i].Contains("<i>"))
+                        break;
+                    else if (OutputList[i].Contains("<I>"))
+                    {
+                        string output = OutputList[i];
+                        OutputList.RemoveAt(i);
+                        string fontsize = "015"; //default
+                        if (output.StartsWith("&FOS"))
+                            fontsize = output.Substring(4, 3);
+                        OutputList.Insert(i, output.Substring(0, output.IndexOf("<I>")));
+                        output = output.Substring(output.IndexOf("<I>"));
+                        OutputList.Insert(i + 1, "&ITA" + fontsize + output.Substring(output.IndexOf("<I>") + 3, output.IndexOf("</I>") - output.IndexOf("<I>") - 3));
+                        OutputList.Insert(i + 2, "&FOS" + fontsize + output.Substring(output.IndexOf("</I>") + 4));
+                    }
+                    else
+                    {
+                        string output = OutputList[i];
+                        OutputList.RemoveAt(i);
+                        string fontsize = "015"; //default
+                        if (output.StartsWith("&FOS"))
+                            fontsize = output.Substring(4, 3);
+                        OutputList.Insert(i, output.Substring(0, output.IndexOf("<i>")));
+                        output = output.Substring(output.IndexOf("<i>"));
+                        OutputList.Insert(i + 1, "&ITA" + fontsize + output.Substring(output.IndexOf("<i>") + 3, output.IndexOf("</i>") - output.IndexOf("<i>") - 3));
+                        OutputList.Insert(i + 2, "&FOS" + fontsize + output.Substring(output.IndexOf("</i>") + 4));
+                    }
+                }
+            }
+
             ListViewItem item = new ListViewItem();
             item.Margin = new Thickness(0, 6, 0, 0);
 
@@ -510,6 +544,11 @@ namespace 표준국어대사전.Classes
                 else if (OutputList[i].StartsWith("&NUM"))
                 {
                     para.Inlines.Add(new Run { Text = OutputList[i].Substring(4), FontSize = 15, Foreground = new SolidColorBrush(Windows.UI.Colors.Red), FontFamily = new FontFamily(FONTFAMILY) });
+                }
+                else if (OutputList[i].StartsWith("&ITA"))
+                {
+                    int fontsize = int.Parse(OutputList[i].Substring(4, 3));
+                    para.Inlines.Add(new Run { Text = OutputList[i].Substring(7), FontSize = fontsize, FontFamily = new FontFamily(FONTFAMILY), FontStyle = Windows.UI.Text.FontStyle.Italic });
                 }
             }
 
