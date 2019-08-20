@@ -81,6 +81,22 @@ namespace 표준국어대사전.Pages
                                   new DataStorageClass().SetSetting<string>(DataStorageClass.APIKey, "C58534E2D39CF7CA69BCA193541C1688"); }
             }
         }
+        public int ComboBoxLangIndex
+        {
+            get
+            {
+                if (new DataStorageClass().GetSetting<string>(DataStorageClass.Language) == "system") return 0;
+                else if (new DataStorageClass().GetSetting<string>(DataStorageClass.Language) == "ko-KR") return 1;
+                else return 2;
+            }
+            set
+            {
+                if (value == 0) new DataStorageClass().SetSetting<string>(DataStorageClass.Language, "system");
+                else if (value == 1) new DataStorageClass().SetSetting<string>(DataStorageClass.Language, "ko-KR");
+                else if (value == 2) new DataStorageClass().SetSetting<string>(DataStorageClass.Language, "en");
+                TextRestartNotice.Visibility = Visibility.Visible;
+            }
+        }
 
         public Settings()
         {
@@ -133,6 +149,7 @@ namespace 표준국어대사전.Pages
             CheckDevelopermode.IsChecked = false;
             ComboBoxFont.SelectedIndex = 0; ;
             ComboBoxAPIKey.SelectedIndex = 0;
+            ComboBoxLang.SelectedIndex = 0;
         }
 
         private void RadioButtonDicAppSearch_Checked(object sender, RoutedEventArgs e)

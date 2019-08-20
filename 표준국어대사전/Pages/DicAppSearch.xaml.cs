@@ -22,6 +22,7 @@ using Windows.ApplicationModel.Core;
 using Windows.Networking.Connectivity;
 using System.Net.Http;
 using System.Xml.Linq;
+using Windows.ApplicationModel.Resources;
 
 // 빈 페이지 항목 템플릿에 대한 설명은 https://go.microsoft.com/fwlink/?LinkId=234238에 나와 있습니다.
 
@@ -138,7 +139,8 @@ namespace 표준국어대사전.Pages
 
             if (searchText == "")
             {
-                var messageDialog = new MessageDialog("찾을 말 또는 단어를 입력하세요.");
+                var res = ResourceLoader.GetForCurrentView();
+                var messageDialog = new MessageDialog(res.GetString("DA_NoSearchText"));
                 await messageDialog.ShowAsync();
                 return;
             }

@@ -58,7 +58,7 @@ namespace 표준국어대사전.Pages
         {
             bool value = new DataStorageClass().GetSetting<bool>(DataStorageClass.SpellingCheckerAgreement);
 
-            if ((bool)value == true)
+            if (value == true)
             {
                 WebViewMain.Navigate(new Uri("http://speller.cs.pusan.ac.kr/"));
                 NetworkCheck();

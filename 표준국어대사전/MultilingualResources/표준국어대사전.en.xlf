@@ -342,6 +342,18 @@
           <source>도움말</source>
           <target state="translated">Help</target>
         </trans-unit>
+        <trans-unit id="Set_Language.Text" translate="yes" xml:space="preserve">
+          <source>언어 (Language)</source>
+          <target state="translated">Language (언어)</target>
+        </trans-unit>
+        <trans-unit id="Set_TextRestartNotice.Text" translate="yes" xml:space="preserve">
+          <source>변경내용을 적용하려면 앱을 다시 시작해야 합니다.</source>
+          <target state="translated">You must restart the app for the change to take effect.</target>
+        </trans-unit>
+        <trans-unit id="DA_NoSearchText" translate="yes" xml:space="preserve">
+          <source>찾을 말 또는 단어를 입력하세요.</source>
+          <target state="translated">Enter a word to find.</target>
+        </trans-unit>
       </group>
     </body>
   </file>

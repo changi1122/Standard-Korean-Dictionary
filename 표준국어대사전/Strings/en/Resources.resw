@@ -264,4 +264,13 @@
   <data name="Dic_BtnHelp.Label" xml:space="preserve">
     <value>Help</value>
   </data>
+  <data name="Set_Language.Text" xml:space="preserve">
+    <value>Language (언어)</value>
+  </data>
+  <data name="Set_TextRestartNotice.Text" xml:space="preserve">
+    <value>You must restart the app for the change to take effect.</value>
+  </data>
+  <data name="DA_NoSearchText" xml:space="preserve">
+    <value>Enter a word to find.</value>
+  </data>
 </root>

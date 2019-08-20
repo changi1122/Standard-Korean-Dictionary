@@ -15,7 +15,8 @@ namespace 표준국어대사전.Classes
         public const string UseCustomAPIKey = "#UseCustomAPIKey";                       //bool
         public const string APIKey = "#APIKey";                                         //string
         public const string UseDevelopermode = "#UseDevelopermode";                     //bool
-        public const string SpellingCheckerAgreement = "#SpellingCheckerAgreement";       //bool
+        public const string SpellingCheckerAgreement = "#SpellingCheckerAgreement";     //bool
+        public const string Language = "#Language";                                     //string
 
         public void StartUpSetup()
         {
@@ -32,6 +33,12 @@ namespace 표준국어대사전.Classes
                 localSettings.Values.Remove("#UseOriginWeb");
                 localSettings.Values[FirstSetup] = 2;
             }
+            //2.0.1.0 업데이트 - 언어
+            if ((int)localSettings.Values[FirstSetup] < 3)
+            {
+                localSettings.Values[Language] = "system";
+                localSettings.Values[FirstSetup] = 3;
+            }
         }
 
         void FirstUpSetUp()
@@ -44,7 +51,8 @@ namespace 표준국어대사전.Classes
             localSettings.Values[UseCustomAPIKey] = false;
             localSettings.Values[APIKey] = "C58534E2D39CF7CA69BCA193541C1688";
             localSettings.Values[UseDevelopermode] = false;
-            localSettings.Values["#SpellingCheckerAgreement"] = false;
+            localSettings.Values[SpellingCheckerAgreement] = false;
+            localSettings.Values[Language] = "system";
         }
 
         public T GetSetting<T>(string name)

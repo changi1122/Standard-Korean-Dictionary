@@ -369,4 +369,13 @@
   <data name="Dic_BtnHelp.Label" xml:space="preserve">
     <value>도움말</value>
   </data>
+  <data name="Set_Language.Text" xml:space="preserve">
+    <value>언어 (Language)</value>
+  </data>
+  <data name="Set_TextRestartNotice.Text" xml:space="preserve">
+    <value>변경내용을 적용하려면 앱을 다시 시작해야 합니다.</value>
+  </data>
+  <data name="DA_NoSearchText" xml:space="preserve">
+    <value>찾을 말 또는 단어를 입력하세요.</value>
+  </data>
 </root>

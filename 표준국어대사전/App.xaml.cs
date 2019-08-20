@@ -40,10 +40,23 @@ namespace 표준국어대사전
         /// <param name="e">시작 요청 및 프로세스에 대한 정보입니다.</param>
         protected override void OnLaunched(LaunchActivatedEventArgs e)
         {
-            /*Windows.Globalization.ApplicationLanguages.PrimaryLanguageOverride =
-            true ?
-            "en(특정 언어)" :
-            Windows.System.UserProfile.GlobalizationPreferences.Languages[0];*/
+            var lang = new 표준국어대사전.Classes.DataStorageClass().GetSetting<string>(표준국어대사전.Classes.DataStorageClass.Language);
+            if (lang == "system")
+            {
+                int i;
+                for (i = 0; i < Windows.System.UserProfile.GlobalizationPreferences.Languages.Count; ++i)
+                {
+                    if (Windows.System.UserProfile.GlobalizationPreferences.Languages[i] == "ko-KR" || Windows.System.UserProfile.GlobalizationPreferences.Languages[i].StartsWith("en"))
+                    {
+                        lang = Windows.System.UserProfile.GlobalizationPreferences.Languages[i];
+                        break;
+                    }
+                }
+                if (i == Windows.System.UserProfile.GlobalizationPreferences.Languages.Count)
+                    lang = "ko-KR";
+            }
+
+            Windows.Globalization.ApplicationLanguages.PrimaryLanguageOverride = lang;
 
             Frame rootFrame = Window.Current.Content as Frame;
 
