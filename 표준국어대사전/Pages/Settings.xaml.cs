@@ -86,13 +86,13 @@ namespace 표준국어대사전.Pages
             get
             {
                 if (new DataStorageClass().GetSetting<string>(DataStorageClass.Language) == "system") return 0;
-                else if (new DataStorageClass().GetSetting<string>(DataStorageClass.Language) == "ko-KR") return 1;
+                else if (new DataStorageClass().GetSetting<string>(DataStorageClass.Language) == "ko") return 1;
                 else return 2;
             }
             set
             {
                 if (value == 0) new DataStorageClass().SetSetting<string>(DataStorageClass.Language, "system");
-                else if (value == 1) new DataStorageClass().SetSetting<string>(DataStorageClass.Language, "ko-KR");
+                else if (value == 1) new DataStorageClass().SetSetting<string>(DataStorageClass.Language, "ko");
                 else if (value == 2) new DataStorageClass().SetSetting<string>(DataStorageClass.Language, "en");
                 TextRestartNotice.Visibility = Visibility.Visible;
             }

@@ -46,14 +46,14 @@ namespace 표준국어대사전
                 int i;
                 for (i = 0; i < Windows.System.UserProfile.GlobalizationPreferences.Languages.Count; ++i)
                 {
-                    if (Windows.System.UserProfile.GlobalizationPreferences.Languages[i] == "ko-KR" || Windows.System.UserProfile.GlobalizationPreferences.Languages[i].StartsWith("en"))
+                    if (Windows.System.UserProfile.GlobalizationPreferences.Languages[i].StartsWith("ko") || Windows.System.UserProfile.GlobalizationPreferences.Languages[i].StartsWith("en"))
                     {
                         lang = Windows.System.UserProfile.GlobalizationPreferences.Languages[i];
                         break;
                     }
                 }
                 if (i == Windows.System.UserProfile.GlobalizationPreferences.Languages.Count)
-                    lang = "ko-KR";
+                    lang = "ko";
             }
 
             Windows.Globalization.ApplicationLanguages.PrimaryLanguageOverride = lang;
