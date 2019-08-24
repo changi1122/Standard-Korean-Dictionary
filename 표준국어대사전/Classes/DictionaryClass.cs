@@ -257,7 +257,10 @@ namespace 표준국어대사전.Classes
 
                                         for (int l = 0; l < example_info.Count(); ++l)
                                         {
-                                            AddExampleItem((string)example_info.ElementAt(l).Descendants("example").ElementAt(0));
+                                            string example = (string)example_info.ElementAt(l).Descendants("example").ElementAt(0);
+                                            if (example_info.ElementAt(l).Element("source") != null)
+                                                example += " ≪" + (string)example_info.ElementAt(l).Descendants("source").ElementAt(0) + "≫";
+                                            AddExampleItem(example);
                                         }
                                     }
                                 }
