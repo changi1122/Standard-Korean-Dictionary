@@ -13,6 +13,19 @@
         </CommandBar>
 
         <Pivot Margin="10,44,10,0">
+            <PivotItem x:Uid="ADJ_Pivotitem2019" Header="2019년">
+                <ListView Margin="0,20,0,30" SelectionMode="None">
+                    <ListViewItem>
+                        <StackPanel>
+                            <TextBlock Text="2019년 1/4-2/4분기 수정 내용 공개 (2019. 09. 19.)" TextWrapping="Wrap" Margin="0,10,0,0"/>
+                            <StackPanel Margin="20,10,0,10" Orientation="Horizontal">
+                                <Button x:Name="BtnENotice201912" x:Uid="ADJ_BtnMSEdge" Content="Microsoft Edge에서 보기" Click="BtnENotice201912_Click"/>
+                                <Button x:Name="BtnDNotice201912" x:Uid="ADJ_BtnDefaultbrowser" Content="기본 브라우저에서 보기" Margin="10,0,0,0" Click="BtnDNotice201912_Click"/>
+                            </StackPanel>
+                        </StackPanel>
+                    </ListViewItem>
+                </ListView>
+            </PivotItem>
             <PivotItem x:Uid="ADJ_Pivotitem2018" Header="2018년">
                 <ListView Margin="0,20,0,30" SelectionMode="None">
                     <ListViewItem>

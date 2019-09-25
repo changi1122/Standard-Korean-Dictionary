@@ -273,4 +273,7 @@
   <data name="DA_NoSearchText" xml:space="preserve">
     <value>Enter a word to find.</value>
   </data>
+  <data name="ADJ_Pivotitem2019.Header" xml:space="preserve">
+    <value>2019</value>
+  </data>
 </root>

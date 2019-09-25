@@ -378,4 +378,7 @@
   <data name="DA_NoSearchText" xml:space="preserve">
     <value>찾을 말 또는 단어를 입력하세요.</value>
   </data>
+  <data name="ADJ_Pivotitem2019.Header" xml:space="preserve">
+    <value>2019년</value>
+  </data>
 </root>

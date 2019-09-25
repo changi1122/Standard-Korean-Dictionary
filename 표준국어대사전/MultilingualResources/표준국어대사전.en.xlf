@@ -354,6 +354,10 @@
           <source>찾을 말 또는 단어를 입력하세요.</source>
           <target state="translated">Enter a word to find.</target>
         </trans-unit>
+        <trans-unit id="ADJ_Pivotitem2019.Header" translate="yes" xml:space="preserve">
+          <source>2019년</source>
+          <target state="translated">2019</target>
+        </trans-unit>
       </group>
     </body>
   </file>
