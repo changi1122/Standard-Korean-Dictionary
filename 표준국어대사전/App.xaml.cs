@@ -28,6 +28,16 @@ namespace 표준국어대사전
         /// </summary>
         public App()
         {
+            //앱 색상 테마
+            string theme = new 표준국어대사전.Classes.DataStorageClass().GetSetting<string>(표준국어대사전.Classes.DataStorageClass.ColorTheme);
+            if (theme != "system")
+            {
+                if (theme == "Light")
+                    RequestedTheme = ApplicationTheme.Light;
+                else if (theme == "Dark")
+                    RequestedTheme = ApplicationTheme.Dark;
+            }
+
             this.InitializeComponent();
             this.Suspending += OnSuspending;
             new 표준국어대사전.Classes.DataStorageClass().StartUpSetup();
@@ -41,7 +51,7 @@ namespace 표준국어대사전
         protected override void OnLaunched(LaunchActivatedEventArgs e)
         {
             //언어 설정
-            var lang = new 표준국어대사전.Classes.DataStorageClass().GetSetting<string>(표준국어대사전.Classes.DataStorageClass.Language);
+            string lang = new 표준국어대사전.Classes.DataStorageClass().GetSetting<string>(표준국어대사전.Classes.DataStorageClass.Language);
             if (lang == "system")
             {
                 int i;

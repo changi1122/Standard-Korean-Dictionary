@@ -36,6 +36,14 @@
                                 <TextBlock x:Name="TextRestartNotice" x:Uid="Set_TextRestartNotice" Text="변경내용을 적용하려면 앱을 다시 시작해야 합니다." Margin="0,10,0,0" Visibility="Collapsed" TextWrapping="Wrap"/>
                             </StackPanel>
                             <StackPanel Margin="0,30,0,0">
+                                <TextBlock x:Uid="Set_ColorTheme" Text="앱 색상 모드" Style="{ThemeResource BaseTextBlockStyle}" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top"/>
+                                <StackPanel Margin="0,10,0,0" Orientation="Horizontal">
+                                    <ComboBox x:Name="ComboBoxTheme" SelectedIndex="{x:Bind ComboBoxThemeIndex, Mode=TwoWay}" Width="200">
+                                    </ComboBox>
+                                </StackPanel>
+                                <TextBlock x:Name="TextRestartNotice2" x:Uid="Set_TextRestartNotice" Text="변경내용을 적용하려면 앱을 다시 시작해야 합니다." Margin="0,10,0,0" Visibility="Collapsed" TextWrapping="Wrap"/>
+                            </StackPanel>
+                            <StackPanel Margin="0,30,0,0">
                                 <TextBlock x:Uid="Set_DisplayFont" Text="표시 글꼴" Style="{ThemeResource BaseTextBlockStyle}" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top"/>
                                 <StackPanel Margin="0,10,0,0" Orientation="Horizontal">
                                     <ComboBox x:Name="ComboBoxFont" SelectedIndex="{x:Bind ComboBoxFontSelectedIndex, Mode=TwoWay}" Width="200">
@@ -56,6 +64,7 @@
                         </StackPanel>
                         <TextBlock x:Uid="Set_OptionReset" HorizontalAlignment="Left" Margin="0,40,0,0" TextWrapping="Wrap" Text="앱 초기화" VerticalAlignment="Top" FontSize="24"/>
                         <Button x:Name="BtnResetSetting" x:Uid="Set_BtnResetSetting" Margin="5,20,0,0" VerticalAlignment="Top" Content="설정 초기화" Click="BtnResetSetting_Click"/>
+                        <StackPanel Height="60"/>
                     </StackPanel>
                 </ScrollViewer>
             </PivotItem>

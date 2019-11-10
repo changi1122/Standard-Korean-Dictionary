@@ -381,4 +381,16 @@
   <data name="ADJ_Pivotitem2019.Header" xml:space="preserve">
     <value>2019년</value>
   </data>
+  <data name="ComboBoxThemeDark" xml:space="preserve">
+    <value>어둡게</value>
+  </data>
+  <data name="ComboBoxThemeLight" xml:space="preserve">
+    <value>밝게</value>
+  </data>
+  <data name="ComboBoxThemeSystem" xml:space="preserve">
+    <value>시스템</value>
+  </data>
+  <data name="Set_ColorTheme.Text" xml:space="preserve">
+    <value>앱 색상 모드</value>
+  </data>
 </root>

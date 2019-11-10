@@ -97,6 +97,22 @@ namespace 표준국어대사전.Pages
                 TextRestartNotice.Visibility = Visibility.Visible;
             }
         }
+        public int ComboBoxThemeIndex
+        {
+            get
+            {
+                if (new DataStorageClass().GetSetting<string>(DataStorageClass.ColorTheme) == "system") return 0;
+                else if (new DataStorageClass().GetSetting<string>(DataStorageClass.ColorTheme) == "Light") return 1;
+                else return 2;
+            }
+            set
+            {
+                if (value == 0) new DataStorageClass().SetSetting<string>(DataStorageClass.ColorTheme, "system");
+                else if (value == 1) new DataStorageClass().SetSetting<string>(DataStorageClass.ColorTheme, "Light");
+                else if (value == 2) new DataStorageClass().SetSetting<string>(DataStorageClass.ColorTheme, "Dark");
+                TextRestartNotice2.Visibility = Visibility.Visible;
+            }
+        }
 
         public Settings()
         {
@@ -105,6 +121,10 @@ namespace 표준국어대사전.Pages
             var res = Windows.ApplicationModel.Resources.ResourceLoader.GetForCurrentView();
             ComboBoxAPIKey.Items.Add(res.GetString("ComboBoxAPIKeyItemPublic"));
             ComboBoxAPIKey.Items.Add(res.GetString("ComboBoxAPIKeyItemCustom"));
+
+            ComboBoxTheme.Items.Add(res.GetString("ComboBoxThemeSystem"));
+            ComboBoxTheme.Items.Add(res.GetString("ComboBoxThemeLight"));
+            ComboBoxTheme.Items.Add(res.GetString("ComboBoxThemeDark"));
 
             DataStorageClass data = new DataStorageClass();
 
@@ -150,6 +170,7 @@ namespace 표준국어대사전.Pages
             ComboBoxFont.SelectedIndex = 0; ;
             ComboBoxAPIKey.SelectedIndex = 0;
             ComboBoxLang.SelectedIndex = 0;
+            ComboBoxTheme.SelectedIndex = 0;
         }
 
         private void RadioButtonDicAppSearch_Checked(object sender, RoutedEventArgs e)

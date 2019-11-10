@@ -358,6 +358,23 @@
           <source>2019년</source>
           <target state="translated">2019</target>
         </trans-unit>
+        <trans-unit id="ComboBoxThemeDark" translate="yes" xml:space="preserve">
+          <source>어둡게</source>
+          <target state="translated">Dark</target>
+        </trans-unit>
+        <trans-unit id="ComboBoxThemeLight" translate="yes" xml:space="preserve">
+          <source>밝게</source>
+          <target state="translated">Light</target>
+        </trans-unit>
+        <trans-unit id="ComboBoxThemeSystem" translate="yes" xml:space="preserve">
+          <source>시스템</source>
+          <target state="translated">System</target>
+        </trans-unit>
+        <trans-unit id="Set_ColorTheme.Text" translate="yes" xml:space="preserve">
+          <source>앱 색상 모드</source>
+          <target state="needs-review-translation">App Color Theme</target>
+          <note from="MultilingualUpdate" annotates="source" priority="2">Please verify the translation’s accuracy as the source string was updated after it was translated.</note>
+        </trans-unit>
       </group>
     </body>
   </file>

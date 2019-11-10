@@ -17,6 +17,7 @@ namespace 표준국어대사전.Classes
         public const string UseDevelopermode = "#UseDevelopermode";                     //bool
         public const string SpellingCheckerAgreement = "#SpellingCheckerAgreement";     //bool
         public const string Language = "#Language";                                     //string
+        public const string ColorTheme = "#ColorTheme";                                 //string(Light, Dark, system)
 
         public void StartUpSetup()
         {
@@ -39,6 +40,13 @@ namespace 표준국어대사전.Classes
                 localSettings.Values[Language] = "system";
                 localSettings.Values[FirstSetup] = 3;
             }
+
+            //2.0.4.0 or 2.1.0.0 - 라이트/다크 모드 지원
+            if ((int)localSettings.Values[FirstSetup] < 4)
+            {
+                localSettings.Values[ColorTheme] = "system";
+                localSettings.Values[FirstSetup] = 4;
+            }
         }
 
         void FirstUpSetUp()
@@ -53,6 +61,7 @@ namespace 표준국어대사전.Classes
             localSettings.Values[UseDevelopermode] = false;
             localSettings.Values[SpellingCheckerAgreement] = false;
             localSettings.Values[Language] = "system";
+            localSettings.Values[ColorTheme] = "system";
         }
 
         public T GetSetting<T>(string name)

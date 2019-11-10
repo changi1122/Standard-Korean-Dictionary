@@ -276,4 +276,16 @@
   <data name="ADJ_Pivotitem2019.Header" xml:space="preserve">
     <value>2019</value>
   </data>
+  <data name="ComboBoxThemeDark" xml:space="preserve">
+    <value>Dark</value>
+  </data>
+  <data name="ComboBoxThemeLight" xml:space="preserve">
+    <value>Light</value>
+  </data>
+  <data name="ComboBoxThemeSystem" xml:space="preserve">
+    <value>System</value>
+  </data>
+  <data name="Set_ColorTheme.Text" xml:space="preserve">
+    <value>App Color Theme</value>
+  </data>
 </root>
