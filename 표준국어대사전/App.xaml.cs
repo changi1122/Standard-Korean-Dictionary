@@ -40,6 +40,7 @@ namespace 표준국어대사전
         /// <param name="e">시작 요청 및 프로세스에 대한 정보입니다.</param>
         protected override void OnLaunched(LaunchActivatedEventArgs e)
         {
+            //언어 설정
             var lang = new 표준국어대사전.Classes.DataStorageClass().GetSetting<string>(표준국어대사전.Classes.DataStorageClass.Language);
             if (lang == "system")
             {
@@ -57,6 +58,7 @@ namespace 표준국어대사전
             }
 
             Windows.Globalization.ApplicationLanguages.PrimaryLanguageOverride = lang;
+
 
             Frame rootFrame = Window.Current.Content as Frame;
 

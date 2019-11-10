@@ -384,11 +384,11 @@
                 <Button x:Name="BtnNetStatusRefresh" x:Uid="DA_BtnNetStatusRefresh" Content="다시 시도" Margin="0,20,0,0" Visibility="Collapsed" Click="BtnNetStatusRefresh_Click" HorizontalAlignment="Center"/>
             </StackPanel>
             <Grid x:Name="MemoGrid" Background="#FFBEBEBE" Margin="20,90,20,20" Visibility="Collapsed">
-                <Button x:Name="BtnMemoClose" Content="&#xE10A;" HorizontalAlignment="Right" VerticalAlignment="Top" Height="40" Width="40" Margin="0,0,0,0" Background="{x:Null}" FontFamily="Segoe MDL2 Assets" FontSize="20" Click="BtnMemoClose_Click"/>
+                <Button x:Name="BtnMemoClose" Content="&#xE10A;" HorizontalAlignment="Right" VerticalAlignment="Top" Height="40" Width="40" Margin="0,0,0,0" Background="{x:Null}" Foreground="Black" FontFamily="Segoe MDL2 Assets" FontSize="20" Click="BtnMemoClose_Click"/>
                 <Controls:ConMemo MinHeight="300" Margin="0,40,0,0"/>
             </Grid>
         </Grid>
-        <Grid x:Name="DetailGrid" HorizontalAlignment="Stretch" Margin="321,40,0,0" VerticalAlignment="Stretch" Background="White" Visibility="Collapsed">
+        <Grid x:Name="DetailGrid" HorizontalAlignment="Stretch" Margin="321,40,0,0" VerticalAlignment="Stretch" Visibility="Collapsed" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
             <ListView x:Name="ListviewWordDetail" SelectionMode="None" Visibility="Visible" Margin="20,20,20,20">
 
             </ListView>
