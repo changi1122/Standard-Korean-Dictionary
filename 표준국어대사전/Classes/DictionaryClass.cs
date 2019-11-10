@@ -9,6 +9,7 @@ using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Documents;
 using Windows.UI.Xaml.Media;
+using 표준국어대사전.Controls;
 
 namespace 표준국어대사전.Classes
 {
@@ -21,6 +22,11 @@ namespace 표준국어대사전.Classes
         ListView ListviewWordDetail;
         Page page;
         ProgressBar DetailProgressBar;
+
+        //단어의 뜻풀이가 들어갈 문단
+        RichTextBlock word_detail = new RichTextBlock();
+        //단어의 어원이 들어갈 문단
+        RichTextBlock word_origin = new RichTextBlock();
 
         public DictionaryClass(ListView lvi, Page thispage, ProgressBar pbar)
         {
@@ -269,19 +275,7 @@ namespace 표준국어대사전.Classes
                     }
                 }
 
-                //어원
-                if (xDoc.Root.Element("item").Element("word_info").Element("origin") != null)
-                {
-                    string origin = (string)xDoc.Root.Element("item").Element("word_info").Descendants("origin").ElementAt(0);
-                    if (origin.IndexOf("<equ>&#x21BC;</equ>") != -1)
-                        origin = origin.Replace("<equ>&#x21BC;</equ>", "↼");
-                    AddNewItem("", 10);
-                    AddSeparatorItem();
-                    AddNewItem("▹ 어원", 18);
-                    AddNewItem(origin, 16);
-                }
-
-                //norm
+                //규범 정보 norm
                 if (xDoc.Root.Element("item").Element("word_info").Element("norm_info") != null)
                 {
                     IEnumerable<XElement> norms = xDoc.Root.Element("item").Element("word_info").Descendants("norm_info");
@@ -289,10 +283,24 @@ namespace 표준국어대사전.Classes
                     for (int i = 0; i < norms.Count(); ++i)
                     {
                         string desc = (string)norms.ElementAt(i).Descendants("desc").ElementAt(0);
-                        AddNewItem("", 16);
-                        AddNewItem("※ " + desc, 16);
+                        AddNormItem(desc);
                     }
                 }
+
+                //단어 뜻풀이 아이템 보여주기
+                ShowWordDetail();
+
+                //어원
+                if (xDoc.Root.Element("item").Element("word_info").Element("origin") != null)
+                {
+                    string origin = (string)xDoc.Root.Element("item").Element("word_info").Descendants("origin").ElementAt(0);
+                    AddSeparatorItem();
+                    AddOriginItem(origin);
+                    ShowWordOrigin();
+                }
+
+                //하단 여백
+                AddNewItem(" ", 60);
             }
             DetailProgressBar.Visibility = Visibility.Collapsed;
         }
@@ -352,16 +360,13 @@ namespace 표준국어대사전.Classes
             }
 
             ListViewItem item = new ListViewItem();
-            StackPanel sp = new StackPanel();
+            StackPanel sp = new StackPanel { Orientation = Orientation.Horizontal };
             item.MinHeight = 30;
 
-            RichTextBlock rtb = new RichTextBlock();
-            Paragraph para = new Paragraph();
-            para.Inlines.Add(new Run { Text = "발음 ", FontSize = 17, FontWeight = Windows.UI.Text.FontWeights.Bold, FontFamily = new FontFamily(FONTFAMILY) });
-            para.Inlines.Add(new Run { Text = "[" + text + "]", FontSize = 16, FontFamily = new FontFamily(FONTFAMILY) });
-            rtb.Blocks.Add(para);
+            TextBlock tb = new TextBlock { Text = "발음", Margin = new Thickness(0, 0, 10, 0), FontSize = 17, FontWeight = Windows.UI.Text.FontWeights.Bold, FontFamily = new FontFamily(FONTFAMILY) };
+            sp.Children.Add(tb);
 
-            sp.Children.Add(rtb);
+            sp.Children.Add(new PronunciationBlock { WordItems = prons, FontFamily = new FontFamily(FONTFAMILY), IsReaderEnabled = false });
             item.Content = sp;
 
             ListviewWordDetail.Items.Add(item);
@@ -369,38 +374,33 @@ namespace 표준국어대사전.Classes
 
         private void AddConjugationItem(List<string> conjus, List<string> conju_prons, List<string> abbreviations, List<string> abbreviation_prons)
         {
-            string text = "";
+            ListViewItem item = new ListViewItem();
+            StackPanel sp = new StackPanel { Orientation = Orientation.Horizontal };
+            item.MinHeight = 30;
+
+            TextBlock tb = new TextBlock { Text = "활용", Margin = new Thickness(0, 0, 10, 0), FontSize = 17, FontWeight = Windows.UI.Text.FontWeights.Bold, FontFamily = new FontFamily(FONTFAMILY) };
+            sp.Children.Add(tb);
+
             for (int i = 0; i < conjus.Count(); ++i)
             {
-                text += conjus[i];
+                sp.Children.Add(new TextBlock { Text = conjus[i], FontSize = 16, FontFamily = new FontFamily(FONTFAMILY) });
 
                 if (conju_prons[i] != null)
                 {
-                    text += "[" + conju_prons[i] + "]";
+                    sp.Children.Add(new PronunciationBlock { WordItems = new List<string> { conju_prons[i] }, IsReaderEnabled = false, FontFamily = new FontFamily(FONTFAMILY) });
                 }
 
                 if (abbreviations[i] != null)
                 {
-                    text += "(" + abbreviations[i];
+                    sp.Children.Add(new TextBlock { Text = "(" + abbreviations[i], FontSize = 16, FontFamily = new FontFamily(FONTFAMILY) });
                     if (abbreviation_prons[i] != null)
-                        text += "[" + abbreviation_prons[i] + "]";
-                    text += ")";
+                        sp.Children.Add(new PronunciationBlock { WordItems = new List<string> { abbreviation_prons[i] }, IsReaderEnabled = false, FontFamily = new FontFamily(FONTFAMILY) });
+                    sp.Children.Add(new TextBlock { Text = ")", FontSize = 16, FontFamily = new FontFamily(FONTFAMILY) });
                 }
                 if (conjus.Count() - i != 1)
-                    text += ", ";
+                    sp.Children.Add(new TextBlock { Text = ",", Margin = new Thickness(0, 0, 6, 0), FontSize = 16, FontFamily = new FontFamily(FONTFAMILY) });
             }
 
-            ListViewItem item = new ListViewItem();
-            StackPanel sp = new StackPanel();
-            item.MinHeight = 30;
-
-            RichTextBlock rtb = new RichTextBlock();
-            Paragraph para = new Paragraph();
-            para.Inlines.Add(new Run { Text = "활용 ", FontSize = 17, FontWeight = Windows.UI.Text.FontWeights.Bold, FontFamily = new FontFamily(FONTFAMILY) });
-            para.Inlines.Add(new Run { Text = text, FontSize = 16, FontFamily = new FontFamily(FONTFAMILY) });
-            rtb.Blocks.Add(para);
-
-            sp.Children.Add(rtb);
             item.Content = sp;
 
             ListviewWordDetail.Items.Add(item);
@@ -421,40 +421,22 @@ namespace 표준국어대사전.Classes
         {
             if (pos == null || pos == "「품사 없음」" || pos == "")
                 return;
-            ListViewItem item = new ListViewItem();
-            item.Margin = new Thickness(0, 10, 0, 0);
 
-            StackPanel sp = new StackPanel();
-
-            RichTextBlock rtb = new RichTextBlock();
             Paragraph para = new Paragraph();
+            para.Margin = new Thickness(0, 40, 0, 0);
             para.Inlines.Add(new Run { Text = pos, FontSize = 20, FontWeight = Windows.UI.Text.FontWeights.Bold, FontFamily = new FontFamily(FONTFAMILY) });
-            rtb.Blocks.Add(para);
-
-            sp.Children.Add(rtb);
-            item.Content = sp;
-
-            ListviewWordDetail.Items.Add(item);
+            word_detail.Blocks.Add(para);
         }
 
         private void AddPatternItem(string pattern)
         {
             if (pattern == null || pattern == "")
                 return;
-            ListViewItem item = new ListViewItem();
-            item.Margin = new Thickness(15, 8, 0, 0);
 
-            StackPanel sp = new StackPanel();
-
-            RichTextBlock rtb = new RichTextBlock();
             Paragraph para = new Paragraph();
+            para.Margin = new Thickness(20, 20, 0, 10);
             para.Inlines.Add(new Run { Text = pattern, FontSize = 18, FontFamily = new FontFamily(FONTFAMILY) });
-            rtb.Blocks.Add(para);
-
-            sp.Children.Add(rtb);
-            item.Content = sp;
-
-            ListviewWordDetail.Items.Add(item);
+            word_detail.Blocks.Add(para);
         }
 
         private void AddDefinitionItem(string definition)
@@ -471,19 +453,20 @@ namespace 표준국어대사전.Classes
                 OutputList.Add("&NUM" + "「" + num + "」");
                 definition = definition.Substring(definition.LastIndexOf("###") + 3);
             }
+
             //글꼴 크기가 다른 경우
             while (true)
             {
                 if (!definition.Contains("<sub style='font-size:"))
                 {
-                    OutputList.Add("&FOS016" + definition);
+                    OutputList.Add("&FOS015" + definition);
                     break;
                 }
                 else
                 {
                     if (definition.IndexOf("<sub style='font-size:") != 0)
                     {
-                        OutputList.Add("&FOS016" + definition.Substring(0, definition.IndexOf("<sub style='font-size:")));
+                        OutputList.Add("&FOS015" + definition.Substring(0, definition.IndexOf("<sub style='font-size:")));
                         definition = definition.Substring(definition.IndexOf("<sub style='font-size:"));
                     }
                     string fontsize = definition.Substring(definition.IndexOf("<sub style='font-size:") + 22, definition.IndexOf("px;'>") - definition.IndexOf("<sub style='font-size:") - 22);
@@ -530,13 +513,9 @@ namespace 표준국어대사전.Classes
                 }
             }
 
-            ListViewItem item = new ListViewItem();
-            item.Margin = new Thickness(0, 6, 0, 0);
-
-            StackPanel sp = new StackPanel();
-
-            RichTextBlock rtb = new RichTextBlock();
             Paragraph para = new Paragraph();
+            para.Margin = new Thickness(5, 15, 0, 15);
+
             for (int i = 0; i < OutputList.Count(); ++i)
             {
                 if (OutputList[i].StartsWith("&FOS"))
@@ -555,30 +534,72 @@ namespace 표준국어대사전.Classes
                 }
             }
 
-            rtb.Blocks.Add(para);
-
-            sp.Children.Add(rtb);
-            item.Content = sp;
-
-            ListviewWordDetail.Items.Add(item);
+            word_detail.Blocks.Add(para);
         }
 
         private void AddExampleItem(string example)
         {
             if (example == null)
                 return;
+
+            Paragraph para = new Paragraph();
+            para.Margin = new Thickness(30, 4, 0, 4);
+            para.Inlines.Add(new Run { Text = "· " + example, FontSize = 14, FontFamily = new FontFamily(FONTFAMILY) });
+            word_detail.Blocks.Add(para);
+        }
+
+        private void AddNormItem(string norm)
+        {
+            if (norm == null)
+                return;
+
+            Paragraph para = new Paragraph();
+            para.Margin = new Thickness(0, 30, 0, 0);
+            para.Inlines.Add(new Run { Text = "※ " + norm, FontSize = 14, FontFamily = new FontFamily(FONTFAMILY) });
+            word_detail.Blocks.Add(para);
+        }
+
+        private void AddOriginItem(string origin)
+        {
+            if (origin == null)
+                return;
+
+            if (origin.IndexOf("<equ>&#x21BC;</equ>") != -1)
+                origin = origin.Replace("<equ>&#x21BC;</equ>", "↼");
+
+            Paragraph title = new Paragraph();
+            title.Margin = new Thickness(0, 15, 0, 15);
+            title.Inlines.Add(new Run { Text = "▹ 어원", FontSize = 18, FontFamily = new FontFamily(FONTFAMILY) });
+            word_origin.Blocks.Add(title);
+
+            Paragraph para = new Paragraph();
+            para.Margin = new Thickness(0, 0, 0, 5);
+            para.Inlines.Add(new Run { Text = origin, FontSize = 15, FontFamily = new FontFamily(FONTFAMILY) });
+            word_origin.Blocks.Add(para);
+        }
+
+        private void ShowWordDetail()
+        {
             ListViewItem item = new ListViewItem();
-            item.Margin = new Thickness(25, 0, 0, 0);
-            item.MinHeight = 0;
 
             StackPanel sp = new StackPanel();
 
-            RichTextBlock rtb = new RichTextBlock();
-            Paragraph para = new Paragraph();
-            para.Inlines.Add(new Run { Text = "· " + example, FontSize = 15, FontFamily = new FontFamily(FONTFAMILY) });
-            rtb.Blocks.Add(para);
+            word_detail.Margin = new Thickness(0, 25, 0, 25);
 
-            sp.Children.Add(rtb);
+            sp.Children.Add(word_detail);
+            item.Content = sp;
+
+            ListviewWordDetail.Items.Add(item);
+        }
+
+        private void ShowWordOrigin()
+        {
+            ListViewItem item = new ListViewItem();
+
+            StackPanel sp = new StackPanel();
+
+            word_origin.Margin = new Thickness(0, 15, 0, 0);
+            sp.Children.Add(word_origin);
             item.Content = sp;
 
             ListviewWordDetail.Items.Add(item);
