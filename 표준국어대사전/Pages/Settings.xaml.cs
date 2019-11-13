@@ -228,5 +228,66 @@ namespace 표준국어대사전.Pages
         {
             await Windows.System.Launcher.LaunchUriAsync(uri);
         }
+
+        private void BtnLabFunction_Click(object sender, RoutedEventArgs e)
+        {
+            var SubGrid = new Grid
+            {
+                Name = "SubGrid",
+                Margin = new Thickness(0, 40, 0, 0),
+                VerticalAlignment = VerticalAlignment.Stretch,
+                HorizontalAlignment = HorizontalAlignment.Stretch,
+                Background = new SolidColorBrush(Windows.UI.Colors.White)
+            };
+
+            var ColorBar = new Windows.UI.Xaml.Shapes.Rectangle
+            {
+                Margin = new Thickness(0, 0, 0, 0),
+                VerticalAlignment = VerticalAlignment.Top,
+                HorizontalAlignment = HorizontalAlignment.Stretch,
+                Height = 40,
+                Fill = (SolidColorBrush)Resources["BarColor"]
+            };
+            SubGrid.Children.Add(ColorBar);
+
+            var CloseBtn = new Button
+            {
+                Name = "BtnSubFrameClose",
+                VerticalAlignment = VerticalAlignment.Top,
+                HorizontalAlignment = HorizontalAlignment.Right,
+                Height = 40,
+                Width = 40,
+                FontSize = 20,
+                Content = "",
+                FontFamily = new FontFamily("Segoe MDL2 Assets"),
+                Background = null,
+                Foreground = new SolidColorBrush(Windows.UI.Colors.Black)
+            };
+            CloseBtn.Click += BtnSubFrameClose_Click;
+            SubGrid.Children.Add(CloseBtn);
+
+            var SubFrame = new Frame
+            {
+                Name = "SubFrame",
+                Margin = new Thickness(1, 40, 1, 1),
+                VerticalAlignment = VerticalAlignment.Stretch,
+                HorizontalAlignment = HorizontalAlignment.Stretch,
+            };
+            SubFrame.Loaded += SubFrame_Loaded;
+            SubGrid.Children.Add(SubFrame);
+
+            BasicGrid.Children.Add(SubGrid);
+        }
+
+        private void SubFrame_Loaded(object sender, RoutedEventArgs e)
+        {
+            Frame frame = (Frame)sender;
+            frame.Navigate(typeof(Pages.LabFunction));
+        }
+
+        private void BtnSubFrameClose_Click(object sender, RoutedEventArgs e)
+        {
+            BasicGrid.Children.Remove((UIElement)FindName("SubGrid"));
+        }
     }
 }

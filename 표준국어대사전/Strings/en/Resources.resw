@@ -288,4 +288,22 @@
   <data name="Set_ColorTheme.Text" xml:space="preserve">
     <value>App Color Theme</value>
   </data>
+  <data name="Lab_CheckWordReader.Content" xml:space="preserve">
+    <value>Enable word reader</value>
+  </data>
+  <data name="Lab_CheckWordReaderText.Text" xml:space="preserve">
+    <value>Hear the sound in the word search, click the button that appears next to the pronunciation. (There may not be accurate pronunciation.)</value>
+  </data>
+  <data name="Lab_Sound.Text" xml:space="preserve">
+    <value>Sound</value>
+  </data>
+  <data name="Lab_Title.Text" xml:space="preserve">
+    <value>Lab features</value>
+  </data>
+  <data name="Set_BtnLabFunction.Content" xml:space="preserve">
+    <value>Lab features</value>
+  </data>
+  <data name="Set_DevTool.Text" xml:space="preserve">
+    <value>Developer Tools</value>
+  </data>
 </root>

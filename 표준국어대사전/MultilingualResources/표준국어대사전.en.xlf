@@ -372,8 +372,32 @@
         </trans-unit>
         <trans-unit id="Set_ColorTheme.Text" translate="yes" xml:space="preserve">
           <source>앱 색상 모드</source>
-          <target state="needs-review-translation">App Color Theme</target>
+          <target state="translated">App Color Theme</target>
+        </trans-unit>
+        <trans-unit id="Lab_CheckWordReader.Content" translate="yes" xml:space="preserve">
+          <source>단어 발음 듣기 활성화</source>
+          <target state="translated">Enable word reader</target>
+        </trans-unit>
+        <trans-unit id="Lab_CheckWordReaderText.Text" translate="yes" xml:space="preserve">
+          <source>단어 검색 화면에서 발음 옆에 표시되는 버튼을 클릭해 소리를 들을 수 있습니다. (발음이 정확하지 않을 수 있음.)</source>
+          <target state="needs-review-translation">Hear the sound in the word search, click the button that appears next to the pronunciation. (There may not be accurate pronunciation.)</target>
           <note from="MultilingualUpdate" annotates="source" priority="2">Please verify the translation’s accuracy as the source string was updated after it was translated.</note>
+        </trans-unit>
+        <trans-unit id="Lab_Sound.Text" translate="yes" xml:space="preserve">
+          <source>소리</source>
+          <target state="translated">Sound</target>
+        </trans-unit>
+        <trans-unit id="Lab_Title.Text" translate="yes" xml:space="preserve">
+          <source>실험실 기능</source>
+          <target state="translated">Lab features</target>
+        </trans-unit>
+        <trans-unit id="Set_BtnLabFunction.Content" translate="yes" xml:space="preserve">
+          <source>실험실 기능</source>
+          <target state="translated">Lab features</target>
+        </trans-unit>
+        <trans-unit id="Set_DevTool.Text" translate="yes" xml:space="preserve">
+          <source>개발자 도구</source>
+          <target state="translated">Developer Tools</target>
         </trans-unit>
       </group>
     </body>

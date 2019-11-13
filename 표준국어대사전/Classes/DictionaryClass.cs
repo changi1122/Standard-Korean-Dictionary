@@ -22,6 +22,7 @@ namespace 표준국어대사전.Classes
         ListView ListviewWordDetail;
         Page page;
         ProgressBar DetailProgressBar;
+        bool LabWordReaderEnabled = new DataStorageClass().GetSetting<bool>(DataStorageClass.LabWordReaderEnabled);
 
         //단어의 뜻풀이가 들어갈 문단
         RichTextBlock word_detail = new RichTextBlock();
@@ -366,7 +367,7 @@ namespace 표준국어대사전.Classes
             TextBlock tb = new TextBlock { Text = "발음", Margin = new Thickness(0, 0, 10, 0), FontSize = 17, FontWeight = Windows.UI.Text.FontWeights.Bold, FontFamily = new FontFamily(FONTFAMILY) };
             sp.Children.Add(tb);
 
-            sp.Children.Add(new PronunciationBlock { WordItems = prons, FontFamily = new FontFamily(FONTFAMILY), IsReaderEnabled = false });
+            sp.Children.Add(new PronunciationBlock { WordItems = prons, FontFamily = new FontFamily(FONTFAMILY), IsReaderEnabled = LabWordReaderEnabled });
             item.Content = sp;
 
             ListviewWordDetail.Items.Add(item);
@@ -387,14 +388,14 @@ namespace 표준국어대사전.Classes
 
                 if (conju_prons[i] != null)
                 {
-                    sp.Children.Add(new PronunciationBlock { WordItems = new List<string> { conju_prons[i] }, IsReaderEnabled = false, FontFamily = new FontFamily(FONTFAMILY) });
+                    sp.Children.Add(new PronunciationBlock { WordItems = new List<string> { conju_prons[i] }, IsReaderEnabled = LabWordReaderEnabled, FontFamily = new FontFamily(FONTFAMILY) });
                 }
 
                 if (abbreviations[i] != null)
                 {
                     sp.Children.Add(new TextBlock { Text = "(" + abbreviations[i], FontSize = 16, FontFamily = new FontFamily(FONTFAMILY) });
                     if (abbreviation_prons[i] != null)
-                        sp.Children.Add(new PronunciationBlock { WordItems = new List<string> { abbreviation_prons[i] }, IsReaderEnabled = false, FontFamily = new FontFamily(FONTFAMILY) });
+                        sp.Children.Add(new PronunciationBlock { WordItems = new List<string> { abbreviation_prons[i] }, IsReaderEnabled = LabWordReaderEnabled, FontFamily = new FontFamily(FONTFAMILY) });
                     sp.Children.Add(new TextBlock { Text = ")", FontSize = 16, FontFamily = new FontFamily(FONTFAMILY) });
                 }
                 if (conjus.Count() - i != 1)
