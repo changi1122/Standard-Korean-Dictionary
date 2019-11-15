@@ -322,11 +322,12 @@ namespace 표준국어대사전.Classes
             ListViewItem item = new ListViewItem { HorizontalAlignment = HorizontalAlignment.Right, Padding = new Thickness(0, 0, 0, 0) };
             StackPanel sp = new StackPanel { Orientation = Orientation.Horizontal };
             //ToolBar Buttons
-            Button BtnFilter = new Button { Width = 60, Style = page.Resources["ToolBarButtonStyle"] as Style };
+            Button BtnFilter = new Button { Width = 80, Style = page.Resources["ToolBarButtonStyle"] as Style };
+            var res = Windows.ApplicationModel.Resources.ResourceLoader.GetForCurrentView();
             if (ShowExampleItem)
-                BtnFilter.Content = "전체";
+                BtnFilter.Content = res.GetString("DC_BtnFilter_All");
             else
-                BtnFilter.Content = "뜻";
+                BtnFilter.Content = res.GetString("DC_BtnFilter_Meaning");
             BtnFilter.Click += BtnFilter_Click;
 
             sp.Children.Add(BtnFilter);
@@ -340,7 +341,8 @@ namespace 표준국어대사전.Classes
         {
             bool ShowExampleItem = true;
             Button BtnFilter = sender as Button;
-            if ((string)BtnFilter.Content == "전체")
+            var res = Windows.ApplicationModel.Resources.ResourceLoader.GetForCurrentView();
+            if ((string)BtnFilter.Content == res.GetString("DC_BtnFilter_All"))
                 ShowExampleItem = false;
             else
                 ShowExampleItem = true;

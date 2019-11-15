@@ -399,6 +399,14 @@
           <source>개발자 도구</source>
           <target state="translated">Developer Tools</target>
         </trans-unit>
+        <trans-unit id="DC_BtnFilter_All" translate="yes" xml:space="preserve">
+          <source>전체</source>
+          <target state="translated">All</target>
+        </trans-unit>
+        <trans-unit id="DC_BtnFilter_Meaning" translate="yes" xml:space="preserve">
+          <source>뜻</source>
+          <target state="translated">Meaning</target>
+        </trans-unit>
       </group>
     </body>
   </file>

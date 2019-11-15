@@ -411,4 +411,10 @@
   <data name="Set_DevTool.Text" xml:space="preserve">
     <value>개발자 도구</value>
   </data>
+  <data name="DC_BtnFilter_All" xml:space="preserve">
+    <value>전체</value>
+  </data>
+  <data name="DC_BtnFilter_Meaning" xml:space="preserve">
+    <value>뜻</value>
+  </data>
 </root>

@@ -306,4 +306,10 @@
   <data name="Set_DevTool.Text" xml:space="preserve">
     <value>Developer Tools</value>
   </data>
+  <data name="DC_BtnFilter_All" xml:space="preserve">
+    <value>All</value>
+  </data>
+  <data name="DC_BtnFilter_Meaning" xml:space="preserve">
+    <value>Meaning</value>
+  </data>
 </root>
