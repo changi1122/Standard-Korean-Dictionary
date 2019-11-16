@@ -276,4 +276,40 @@
   <data name="ADJ_Pivotitem2019.Header" xml:space="preserve">
     <value>2019</value>
   </data>
+  <data name="ComboBoxThemeDark" xml:space="preserve">
+    <value>Dark</value>
+  </data>
+  <data name="ComboBoxThemeLight" xml:space="preserve">
+    <value>Light</value>
+  </data>
+  <data name="ComboBoxThemeSystem" xml:space="preserve">
+    <value>System</value>
+  </data>
+  <data name="Set_ColorTheme.Text" xml:space="preserve">
+    <value>App Color Theme</value>
+  </data>
+  <data name="Lab_CheckWordReader.Content" xml:space="preserve">
+    <value>Enable word reader</value>
+  </data>
+  <data name="Lab_CheckWordReaderText.Text" xml:space="preserve">
+    <value>Hear the sound in the word search, click the button that appears next to the pronunciation. (There may not be accurate pronunciation.)</value>
+  </data>
+  <data name="Lab_Sound.Text" xml:space="preserve">
+    <value>Sound</value>
+  </data>
+  <data name="Lab_Title.Text" xml:space="preserve">
+    <value>Lab features</value>
+  </data>
+  <data name="Set_BtnLabFunction.Content" xml:space="preserve">
+    <value>Lab features</value>
+  </data>
+  <data name="Set_DevTool.Text" xml:space="preserve">
+    <value>Developer Tools</value>
+  </data>
+  <data name="DC_BtnFilter_All" xml:space="preserve">
+    <value>All</value>
+  </data>
+  <data name="DC_BtnFilter_Meaning" xml:space="preserve">
+    <value>Meaning</value>
+  </data>
 </root>

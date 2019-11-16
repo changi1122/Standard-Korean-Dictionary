@@ -111,7 +111,7 @@ namespace 표준국어대사전.Pages
             //정의 Listview 지우기
             ListviewWordDetail.Items.Clear();
             DictionaryClass dc = new DictionaryClass(ListviewWordDetail, this, DetailProgressBar);
-            dc.GetWordDetail(clickedItem.target_code.ToString(), clickedItem.word, clickedItem.sup_no);
+            dc.GetWordDetail(clickedItem.target_code.ToString(), clickedItem.word, clickedItem.sup_no, true);
 
             if (BasicGrid.ActualWidth < 686)
             {

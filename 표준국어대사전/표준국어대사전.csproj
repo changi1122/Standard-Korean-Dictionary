@@ -136,6 +136,9 @@
     <Compile Include="Pages\DicAppSearch.xaml.cs">
       <DependentUpon>DicAppSearch.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Pages\LabFunction.xaml.cs">
+      <DependentUpon>LabFunction.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Pages\SpellingChecker.xaml.cs">
       <DependentUpon>SpellingChecker.xaml</DependentUpon>
     </Compile>
@@ -233,6 +236,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Pages\DicAppSearch.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\LabFunction.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
