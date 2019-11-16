@@ -44,7 +44,7 @@ namespace 표준국어대사전.Classes
                 localSettings.Values[FirstSetup] = 3;
             }
 
-            //2.0.4.0 or 2.1.0.0 - 라이트/다크 모드 지원 // 실험실 기능
+            //2.1.0.0 - 라이트/다크 모드 지원 // 실험실 기능
             if ((int)localSettings.Values[FirstSetup] < 4)
             {
                 localSettings.Values[ColorTheme] = "system";
