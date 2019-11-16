@@ -48,7 +48,7 @@ namespace 표준국어대사전.Pages
             return;
         }
 
-        public static bool IsInternetConnected()
+        private static bool IsInternetConnected()
         {
             ConnectionProfile connections = NetworkInformation.GetInternetConnectionProfile();
             bool internet = (connections != null) &&
@@ -99,7 +99,6 @@ namespace 표준국어대사전.Pages
             if (clickedItem.target_code == -321)
             {
                 //더보기 누를 시 동작
-
                 SearchClass sc = new SearchClass(ListviewSearchResult, SearchResults, MasterProgressBar, TextBlockErrorMessage);
                 sc.GetSearchResults(clickedItem.sup_no + 1, 10, clickedItem.definition);
                 SearchResults.Remove(clickedItem);
@@ -109,11 +108,10 @@ namespace 표준국어대사전.Pages
             ListviewWordDetail.Visibility = Visibility.Visible;
 
             //항목 클릭시 동작
-
             //정의 Listview 지우기
             ListviewWordDetail.Items.Clear();
             DictionaryClass dc = new DictionaryClass(ListviewWordDetail, this, DetailProgressBar);
-            dc.GetWordDetail(clickedItem.target_code.ToString(), clickedItem.word, clickedItem.sup_no);
+            dc.GetWordDetail(clickedItem.target_code.ToString(), clickedItem.word, clickedItem.sup_no, true);
 
             if (BasicGrid.ActualWidth < 686)
             {

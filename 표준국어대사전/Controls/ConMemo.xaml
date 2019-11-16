@@ -10,7 +10,7 @@
     d:DesignWidth="400">
 
     <Grid x:Name="MemoGrid" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Background="#FFBEBEBE">
-        <Rectangle Margin="1,1,1,1" Fill="#FFE6E6E6"/>
+        <Rectangle Margin="1,1,1,1" Fill="{ThemeResource ApplicationPageBackgroundThemeBrush}"/>
         <TextBox x:Name="TextboxMemoBox" Margin="1,1,1,41" TextWrapping="Wrap" AcceptsReturn="True" Background="{x:Null}" BorderBrush="{x:Null}"/>
         <Button x:Name="BtnMemoDelete" Content="&#xE107;" HorizontalAlignment="Right" VerticalAlignment="Bottom" Height="40" Width="40" Margin="0,0,1,1" Background="{x:Null}" FontFamily="Segoe MDL2 Assets" FontSize="20" Click="BtnMemoDelete_Click"/>
         <Button x:Name="BtnMemoCopy" Content="&#xE16F;" HorizontalAlignment="Right" VerticalAlignment="Bottom" Height="40" Width="40" Margin="0,0,51,1" Background="{x:Null}" FontFamily="Segoe MDL2 Assets" FontSize="20" Click="BtnMemoCopy_Click"/>
