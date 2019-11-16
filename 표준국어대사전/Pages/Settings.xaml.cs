@@ -97,6 +97,22 @@ namespace 표준국어대사전.Pages
                 TextRestartNotice.Visibility = Visibility.Visible;
             }
         }
+        public int ComboBoxThemeIndex
+        {
+            get
+            {
+                if (new DataStorageClass().GetSetting<string>(DataStorageClass.ColorTheme) == "system") return 0;
+                else if (new DataStorageClass().GetSetting<string>(DataStorageClass.ColorTheme) == "Light") return 1;
+                else return 2;
+            }
+            set
+            {
+                if (value == 0) new DataStorageClass().SetSetting<string>(DataStorageClass.ColorTheme, "system");
+                else if (value == 1) new DataStorageClass().SetSetting<string>(DataStorageClass.ColorTheme, "Light");
+                else if (value == 2) new DataStorageClass().SetSetting<string>(DataStorageClass.ColorTheme, "Dark");
+                TextRestartNotice2.Visibility = Visibility.Visible;
+            }
+        }
 
         public Settings()
         {
@@ -105,6 +121,10 @@ namespace 표준국어대사전.Pages
             var res = Windows.ApplicationModel.Resources.ResourceLoader.GetForCurrentView();
             ComboBoxAPIKey.Items.Add(res.GetString("ComboBoxAPIKeyItemPublic"));
             ComboBoxAPIKey.Items.Add(res.GetString("ComboBoxAPIKeyItemCustom"));
+
+            ComboBoxTheme.Items.Add(res.GetString("ComboBoxThemeSystem"));
+            ComboBoxTheme.Items.Add(res.GetString("ComboBoxThemeLight"));
+            ComboBoxTheme.Items.Add(res.GetString("ComboBoxThemeDark"));
 
             DataStorageClass data = new DataStorageClass();
 
@@ -150,6 +170,7 @@ namespace 표준국어대사전.Pages
             ComboBoxFont.SelectedIndex = 0; ;
             ComboBoxAPIKey.SelectedIndex = 0;
             ComboBoxLang.SelectedIndex = 0;
+            ComboBoxTheme.SelectedIndex = 0;
         }
 
         private void RadioButtonDicAppSearch_Checked(object sender, RoutedEventArgs e)
@@ -206,6 +227,67 @@ namespace 표준국어대사전.Pages
         public async void OpenWithDefaultBrowser(Uri uri)
         {
             await Windows.System.Launcher.LaunchUriAsync(uri);
+        }
+
+        private void BtnLabFunction_Click(object sender, RoutedEventArgs e)
+        {
+            var SubGrid = new Grid
+            {
+                Name = "SubGrid",
+                Margin = new Thickness(0, 40, 0, 0),
+                VerticalAlignment = VerticalAlignment.Stretch,
+                HorizontalAlignment = HorizontalAlignment.Stretch,
+                Background = new SolidColorBrush(Windows.UI.Colors.White)
+            };
+
+            var ColorBar = new Windows.UI.Xaml.Shapes.Rectangle
+            {
+                Margin = new Thickness(0, 0, 0, 0),
+                VerticalAlignment = VerticalAlignment.Top,
+                HorizontalAlignment = HorizontalAlignment.Stretch,
+                Height = 40,
+                Fill = (SolidColorBrush)Resources["BarColor"]
+            };
+            SubGrid.Children.Add(ColorBar);
+
+            var CloseBtn = new Button
+            {
+                Name = "BtnSubFrameClose",
+                VerticalAlignment = VerticalAlignment.Top,
+                HorizontalAlignment = HorizontalAlignment.Right,
+                Height = 40,
+                Width = 40,
+                FontSize = 20,
+                Content = "",
+                FontFamily = new FontFamily("Segoe MDL2 Assets"),
+                Background = null,
+                Foreground = new SolidColorBrush(Windows.UI.Colors.Black)
+            };
+            CloseBtn.Click += BtnSubFrameClose_Click;
+            SubGrid.Children.Add(CloseBtn);
+
+            var SubFrame = new Frame
+            {
+                Name = "SubFrame",
+                Margin = new Thickness(1, 40, 1, 1),
+                VerticalAlignment = VerticalAlignment.Stretch,
+                HorizontalAlignment = HorizontalAlignment.Stretch,
+            };
+            SubFrame.Loaded += SubFrame_Loaded;
+            SubGrid.Children.Add(SubFrame);
+
+            BasicGrid.Children.Add(SubGrid);
+        }
+
+        private void SubFrame_Loaded(object sender, RoutedEventArgs e)
+        {
+            Frame frame = (Frame)sender;
+            frame.Navigate(typeof(Pages.LabFunction));
+        }
+
+        private void BtnSubFrameClose_Click(object sender, RoutedEventArgs e)
+        {
+            BasicGrid.Children.Remove((UIElement)FindName("SubGrid"));
         }
     }
 }
