@@ -48,7 +48,7 @@ namespace 표준국어대사전.Pages
             return;
         }
 
-        public static bool IsInternetConnected()
+        private static bool IsInternetConnected()
         {
             ConnectionProfile connections = NetworkInformation.GetInternetConnectionProfile();
             bool internet = (connections != null) &&
