@@ -32,7 +32,7 @@ namespace 표준국어대사전.Pages
             NetworkCheck();
         }
 
-        private static bool IsInternetConnected()
+        public static bool IsInternetConnected()
         {
             ConnectionProfile connections = NetworkInformation.GetInternetConnectionProfile();
             bool internet = (connections != null) &&

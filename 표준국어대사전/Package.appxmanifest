@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Package xmlns="http://schemas.microsoft.com/appx/manifest/foundation/windows10" xmlns:mp="http://schemas.microsoft.com/appx/2014/phone/manifest" xmlns:uap="http://schemas.microsoft.com/appx/manifest/uap/windows10" xmlns:rescap="http://schemas.microsoft.com/appx/manifest/foundation/windows10/restrictedcapabilities" IgnorableNamespaces="uap mp rescap">
-  <Identity Name="3721Studio1122.220704D0FD39D" Publisher="CN=A7259EE1-89E0-4F18-83CF-6ACDDDE5AE82" Version="2.1.0.0" />
+  <Identity Name="3721Studio1122.220704D0FD39D" Publisher="CN=A7259EE1-89E0-4F18-83CF-6ACDDDE5AE82" Version="2.0.3.0" />
   <mp:PhoneIdentity PhoneProductId="83a4511e-8e60-4ac8-973e-a1d0e0f50a61" PhonePublisherId="00000000-0000-0000-0000-000000000000" />
   <Properties>
     <DisplayName>국립국어원 표준국어대사전</DisplayName>
