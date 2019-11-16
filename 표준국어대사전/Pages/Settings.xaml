@@ -6,12 +6,16 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
+
+    <Page.Resources>
+        <SolidColorBrush x:Key="BarColor" Color="#FFBEBEBE"/>
+    </Page.Resources>
     
-    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    <Grid x:Name="BasicGrid" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
         <CommandBar>
 
         </CommandBar>
-
+        
         <Pivot Margin="10,44,10,0">
             <PivotItem x:Uid="Set_Pivotitem1" Header="일반">
                 <ScrollViewer>
@@ -23,7 +27,11 @@
                             <TextBlock x:Uid="Set_RadioButtonDicAppSearchText" Text="앱 내에서 단어를 검색하고, 검색 결과를 가져와 표시합니다." Foreground="Gray" FontSize="12" Margin="30,0,0,0" TextWrapping="Wrap"/>
                             <RadioButton x:Name="RadioButtonDicWeb" x:Uid="Set_RadioButtonDicWeb" Content="웹 페이지로 보기" IsChecked="{x:Bind RadioBtnDic, Mode=TwoWay}" Checked="RadioButtonDicWeb_Checked" Margin="0,6,0,0"/>
                             <TextBlock x:Uid="Set_RadioButtonDicWebText" Text="웹뷰를 통해 웹 페이지를 표시합니다." Foreground="Gray" FontSize="12" Margin="30,0,0,0" TextWrapping="Wrap"/>
-                            <CheckBox x:Name="CheckDevelopermode" x:Uid="Set_CheckDevelopermode" Margin="0,20,0,0" VerticalAlignment="Top" Content="개발자 도구 활성화" IsChecked="{x:Bind IsEnableDevelopermode, Mode=TwoWay}"/>
+                            <StackPanel Margin="0,30,0,0">
+                                <TextBlock x:Uid="Set_DevTool" Text="개발자 도구" Style="{ThemeResource BaseTextBlockStyle}" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top"/>
+                                <CheckBox x:Name="CheckDevelopermode" x:Uid="Set_CheckDevelopermode" Margin="0,10,0,0" VerticalAlignment="Top" Content="개발자 도구 활성화" IsChecked="{x:Bind IsEnableDevelopermode, Mode=TwoWay}"/>
+                                <Button x:Name="BtnLabFunction" x:Uid="Set_BtnLabFunction" Content="실험실 기능" Margin="0,10,0,0" Click="BtnLabFunction_Click"/>
+                            </StackPanel>
                             <StackPanel Margin="0,30,0,0">
                                 <TextBlock x:Uid="Set_Language" Text="언어 (Language)" Style="{ThemeResource BaseTextBlockStyle}" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top"/>
                                 <StackPanel Margin="0,10,0,0" Orientation="Horizontal">
@@ -34,6 +42,14 @@
                                     </ComboBox>
                                 </StackPanel>
                                 <TextBlock x:Name="TextRestartNotice" x:Uid="Set_TextRestartNotice" Text="변경내용을 적용하려면 앱을 다시 시작해야 합니다." Margin="0,10,0,0" Visibility="Collapsed" TextWrapping="Wrap"/>
+                            </StackPanel>
+                            <StackPanel Margin="0,30,0,0">
+                                <TextBlock x:Uid="Set_ColorTheme" Text="앱 색상 모드" Style="{ThemeResource BaseTextBlockStyle}" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top"/>
+                                <StackPanel Margin="0,10,0,0" Orientation="Horizontal">
+                                    <ComboBox x:Name="ComboBoxTheme" SelectedIndex="{x:Bind ComboBoxThemeIndex, Mode=TwoWay}" Width="200">
+                                    </ComboBox>
+                                </StackPanel>
+                                <TextBlock x:Name="TextRestartNotice2" x:Uid="Set_TextRestartNotice" Text="변경내용을 적용하려면 앱을 다시 시작해야 합니다." Margin="0,10,0,0" Visibility="Collapsed" TextWrapping="Wrap"/>
                             </StackPanel>
                             <StackPanel Margin="0,30,0,0">
                                 <TextBlock x:Uid="Set_DisplayFont" Text="표시 글꼴" Style="{ThemeResource BaseTextBlockStyle}" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top"/>
@@ -56,6 +72,7 @@
                         </StackPanel>
                         <TextBlock x:Uid="Set_OptionReset" HorizontalAlignment="Left" Margin="0,40,0,0" TextWrapping="Wrap" Text="앱 초기화" VerticalAlignment="Top" FontSize="24"/>
                         <Button x:Name="BtnResetSetting" x:Uid="Set_BtnResetSetting" Margin="5,20,0,0" VerticalAlignment="Top" Content="설정 초기화" Click="BtnResetSetting_Click"/>
+                        <StackPanel Height="60"/>
                     </StackPanel>
                 </ScrollViewer>
             </PivotItem>

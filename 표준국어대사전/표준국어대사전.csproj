@@ -120,6 +120,8 @@
     <Compile Include="Controls\ConMemo.xaml.cs">
       <DependentUpon>ConMemo.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\PronunciationBlock.cs" />
+    <Compile Include="Controls\WordReader.cs" />
     <Compile Include="Main.xaml.cs">
       <DependentUpon>Main.xaml</DependentUpon>
     </Compile>
@@ -133,6 +135,9 @@
     </Compile>
     <Compile Include="Pages\DicAppSearch.xaml.cs">
       <DependentUpon>DicAppSearch.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\LabFunction.xaml.cs">
+      <DependentUpon>LabFunction.xaml</DependentUpon>
     </Compile>
     <Compile Include="Pages\SpellingChecker.xaml.cs">
       <DependentUpon>SpellingChecker.xaml</DependentUpon>
@@ -234,6 +239,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Pages\LabFunction.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Pages\SpellingChecker.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -245,6 +254,10 @@
     <Page Include="Pages\Settings.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Themes\Generic.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
   </ItemGroup>
   <ItemGroup>
