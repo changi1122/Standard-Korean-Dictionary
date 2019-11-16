@@ -27,6 +27,8 @@ namespace 표준국어대사전.Pages
     /// </summary>
     public sealed partial class SpellingChecker : Page
     {
+        private const string SPELLCHECKURL = "https://speller.cs.pusan.ac.kr/";
+
         public SpellingChecker()
         {
             this.InitializeComponent();
@@ -60,7 +62,7 @@ namespace 표준국어대사전.Pages
 
             if (value == true)
             {
-                WebViewMain.Navigate(new Uri("http://speller.cs.pusan.ac.kr/"));
+                WebViewMain.Navigate(new Uri(SPELLCHECKURL));
                 NetworkCheck();
             }
             else
@@ -84,7 +86,7 @@ namespace 표준국어대사전.Pages
             if (command.Label == res.GetString("SPC_Agree"))
             {
                 new DataStorageClass().SetSetting<bool>(DataStorageClass.SpellingCheckerAgreement, true);
-                WebViewMain.Navigate(new Uri("http://speller.cs.pusan.ac.kr/"));
+                WebViewMain.Navigate(new Uri(SPELLCHECKURL));
                 BtnAgree.Visibility = Visibility.Collapsed;
             }
             else if(command.Label == res.GetString("SPC_Disagree"))
