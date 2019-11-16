@@ -59,14 +59,7 @@ namespace 표준국어대사전.Classes
             HttpClient client = new HttpClient();
 
             HttpResponseMessage response = await client.GetAsync(temp);
-
-            //GetAsync 실패
-            if (!response.IsSuccessStatusCode)
-            {
-                MessageDialog messageDialog = new MessageDialog("error_code : " + "404" + Environment.NewLine + "message : " + "Network Problem");
-                await messageDialog.ShowAsync();
-                return;
-            }
+            response.EnsureSuccessStatusCode();
 
             string responseBody = await response.Content.ReadAsStringAsync();
 
