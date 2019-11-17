@@ -386,7 +386,7 @@ namespace 표준국어대사전.Classes
 
             RichTextBlock rtb = new RichTextBlock();
             Paragraph para = new Paragraph();
-            para.Inlines.Add(new Run { Text = wordname, FontSize = 32 });
+            para.Inlines.Add(new Run { Text = wordname, FontSize = 32, FontFamily = new FontFamily(FONTFAMILY) });
             if (sup_no != 0)
                 para.Inlines.Add(new Run { Text = sup_no.ToString(), FontSize = 18, FontFamily = new FontFamily(FONTFAMILY) });
             if (original_language != "")
