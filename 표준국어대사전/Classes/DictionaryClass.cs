@@ -47,28 +47,32 @@ namespace 표준국어대사전.Classes
             API_KEY = new DataStorageClass().GetSetting<string>(DataStorageClass.APIKey);
         }
 
-        public async void GetWordDetail(string target_code, string wordname, int sup_no, bool ShowExampleItem)
+        public async void GetWordDetail(string target_code, string wordname, int sup_no, bool showExampleItem)
         {
             DetailProgressBar.Visibility = Visibility.Visible;
 
             string responseBody = await DownloadWordDetailAsync(target_code);
             if (responseBody == null) //실패 여부 확인
             {
-                MessageDialog messageDialog = new MessageDialog("error_code : " + "404" + Environment.NewLine + "message : " + "Network Problem");
-                await messageDialog.ShowAsync();
+                string error_code = "404";
+                string error_message = $"error_code : {error_code}" + Environment.NewLine + "message : Network Problem";
+                ShowErrorMessage(error_code, error_message, null);
+                DetailProgressBar.Visibility = Visibility.Collapsed;
                 return;
             }
 
-            ParseAndShowWordDetail(responseBody, target_code, wordname, sup_no, ShowExampleItem);
+            ParseAndShowWordDetail(responseBody, target_code, wordname, sup_no, showExampleItem);
+
+            DetailProgressBar.Visibility = Visibility.Collapsed;
         }
 
         private async Task<string> DownloadWordDetailAsync(string target_code)
         {
-            string temp = string.Format(WORD_DETAIL_URL, API_KEY, target_code);
+            string url = string.Format(WORD_DETAIL_URL, API_KEY, target_code);
 
             HttpClient client = new HttpClient();
 
-            HttpResponseMessage response = await client.GetAsync(temp);
+            HttpResponseMessage response = await client.GetAsync(url);
 
             //GetAsync 실패
             if (!response.IsSuccessStatusCode)
@@ -78,7 +82,7 @@ namespace 표준국어대사전.Classes
             return responseBody;
         }
 
-        private async void ParseAndShowWordDetail(string responseBody, string target_code, string wordname, int sup_no, bool ShowExampleItem)
+        private void ParseAndShowWordDetail(string responseBody, string target_code, string wordname, int sup_no, bool showExampleItem)
         {
             XDocument xDoc = XDocument.Parse(responseBody);
 
@@ -89,38 +93,17 @@ namespace 표준국어대사전.Classes
             if (xDoc.Element("error") != null)
             {
                 string error_code = (string)xDoc.Element("error").Descendants("error_code").ElementAt(0);
-                string error_message = "error_code : " + error_code + Environment.NewLine + "message : " + (string)xDoc.Element("error").Descendants("message").ElementAt(0);
+                string error_message = $"error_code : {error_code}" + Environment.NewLine + $"message : {(string)xDoc.Element("error").Descendants("message").ElementAt(0)}";
 
                 var res = Windows.ApplicationModel.Resources.ResourceLoader.GetForCurrentView();
-                var contentDialog = new ContentDialog
-                {
-                    Title = "Error",
-                    Content = error_message,
-                    CloseButtonText = res.GetString("ContentDialogText2")
-                };
-                if (error_code == "020" || error_code == "021")
-                    contentDialog.PrimaryButtonText = res.GetString("ContentDialogText1");
+                ShowErrorMessage(error_code, error_message, res.GetString("ContentDialogText1"));
 
-                ContentDialogResult result = await contentDialog.ShowAsync();
-
-                if (result == ContentDialogResult.Primary)
-                {
-                    if (error_code == "020")
-                        await Windows.System.Launcher.LaunchUriAsync(new Uri("https://costudio1122.blogspot.com/p/2.html"));
-                    if (error_code == "021")
-                        await Windows.System.Launcher.LaunchUriAsync(new Uri("https://costudio1122.blogspot.com/p/api.html"));
-                }
-
-                DetailProgressBar.Visibility = Visibility.Collapsed;
                 return;
             }
 
+            //검색 결과가 없을 때
             if ((int)xDoc.Descendants("total").ElementAt(0) == 0)
-            {
-                //검색 결과가 없을 때
-                DetailProgressBar.Visibility = Visibility.Collapsed;
                 return;
-            }
 
             //원어
             string original_language = "";
@@ -199,7 +182,7 @@ namespace 표준국어대사전.Classes
             //분리 막대
             AddSeparatorItem();
             //툴바
-            AddToolBarItem(ShowExampleItem);
+            AddToolBarItem(showExampleItem);
 
             //관사와 하위 항목
             if (xDoc.Root.Element("item").Element("word_info").Element("pos_info") != null)
@@ -281,7 +264,7 @@ namespace 표준국어대사전.Classes
                                     AddDefinitionItem(definition);
 
                                     //예시
-                                    if (ShowExampleItem && sense_infos.ElementAt(k).Element("example_info") != null)
+                                    if (showExampleItem && sense_infos.ElementAt(k).Element("example_info") != null)
                                     {
                                         IEnumerable<XElement> example_info = sense_infos.ElementAt(k).Descendants("example_info");
 
@@ -326,9 +309,36 @@ namespace 표준국어대사전.Classes
                 //하단 여백
                 AddNewItem(" ", 60);
             }
-            DetailProgressBar.Visibility = Visibility.Collapsed;
         }
 
+        private async void ShowErrorMessage(string error_code, string error_message, string PrimaryButtonText)
+        {
+            #region URL_LIST
+            const string URLCODE020 = "https://costudio1122.blogspot.com/p/2.html";
+            const string URLCODE021 = "https://costudio1122.blogspot.com/p/api.html";
+            #endregion
+
+            var res = Windows.ApplicationModel.Resources.ResourceLoader.GetForCurrentView();
+            var contentDialog = new ContentDialog
+            {
+                Title = "Error",
+                Content = error_message,
+                CloseButtonText = res.GetString("ContentDialogText2")
+            };
+            if (PrimaryButtonText != null)
+                contentDialog.PrimaryButtonText = PrimaryButtonText;
+
+            ContentDialogResult result = await contentDialog.ShowAsync();
+
+            //도움말 클릭시 웹페이지 열기
+            if (PrimaryButtonText != null && result == ContentDialogResult.Primary)
+            {
+                if (error_code == "020")
+                    await Windows.System.Launcher.LaunchUriAsync(new Uri(URLCODE020));
+                else if (error_code == "021")
+                    await Windows.System.Launcher.LaunchUriAsync(new Uri(URLCODE021));
+            }
+        }
 
         private void AddToolBarItem(bool ShowExampleItem)
         {

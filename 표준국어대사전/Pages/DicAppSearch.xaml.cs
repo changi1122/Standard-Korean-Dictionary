@@ -99,7 +99,7 @@ namespace 표준국어대사전.Pages
             if (clickedItem.target_code == -321)
             {
                 //더보기 누를 시 동작
-                SearchClass sc = new SearchClass(ListviewSearchResult, SearchResults, MasterProgressBar, TextBlockErrorMessage);
+                SearchClass sc = new SearchClass(SearchResults, MasterProgressBar, TextBlockErrorMessage);
                 sc.GetSearchResults(clickedItem.sup_no + 1, 10, clickedItem.definition);
                 SearchResults.Remove(clickedItem);
                 return;
@@ -147,7 +147,7 @@ namespace 표준국어대사전.Pages
             SearchResults.Clear();
             //정의 Listview 지우기
             ListviewWordDetail.Items.Clear();
-            SearchClass sc = new SearchClass(ListviewSearchResult, SearchResults, MasterProgressBar, TextBlockErrorMessage);
+            SearchClass sc = new SearchClass(SearchResults, MasterProgressBar, TextBlockErrorMessage);
             sc.GetSearchResults(1, 10, searchText);
         }
 
