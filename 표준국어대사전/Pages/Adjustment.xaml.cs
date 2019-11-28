@@ -42,6 +42,7 @@ namespace 표준국어대사전.Pages
         const string NOTICE201813 = "https://drive.google.com/open?id=1MLV-CX68GBWsefmG9GKoIBLxZcEtwwtn";
         const string NOTICE20184 = "https://drive.google.com/open?id=1c-HunTFNNDJIjI3aF2oQxCojprrC3Pkn";
         const string NOTICE201912 = "https://drive.google.com/open?id=15qq5eVdw4lJCGHGtnWvFGcebfFQSn3Zr";
+        const string NOTICE20193 = "https://drive.google.com/open?id=12qxZe8xPaVhoUETsTpgHawnGXFiv5ERL";
         #endregion
 
         public async void OpenWithEdge(Uri uri)
@@ -287,6 +288,18 @@ namespace 표준국어대사전.Pages
         private void BtnDNotice201912_Click(object sender, RoutedEventArgs e)
         {
             var uri = new Uri(NOTICE201912);
+            OpenWithDefaultBrowser(uri);
+        }
+
+        private void BtnENotice20193_Click(object sender, RoutedEventArgs e)
+        {
+            var uri = new Uri(NOTICE20193);
+            OpenWithEdge(uri);
+        }
+
+        private void BtnDNotice20193_Click(object sender, RoutedEventArgs e)
+        {
+            var uri = new Uri(NOTICE20193);
             OpenWithDefaultBrowser(uri);
         }
     }
