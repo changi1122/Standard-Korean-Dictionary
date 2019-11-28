@@ -70,19 +70,23 @@ namespace 표준국어대사전.Classes
             #endregion
 
             //string temp = string.Format(WORD_SEARCH_URL, API_KEY, method, start, num, advanced, target, type1, type2, pos, cat, multimedia, letter_s, letter_e, Search_Text);
-            string temp = string.Format(WORD_SEARCH_URL, API_KEY, method, start, num, searchText);
-
+            string url = string.Format(WORD_SEARCH_URL, API_KEY, method, start, num, searchText);
 
             HttpClient client = new HttpClient();
 
-            HttpResponseMessage response = await client.GetAsync(temp);
+            try
+            {
+                HttpResponseMessage response = await client.GetAsync(url);
+                response.EnsureSuccessStatusCode();
 
-            //GetAsync 실패
-            if (!response.IsSuccessStatusCode)
+                string responseBody = await response.Content.ReadAsStringAsync();
+                return responseBody;
+            }
+            catch
+            {
+                //GetAsync 실패
                 return null;
-
-            string responseBody = await response.Content.ReadAsStringAsync();
-            return responseBody;
+            }
         }
 
         private void ParseAndShowSearchResults(string responseBody, int start, int num, string searchText)

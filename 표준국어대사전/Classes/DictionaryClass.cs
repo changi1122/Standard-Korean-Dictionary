@@ -72,14 +72,19 @@ namespace 표준국어대사전.Classes
 
             HttpClient client = new HttpClient();
 
-            HttpResponseMessage response = await client.GetAsync(url);
+            try
+            {
+                HttpResponseMessage response = await client.GetAsync(url);
+                response.EnsureSuccessStatusCode();
 
-            //GetAsync 실패
-            if (!response.IsSuccessStatusCode)
+                string responseBody = await response.Content.ReadAsStringAsync();
+                return responseBody;
+            }
+            catch
+            {
+                //GetAsync 실패
                 return null;
-
-            string responseBody = await response.Content.ReadAsStringAsync();
-            return responseBody;
+            } 
         }
 
         private void ParseAndShowWordDetail(string responseBody, string target_code, string wordname, int sup_no, bool showExampleItem)
