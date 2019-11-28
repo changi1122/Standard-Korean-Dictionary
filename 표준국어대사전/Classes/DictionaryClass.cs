@@ -51,6 +51,19 @@ namespace 표준국어대사전.Classes
         {
             DetailProgressBar.Visibility = Visibility.Visible;
 
+            string responseBody = await DownloadWordDetailAsync(target_code);
+            if (responseBody == null) //실패 여부 확인
+            {
+                MessageDialog messageDialog = new MessageDialog("error_code : " + "404" + Environment.NewLine + "message : " + "Network Problem");
+                await messageDialog.ShowAsync();
+                return;
+            }
+
+            ParseAndShowWordDetail(responseBody, target_code, wordname, sup_no, ShowExampleItem);
+        }
+
+        private async Task<string> DownloadWordDetailAsync(string target_code)
+        {
             string temp = string.Format(WORD_DETAIL_URL, API_KEY, target_code);
 
             HttpClient client = new HttpClient();
@@ -59,14 +72,14 @@ namespace 표준국어대사전.Classes
 
             //GetAsync 실패
             if (!response.IsSuccessStatusCode)
-            {
-                MessageDialog messageDialog = new MessageDialog("error_code : " + "404" + Environment.NewLine + "message : " + "Network Problem");
-                await messageDialog.ShowAsync();
-                return;
-            }
+                return null;
 
             string responseBody = await response.Content.ReadAsStringAsync();
+            return responseBody;
+        }
 
+        private async void ParseAndShowWordDetail(string responseBody, string target_code, string wordname, int sup_no, bool ShowExampleItem)
+        {
             XDocument xDoc = XDocument.Parse(responseBody);
 
             //정의 Listview 지우기
