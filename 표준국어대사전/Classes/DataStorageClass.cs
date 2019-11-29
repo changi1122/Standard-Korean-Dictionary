@@ -7,7 +7,7 @@ using Windows.Storage;
 
 namespace 표준국어대사전.Classes
 {
-    public class DataStorageClass
+    public static class DataStorageClass
     {
         public const string FirstSetup = "#FirstSetup";                                 //int
         public const string SearchEngine = "#SearchEngine";                             //string
@@ -22,7 +22,7 @@ namespace 표준국어대사전.Classes
         //Lab Function
         public const string LabWordReaderEnabled = "#LabWordReaderEnabled";             //bool
 
-        public void StartUpSetup()
+        public static void StartUpSetup()
         {
             ApplicationDataContainer localSettings = ApplicationData.Current.LocalSettings;
 
@@ -54,7 +54,7 @@ namespace 표준국어대사전.Classes
             }
         }
 
-        void FirstUpSetUp()
+        public static void FirstUpSetUp()
         {
             ApplicationDataContainer localSettings = ApplicationData.Current.LocalSettings;
             //최초 설정
@@ -72,19 +72,19 @@ namespace 표준국어대사전.Classes
             localSettings.Values[LabWordReaderEnabled] = false;
         }
 
-        public T GetSetting<T>(string name)
+        public static T GetSetting<T>(string name)
         {
             ApplicationDataContainer localSettings = ApplicationData.Current.LocalSettings;
             return (T)localSettings.Values[name];
         }
 
-        public void SetSetting<T>(string name, T value)
+        public static void SetSetting<T>(string name, T value)
         {
             ApplicationDataContainer localSettings = ApplicationData.Current.LocalSettings;
             localSettings.Values[name] = value;
         }
 
-        public void Clear()
+        public static void Clear()
         {
             ApplicationDataContainer localSettings = ApplicationData.Current.LocalSettings;
             localSettings.Values.Clear();

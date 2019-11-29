@@ -23,7 +23,7 @@ namespace 표준국어대사전.Classes
         ListView ListviewWordDetail;
         Page page;
         ProgressBar DetailProgressBar;
-        bool LabWordReaderEnabled = new DataStorageClass().GetSetting<bool>(DataStorageClass.LabWordReaderEnabled);
+        bool LabWordReaderEnabled = DataStorageClass.GetSetting<bool>(DataStorageClass.LabWordReaderEnabled);
 
         //단어의 뜻풀이가 들어갈 문단
         RichTextBlock word_detail = new RichTextBlock();
@@ -38,13 +38,13 @@ namespace 표준국어대사전.Classes
             DetailProgressBar = pbar;
 
             //글꼴
-            if (new DataStorageClass().GetSetting<string>(DataStorageClass.DisplayFont) == "맑은 고딕")
+            if (DataStorageClass.GetSetting<string>(DataStorageClass.DisplayFont) == "맑은 고딕")
                 FONTFAMILY = "#Malgun Gothic";
             else
                 FONTFAMILY = "/Fonts/NanumBarunGothic-YetHangul.ttf#NanumBarunGothic YetHangul";
 
             //API 키 처리
-            API_KEY = new DataStorageClass().GetSetting<string>(DataStorageClass.APIKey);
+            API_KEY = DataStorageClass.GetSetting<string>(DataStorageClass.APIKey);
         }
 
         public async void GetWordDetail(string target_code, string wordname, int sup_no, bool showExampleItem)

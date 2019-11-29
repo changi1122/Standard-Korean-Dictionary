@@ -28,72 +28,72 @@ namespace 표준국어대사전.Pages
         {
             get
             {
-                if (new DataStorageClass().GetSetting<string>(DataStorageClass.SearchEngine) == "DicAppSearch") return true;
+                if (DataStorageClass.GetSetting<string>(DataStorageClass.SearchEngine) == "DicAppSearch") return true;
                 else return false;
             }
             set
             {
-                if (value == true) new DataStorageClass().SetSetting<string>(DataStorageClass.SearchEngine, "DicAppSearch");
-                else new DataStorageClass().SetSetting<string>(DataStorageClass.SearchEngine, "Dic");
+                if (value == true) DataStorageClass.SetSetting<string>(DataStorageClass.SearchEngine, "DicAppSearch");
+                else DataStorageClass.SetSetting<string>(DataStorageClass.SearchEngine, "Dic");
             }
         }
         public bool RadioBtnDic
         {
             get
             {
-                if (new DataStorageClass().GetSetting<string>(DataStorageClass.SearchEngine) == "Dic") return true;
+                if (DataStorageClass.GetSetting<string>(DataStorageClass.SearchEngine) == "Dic") return true;
                 else return false;
             }
             set
             {
-                if (value == true) new DataStorageClass().SetSetting<string>(DataStorageClass.SearchEngine, "Dic");
-                else new DataStorageClass().SetSetting<string>(DataStorageClass.SearchEngine, "DicAppSearch");
+                if (value == true) DataStorageClass.SetSetting<string>(DataStorageClass.SearchEngine, "Dic");
+                else DataStorageClass.SetSetting<string>(DataStorageClass.SearchEngine, "DicAppSearch");
             }
         }
         public bool IsEnableDevelopermode
         {
-            get { return new DataStorageClass().GetSetting<bool>(DataStorageClass.UseDevelopermode); }
-            set { new DataStorageClass().SetSetting<bool>(DataStorageClass.UseDevelopermode, value); }
+            get { return DataStorageClass.GetSetting<bool>(DataStorageClass.UseDevelopermode); }
+            set { DataStorageClass.SetSetting<bool>(DataStorageClass.UseDevelopermode, value); }
         }
         public int ComboBoxFontSelectedIndex
         {
             get
             {
-                if (new DataStorageClass().GetSetting<string>(DataStorageClass.DisplayFont) == "나눔바른고딕 옛한글") return 0;
+                if (DataStorageClass.GetSetting<string>(DataStorageClass.DisplayFont) == "나눔바른고딕 옛한글") return 0;
                 else return 1;
             }
             set
             {
-                if (value == 0) new DataStorageClass().SetSetting<string>(DataStorageClass.DisplayFont, "나눔바른고딕 옛한글");
-                else new DataStorageClass().SetSetting<string>(DataStorageClass.DisplayFont, "맑은 고딕");
+                if (value == 0) DataStorageClass.SetSetting<string>(DataStorageClass.DisplayFont, "나눔바른고딕 옛한글");
+                else DataStorageClass.SetSetting<string>(DataStorageClass.DisplayFont, "맑은 고딕");
             }
         }
         public int ComboBoxAPIKeyIndex
         {
             get
             {
-                if (new DataStorageClass().GetSetting<bool>(DataStorageClass.UseCustomAPIKey) == false) return 0;
+                if (DataStorageClass.GetSetting<bool>(DataStorageClass.UseCustomAPIKey) == false) return 0;
                 else return 1;
             }
             set
             {
-                if (value == 0) { new DataStorageClass().SetSetting<bool>(DataStorageClass.UseCustomAPIKey, false);
-                                  new DataStorageClass().SetSetting<string>(DataStorageClass.APIKey, "C58534E2D39CF7CA69BCA193541C1688"); }
+                if (value == 0) { DataStorageClass.SetSetting<bool>(DataStorageClass.UseCustomAPIKey, false);
+                                  DataStorageClass.SetSetting<string>(DataStorageClass.APIKey, "C58534E2D39CF7CA69BCA193541C1688"); }
             }
         }
         public int ComboBoxLangIndex
         {
             get
             {
-                if (new DataStorageClass().GetSetting<string>(DataStorageClass.Language) == "system") return 0;
-                else if (new DataStorageClass().GetSetting<string>(DataStorageClass.Language) == "ko") return 1;
+                if (DataStorageClass.GetSetting<string>(DataStorageClass.Language) == "system") return 0;
+                else if (DataStorageClass.GetSetting<string>(DataStorageClass.Language) == "ko") return 1;
                 else return 2;
             }
             set
             {
-                if (value == 0) new DataStorageClass().SetSetting<string>(DataStorageClass.Language, "system");
-                else if (value == 1) new DataStorageClass().SetSetting<string>(DataStorageClass.Language, "ko");
-                else if (value == 2) new DataStorageClass().SetSetting<string>(DataStorageClass.Language, "en");
+                if (value == 0) DataStorageClass.SetSetting<string>(DataStorageClass.Language, "system");
+                else if (value == 1) DataStorageClass.SetSetting<string>(DataStorageClass.Language, "ko");
+                else if (value == 2) DataStorageClass.SetSetting<string>(DataStorageClass.Language, "en");
                 TextRestartNotice.Visibility = Visibility.Visible;
             }
         }
@@ -101,15 +101,15 @@ namespace 표준국어대사전.Pages
         {
             get
             {
-                if (new DataStorageClass().GetSetting<string>(DataStorageClass.ColorTheme) == "system") return 0;
-                else if (new DataStorageClass().GetSetting<string>(DataStorageClass.ColorTheme) == "Light") return 1;
+                if (DataStorageClass.GetSetting<string>(DataStorageClass.ColorTheme) == "system") return 0;
+                else if (DataStorageClass.GetSetting<string>(DataStorageClass.ColorTheme) == "Light") return 1;
                 else return 2;
             }
             set
             {
-                if (value == 0) new DataStorageClass().SetSetting<string>(DataStorageClass.ColorTheme, "system");
-                else if (value == 1) new DataStorageClass().SetSetting<string>(DataStorageClass.ColorTheme, "Light");
-                else if (value == 2) new DataStorageClass().SetSetting<string>(DataStorageClass.ColorTheme, "Dark");
+                if (value == 0) DataStorageClass.SetSetting<string>(DataStorageClass.ColorTheme, "system");
+                else if (value == 1) DataStorageClass.SetSetting<string>(DataStorageClass.ColorTheme, "Light");
+                else if (value == 2) DataStorageClass.SetSetting<string>(DataStorageClass.ColorTheme, "Dark");
                 TextRestartNotice2.Visibility = Visibility.Visible;
             }
         }
@@ -126,14 +126,12 @@ namespace 표준국어대사전.Pages
             ComboBoxTheme.Items.Add(res.GetString("ComboBoxThemeLight"));
             ComboBoxTheme.Items.Add(res.GetString("ComboBoxThemeDark"));
 
-            DataStorageClass data = new DataStorageClass();
-
-            if (data.GetSetting<bool>(DataStorageClass.UseCustomAPIKey) == false)
+            if (DataStorageClass.GetSetting<bool>(DataStorageClass.UseCustomAPIKey) == false)
                 ComboBoxAPIKey.SelectedIndex = 0;
             else
             {
                 ComboBoxAPIKey.SelectedIndex = 1;
-                TextBoxAPIKey.Text = data.GetSetting<string>(DataStorageClass.APIKey);
+                TextBoxAPIKey.Text = DataStorageClass.GetSetting<string>(DataStorageClass.APIKey);
             }
 
             var package = Windows.ApplicationModel.Package.Current;
@@ -163,8 +161,8 @@ namespace 표준국어대사전.Pages
 
         private void BtnResetSetting_Click(object sender, RoutedEventArgs e)
         {
-            new DataStorageClass().Clear();
-            new DataStorageClass().StartUpSetup();
+            DataStorageClass.Clear();
+            DataStorageClass.StartUpSetup();
             RadioButtonDicAppSearch.IsChecked = true;
             CheckDevelopermode.IsChecked = false;
             ComboBoxFont.SelectedIndex = 0; ;
@@ -202,7 +200,7 @@ namespace 표준국어대사전.Pages
 
         private void TextBoxAPIKey_TextChanged(object sender, TextChangedEventArgs e)
         {
-            if ((TextBoxAPIKey.Text != new DataStorageClass().GetSetting<string>(DataStorageClass.APIKey)) && (ComboBoxAPIKey.SelectedIndex == 1))
+            if ((TextBoxAPIKey.Text != DataStorageClass.GetSetting<string>(DataStorageClass.APIKey)) && (ComboBoxAPIKey.SelectedIndex == 1))
             {
                 BtnSaveNHelp.Content = "";
             }
@@ -212,8 +210,8 @@ namespace 표준국어대사전.Pages
         {
             if ((string)BtnSaveNHelp.Content == "") //저장
             {
-                new DataStorageClass().SetSetting<string>(DataStorageClass.APIKey, TextBoxAPIKey.Text);
-                new DataStorageClass().SetSetting<bool>(DataStorageClass.UseCustomAPIKey, true);
+                DataStorageClass.SetSetting<string>(DataStorageClass.APIKey, TextBoxAPIKey.Text);
+                DataStorageClass.SetSetting<bool>(DataStorageClass.UseCustomAPIKey, true);
 
                 BtnSaveNHelp.Content = "";
             }

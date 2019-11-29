@@ -29,7 +29,7 @@ namespace 표준국어대사전.Classes
             TextBlockErrorMessage = textBlock;
 
             //API 키 처리
-            API_KEY = new DataStorageClass().GetSetting<string>(DataStorageClass.APIKey);
+            API_KEY = DataStorageClass.GetSetting<string>(DataStorageClass.APIKey);
         }
 
         public async void GetSearchResults(int start, int num, string searchText)

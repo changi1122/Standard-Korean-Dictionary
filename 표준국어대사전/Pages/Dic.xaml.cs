@@ -36,7 +36,7 @@ namespace 표준국어대사전.Pages
         {
             this.InitializeComponent();
 
-            if (new DataStorageClass().GetSetting<bool>(DataStorageClass.UseDevelopermode) == false)
+            if (DataStorageClass.GetSetting<bool>(DataStorageClass.UseDevelopermode) == false)
                 BtnReadingMode.Visibility = Visibility.Collapsed;
             else
                 BtnReadingMode.Visibility = Visibility.Visible;

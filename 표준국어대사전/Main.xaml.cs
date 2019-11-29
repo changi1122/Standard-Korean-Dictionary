@@ -53,7 +53,7 @@ namespace 표준국어대사전
                 switch (args.InvokedItem)
                 {
                     case "Pages.Dic":  //검색
-                        if (new DataStorageClass().GetSetting<string>(DataStorageClass.SearchEngine) == "DicAppSearch")
+                        if (DataStorageClass.GetSetting<string>(DataStorageClass.SearchEngine) == "DicAppSearch")
                             ContentFrame.Navigate(typeof(Pages.DicAppSearch));
                         else
                             ContentFrame.Navigate(typeof(Pages.Dic));
@@ -90,7 +90,7 @@ namespace 표준국어대사전
                 switch (item.Tag)
                 {
                     case "Pages.Dic":  //검색
-                        if (new DataStorageClass().GetSetting<string>(DataStorageClass.SearchEngine) == "DicAppSearch")
+                        if (DataStorageClass.GetSetting<string>(DataStorageClass.SearchEngine) == "DicAppSearch")
                             ContentFrame.Navigate(typeof(Pages.DicAppSearch));
                         else
                             ContentFrame.Navigate(typeof(Pages.Dic));
