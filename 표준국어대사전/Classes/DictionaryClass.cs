@@ -113,7 +113,13 @@ namespace 표준국어대사전.Classes
             //원어
             string original_language = "";
             if (xDoc.Root.Element("item").Element("word_info").Element("original_language_info") != null)
-                original_language = " (" + (string)xDoc.Root.Element("item").Element("word_info").Element("original_language_info").Descendants("original_language").ElementAt(0) + ")";
+            {
+                IEnumerable<XElement> original_languages = xDoc.Descendants("original_language");
+                for (int i = 0; i < original_languages.Count(); ++i)
+                    original_language += (string)original_languages.ElementAt(i);
+
+                original_language = $" ({original_language})";
+            }
 
             //단어 명
             AddWordnameItem(wordname, sup_no, original_language, target_code);
