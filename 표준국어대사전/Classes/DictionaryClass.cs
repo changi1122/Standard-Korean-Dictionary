@@ -205,11 +205,11 @@ namespace 표준국어대사전.Classes
                     //품사 명
                     string pos;
                     if (pos_infos.Count() != 1)
-                        pos = "[" + ToRoman(i + 1) + "] ";
+                        pos = $"[{ToRoman(i + 1)}] ";
                     else
                         pos = "";
                     if (pos_infos.ElementAt(i).Element("pos") != null)
-                        pos += "「" + (string)pos_infos.ElementAt(i).Descendants("pos").ElementAt(0) + "」";
+                        pos += $"「{(string)pos_infos.ElementAt(i).Descendants("pos").ElementAt(0)}」";
                     else
                         pos = null;
                     //품사 출력
@@ -224,7 +224,7 @@ namespace 표준국어대사전.Classes
                         {
                             string pattern;
                             if (comm_pattern_infos.Count() != 1)
-                                pattern = "〔" + (j + 1) + "〕 ";
+                                pattern = $"〔{j + 1}〕 ";
                             else
                                 pattern = "";
 
@@ -234,16 +234,12 @@ namespace 표준국어대사전.Classes
                                 IEnumerable<XElement> pattern_infos = comm_pattern_infos.ElementAt(j).Descendants("pattern_info");
 
                                 for (int k = 0; k < pattern_infos.Count(); ++k)
-                                {
-                                    pattern += "【";
-                                    pattern += (string)pattern_infos.ElementAt(k).Descendants("pattern").ElementAt(0);
-                                    pattern += "】";
-                                }
+                                    pattern += $"【{(string)pattern_infos.ElementAt(k).Descendants("pattern").ElementAt(0)}】";
                             }
 
                             //문형에 적용되는 문법
                             if (comm_pattern_infos.ElementAt(j).Element("grammar_info") != null)
-                                pattern += " ((" + (string)comm_pattern_infos.ElementAt(j).Element("grammar_info").Descendants("grammar").ElementAt(0) + "))";
+                                pattern += $" (({(string)comm_pattern_infos.ElementAt(j).Element("grammar_info").Descendants("grammar").ElementAt(0)}))";
 
                             //문형과 문형에 적용되는 문법 출력
                             AddPatternItem(pattern);
@@ -258,17 +254,17 @@ namespace 표준국어대사전.Classes
                                 {
                                     string definition;
                                     if (sense_infos.Count() != 1)
-                                        definition = "###" + (k + 1) + "### ";
+                                        definition = $"###{k + 1}### ";
                                     else
                                         definition = "";
 
                                     //분류(cat)
                                     if (sense_infos.ElementAt(k).Element("cat_info") != null)
-                                        definition += "『" + (string)sense_infos.ElementAt(k).Element("cat_info").Descendants("cat").ElementAt(0) + "』 ";
+                                        definition += $"『{(string)sense_infos.ElementAt(k).Element("cat_info").Descendants("cat").ElementAt(0)}』 ";
 
                                     //sense_grammar 정의에 참고하는 말
                                     if (sense_infos.ElementAt(k).Element("sense_grammar_info") != null)
-                                        definition += "((" + (string)sense_infos.ElementAt(k).Element("sense_grammar_info").Descendants("grammar").ElementAt(0) + ")) ";
+                                        definition += $"(({(string)sense_infos.ElementAt(k).Element("sense_grammar_info").Descendants("grammar").ElementAt(0)})) ";
 
                                     //정의
                                     definition += (string)sense_infos.ElementAt(k).Descendants("definition").ElementAt(0);
@@ -283,7 +279,7 @@ namespace 표준국어대사전.Classes
                                         {
                                             string example = (string)example_info.ElementAt(l).Descendants("example").ElementAt(0);
                                             if (example_info.ElementAt(l).Element("source") != null)
-                                                example += " ≪" + (string)example_info.ElementAt(l).Descendants("source").ElementAt(0) + "≫";
+                                                example += $" ≪{(string)example_info.ElementAt(l).Descendants("source").ElementAt(0)}≫";
                                             AddExampleItem(example);
                                         }
                                     }
@@ -545,7 +541,7 @@ namespace 표준국어대사전.Classes
             if (definition.IndexOf("###") != -1)
             {
                 string num = definition.Substring(definition.IndexOf("###") + 3, definition.LastIndexOf("###") - definition.IndexOf("###") - 3);
-                OutputList.Add("&NUM" + "「" + num + "」");
+                OutputList.Add("&NUM" + $"「{num}」");
                 definition = definition.Substring(definition.LastIndexOf("###") + 3);
             }
 
