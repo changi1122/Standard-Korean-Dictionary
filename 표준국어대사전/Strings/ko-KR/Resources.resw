@@ -142,7 +142,7 @@
     <value>일러두기</value>
   </data>
   <data name="DA_BtnMasterDetail.Label" xml:space="preserve">
-    <value>뒤로</value>
+    <value>닫기</value>
   </data>
   <data name="DA_BtnMemo.Label" xml:space="preserve">
     <value>메모</value>
@@ -259,7 +259,7 @@
     <value>앱 전용 키</value>
   </data>
   <data name="DA_BtnMasterDetail.ToolTipService.ToolTip" xml:space="preserve">
-    <value>뒤로</value>
+    <value>닫기</value>
   </data>
   <data name="DA_BtnMemo.ToolTipService.ToolTip" xml:space="preserve">
     <value>메모</value>
