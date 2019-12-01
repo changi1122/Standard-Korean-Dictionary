@@ -361,8 +361,10 @@
                 </AppBarButton>
             </CommandBar.SecondaryCommands>
 
-            <AppBarButton x:Name="BtnMasterDetail" x:Uid="DA_BtnMasterDetail" Label="뒤로" ToolTipService.ToolTip="뒤로" Icon="Back" Click="BtnMasterDetail_Click" Visibility="Collapsed"/>
+            <AppBarButton x:Name="BtnMasterDetail" x:Uid="DA_BtnMasterDetail" Label="닫기" ToolTipService.ToolTip="닫기" Icon="Clear" Click="BtnMasterDetail_Click" Visibility="Collapsed"/>
             <AppBarSeparator x:Name="Separator" Visibility="Collapsed"/>
+            <AppBarButton x:Name="BtnBack" Label="뒤로" ToolTipService.ToolTip="뒤로" Icon="Back" IsEnabled="False" Visibility="Collapsed"/>
+            <AppBarButton x:Name="BtnForward" Label="앞으로" ToolTipService.ToolTip="앞으로" Icon="Forward" IsEnabled="False" Visibility="Collapsed"/>
             <AppBarButton x:Name="BtnMemo" x:Uid="DA_BtnMemo" Label="메모" ToolTipService.ToolTip="메모" Click="BtnMemo_Click" Visibility="Visible">
                 <AppBarButton.Icon>
                     <FontIcon Glyph="&#xE70B;"/>

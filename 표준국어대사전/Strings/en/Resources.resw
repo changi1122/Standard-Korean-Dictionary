@@ -19,7 +19,7 @@
     <value>Preface</value>
   </data>
   <data name="DA_BtnMasterDetail.Label" xml:space="preserve">
-    <value>Back</value>
+    <value>Close</value>
   </data>
   <data name="DA_BtnMultiSearch.Label" xml:space="preserve">
     <value>Multi Search</value>
@@ -148,7 +148,7 @@
     <value>Display Font</value>
   </data>
   <data name="DA_BtnMasterDetail.ToolTipService.ToolTip" xml:space="preserve">
-    <value>Back</value>
+    <value>Close</value>
   </data>
   <data name="DA_BtnMemo.ToolTipService.ToolTip" xml:space="preserve">
     <value>Memo</value>
@@ -292,7 +292,7 @@
     <value>Enable word reader</value>
   </data>
   <data name="Lab_CheckWordReaderText.Text" xml:space="preserve">
-    <value>Hear the sound in the word search, click the button that appears next to the pronunciation. (There may not be accurate pronunciation.)</value>
+    <value>Hear the sound in the dictionary, click the button that appears next to the pronunciation. (There may not be accurate pronunciation.)</value>
   </data>
   <data name="Lab_Sound.Text" xml:space="preserve">
     <value>Sound</value>
