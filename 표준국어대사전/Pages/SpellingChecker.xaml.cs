@@ -27,7 +27,7 @@ namespace 표준국어대사전.Pages
     /// </summary>
     public sealed partial class SpellingChecker : Page
     {
-        private const string SPELLCHECKURL = "https://speller.cs.pusan.ac.kr/";
+        private const string SPELLCHECKURL = "http://speller.cs.pusan.ac.kr/";
 
         public SpellingChecker()
         {

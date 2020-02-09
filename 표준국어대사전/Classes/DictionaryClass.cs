@@ -215,7 +215,7 @@ namespace 표준국어대사전.Classes
                     //품사 출력
                     AddPosItem(pos);
 
-                    //comm_pattern
+                    //문형 정보
                     if (pos_infos.ElementAt(i).Element("comm_pattern_info") != null)
                     {
                         IEnumerable<XElement> comm_pattern_infos = pos_infos.ElementAt(i).Descendants("comm_pattern_info");
@@ -478,6 +478,7 @@ namespace 표준국어대사전.Classes
 
                 if (conju_prons[i] != null)
                 {
+                    //임시코드
                     sp.Children.Add(new PronunciationBlock { WordItems = new List<string> { conju_prons[i] }, IsReaderEnabled = LabWordReaderEnabled, FontFamily = new FontFamily(FONTFAMILY) });
                 }
 
