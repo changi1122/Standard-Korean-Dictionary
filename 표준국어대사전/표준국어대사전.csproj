@@ -115,6 +115,7 @@
     </Compile>
     <Compile Include="Classes\DataStorageClass.cs" />
     <Compile Include="Classes\SearchClass.cs" />
+    <Compile Include="Classes\WordDetailItem.cs" />
     <Compile Include="Controls\ConMultiSearch.xaml.cs">
       <DependentUpon>ConMultiSearch.xaml</DependentUpon>
     </Compile>
