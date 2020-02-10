@@ -1,0 +1,631 @@
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using Windows.UI.Xaml;
+using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Documents;
+using Windows.UI.Xaml.Media;
+using 표준국어대사전.Controls;
+
+namespace 표준국어대사전.Classes
+{
+    public class WordDetailItem : INotifyPropertyChanged
+    {
+        string FONTFAMILY = "/Fonts/NanumBarunGothic-YetHangul.ttf#NanumBarunGothic YetHangul";
+        bool LabWordReaderEnabled = DataStorageClass.GetSetting<bool>(DataStorageClass.LabWordReaderEnabled);
+
+        //필터
+        public bool IsExampleVisible = true;
+
+        #region Toolbar
+        public StackPanel ToolBarSp
+        {
+            get
+            {
+                StackPanel sp = new StackPanel { Orientation = Orientation.Horizontal, HorizontalAlignment = HorizontalAlignment.Right };
+                //ToolBar Buttons
+                Button BtnFilter = new Button { Width = 80, Margin = new Thickness(5, 0, 5, 0), Background = Application.Current.Resources["ApplicationPageBackgroundThemeBrush"] as SolidColorBrush };
+                var res = Windows.ApplicationModel.Resources.ResourceLoader.GetForCurrentView();
+                if (IsExampleVisible)
+                    BtnFilter.Content = res.GetString("DC_BtnFilter_All");
+                else
+                    BtnFilter.Content = res.GetString("DC_BtnFilter_Meaning");
+                BtnFilter.Click += BtnFilter_Click;
+
+                sp.Children.Add(BtnFilter);
+
+                return sp;
+            }
+        }
+
+
+        public void BtnFilter_Click(object sender, RoutedEventArgs e)
+        {
+            IsExampleVisible = (IsExampleVisible) ? false : true;
+
+            Button BtnFilter = sender as Button;
+            var res = Windows.ApplicationModel.Resources.ResourceLoader.GetForCurrentView();
+            if (IsExampleVisible)
+                BtnFilter.Content = res.GetString("DC_BtnFilter_All");
+            else
+                BtnFilter.Content = res.GetString("DC_BtnFilter_Meaning");
+
+            RaisePropertyChanged("detailRtb");
+            RaisePropertyChanged("IsOriginVisible");
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+        protected void RaisePropertyChanged(string name)
+        {
+            if (PropertyChanged != null)
+            {
+                PropertyChanged(this, new PropertyChangedEventArgs(name));
+            }
+        }
+        #endregion
+
+        //어원 문단 표시 여부
+        public bool IsOriginExist = false;
+        public Visibility IsOriginVisible
+        {
+            get { return (IsOriginExist && IsExampleVisible) ? Visibility.Visible : Visibility.Collapsed; }
+        }
+
+        public WordDetailItem()
+        {
+            //글꼴
+            if (DataStorageClass.GetSetting<string>(DataStorageClass.DisplayFont) == "맑은 고딕")
+                FONTFAMILY = "#Malgun Gothic";
+            else
+                FONTFAMILY = "/Fonts/NanumBarunGothic-YetHangul.ttf#NanumBarunGothic YetHangul";
+        }
+
+        //코드 번호
+        public string target_code;
+        //단어 명
+        public string wordname;
+        //어깨번호
+        public int sup_no;
+        //원어
+        public string original_language;
+
+        //발음
+        public List<string> prons;
+        //활용
+        public List<ConjusItem> conjus;
+
+
+        //관사와 하위 항목
+        public List<PosItem> poses;
+        //규범 정보
+        public List<string> norms;
+        //어원
+        public string origin;
+
+        //단어명 RTB
+        public RichTextBlock wordnameRtb
+        {
+            get
+            {
+                RichTextBlock rtb = new RichTextBlock();
+
+                Paragraph para = new Paragraph();
+                para.Inlines.Add(new Run { Text = wordname, FontSize = 32, FontFamily = new FontFamily(FONTFAMILY) });
+                if (sup_no != 0)
+                    para.Inlines.Add(new Run { Text = sup_no.ToString(), FontSize = 18, FontFamily = new FontFamily(FONTFAMILY) });
+                if (original_language != "")
+                    para.Inlines.Add(new Run { Text = $" ({original_language})", FontSize = 18, FontFamily = new FontFamily(FONTFAMILY) });
+                rtb.Blocks.Add(para);
+
+                return rtb;
+            }
+        }
+
+        //발음 SP
+        public StackPanel pronsSp
+        {
+            get
+            {
+                StackPanel sp = new StackPanel { Orientation = Orientation.Horizontal };
+
+                //null 예외
+                if (prons.Count == 0)
+                    return sp;
+
+                string text = "";
+                for (int i = 0; i < prons.Count(); ++i)
+                {
+                    text += prons[i];
+                    if (prons.Count() - i != 1)
+                        text += " / ";
+                }
+
+                TextBlock title = new TextBlock { Text = "발음", Margin = new Thickness(0, 0, 10, 0), FontSize = 17, FontWeight = Windows.UI.Text.FontWeights.Bold, FontFamily = new FontFamily(FONTFAMILY) };
+                sp.Children.Add(title);
+                sp.Children.Add(new PronunciationBlock { WordItems = prons, FontFamily = new FontFamily(FONTFAMILY), IsReaderEnabled = LabWordReaderEnabled });
+
+                return sp;
+            }
+        }
+
+        //활용 SP
+        public StackPanel conjusSp
+        {
+            get
+            {
+                StackPanel sp = new StackPanel { Orientation = Orientation.Horizontal };
+
+                //null 예외
+                if (conjus == null)
+                    return sp;
+
+                TextBlock title = new TextBlock { Text = "활용", Margin = new Thickness(0, 0, 10, 0), FontSize = 17, FontWeight = Windows.UI.Text.FontWeights.Bold, FontFamily = new FontFamily(FONTFAMILY) };
+                sp.Children.Add(title);
+                
+                for (int i = 0; i < conjus.Count(); ++i)
+                {
+                    sp.Children.Add(new TextBlock { Text = conjus[i].conjus, FontSize = 16, FontFamily = new FontFamily(FONTFAMILY) });
+
+                    if (conjus[i].conju_prons != null)
+                    {
+                        sp.Children.Add(new PronunciationBlock { WordItems = conjus[i].conju_prons, IsReaderEnabled = LabWordReaderEnabled, FontFamily = new FontFamily(FONTFAMILY) });
+                    }
+
+                    if (conjus[i].abbreviations != null)
+                    {
+                        //준말
+                        List<AbbreviationItem> abbreviations = conjus[i].abbreviations;
+                        for (int j = 0; j < abbreviations.Count; j++)
+                        {
+                            sp.Children.Add(new TextBlock { Text = "(" + abbreviations[j].abbreviations, FontSize = 16, FontFamily = new FontFamily(FONTFAMILY) });
+                            if (abbreviations[j].abbreviation_prons != null)
+                                sp.Children.Add(new PronunciationBlock { WordItems = abbreviations[j].abbreviation_prons, IsReaderEnabled = LabWordReaderEnabled, FontFamily = new FontFamily(FONTFAMILY) });
+                            sp.Children.Add(new TextBlock { Text = ")", FontSize = 16, FontFamily = new FontFamily(FONTFAMILY) });
+                        }
+                    }
+                    if (conjus.Count() - i != 1)
+                        sp.Children.Add(new TextBlock { Text = ",", Margin = new Thickness(0, 0, 6, 0), FontSize = 16, FontFamily = new FontFamily(FONTFAMILY) });
+                }
+
+                return sp;
+            }
+        }
+
+        //뜻풀이 RTB
+        public RichTextBlock detailRtb
+        {
+            get
+            {
+                RichTextBlock rtb = new RichTextBlock();
+
+                //예외
+                if (poses == null)
+                    return rtb;
+
+                //관사와 하위 항목
+                for (int i = 0; i < poses.Count; i++)
+                {
+                    Paragraph para = new Paragraph();
+                    para.Margin = new Thickness(0, 40, 0, 0);
+
+                    // 관사 번호
+                    if (1 < poses.Count)
+                    {
+                        para.Inlines.Add(new Run { Text = $"[{ToRoman(i + 1)}] ", FontSize = 20, FontWeight = Windows.UI.Text.FontWeights.Bold, FontFamily = new FontFamily(FONTFAMILY) });
+                    }
+
+                    if (poses[i].pos != "품사 없음")
+                    {
+                        para.Inlines.Add(new Run { Text = $"「{poses[i].pos}」", FontSize = 20, FontWeight = Windows.UI.Text.FontWeights.Bold, FontFamily = new FontFamily(FONTFAMILY) });
+                        rtb.Blocks.Add(para);
+                    }
+
+                    //예외
+                    if (poses[i].patterns == null)
+                       continue;
+
+                    //문형 정보와 하위 항목
+                    List<PatternItem> patterns = poses[i].patterns;
+
+                    for (int j = 0; j < patterns.Count; j++)
+                    {
+                        Paragraph para2 = new Paragraph();
+                        para2.Margin = new Thickness(20, 30, 0, 20);
+
+                        // 문형 번호
+                        if (1 < patterns.Count)
+                        {
+                            para2.Inlines.Add(new Run { Text = $"({j + 1}) ", FontSize = 18, FontFamily = new FontFamily(FONTFAMILY), FontWeight = Windows.UI.Text.FontWeights.Bold });
+                        }
+
+                        for (int k = 0; k < patterns[j].pattern.Count; k++)
+                            para2.Inlines.Add(new Run { Text = $"【{patterns[j].pattern[k]}】", FontSize = 18, FontFamily = new FontFamily(FONTFAMILY) });
+                        //문형 적용 문법 정보
+                        if (patterns[j].grammar != null)
+                            para2.Inlines.Add(new Run { Text = $" (({patterns[j].grammar}))", FontSize = 18, FontFamily = new FontFamily(FONTFAMILY) });
+
+                        if (patterns.Count != 1 || patterns[j].pattern.Count > 0 || patterns[j].grammar != null)
+                            rtb.Blocks.Add(para2);
+
+                        //예외
+                        if (patterns[j].definitions == null)
+                            continue;
+
+                        //정의
+                        List<DefinitionItem> definitions = patterns[j].definitions;
+                        for (int k = 0; k < definitions.Count; k++)
+                        {
+                            List<string> OutputList = new List<string>();
+
+                            //cat 전문 분야
+                            if (patterns[j].definitions[k].cat != null)
+                                OutputList.Add("&FOS015" + $"『{patterns[j].definitions[k].cat}』 ");
+
+                            //sense_pattern_info 정의 문형
+                            if (patterns[j].definitions[k].sense_pattern_info != null)
+                                OutputList.Add("&FOS015" + $"【{patterns[j].definitions[k].sense_pattern_info}】 ");
+
+                            //sense_grammar 정의에 참고하는 말
+                            if (patterns[j].definitions[k].sense_grammar != null)
+                                OutputList.Add("&FOS015" + $"(({patterns[j].definitions[k].sense_grammar})) ");
+
+                            //글꼴 크기가 다른 경우
+                            while (true)
+                            {
+                                if (!definitions[k].definition.Contains("<sub style='font-size:"))
+                                {
+                                    OutputList.Add("&FOS015" + definitions[k].definition);
+                                    break;
+                                }
+                                else
+                                {
+                                    if (definitions[k].definition.IndexOf("<sub style='font-size:") != 0)
+                                    {
+                                        OutputList.Add("&FOS015" + definitions[k].definition.Substring(0, definitions[k].definition.IndexOf("<sub style='font-size:")));
+                                        definitions[k].definition = definitions[k].definition.Substring(definitions[k].definition.IndexOf("<sub style='font-size:"));
+                                    }
+                                    string fontsize = definitions[k].definition.Substring(definitions[k].definition.IndexOf("<sub style='font-size:") + 22, definitions[k].definition.IndexOf("px;'>") - definitions[k].definition.IndexOf("<sub style='font-size:") - 22);
+                                    if (fontsize.Length == 1)
+                                        fontsize = "00" + fontsize;
+                                    else if (fontsize.Length == 2)
+                                        fontsize = "0" + fontsize;
+                                    OutputList.Add("&FOS" + fontsize + definitions[k].definition.Substring(definitions[k].definition.IndexOf("<sub style='font-size:") + 29, definitions[k].definition.IndexOf("</sub>") - definitions[k].definition.IndexOf("<sub style='font-size:") - 29));
+                                    definitions[k].definition = definitions[k].definition.Substring(definitions[k].definition.IndexOf("</sub>") + 6);
+                                }
+                            }
+
+                            //이탤릭체
+                            for (int it = 0; it < OutputList.Count; it++)
+                            {
+                                while (true)
+                                {
+                                    if (!OutputList[it].Contains("<I>") && !OutputList[it].Contains("<i>"))
+                                        break;
+                                    else if (OutputList[it].Contains("<I>"))
+                                    {
+                                        string output = OutputList[it];
+                                        OutputList.RemoveAt(it);
+                                        string fontsize = "015"; //default
+                                        if (output.StartsWith("&FOS"))
+                                            fontsize = output.Substring(4, 3);
+                                        OutputList.Insert(it, output.Substring(0, output.IndexOf("<I>")));
+                                        output = output.Substring(output.IndexOf("<I>"));
+                                        OutputList.Insert(it + 1, "&ITA" + fontsize + output.Substring(output.IndexOf("<I>") + 3, output.IndexOf("</I>") - output.IndexOf("<I>") - 3));
+                                        OutputList.Insert(it + 2, "&FOS" + fontsize + output.Substring(output.IndexOf("</I>") + 4));
+                                    }
+                                    else
+                                    {
+                                        string output = OutputList[it];
+                                        OutputList.RemoveAt(it);
+                                        string fontsize = "015"; //default
+                                        if (output.StartsWith("&FOS"))
+                                            fontsize = output.Substring(4, 3);
+                                        OutputList.Insert(it, output.Substring(0, output.IndexOf("<i>")));
+                                        output = output.Substring(output.IndexOf("<i>"));
+                                        OutputList.Insert(it + 1, "&ITA" + fontsize + output.Substring(output.IndexOf("<i>") + 3, output.IndexOf("</i>") - output.IndexOf("<i>") - 3));
+                                        OutputList.Insert(it + 2, "&FOS" + fontsize + output.Substring(output.IndexOf("</i>") + 4));
+                                    }
+                                }
+                            }
+
+                            Paragraph para3 = new Paragraph();
+                            para3.Margin = new Thickness(5, 15, 0, 15);
+
+                            // 의미 번호
+                            if (1 < definitions.Count)
+                            {
+                                para3.Inlines.Add(new Run { Text = $"「{k + 1}」 ", FontSize = 15, Foreground = new SolidColorBrush(Windows.UI.Colors.Red), FontFamily = new FontFamily(FONTFAMILY) });
+                            }
+
+                            for (int o = 0; o < OutputList.Count(); o++)
+                            {
+                                if (OutputList[o].StartsWith("&FOS"))
+                                {
+                                    int fontsize = int.Parse(OutputList[o].Substring(4, 3));
+                                    para3.Inlines.Add(new Run { Text = OutputList[o].Substring(7), FontSize = fontsize, FontFamily = new FontFamily(FONTFAMILY) });
+                                }
+                                else if (OutputList[o].StartsWith("&ITA"))
+                                {
+                                    int fontsize = int.Parse(OutputList[o].Substring(4, 3));
+                                    para3.Inlines.Add(new Run { Text = OutputList[o].Substring(7), FontSize = fontsize, FontStyle = Windows.UI.Text.FontStyle.Italic, FontFamily = new FontFamily(FONTFAMILY) });
+                                }
+                            }
+
+                            rtb.Blocks.Add(para3);
+
+
+                            //예시
+                            if (IsExampleVisible && definitions[k].examples != null)
+                            {
+                                List<string> examples = definitions[k].examples;
+                                for (int l = 0; l < examples.Count; l++)
+                                {
+                                    Paragraph para4 = new Paragraph();
+                                    para4.Margin = new Thickness(30, 4, 0, 4);
+                                    para4.Inlines.Add(new Run { Text = "· " + examples[l], FontSize = 14, FontFamily = new FontFamily(FONTFAMILY) });
+                                    rtb.Blocks.Add(para4);
+                                }
+                            }
+                        }
+                    }
+                }
+
+                //norm 규범 정보
+                if(norms != null)
+                {
+                    Paragraph para = new Paragraph();
+                    para.Margin = new Thickness(0, 30, 0, 0);
+
+                    for (int i = 0; i < norms.Count; i++)
+                    {
+                        para.Inlines.Add(new Run { Text = "※ " + norms[i], FontSize = 14, FontFamily = new FontFamily(FONTFAMILY) });
+                    }
+                    rtb.Blocks.Add(para);
+                }
+
+                return rtb;
+            }
+        }
+
+        //어원 RTB
+        public RichTextBlock originRtb
+        {
+            get
+            {
+                RichTextBlock rtb = new RichTextBlock();
+
+                if (origin != null)
+                {
+                    Paragraph title = new Paragraph();
+                    title.Margin = new Thickness(0, 15, 0, 15);
+                    title.Inlines.Add(new Run { Text = "▹ 어원", FontSize = 18, FontFamily = new FontFamily(FONTFAMILY) });
+                    rtb.Blocks.Add(title);
+
+                    Paragraph para = new Paragraph();
+                    para.Margin = new Thickness(0, 0, 0, 5);
+                    para.Inlines.Add(new Run { Text = origin, FontSize = 15, FontFamily = new FontFamily(FONTFAMILY) });
+                    rtb.Blocks.Add(para);
+                }
+
+                return rtb;
+            }
+        }
+
+
+        //활용과 활용의 발음 클래스
+        public class ConjusItem
+        {
+            public string conjus;
+            public List<string> conju_prons;
+            public List<AbbreviationItem> abbreviations;
+        }
+        //준말과 줄말의 발음 클래스
+        public class AbbreviationItem
+        {
+            public string abbreviations;
+            public List<string> abbreviation_prons;
+        }
+        //관사와 하위 항목 클래스
+        public class PosItem
+        {
+            public string pos;
+            public List<PatternItem> patterns;
+        }
+        //문형 정보와 하위 항목 클래스
+        public class PatternItem
+        {
+            public List<string> pattern;
+            public string grammar;
+            public List<DefinitionItem> definitions;
+        }
+        //정의와 예시 클래스
+        public class DefinitionItem
+        {
+            public string cat;
+            public string sense_pattern_info;
+            public string sense_grammar;
+            public string definition;
+            public List<string> examples;
+        }
+
+        //로마자 변환
+        private string ToRoman(int number)
+        {
+            if ((number < 0) || (number > 3999)) throw new ArgumentOutOfRangeException("insert value between 1 and 3999");
+            if (number < 1) return string.Empty;
+            if (number >= 1000) return "M" + ToRoman(number - 1000);
+            if (number >= 900) return "CM" + ToRoman(number - 900);
+            if (number >= 500) return "D" + ToRoman(number - 500);
+            if (number >= 400) return "CD" + ToRoman(number - 400);
+            if (number >= 100) return "C" + ToRoman(number - 100);
+            if (number >= 90) return "XC" + ToRoman(number - 90);
+            if (number >= 50) return "L" + ToRoman(number - 50);
+            if (number >= 40) return "XL" + ToRoman(number - 40);
+            if (number >= 10) return "X" + ToRoman(number - 10);
+            if (number >= 9) return "IX" + ToRoman(number - 9);
+            if (number >= 5) return "V" + ToRoman(number - 5);
+            if (number >= 4) return "IV" + ToRoman(number - 4);
+            if (number >= 1) return "I" + ToRoman(number - 1);
+            throw new ArgumentOutOfRangeException("something bad happened");
+        }
+    }
+
+    //활용과 활용의 발음 클래스
+    public class Conjus_AbbreviationItem
+    {
+        public string strings { get; set; }
+        public List<string> prons { get; set; }
+    }
+
+    public static class WordDetailItemSample
+    {
+        public static WordDetailItem GetDetails()
+        {
+            WordDetailItem item = new WordDetailItem
+            {
+                target_code = "707",
+                wordname = "단어 이름",
+                sup_no = 1,
+                original_language = "<-원어",
+                prons = new List<string> { "발음1", "발음2" },
+            };
+            item.conjus = new List<WordDetailItem.ConjusItem>
+            {
+                new WordDetailItem.ConjusItem
+                {
+                    conjus = "활용",
+                    conju_prons = new List<string> { "활용 발음", "다른 발음" },
+                    abbreviations = new List<WordDetailItem.AbbreviationItem>
+                    {
+                        new WordDetailItem.AbbreviationItem
+                        {
+                            abbreviations = "준말",
+                            abbreviation_prons = new List<string> { "준말 발음" }
+                        }
+                    }
+        },
+                new WordDetailItem.ConjusItem
+                {
+                    conjus = "활용2",
+                    conju_prons = new List<string> { "활용 발음2" }
+                }
+            };
+            item.poses = new List<WordDetailItem.PosItem>
+            {
+                new WordDetailItem.PosItem
+                {
+                    pos = "관사",
+                    patterns = new List<WordDetailItem.PatternItem>
+                    {
+                        new WordDetailItem.PatternItem
+                        {
+                            pattern = new List<string> { "문형", "문형" },
+                            definitions = new List<WordDetailItem.DefinitionItem>
+                            {
+                                new WordDetailItem.DefinitionItem
+                                {
+                                    definition = "이 단어는 샘플 단어입니다.",
+                                    sense_grammar = "정의 참고하는 말",
+                                    examples = new List<string>
+                                    {
+                                        "이런 예시도 있어요.", "저런 예시도 있어요."
+                                    }
+                                },
+                                new WordDetailItem.DefinitionItem
+                                {
+                                    definition = "이 단어는 샘플 단어입니다.",
+                                    examples = new List<string>
+                                    {
+                                        "이런 예시도 있어요.", "저런 예시도 있어요."
+                                    }
+                                }
+                            }
+                        },
+                        new WordDetailItem.PatternItem
+                        {
+                            pattern = new List<string> { "문형" },
+                            grammar = "문형에 적용되는 문법",
+                            definitions = new List<WordDetailItem.DefinitionItem>
+                            {
+                                new WordDetailItem.DefinitionItem
+                                {
+                                    cat = "분야",
+                                    definition = "이 단어는 샘플 단어입니다.",
+                                    examples = new List<string>
+                                    {
+                                        "이런 예시도 있어요.", "저런 예시도 있어요."
+                                    }
+                                },
+                                new WordDetailItem.DefinitionItem
+                                {
+                                    definition = "이 단어는 샘플 단어입니다.",
+                                    examples = new List<string>
+                                    {
+                                        "이런 예시도 있어요.", "저런 예시도 있어요."
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                new WordDetailItem.PosItem
+                {
+                    pos = "관사",
+                    patterns = new List<WordDetailItem.PatternItem>
+                    {
+                        new WordDetailItem.PatternItem
+                        {
+                            pattern = new List<string> { "문형" },
+                            definitions = new List<WordDetailItem.DefinitionItem>
+                            {
+                                new WordDetailItem.DefinitionItem
+                                {
+                                    definition = "이 단어는 샘플 단어입니다.",
+                                    examples = new List<string>
+                                    {
+                                        "이런 예시도 있어요.", "저런 예시도 있어요."
+                                    }
+                                },
+                                new WordDetailItem.DefinitionItem
+                                {
+                                    definition = "이 단어는 샘플 단어입니다.",
+                                    examples = new List<string>
+                                    {
+                                        "이런 예시도 있어요.", "저런 예시도 있어요."
+                                    }
+                                }
+                            }
+                        },
+                        new WordDetailItem.PatternItem
+                        {
+                            pattern = new List<string> { "문형", "문형" },
+                            definitions = new List<WordDetailItem.DefinitionItem>
+                            {
+                                new WordDetailItem.DefinitionItem
+                                {
+                                    definition = "이 단어는 샘플 단어입니다.",
+                                    examples = new List<string>
+                                    {
+                                        "이런 예시도 있어요.", "저런 예시도 있어요."
+                                    }
+                                },
+                                new WordDetailItem.DefinitionItem
+                                {
+                                    definition = "이 단어는 샘플 단어입니다.",
+                                    examples = new List<string>
+                                    {
+                                        "이런 예시도 있어요.", "저런 예시도 있어요."
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            };
+            return item;
+        }
+    }
+}

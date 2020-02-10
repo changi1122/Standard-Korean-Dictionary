@@ -339,10 +339,7 @@
                 </Setter.Value>
             </Setter>
         </Style>
-        <Style x:Key="ToolBarButtonStyle" TargetType="Button">
-            <Setter Property="Margin" Value="5,0,5,0"/>
-            <Setter Property="Background" Value="{StaticResource ApplicationPageBackgroundThemeBrush}"/>
-        </Style>
+        <CollectionViewSource x:Name="WordSource" Source="{x:Bind wordDetail}"/>
     </Page.Resources>
 
     <Grid x:Name="BasicGrid" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" SizeChanged="BasicGrid_SizeChanged">
@@ -395,9 +392,21 @@
             </Grid>
         </Grid>
         <Grid x:Name="DetailGrid" HorizontalAlignment="Stretch" Margin="321,40,0,0" VerticalAlignment="Stretch" Visibility="Collapsed" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-            <ListView x:Name="ListviewWordDetail" SelectionMode="None" Visibility="Visible" Margin="20,20,20,20">
-
-            </ListView>
+            <ScrollViewer x:Name="WordDetailViewer" Visibility="Collapsed" Margin="20,20,20,20">
+                <StackPanel x:Name="WordDetailSP" DataContext="{Binding Source={StaticResource WordSource}}">
+                    <ContentPresenter Content="{Binding wordnameRtb}"/>
+                    <StackPanel Margin="0,10,0,0">
+                        <ContentPresenter Content="{Binding pronsSp}" Margin="0,4,0,4"/>
+                        <ContentPresenter Content="{Binding conjusSp}" Margin="0,4,0,4"/>
+                    </StackPanel>
+                    <Rectangle Fill="WhiteSmoke" Margin="0,13,0,15" Height="3"/>
+                    <ContentPresenter Content="{Binding ToolBarSp}"/>
+                    <ContentPresenter Content="{Binding detailRtb}"/>
+                    <Rectangle Visibility="{Binding IsOriginVisible}" Fill="WhiteSmoke" Margin="0,23,0,15" Height="3"/>
+                    <ContentPresenter Content="{Binding originRtb}" Visibility="{Binding IsOriginVisible}"/>
+                    <StackPanel Height="60"/>
+                </StackPanel>
+            </ScrollViewer>
             <ProgressBar x:Name="DetailProgressBar" IsIndeterminate="True" ShowPaused="False" ShowError="False" VerticalAlignment="Top" Visibility="Collapsed" Margin="0,0,0,0"/>
         </Grid>
     </Grid>

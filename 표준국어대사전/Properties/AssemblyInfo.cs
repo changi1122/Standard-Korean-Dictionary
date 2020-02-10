@@ -10,7 +10,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Studio1122")]
 [assembly: AssemblyProduct("표준국어대사전")]
-[assembly: AssemblyCopyright("Copyright © 2017-2019 Studio1122")]
+[assembly: AssemblyCopyright("Copyright © 2017-2020 Studio1122")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
