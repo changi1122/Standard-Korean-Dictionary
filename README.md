@@ -7,4 +7,4 @@ This repo contains Universal Windows Platform (UWP) App that can connect to the 
 This app uses Open API of Standard Korean Language Dictionary to fetch and parse xml files that contain search results or word definitions, and display them appropriately.
 
 ## Universal Windows Platform development
-Universal Windows Platform App project uses C# and requires Visual Studio 2017 or higher and the Windows Software Development Kit (SDK) version 16299 for Windows 10.
+Universal Windows Platform App project uses C# and requires Visual Studio 2017 or higher and the Windows Software Development Kit (SDK) version 17134 for Windows 10.
