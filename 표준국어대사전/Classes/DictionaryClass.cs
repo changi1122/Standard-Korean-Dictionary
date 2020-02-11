@@ -104,7 +104,7 @@ namespace 표준국어대사전.Classes
             if (xDoc.Root.Element("item").Element("word_info").Element("original_language_info") != null)
             {
                 IEnumerable<XElement> original_languages = xDoc.Descendants("original_language");
-                for (int i = 0; i < original_languages.Count(); ++i)
+                for (int i = 0; i < original_languages.Count(); i++)
                     wordDetail.original_language += (string)original_languages.ElementAt(i);
             }
 
@@ -114,7 +114,7 @@ namespace 표준국어대사전.Classes
                 IEnumerable<XElement> pronunciations = xDoc.Descendants("pronunciation");
                 IEnumerable<XElement> filter_prons = pronunciations.Where(p => p.Parent.Parent.Name == "word_info");
                 wordDetail.prons = new List<string>();
-                for (int i = 0; i < filter_prons.Count(); ++i)
+                for (int i = 0; i < filter_prons.Count(); i++)
                 {
                     wordDetail.prons.Add((string)filter_prons.ElementAt(i));
                 }
@@ -126,20 +126,20 @@ namespace 표준국어대사전.Classes
                 IEnumerable<XElement> conju_infos = xDoc.Descendants("conju_info");
 
                 wordDetail.conjus = new List<WordDetailItem.ConjusItem>();
-                for (int i = 0; i < conju_infos.Count(); ++i)
+                for (int i = 0; i < conju_infos.Count(); i++)
                 {
                     string conjusTemp = (string)conju_infos.ElementAt(i).Descendants("conjugation").ElementAt(0);
                     wordDetail.conjus.Add(new WordDetailItem.ConjusItem { conjus = conjusTemp });
                     if (conju_infos.ElementAt(i).Descendants("conjugation_info").Descendants("pronunciation") != null)
                     {
-                        wordDetail.conjus[i].conju_prons = new List<string>();
-                        wordDetail.conjus[i].conju_prons.Add("");
                         IEnumerable<XElement> _conju_prons = conju_infos.ElementAt(i).Descendants("conjugation_info").Descendants("pronunciation");
-                        for (int j = 0; j < _conju_prons.Count(); ++j)
+                        
+                        wordDetail.conjus[i].conju_prons = new List<string>();
+                        for (int j = 0; j < _conju_prons.Count(); j++)
                         {
+                            wordDetail.conjus[i].conju_prons.Add("");
+
                             wordDetail.conjus[i].conju_prons[j] += (string)_conju_prons.ElementAt(j);
-                            if (_conju_prons.Count() - j != 1)
-                                wordDetail.conjus[i].conju_prons[j] += " / ";
                         }
                     }
 
@@ -171,7 +171,6 @@ namespace 표준국어대사전.Classes
                     }
                 }
             }
-
 
             //관사와 하위 항목
             if (xDoc.Root.Element("item").Element("word_info").Element("pos_info") != null)
@@ -262,7 +261,7 @@ namespace 표준국어대사전.Classes
                     IEnumerable<XElement> norms = xDoc.Root.Element("item").Element("word_info").Descendants("norm_info");
 
                     wordDetail.norms = new List<string>();
-                    for (int i = 0; i < norms.Count(); ++i)
+                    for (int i = 0; i < norms.Count(); i++)
                     {
                         wordDetail.norms.Add((string)norms.ElementAt(i).Descendants("desc").ElementAt(0));
                     }
@@ -277,6 +276,29 @@ namespace 표준국어대사전.Classes
 
                     wordDetail.origin = origin;
                     wordDetail.IsOriginExist = true;
+                }
+
+                //관용구 속담
+                if (xDoc.Root.Element("item").Element("word_info").Element("relation_info") != null)
+                {
+                    IEnumerable<XElement> relations = xDoc.Root.Element("item").Element("word_info").Descendants("relation_info");
+
+                    wordDetail.relations = new List<WordDetailItem.RelationItem>();
+                    for (int i = 0; i < relations.Count(); i++)
+                    {
+                        string wordTemp = (string)relations.ElementAt(i).Descendants("word").ElementAt(0);
+                        string typeTemp = (string)relations.ElementAt(i).Descendants("type").ElementAt(0);
+                        string target_codeTemp = (string)relations.ElementAt(i).Descendants("link_target_code").ElementAt(0);
+
+                        ERelationType EtypeTemp = ERelationType.idiom;
+                        if (typeTemp == "관용구")
+                            EtypeTemp = ERelationType.idiom;
+                        else if (typeTemp == "속담")
+                            EtypeTemp = ERelationType.proverb;
+
+                        wordDetail.relations.Add(new WordDetailItem.RelationItem { word = wordTemp, type = EtypeTemp, target_code = target_codeTemp });
+                    }
+                    wordDetail.IsRelationExist = true;
                 }
 
             }

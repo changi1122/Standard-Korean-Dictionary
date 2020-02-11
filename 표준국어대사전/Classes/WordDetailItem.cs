@@ -55,6 +55,7 @@ namespace 표준국어대사전.Classes
 
             RaisePropertyChanged("detailRtb");
             RaisePropertyChanged("IsOriginVisible");
+            RaisePropertyChanged("IsRelationVisible");
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -72,6 +73,13 @@ namespace 표준국어대사전.Classes
         public Visibility IsOriginVisible
         {
             get { return (IsOriginExist && IsExampleVisible) ? Visibility.Visible : Visibility.Collapsed; }
+        }
+
+        //관용구 속담 문단 표시 여부
+        public bool IsRelationExist = false;
+        public Visibility IsRelationVisible
+        {
+            get { return (IsRelationExist && IsExampleVisible) ? Visibility.Visible : Visibility.Collapsed; }
         }
 
         public WordDetailItem()
@@ -105,6 +113,9 @@ namespace 표준국어대사전.Classes
         //어원
         public string origin;
 
+        //관용구 속담
+        public List<RelationItem> relations;
+
         //단어명 RTB
         public RichTextBlock wordnameRtb
         {
@@ -132,7 +143,7 @@ namespace 표준국어대사전.Classes
                 StackPanel sp = new StackPanel { Orientation = Orientation.Horizontal };
 
                 //null 예외
-                if (prons.Count == 0)
+                if (prons == null || prons.Count == 0)
                     return sp;
 
                 string text = "";
@@ -400,7 +411,7 @@ namespace 표준국어대사전.Classes
                 if (origin != null)
                 {
                     Paragraph title = new Paragraph();
-                    title.Margin = new Thickness(0, 15, 0, 15);
+                    title.Margin = new Thickness(0, 15, 0, 25);
                     title.Inlines.Add(new Run { Text = "▹ 어원", FontSize = 18, FontFamily = new FontFamily(FONTFAMILY) });
                     rtb.Blocks.Add(title);
 
@@ -408,6 +419,41 @@ namespace 표준국어대사전.Classes
                     para.Margin = new Thickness(0, 0, 0, 5);
                     para.Inlines.Add(new Run { Text = origin, FontSize = 15, FontFamily = new FontFamily(FONTFAMILY) });
                     rtb.Blocks.Add(para);
+                }
+
+                return rtb;
+            }
+        }
+
+        //관용구 속담 RTB
+        public RichTextBlock relationRtb
+        {
+            get
+            {
+                RichTextBlock rtb = new RichTextBlock();
+
+                if (relations != null)
+                {
+                    Paragraph title = new Paragraph();
+                    title.Margin = new Thickness(0, 15, 0, 25);
+                    title.Inlines.Add(new Run { Text = "▹ 관용구/속담", FontSize = 18, FontFamily = new FontFamily(FONTFAMILY) });
+                    rtb.Blocks.Add(title);
+
+                    for (int i = 0; i < relations.Count; i++)
+                    {
+                        Paragraph para = new Paragraph();
+                        para.Margin = new Thickness(0, 15, 0, 15);
+
+                        string type = "";
+                        if (relations[i].type == ERelationType.idiom)
+                            type = "관용구";
+                        else if (relations[i].type == ERelationType.proverb)
+                            type = "속담";
+
+                        para.Inlines.Add(new Run { Text = $"[{type}] ", FontSize = 15, FontFamily = new FontFamily(FONTFAMILY), Foreground = new SolidColorBrush(Windows.UI.Colors.Blue) });
+                        para.Inlines.Add(new Run { Text = relations[i].word, FontSize = 15, FontFamily = new FontFamily(FONTFAMILY) });
+                        rtb.Blocks.Add(para);
+                    }
                 }
 
                 return rtb;
@@ -450,6 +496,14 @@ namespace 표준국어대사전.Classes
             public string definition;
             public List<string> examples;
         }
+        //관용구 속담 클래스
+        public class RelationItem
+        {
+            public string word;
+            public ERelationType type;
+            public string target_code;
+        }
+
 
         //로마자 변환
         private string ToRoman(int number)
@@ -472,6 +526,9 @@ namespace 표준국어대사전.Classes
             throw new ArgumentOutOfRangeException("something bad happened");
         }
     }
+
+    //관용구 속담 구분 열거형
+    public enum ERelationType { idiom, proverb };
 
     //활용과 활용의 발음 클래스
     public class Conjus_AbbreviationItem
