@@ -49,8 +49,6 @@ namespace 표준국어대사전.Pages
             wordDetail = new ObservableCollection<WordDetailItem>();
             wordDetail.Add(new WordDetailItem());
             //wordDetail.Add(WordDetailItemSample.GetDetails());
-
-            return;
         }
 
         private static bool IsInternetConnected()
@@ -112,11 +110,18 @@ namespace 표준국어대사전.Pages
 
             //항목 클릭시 동작
 
+            if (BasicGrid.ActualWidth < 686)
+            {
+                DetailGrid.Visibility = Visibility.Visible;
+                Separator.Visibility = Visibility.Visible;
+                BtnMasterDetail.Visibility = Visibility.Visible;
+            }
+
             //뜻풀이 감추기
             WordDetailViewer.Visibility = Visibility.Collapsed;
 
             DictionaryClass dc = new DictionaryClass(DetailProgressBar);
-            WordDetailItem wd = await dc.GetWordDetail(clickedItem.target_code.ToString(), clickedItem.word, clickedItem.sup_no, true);
+            WordDetailItem wd = await dc.GetWordDetail(clickedItem.target_code.ToString(), clickedItem.word, clickedItem.sup_no);
             if (wd != null)
             {
                 wordDetail[0] = wd;
@@ -124,13 +129,6 @@ namespace 표준국어대사전.Pages
 
             //뜻풀이 보이기
             WordDetailViewer.Visibility = Visibility.Visible;
-
-            if (BasicGrid.ActualWidth < 686)
-            {
-                Separator.Visibility = Visibility.Visible;
-                BtnMasterDetail.Visibility = Visibility.Visible;
-                DetailGrid.Visibility = Visibility.Visible;
-            }
         }
 
         private async void SearchBox_QuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
@@ -265,10 +263,10 @@ namespace 표준국어대사전.Pages
             //반응형
             if (BasicGrid.ActualWidth >= 686)
             {
-                MasterGrid.Margin = new Thickness(0, 48, 0, 0);
+                MasterGrid.Margin = new Thickness(0, 40, 0, 0);
                 MasterGrid.Width = MASTERGRID_WIDTH;
                 MasterGrid.HorizontalAlignment = HorizontalAlignment.Left;
-                DetailGrid.Margin = new Thickness(MASTERGRID_WIDTH, 48, 0, 0);
+                DetailGrid.Margin = new Thickness(MASTERGRID_WIDTH, 40, 0, 0);
                 DetailGrid.Visibility = Visibility.Visible;
                 if (BasicGrid.FindName("MultiSearchGrid") != null)
                 {
@@ -280,10 +278,10 @@ namespace 표준국어대사전.Pages
 
             else if (BasicGrid.ActualWidth < 686)
             {
-                MasterGrid.Margin = new Thickness(0, 48, 0, 0);
+                MasterGrid.Margin = new Thickness(0, 40, 0, 0);
                 MasterGrid.ClearValue(WidthProperty);
                 MasterGrid.HorizontalAlignment = HorizontalAlignment.Stretch;
-                DetailGrid.Margin = new Thickness(0, 48, 0, 0);
+                DetailGrid.Margin = new Thickness(0, 40, 0, 0);
                 DetailGrid.Visibility = Visibility.Collapsed;
                 if (BasicGrid.FindName("MultiSearchGrid") != null)
                 {

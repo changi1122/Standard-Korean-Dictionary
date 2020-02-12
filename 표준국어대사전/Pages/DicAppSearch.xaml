@@ -391,7 +391,7 @@
                 <Controls:ConMemo MinHeight="300" Margin="0,40,0,0"/>
             </Grid>
         </Grid>
-        <Grid x:Name="DetailGrid" HorizontalAlignment="Stretch" Margin="321,40,0,0" VerticalAlignment="Stretch" Visibility="Collapsed" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        <Grid x:Name="DetailGrid" HorizontalAlignment="Stretch" Margin="321,40,0,0" VerticalAlignment="Stretch" Visibility="Visible" Background="{StaticResource ApplicationPageBackgroundThemeBrush}">
             <ScrollViewer x:Name="WordDetailViewer" Visibility="Collapsed" Margin="20,20,20,20">
                 <StackPanel x:Name="WordDetailSP" DataContext="{Binding Source={StaticResource WordSource}}">
                     <ContentPresenter Content="{Binding wordnameRtb}"/>

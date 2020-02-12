@@ -30,7 +30,7 @@ namespace 표준국어대사전.Classes
             API_KEY = DataStorageClass.GetSetting<string>(DataStorageClass.APIKey);
         }
 
-        public async Task<WordDetailItem> GetWordDetail(string target_code, string wordname, int sup_no, bool showExampleItem)
+        public async Task<WordDetailItem> GetWordDetail(string target_code, string wordname, int sup_no)
         {
             DetailProgressBar.Visibility = Visibility.Visible;
 
@@ -45,7 +45,7 @@ namespace 표준국어대사전.Classes
             }
 
             WordDetailItem wordDetail = new WordDetailItem();
-            wordDetail = ParseWordDetail(responseBody, target_code, wordname, sup_no, showExampleItem);
+            wordDetail = ParseWordDetail(responseBody, target_code, wordname, sup_no);
 
             DetailProgressBar.Visibility = Visibility.Collapsed;
             return wordDetail;
@@ -72,7 +72,7 @@ namespace 표준국어대사전.Classes
             }
         }
 
-        private WordDetailItem ParseWordDetail(string responseBody, string target_code, string wordname, int sup_no, bool showExampleItem)
+        private WordDetailItem ParseWordDetail(string responseBody, string target_code, string wordname, int sup_no)
         {
             WordDetailItem wordDetail = new WordDetailItem();
 
@@ -96,7 +96,13 @@ namespace 표준국어대사전.Classes
 
             //target_code 단어 명, 어깨 번호
             wordDetail.target_code = target_code;
-            wordDetail.wordname = wordname;
+
+            //단어 명 예외 (ConWordDetail)
+            if (wordname != null)
+                wordDetail.wordname = wordname;
+            else
+                if (xDoc.Root.Element("item").Element("word_info").Element("word") != null)
+                    wordDetail.wordname = (string)xDoc.Root.Element("item").Element("word_info").Descendants("word").ElementAt(0);
             wordDetail.sup_no = sup_no;
 
             //원어

@@ -124,7 +124,8 @@ namespace 표준국어대사전.Classes
                 RichTextBlock rtb = new RichTextBlock();
 
                 Paragraph para = new Paragraph();
-                para.Inlines.Add(new Run { Text = wordname, FontSize = 32, FontFamily = new FontFamily(FONTFAMILY) });
+                if (wordname != null)
+                    para.Inlines.Add(new Run { Text = wordname, FontSize = 32, FontFamily = new FontFamily(FONTFAMILY) });
                 if (sup_no != 0)
                     para.Inlines.Add(new Run { Text = sup_no.ToString(), FontSize = 18, FontFamily = new FontFamily(FONTFAMILY) });
                 if (original_language != "")
@@ -430,7 +431,7 @@ namespace 표준국어대사전.Classes
         {
             get
             {
-                RichTextBlock rtb = new RichTextBlock();
+                RichTextBlock rtb = new RichTextBlock { HorizontalAlignment = HorizontalAlignment.Left };
 
                 if (relations != null)
                 {
@@ -451,7 +452,11 @@ namespace 표준국어대사전.Classes
                             type = "속담";
 
                         para.Inlines.Add(new Run { Text = $"[{type}] ", FontSize = 15, FontFamily = new FontFamily(FONTFAMILY), Foreground = new SolidColorBrush(Windows.UI.Colors.Blue) });
-                        para.Inlines.Add(new Run { Text = relations[i].word, FontSize = 15, FontFamily = new FontFamily(FONTFAMILY) });
+                        Hyperlink link = new Hyperlink();
+                        link.Inlines.Add(new Run { Text = relations[i].word, FontSize = 15, FontFamily = new FontFamily(FONTFAMILY) });
+                        link.Inlines.Add(new Run { FontFamily = new FontFamily(relations[i].target_code) });
+                        link.Click += Hyperlink_Click;
+                        para.Inlines.Add(link);
                         rtb.Blocks.Add(para);
                     }
                 }
@@ -504,6 +509,28 @@ namespace 표준국어대사전.Classes
             public string target_code;
         }
 
+        private void Hyperlink_Click(Hyperlink sender, HyperlinkClickEventArgs args)
+        {
+            Hyperlink hyperlink = sender as Hyperlink;
+            if (hyperlink.FindName("DetailGrid") != null)
+            {
+                Grid DetailGrid = hyperlink.FindName("DetailGrid") as Grid;
+
+                if (DetailGrid.FindName("HyperViewer") == null)
+                {
+                    ConWordDetail HyperViewer = new ConWordDetail();
+                    HyperViewer.Name = "HyperViewer";
+                    HyperViewer.Load_WordDetail(hyperlink.Inlines[1].FontFamily.Source);
+
+                    DetailGrid.Children.Add(HyperViewer);
+                }
+                else
+                {
+                    ConWordDetail HyperViewer = DetailGrid.FindName("HyperViewer") as ConWordDetail;
+                    HyperViewer.Load_WordDetail(hyperlink.Inlines[1].FontFamily.Source);
+                }
+            }
+        }
 
         //로마자 변환
         private string ToRoman(int number)
