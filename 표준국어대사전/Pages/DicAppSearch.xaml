@@ -401,6 +401,7 @@
                     </StackPanel>
                     <Rectangle Fill="WhiteSmoke" Margin="0,13,0,15" Height="3"/>
                     <ContentPresenter Content="{Binding ToolBarSp}"/>
+                    <StackPanel Height="10"/>
                     <ContentPresenter Content="{Binding detailRtb}"/>
                     <Rectangle Visibility="{Binding IsOriginVisible}" Fill="WhiteSmoke" Margin="0,23,0,15" Height="3"/>
                     <ContentPresenter Content="{Binding originRtb}" Visibility="{Binding IsOriginVisible}"/>

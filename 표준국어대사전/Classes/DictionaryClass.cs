@@ -250,48 +250,10 @@ namespace 표준국어대사전.Classes
 
                                             List<string> link_targets = new List<string>();
                                             List<string> link_texts = new List<string>();
-                                            
-                                            while(definition_original.Contains("‘") && definition_original.Contains("’"))
-                                            {
-                                                string link_parse = definition_original.Substring(definition_original.IndexOf("‘") + 1, definition_original.IndexOf("’") - definition_original.IndexOf("‘") - 1);
-                                                definition_original = definition_original.Remove(definition_original.IndexOf("‘"), definition_original.IndexOf("’") - definition_original.IndexOf("‘") + 1);
 
-                                                string tag = "sense_no";
-                                                if (link_parse.Contains("<word_no>"))
-                                                    tag = "word_no";
-
-                                                string link_target = link_parse.Substring(link_parse.IndexOf($"<{tag}>") + tag.Length + 2, link_parse.IndexOf($"</{tag}>") - link_parse.IndexOf($"<{tag}>") - tag.Length - 2);
-                                                string link_text = link_parse.Remove(link_parse.IndexOf($"<{tag}>"), link_parse.IndexOf($"</{tag}>") + tag.Length + 3 - link_parse.IndexOf($"<{tag}>"));
-
-                                                link_targets.Add(link_target);
-                                                link_texts.Add(link_text);
-                                            }
-
-                                            string definitionTemp = wordDetail.poses[i].patterns[j].definitions[k].definition;
-                                            for (int hl = 0; hl < link_targets.Count; hl++)
-                                            {
-                                                int lastIndex = 0;
-                                                while(definitionTemp.IndexOf("‘", lastIndex) != -1)
-                                                {
-                                                    string parse_origin = definitionTemp.Substring(definitionTemp.IndexOf("‘", lastIndex) + 1, definitionTemp.IndexOf("’", lastIndex) - definitionTemp.IndexOf("‘", lastIndex) - 1);
-                                                    lastIndex = definitionTemp.IndexOf("’", lastIndex) + 1;
-
-                                                    if (link_texts[hl] == parse_origin.Replace(" ", ""))
-                                                    {
-                                                        definitionTemp = definitionTemp.Replace(parse_origin, $"<link target=\"{link_targets[hl]}\">{parse_origin}</link>");
-                                                    }
-                                                }
-                                            }
-                                            wordDetail.poses[i].patterns[j].definitions[k].definition = definitionTemp;
-
-                                            link_targets.Clear();
-                                            link_texts.Clear();
-
-                                            while(definition_original.Contains("<word_no>") || definition_original.Contains("<sense_no>"))
+                                            while(definition_original.Contains("<word_no>"))
                                             {
                                                 string tag = "word_no";
-                                                if (definition_original.Contains("<sense_no>") && (!definition_original.Contains("<word_no>") || definition_original.IndexOf("<word_no>") > definition_original.IndexOf("<sense_no>")))
-                                                    tag = "sense_no";
 
                                                 string link_target = definition_original.Substring(definition_original.IndexOf($"<{tag}>") + tag.Length + 2, definition_original.IndexOf($"</{tag}>") - definition_original.IndexOf($"<{tag}>") - tag.Length - 2);
                                                 string link_text = "";

@@ -14,7 +14,7 @@
         <CollectionViewSource x:Name="WordSource" Source="{x:Bind wordDetail}"/>
     </UserControl.Resources>
 
-    <Grid Background="{StaticResource ApplicationPageBackgroundThemeBrush}" BorderBrush="{StaticResource BarColor}" BorderThickness="1">
+    <Grid x:Name="ConWordDetailGrid" Background="{StaticResource ApplicationPageBackgroundThemeBrush}" BorderBrush="{StaticResource BarColor}" BorderThickness="1">
         <Rectangle Fill="{StaticResource BarColor}" Margin="-1,-1,-1,0" VerticalAlignment="Top" Height="40"/>
         <Button x:Name="BtnClose" Content="" Background="Transparent" Foreground="Black" Width="40" Height="40" Margin="0, -1, -1, 0" HorizontalAlignment="Right" VerticalAlignment="Top" FontSize="20" FontFamily="Segoe MDL2 Assets" Click="BtnClose_Click"/>
         <ScrollViewer x:Name="WordDetailViewer" Margin="20,60,20,20">
@@ -26,6 +26,7 @@
                 </StackPanel>
                 <Rectangle Fill="WhiteSmoke" Margin="0,13,0,15" Height="3"/>
                 <ContentPresenter Content="{Binding ToolBarSp}"/>
+                <StackPanel Height="10"/>
                 <ContentPresenter Content="{Binding detailRtb}"/>
                 <Rectangle Visibility="{Binding IsOriginVisible}" Fill="WhiteSmoke" Margin="0,23,0,15" Height="3"/>
                 <ContentPresenter Content="{Binding originRtb}" Visibility="{Binding IsOriginVisible}"/>

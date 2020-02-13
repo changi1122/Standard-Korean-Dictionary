@@ -309,6 +309,26 @@ namespace 표준국어대사전.Classes
                                 }
                             }
 
+                            //하이퍼텍스트
+                            for (int ht = 0; ht < OutputList.Count; ht++)
+                            {
+                                while (OutputList[ht].Contains("<link") && OutputList[ht].Contains("</link>"))
+                                {
+                                    string output = OutputList[ht];
+                                    OutputList.RemoveAt(ht);
+
+                                    string fontsize = "015"; //default
+                                    if (output.StartsWith("&FOS"))
+                                        fontsize = output.Substring(4, 3);
+                                    string target = output.Substring(output.IndexOf("\"", output.IndexOf("<link")) + 1, output.IndexOf("\"", output.IndexOf("\"") + 1) - output.IndexOf("\"", output.IndexOf("<link")) - 1);
+                                    string text = output.Substring(output.IndexOf(">", output.IndexOf("<link")) + 1, output.IndexOf("</link>") - output.IndexOf(">", output.IndexOf("<link")) - 1);
+
+                                    OutputList.Insert(ht, output.Substring(0, output.IndexOf("<link")));
+                                    OutputList.Insert(ht + 1, "&HLK" + fontsize + $"<{target}>" + text);
+                                    OutputList.Insert(ht + 2, "&FOS" + fontsize + output.Substring(output.IndexOf("</link>") + 7));
+                                }
+                            }
+
                             //이탤릭체
                             for (int it = 0; it < OutputList.Count; it++)
                             {
@@ -363,6 +383,16 @@ namespace 표준국어대사전.Classes
                                 {
                                     int fontsize = int.Parse(OutputList[o].Substring(4, 3));
                                     para3.Inlines.Add(new Run { Text = OutputList[o].Substring(7), FontSize = fontsize, FontStyle = Windows.UI.Text.FontStyle.Italic, FontFamily = new FontFamily(FONTFAMILY) });
+                                }
+                                else if (OutputList[o].StartsWith("&HLK"))
+                                {
+                                    int fontsize = int.Parse(OutputList[o].Substring(4, 3));
+
+                                    Hyperlink link = new Hyperlink();
+                                    link.Inlines.Add(new Run { Text = OutputList[o].Substring(OutputList[o].IndexOf(">") + 1), FontSize = fontsize, FontFamily = new FontFamily(FONTFAMILY) });
+                                    link.Inlines.Add(new Run { FontFamily = new FontFamily(OutputList[o].Substring(OutputList[o].IndexOf("<") + 1, OutputList[o].IndexOf(">") - OutputList[o].IndexOf("<") - 1)) });
+                                    link.Click += Hyperlink_Click;
+                                    para3.Inlines.Add(link);
                                 }
                             }
 
@@ -524,11 +554,12 @@ namespace 표준국어대사전.Classes
 
                     DetailGrid.Children.Add(HyperViewer);
                 }
-                else
-                {
-                    ConWordDetail HyperViewer = DetailGrid.FindName("HyperViewer") as ConWordDetail;
-                    HyperViewer.Load_WordDetail(hyperlink.Inlines[1].FontFamily.Source);
-                }
+            }
+            else if (hyperlink.FindName("ConWordDetailGrid") != null)
+            {
+                Grid ConWordDetailGrid = hyperlink.FindName("ConWordDetailGrid") as Grid;
+                ConWordDetail HyperViewer = ConWordDetailGrid.Parent as ConWordDetail;
+                HyperViewer.Load_WordDetail(hyperlink.Inlines[1].FontFamily.Source);
             }
         }
 
