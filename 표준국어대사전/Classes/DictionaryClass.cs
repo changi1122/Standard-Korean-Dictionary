@@ -239,7 +239,82 @@ namespace 표준국어대사전.Classes
                                         wordDetail.poses[i].patterns[j].definitions[k].sense_grammar = (string)sense_infos.ElementAt(k).Element("sense_grammar_info").Descendants("grammar").ElementAt(0);
 
                                     //정의
-                                    wordDetail.poses[i].patterns[j].definitions[k].definition = (string)sense_infos.ElementAt(k).Descendants("definition").ElementAt(0);
+                                    if (sense_infos.ElementAt(k).Element("definition") != null)
+                                    {
+                                        wordDetail.poses[i].patterns[j].definitions[k].definition = (string)sense_infos.ElementAt(k).Descendants("definition").ElementAt(0);
+
+                                        //하이퍼링크
+                                        if (sense_infos.ElementAt(k).Element("definition_original") != null)
+                                        {
+                                            string definition_original = (string)sense_infos.ElementAt(k).Descendants("definition_original").ElementAt(0);
+
+                                            List<string> link_targets = new List<string>();
+                                            List<string> link_texts = new List<string>();
+                                            
+                                            while(definition_original.Contains("‘") && definition_original.Contains("’"))
+                                            {
+                                                string link_parse = definition_original.Substring(definition_original.IndexOf("‘") + 1, definition_original.IndexOf("’") - definition_original.IndexOf("‘") - 1);
+                                                definition_original = definition_original.Remove(definition_original.IndexOf("‘"), definition_original.IndexOf("’") - definition_original.IndexOf("‘") + 1);
+
+                                                string tag = "sense_no";
+                                                if (link_parse.Contains("<word_no>"))
+                                                    tag = "word_no";
+
+                                                string link_target = link_parse.Substring(link_parse.IndexOf($"<{tag}>") + tag.Length + 2, link_parse.IndexOf($"</{tag}>") - link_parse.IndexOf($"<{tag}>") - tag.Length - 2);
+                                                string link_text = link_parse.Remove(link_parse.IndexOf($"<{tag}>"), link_parse.IndexOf($"</{tag}>") + tag.Length + 3 - link_parse.IndexOf($"<{tag}>"));
+
+                                                link_targets.Add(link_target);
+                                                link_texts.Add(link_text);
+                                            }
+
+                                            string definitionTemp = wordDetail.poses[i].patterns[j].definitions[k].definition;
+                                            for (int hl = 0; hl < link_targets.Count; hl++)
+                                            {
+                                                int lastIndex = 0;
+                                                while(definitionTemp.IndexOf("‘", lastIndex) != -1)
+                                                {
+                                                    string parse_origin = definitionTemp.Substring(definitionTemp.IndexOf("‘", lastIndex) + 1, definitionTemp.IndexOf("’", lastIndex) - definitionTemp.IndexOf("‘", lastIndex) - 1);
+                                                    lastIndex = definitionTemp.IndexOf("’", lastIndex) + 1;
+
+                                                    if (link_texts[hl] == parse_origin.Replace(" ", ""))
+                                                    {
+                                                        definitionTemp = definitionTemp.Replace(parse_origin, $"<link target=\"{link_targets[hl]}\">{parse_origin}</link>");
+                                                    }
+                                                }
+                                            }
+                                            wordDetail.poses[i].patterns[j].definitions[k].definition = definitionTemp;
+
+                                            link_targets.Clear();
+                                            link_texts.Clear();
+
+                                            while(definition_original.Contains("<word_no>") || definition_original.Contains("<sense_no>"))
+                                            {
+                                                string tag = "word_no";
+                                                if (definition_original.Contains("<sense_no>") && (!definition_original.Contains("<word_no>") || definition_original.IndexOf("<word_no>") > definition_original.IndexOf("<sense_no>")))
+                                                    tag = "sense_no";
+
+                                                string link_target = definition_original.Substring(definition_original.IndexOf($"<{tag}>") + tag.Length + 2, definition_original.IndexOf($"</{tag}>") - definition_original.IndexOf($"<{tag}>") - tag.Length - 2);
+                                                string link_text = "";
+                                                definition_original = definition_original.Substring(definition_original.IndexOf($"</{tag}>") + tag.Length + 3);
+                                                if (definition_original.Contains("_"))
+                                                {
+                                                    link_text = definition_original.Substring(0, definition_original.IndexOf("_"));
+                                                    definition_original = definition_original.Substring(definition_original.IndexOf("_") + 1);
+                                                }
+
+                                                if (link_text != "")
+                                                {
+                                                    link_targets.Add(link_target);
+                                                    link_texts.Add(link_text);
+                                                }
+                                            }
+
+                                            for (int hl = 0; hl < link_targets.Count; hl++)
+                                            {
+                                                wordDetail.poses[i].patterns[j].definitions[k].definition = wordDetail.poses[i].patterns[j].definitions[k].definition.Replace(link_texts[hl], $"<link target=\"{link_targets[hl]}\">{link_texts[hl]}</link>");
+                                            }
+                                        }
+                                    }
 
                                     //예시
                                     if (sense_infos.ElementAt(k).Element("example_info") != null)
