@@ -8,3 +8,6 @@ This app uses Open API of Standard Korean Language Dictionary to fetch and parse
 
 ## Universal Windows Platform development
 Universal Windows Platform App project uses C# and requires Visual Studio 2017 or higher and the Windows Software Development Kit (SDK) version 17134 for Windows 10.
+
+## Sorry
+Sorry for dirty code.
