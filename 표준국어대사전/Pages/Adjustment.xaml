@@ -26,10 +26,19 @@
                     </ListViewItem>
                     <ListViewItem>
                         <StackPanel>
-                            <TextBlock Text="2019년 3분기 수정 내용 공개 (2019. 11. 18.)" TextWrapping="Wrap" Margin="0,10,0,0"/>
+                            <TextBlock Text="2019년 3/4분기 수정 내용 공개 (2019. 11. 18.)" TextWrapping="Wrap" Margin="0,10,0,0"/>
                             <StackPanel Margin="20,10,0,10" Orientation="Horizontal">
                                 <Button x:Name="BtnENotice20193" x:Uid="ADJ_BtnMSEdge" Content="Microsoft Edge에서 보기" Click="BtnENotice20193_Click"/>
                                 <Button x:Name="BtnDNotice20193" x:Uid="ADJ_BtnDefaultbrowser" Content="기본 브라우저에서 보기" Margin="10,0,0,0" Click="BtnDNotice20193_Click"/>
+                            </StackPanel>
+                        </StackPanel>
+                    </ListViewItem>
+                    <ListViewItem>
+                        <StackPanel>
+                            <TextBlock Text="2019년 4/4분기 수정 내용 공개 (2020. 02. 14.)" TextWrapping="Wrap" Margin="0,10,0,0"/>
+                            <StackPanel Margin="20,10,0,10" Orientation="Horizontal">
+                                <Button x:Name="BtnENotice20194" x:Uid="ADJ_BtnMSEdge" Content="Microsoft Edge에서 보기" Click="BtnENotice20194_Click"/>
+                                <Button x:Name="BtnDNotice20194" x:Uid="ADJ_BtnDefaultbrowser" Content="기본 브라우저에서 보기" Margin="10,0,0,0" Click="BtnDNotice20194_Click"/>
                             </StackPanel>
                         </StackPanel>
                     </ListViewItem>
