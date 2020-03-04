@@ -314,8 +314,10 @@ namespace 표준국어대사전.Classes
                 if (xDoc.Root.Element("item").Element("word_info").Element("origin") != null)
                 {
                     string origin = (string)xDoc.Root.Element("item").Element("word_info").Descendants("origin").ElementAt(0);
-                    if (origin.IndexOf("<equ>&#x21BC;</equ>") != -1)
+                    if (origin.Contains("<equ>&#x21BC;</equ>"))
                         origin = origin.Replace("<equ>&#x21BC;</equ>", "↼");
+                    if (origin.Contains("**＊**"))
+                        origin = origin.Replace("**＊**", "＊");
 
                     wordDetail.origin = origin;
                     wordDetail.IsOriginExist = true;

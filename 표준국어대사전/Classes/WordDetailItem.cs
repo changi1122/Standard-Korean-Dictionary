@@ -366,7 +366,7 @@ namespace 표준국어대사전.Classes
                             Paragraph para3 = new Paragraph();
                             para3.Margin = new Thickness(5, 15, 0, 15);
 
-                            // 의미 번호
+                            //의미 번호
                             if (1 < definitions.Count)
                             {
                                 para3.Inlines.Add(new Run { Text = $"「{k + 1}」 ", FontSize = 15, Foreground = new SolidColorBrush(Windows.UI.Colors.Red), FontFamily = new FontFamily(FONTFAMILY) });
