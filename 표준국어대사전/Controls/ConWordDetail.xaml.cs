@@ -31,12 +31,12 @@ namespace 표준국어대사전.Controls
             wordDetail.Add(new WordDetailItem());
         }
 
-        public async void Load_WordDetail(string target_code)
+        public async void Load_WordDetail(string target_code, int sup_no)
         {
             WordDetailSP.Visibility = Visibility.Collapsed;
 
             DictionaryClass dc = new DictionaryClass(DetailProgressBar);
-            WordDetailItem wd = await dc.GetWordDetail(target_code, null, 0);
+            WordDetailItem wd = await dc.GetWordDetail(target_code, null, sup_no);
             if (wd != null)
                 wordDetail[0] = wd;
 

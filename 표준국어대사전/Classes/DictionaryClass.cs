@@ -292,6 +292,39 @@ namespace 표준국어대사전.Classes
                                             wordDetail.poses[i].patterns[j].definitions[k].examples.Add(example);
                                         }
                                     }
+
+                                    //단어 관계
+                                    if(sense_infos.ElementAt(k).Element("lexical_info") != null)
+                                    {
+                                        IEnumerable<XElement> lexical_infos = sense_infos.ElementAt(k).Descendants("lexical_info");
+
+                                        wordDetail.poses[i].patterns[j].definitions[k].lexicals = new List<WordDetailItem.LexicalItem>();
+                                        for (int l = 0; l < lexical_infos.Count(); l++)
+                                        {
+                                            WordDetailItem.LexicalItem lexical = new WordDetailItem.LexicalItem();
+                                            if (lexical_infos.ElementAt(l).Element("type") != null)
+                                                lexical.type = (string)lexical_infos.ElementAt(l).Descendants("type").ElementAt(0);
+                                            if (lexical_infos.ElementAt(l).Element("word") != null)
+                                                lexical.word = (string)lexical_infos.ElementAt(l).Descendants("word").ElementAt(0);
+                                            if (lexical_infos.ElementAt(l).Element("link") != null)
+                                            {
+                                                string link = (string)lexical_infos.ElementAt(l).Descendants("link").ElementAt(0);
+                                                if (link.Contains("word_no="))
+                                                {
+                                                    if (link.IndexOf("&", link.IndexOf("word_no=") + 8) != -1)
+                                                        lexical.target_code = link.Substring(link.IndexOf("word_no=") + 8, link.IndexOf("&", link.IndexOf("word_no=") + 8) - link.IndexOf("word_no=") - 8);
+                                                    else
+                                                        lexical.target_code = link.Substring(link.IndexOf("word_no=") + 8);
+                                                }
+                                            }
+                                            wordDetail.poses[i].patterns[j].definitions[k].lexicals.Add(lexical);
+                                        }
+                                        //type에 따라 분류
+                                        wordDetail.poses[i].patterns[j].definitions[k].lexicals.Sort((a, b) =>
+                                        {
+                                            return String.Compare(a.type, b.type);
+                                        });
+                                    }
                                 }
                             }
                         }
