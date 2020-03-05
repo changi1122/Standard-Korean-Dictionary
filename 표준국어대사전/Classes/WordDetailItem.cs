@@ -470,9 +470,9 @@ namespace 표준국어대사전.Classes
                                         para3.Inlines.Add(link);
                                     }
                                 }
+                                para3.Inlines.Add(new Run { Text = "." });
                             }
 
-                            para3.Inlines.Add(new Run { Text = "." });
                             rtb.Blocks.Add(para3);
 
 
