@@ -396,8 +396,9 @@
                 <StackPanel x:Name="WordDetailSP" DataContext="{Binding Source={StaticResource WordSource}}">
                     <ContentPresenter Content="{Binding wordnameRtb}"/>
                     <StackPanel Margin="0,10,0,0">
-                        <ContentPresenter Content="{Binding pronsSp}" Margin="0,4,0,4"/>
-                        <ContentPresenter Content="{Binding conjusSp}" Margin="0,4,0,4"/>
+                        <ContentPresenter Content="{Binding pronsSp}"/>
+                        <ContentPresenter Content="{Binding conjusSp}"/>
+                        <ContentPresenter Content="{Binding lexicalsRtb}"/>
                     </StackPanel>
                     <Rectangle Fill="WhiteSmoke" Margin="0,13,0,15" Height="3"/>
                     <ContentPresenter Content="{Binding ToolBarSp}"/>

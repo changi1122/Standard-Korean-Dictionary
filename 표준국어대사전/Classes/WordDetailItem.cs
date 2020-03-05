@@ -106,6 +106,8 @@ namespace 표준국어대사전.Classes
         //활용
         public List<ConjusItem> conjus;
 
+        //단어 관계
+        public List<LexicalItem> lexicals;
 
         //관사와 하위 항목
         public List<PosItem> poses;
@@ -142,11 +144,11 @@ namespace 표준국어대사전.Classes
         {
             get
             {
-                StackPanel sp = new StackPanel { Orientation = Orientation.Horizontal };
+                StackPanel sp = new StackPanel { Orientation = Orientation.Horizontal, Margin = new Thickness(0, 4, 0, 4) };
 
                 //null 예외
                 if (prons == null || prons.Count == 0)
-                    return sp;
+                    return null;
 
                 string text = "";
                 for (int i = 0; i < prons.Count(); ++i)
@@ -169,11 +171,11 @@ namespace 표준국어대사전.Classes
         {
             get
             {
-                StackPanel sp = new StackPanel { Orientation = Orientation.Horizontal };
+                StackPanel sp = new StackPanel { Orientation = Orientation.Horizontal, Margin = new Thickness(0, 4, 0, 4) };
 
                 //null 예외
                 if (conjus == null)
-                    return sp;
+                    return null;
 
                 TextBlock title = new TextBlock { Text = "활용", Margin = new Thickness(0, 0, 10, 0), FontSize = 17, FontWeight = Windows.UI.Text.FontWeights.Bold, FontFamily = new FontFamily(FONTFAMILY) };
                 sp.Children.Add(title);
@@ -204,6 +206,57 @@ namespace 표준국어대사전.Classes
                 }
 
                 return sp;
+            }
+        }
+
+        //단어 관계 RTB
+        public RichTextBlock lexicalsRtb
+        {
+            get
+            {
+                RichTextBlock rtb = new RichTextBlock { Margin = new Thickness(0, 4, 0, 4) };
+
+                //null 예외
+                if (lexicals == null || lexicals.Count == 0)
+                    return null;
+
+                List<Paragraph> paras = new List<Paragraph>();
+                for (int i = 0; i < lexicals.Count; i++)
+                {
+                    if (i != 0 && lexicals[i - 1].type == lexicals[i].type)
+                    {
+                        paras[paras.Count - 1].Inlines.Add(new Run { Text = ", ", FontSize = 16, FontFamily = new FontFamily(FONTFAMILY) });
+
+                        Hyperlink link = new Hyperlink();
+                        link.Inlines.Add(new Run { Text = lexicals[i].word, FontSize = 16, FontFamily = new FontFamily(FONTFAMILY) });
+                        link.Inlines.Add(new Run { FontFamily = new FontFamily(lexicals[i].target_code) });
+                        link.Click += Hyperlink_Click;
+                        paras[paras.Count - 1].Inlines.Add(link);
+                    }
+                    else //첫 단어
+                    {
+                        Paragraph para = new Paragraph();
+                        para.Margin = new Thickness(0, 0, 0, 4);
+
+                        para.Inlines.Add(new Run { Text = $"「{lexicals[i].type}」 ", FontSize = 17, FontFamily = new FontFamily(FONTFAMILY), FontWeight = Windows.UI.Text.FontWeights.Bold });
+
+                        Hyperlink link = new Hyperlink();
+                        link.Inlines.Add(new Run { Text = lexicals[i].word, FontSize = 16, FontFamily = new FontFamily(FONTFAMILY) });
+                        link.Inlines.Add(new Run { FontFamily = new FontFamily(lexicals[i].target_code) });
+                        link.Click += Hyperlink_Click;
+                        para.Inlines.Add(link);
+
+                        paras.Add(para);
+                    }
+                }
+
+                for (int i = 0; i < paras.Count; i++)
+                {
+                    paras[i].Inlines.Add(new Run { Text = " " });
+                    rtb.Blocks.Add(paras[i]);
+                }
+
+                return rtb;
             }
         }
 

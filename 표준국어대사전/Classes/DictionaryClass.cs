@@ -178,6 +178,37 @@ namespace 표준국어대사전.Classes
                 }
             }
 
+            //단어 관계
+            if (xDoc.Root.Element("item").Element("word_info").Element("lexical_info") != null)
+            {
+                IEnumerable<XElement> lexical_infos = xDoc.Root.Element("item").Element("word_info").Elements("lexical_info");
+
+                wordDetail.lexicals = new List<WordDetailItem.LexicalItem>();
+                for (int i = 0; i < lexical_infos.Count(); i++)
+                {
+                    WordDetailItem.LexicalItem lexical = new WordDetailItem.LexicalItem();
+                    if (lexical_infos.ElementAt(i).Element("type") != null)
+                        lexical.type = (string)lexical_infos.ElementAt(i).Element("type");
+                    if (lexical_infos.ElementAt(i).Element("word") != null)
+                        lexical.word = (string)lexical_infos.ElementAt(i).Element("word");
+                    if (lexical_infos.ElementAt(i).Element("link") != null)
+                    {
+                        string link = (string)lexical_infos.ElementAt(i).Element("link");
+                        if (link.Contains("word_no="))
+                        {
+                            if (link.IndexOf("&", link.IndexOf("word_no=") + 8) != -1)
+                                lexical.target_code = link.Substring(link.IndexOf("word_no=") + 8, link.IndexOf("&", link.IndexOf("word_no=") + 8) - link.IndexOf("word_no=") - 8);
+                            else
+                                lexical.target_code = link.Substring(link.IndexOf("word_no=") + 8);
+                        }
+                    }
+                    wordDetail.lexicals.Add(lexical);
+                }
+                wordDetail.lexicals.Sort((a, b) => {
+                    return String.Compare(a.type, b.type);
+                });
+            }
+
             //관사와 하위 항목
             if (xDoc.Root.Element("item").Element("word_info").Element("pos_info") != null)
             {
