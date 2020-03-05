@@ -30,7 +30,7 @@ namespace 표준국어대사전.Classes
             API_KEY = DataStorageClass.GetSetting<string>(DataStorageClass.APIKey);
         }
 
-        public async Task<WordDetailItem> GetWordDetail(string target_code, string wordname, int sup_no, bool showExampleItem)
+        public async Task<WordDetailItem> GetWordDetail(string target_code, string wordname, int sup_no)
         {
             DetailProgressBar.Visibility = Visibility.Visible;
 
@@ -45,7 +45,7 @@ namespace 표준국어대사전.Classes
             }
 
             WordDetailItem wordDetail = new WordDetailItem();
-            wordDetail = ParseWordDetail(responseBody, target_code, wordname, sup_no, showExampleItem);
+            wordDetail = ParseWordDetail(responseBody, target_code, wordname, sup_no);
 
             DetailProgressBar.Visibility = Visibility.Collapsed;
             return wordDetail;
@@ -72,7 +72,7 @@ namespace 표준국어대사전.Classes
             }
         }
 
-        private WordDetailItem ParseWordDetail(string responseBody, string target_code, string wordname, int sup_no, bool showExampleItem)
+        private WordDetailItem ParseWordDetail(string responseBody, string target_code, string wordname, int sup_no)
         {
             WordDetailItem wordDetail = new WordDetailItem();
 
@@ -96,7 +96,13 @@ namespace 표준국어대사전.Classes
 
             //target_code 단어 명, 어깨 번호
             wordDetail.target_code = target_code;
-            wordDetail.wordname = wordname;
+
+            //단어 명 예외 (ConWordDetail)
+            if (wordname != null)
+                wordDetail.wordname = wordname;
+            else
+                if (xDoc.Root.Element("item").Element("word_info").Element("word") != null)
+                    wordDetail.wordname = (string)xDoc.Root.Element("item").Element("word_info").Descendants("word").ElementAt(0);
             wordDetail.sup_no = sup_no;
 
             //원어
@@ -172,6 +178,37 @@ namespace 표준국어대사전.Classes
                 }
             }
 
+            //단어 관계
+            if (xDoc.Root.Element("item").Element("word_info").Element("lexical_info") != null)
+            {
+                IEnumerable<XElement> lexical_infos = xDoc.Root.Element("item").Element("word_info").Elements("lexical_info");
+
+                wordDetail.lexicals = new List<WordDetailItem.LexicalItem>();
+                for (int i = 0; i < lexical_infos.Count(); i++)
+                {
+                    WordDetailItem.LexicalItem lexical = new WordDetailItem.LexicalItem();
+                    if (lexical_infos.ElementAt(i).Element("type") != null)
+                        lexical.type = (string)lexical_infos.ElementAt(i).Element("type");
+                    if (lexical_infos.ElementAt(i).Element("word") != null)
+                        lexical.word = (string)lexical_infos.ElementAt(i).Element("word");
+                    if (lexical_infos.ElementAt(i).Element("link") != null)
+                    {
+                        string link = (string)lexical_infos.ElementAt(i).Element("link");
+                        if (link.Contains("word_no="))
+                        {
+                            if (link.IndexOf("&", link.IndexOf("word_no=") + 8) != -1)
+                                lexical.target_code = link.Substring(link.IndexOf("word_no=") + 8, link.IndexOf("&", link.IndexOf("word_no=") + 8) - link.IndexOf("word_no=") - 8);
+                            else
+                                lexical.target_code = link.Substring(link.IndexOf("word_no=") + 8);
+                        }
+                    }
+                    wordDetail.lexicals.Add(lexical);
+                }
+                wordDetail.lexicals.Sort((a, b) => {
+                    return String.Compare(a.type, b.type);
+                });
+            }
+
             //관사와 하위 항목
             if (xDoc.Root.Element("item").Element("word_info").Element("pos_info") != null)
             {
@@ -233,7 +270,44 @@ namespace 표준국어대사전.Classes
                                         wordDetail.poses[i].patterns[j].definitions[k].sense_grammar = (string)sense_infos.ElementAt(k).Element("sense_grammar_info").Descendants("grammar").ElementAt(0);
 
                                     //정의
-                                    wordDetail.poses[i].patterns[j].definitions[k].definition = (string)sense_infos.ElementAt(k).Descendants("definition").ElementAt(0);
+                                    if (sense_infos.ElementAt(k).Element("definition") != null)
+                                    {
+                                        wordDetail.poses[i].patterns[j].definitions[k].definition = (string)sense_infos.ElementAt(k).Descendants("definition").ElementAt(0);
+
+                                        //하이퍼링크
+                                        if (sense_infos.ElementAt(k).Element("definition_original") != null)
+                                        {
+                                            string definition_original = (string)sense_infos.ElementAt(k).Descendants("definition_original").ElementAt(0);
+
+                                            List<string> link_targets = new List<string>();
+                                            List<string> link_texts = new List<string>();
+
+                                            while(definition_original.Contains("<word_no>"))
+                                            {
+                                                string tag = "word_no";
+
+                                                string link_target = definition_original.Substring(definition_original.IndexOf($"<{tag}>") + tag.Length + 2, definition_original.IndexOf($"</{tag}>") - definition_original.IndexOf($"<{tag}>") - tag.Length - 2);
+                                                string link_text = "";
+                                                definition_original = definition_original.Substring(definition_original.IndexOf($"</{tag}>") + tag.Length + 3);
+                                                if (definition_original.Contains("_"))
+                                                {
+                                                    link_text = definition_original.Substring(0, definition_original.IndexOf("_"));
+                                                    definition_original = definition_original.Substring(definition_original.IndexOf("_") + 1);
+                                                }
+
+                                                if (link_text != "")
+                                                {
+                                                    link_targets.Add(link_target);
+                                                    link_texts.Add(link_text);
+                                                }
+                                            }
+
+                                            for (int hl = 0; hl < link_targets.Count; hl++)
+                                            {
+                                                wordDetail.poses[i].patterns[j].definitions[k].definition = wordDetail.poses[i].patterns[j].definitions[k].definition.Replace(link_texts[hl], $"<link target=\"{link_targets[hl]}\">{link_texts[hl]}</link>");
+                                            }
+                                        }
+                                    }
 
                                     //예시
                                     if (sense_infos.ElementAt(k).Element("example_info") != null)
@@ -248,6 +322,39 @@ namespace 표준국어대사전.Classes
                                                 example += $" ≪{(string)example_info.ElementAt(l).Descendants("source").ElementAt(0)}≫";
                                             wordDetail.poses[i].patterns[j].definitions[k].examples.Add(example);
                                         }
+                                    }
+
+                                    //단어 관계
+                                    if(sense_infos.ElementAt(k).Element("lexical_info") != null)
+                                    {
+                                        IEnumerable<XElement> lexical_infos = sense_infos.ElementAt(k).Descendants("lexical_info");
+
+                                        wordDetail.poses[i].patterns[j].definitions[k].lexicals = new List<WordDetailItem.LexicalItem>();
+                                        for (int l = 0; l < lexical_infos.Count(); l++)
+                                        {
+                                            WordDetailItem.LexicalItem lexical = new WordDetailItem.LexicalItem();
+                                            if (lexical_infos.ElementAt(l).Element("type") != null)
+                                                lexical.type = (string)lexical_infos.ElementAt(l).Descendants("type").ElementAt(0);
+                                            if (lexical_infos.ElementAt(l).Element("word") != null)
+                                                lexical.word = (string)lexical_infos.ElementAt(l).Descendants("word").ElementAt(0);
+                                            if (lexical_infos.ElementAt(l).Element("link") != null)
+                                            {
+                                                string link = (string)lexical_infos.ElementAt(l).Descendants("link").ElementAt(0);
+                                                if (link.Contains("word_no="))
+                                                {
+                                                    if (link.IndexOf("&", link.IndexOf("word_no=") + 8) != -1)
+                                                        lexical.target_code = link.Substring(link.IndexOf("word_no=") + 8, link.IndexOf("&", link.IndexOf("word_no=") + 8) - link.IndexOf("word_no=") - 8);
+                                                    else
+                                                        lexical.target_code = link.Substring(link.IndexOf("word_no=") + 8);
+                                                }
+                                            }
+                                            wordDetail.poses[i].patterns[j].definitions[k].lexicals.Add(lexical);
+                                        }
+                                        //type에 따라 분류
+                                        wordDetail.poses[i].patterns[j].definitions[k].lexicals.Sort((a, b) =>
+                                        {
+                                            return String.Compare(a.type, b.type);
+                                        });
                                     }
                                 }
                             }
@@ -271,8 +378,10 @@ namespace 표준국어대사전.Classes
                 if (xDoc.Root.Element("item").Element("word_info").Element("origin") != null)
                 {
                     string origin = (string)xDoc.Root.Element("item").Element("word_info").Descendants("origin").ElementAt(0);
-                    if (origin.IndexOf("<equ>&#x21BC;</equ>") != -1)
+                    if (origin.Contains("<equ>&#x21BC;</equ>"))
                         origin = origin.Replace("<equ>&#x21BC;</equ>", "↼");
+                    if (origin.Contains("**＊**"))
+                        origin = origin.Replace("**＊**", "＊");
 
                     wordDetail.origin = origin;
                     wordDetail.IsOriginExist = true;

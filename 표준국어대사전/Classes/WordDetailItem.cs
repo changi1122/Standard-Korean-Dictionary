@@ -8,6 +8,7 @@ using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Documents;
 using Windows.UI.Xaml.Media;
+using System.Text.RegularExpressions;
 using 표준국어대사전.Controls;
 
 namespace 표준국어대사전.Classes
@@ -105,6 +106,8 @@ namespace 표준국어대사전.Classes
         //활용
         public List<ConjusItem> conjus;
 
+        //단어 관계
+        public List<LexicalItem> lexicals;
 
         //관사와 하위 항목
         public List<PosItem> poses;
@@ -124,7 +127,8 @@ namespace 표준국어대사전.Classes
                 RichTextBlock rtb = new RichTextBlock();
 
                 Paragraph para = new Paragraph();
-                para.Inlines.Add(new Run { Text = wordname, FontSize = 32, FontFamily = new FontFamily(FONTFAMILY) });
+                if (wordname != null)
+                    para.Inlines.Add(new Run { Text = wordname, FontSize = 32, FontFamily = new FontFamily(FONTFAMILY) });
                 if (sup_no != 0)
                     para.Inlines.Add(new Run { Text = sup_no.ToString(), FontSize = 18, FontFamily = new FontFamily(FONTFAMILY) });
                 if (original_language != "")
@@ -140,11 +144,11 @@ namespace 표준국어대사전.Classes
         {
             get
             {
-                StackPanel sp = new StackPanel { Orientation = Orientation.Horizontal };
+                StackPanel sp = new StackPanel { Orientation = Orientation.Horizontal, Margin = new Thickness(0, 4, 0, 4) };
 
                 //null 예외
                 if (prons == null || prons.Count == 0)
-                    return sp;
+                    return null;
 
                 string text = "";
                 for (int i = 0; i < prons.Count(); ++i)
@@ -167,11 +171,11 @@ namespace 표준국어대사전.Classes
         {
             get
             {
-                StackPanel sp = new StackPanel { Orientation = Orientation.Horizontal };
+                StackPanel sp = new StackPanel { Orientation = Orientation.Horizontal, Margin = new Thickness(0, 4, 0, 4) };
 
                 //null 예외
                 if (conjus == null)
-                    return sp;
+                    return null;
 
                 TextBlock title = new TextBlock { Text = "활용", Margin = new Thickness(0, 0, 10, 0), FontSize = 17, FontWeight = Windows.UI.Text.FontWeights.Bold, FontFamily = new FontFamily(FONTFAMILY) };
                 sp.Children.Add(title);
@@ -202,6 +206,57 @@ namespace 표준국어대사전.Classes
                 }
 
                 return sp;
+            }
+        }
+
+        //단어 관계 RTB
+        public RichTextBlock lexicalsRtb
+        {
+            get
+            {
+                RichTextBlock rtb = new RichTextBlock { Margin = new Thickness(0, 4, 0, 4) };
+
+                //null 예외
+                if (lexicals == null || lexicals.Count == 0)
+                    return null;
+
+                List<Paragraph> paras = new List<Paragraph>();
+                for (int i = 0; i < lexicals.Count; i++)
+                {
+                    if (i != 0 && lexicals[i - 1].type == lexicals[i].type)
+                    {
+                        paras[paras.Count - 1].Inlines.Add(new Run { Text = ", ", FontSize = 16, FontFamily = new FontFamily(FONTFAMILY) });
+
+                        Hyperlink link = new Hyperlink();
+                        link.Inlines.Add(new Run { Text = lexicals[i].word, FontSize = 16, FontFamily = new FontFamily(FONTFAMILY) });
+                        link.Inlines.Add(new Run { FontFamily = new FontFamily(lexicals[i].target_code) });
+                        link.Click += Hyperlink_Click;
+                        paras[paras.Count - 1].Inlines.Add(link);
+                    }
+                    else //첫 단어
+                    {
+                        Paragraph para = new Paragraph();
+                        para.Margin = new Thickness(0, 0, 0, 4);
+
+                        para.Inlines.Add(new Run { Text = $"「{lexicals[i].type}」 ", FontSize = 17, FontFamily = new FontFamily(FONTFAMILY), FontWeight = Windows.UI.Text.FontWeights.Bold });
+
+                        Hyperlink link = new Hyperlink();
+                        link.Inlines.Add(new Run { Text = lexicals[i].word, FontSize = 16, FontFamily = new FontFamily(FONTFAMILY) });
+                        link.Inlines.Add(new Run { FontFamily = new FontFamily(lexicals[i].target_code) });
+                        link.Click += Hyperlink_Click;
+                        para.Inlines.Add(link);
+
+                        paras.Add(para);
+                    }
+                }
+
+                for (int i = 0; i < paras.Count; i++)
+                {
+                    paras[i].Inlines.Add(new Run { Text = " " });
+                    rtb.Blocks.Add(paras[i]);
+                }
+
+                return rtb;
             }
         }
 
@@ -308,6 +363,26 @@ namespace 표준국어대사전.Classes
                                 }
                             }
 
+                            //하이퍼텍스트
+                            for (int ht = 0; ht < OutputList.Count; ht++)
+                            {
+                                while (OutputList[ht].Contains("<link") && OutputList[ht].Contains("</link>"))
+                                {
+                                    string output = OutputList[ht];
+                                    OutputList.RemoveAt(ht);
+
+                                    string fontsize = "015"; //default
+                                    if (output.StartsWith("&FOS"))
+                                        fontsize = output.Substring(4, 3);
+                                    string target = output.Substring(output.IndexOf("\"", output.IndexOf("<link")) + 1, output.IndexOf("\"", output.IndexOf("\"") + 1) - output.IndexOf("\"", output.IndexOf("<link")) - 1);
+                                    string text = output.Substring(output.IndexOf(">", output.IndexOf("<link")) + 1, output.IndexOf("</link>") - output.IndexOf(">", output.IndexOf("<link")) - 1);
+
+                                    OutputList.Insert(ht, output.Substring(0, output.IndexOf("<link")));
+                                    OutputList.Insert(ht + 1, "&HLK" + fontsize + $"<{target}>" + text);
+                                    OutputList.Insert(ht + 2, "&FOS" + fontsize + output.Substring(output.IndexOf("</link>") + 7));
+                                }
+                            }
+
                             //이탤릭체
                             for (int it = 0; it < OutputList.Count; it++)
                             {
@@ -345,7 +420,7 @@ namespace 표준국어대사전.Classes
                             Paragraph para3 = new Paragraph();
                             para3.Margin = new Thickness(5, 15, 0, 15);
 
-                            // 의미 번호
+                            //의미 번호
                             if (1 < definitions.Count)
                             {
                                 para3.Inlines.Add(new Run { Text = $"「{k + 1}」 ", FontSize = 15, Foreground = new SolidColorBrush(Windows.UI.Colors.Red), FontFamily = new FontFamily(FONTFAMILY) });
@@ -363,8 +438,41 @@ namespace 표준국어대사전.Classes
                                     int fontsize = int.Parse(OutputList[o].Substring(4, 3));
                                     para3.Inlines.Add(new Run { Text = OutputList[o].Substring(7), FontSize = fontsize, FontStyle = Windows.UI.Text.FontStyle.Italic, FontFamily = new FontFamily(FONTFAMILY) });
                                 }
+                                else if (OutputList[o].StartsWith("&HLK"))
+                                {
+                                    int fontsize = int.Parse(OutputList[o].Substring(4, 3));
+
+                                    Hyperlink link = new Hyperlink();
+                                    link.Inlines.Add(new Run { Text = OutputList[o].Substring(OutputList[o].IndexOf(">") + 1), FontSize = fontsize, FontFamily = new FontFamily(FONTFAMILY) });
+                                    link.Inlines.Add(new Run { FontFamily = new FontFamily(OutputList[o].Substring(OutputList[o].IndexOf("<") + 1, OutputList[o].IndexOf(">") - OutputList[o].IndexOf("<") - 1)) });
+                                    link.Click += Hyperlink_Click;
+                                    para3.Inlines.Add(link);
+                                }
                             }
 
+                            //동의어 관계
+                            if (IsExampleVisible && definitions[k].lexicals != null)
+                            {
+                                List<LexicalItem> lexicals = definitions[k].lexicals;
+                                for (int l = 0; l < lexicals.Count; l++)
+                                {
+                                    if(lexicals[l].type == "동의어")
+                                    {
+                                        if(l != 0 && lexicals[l - 1].type == "동의어")
+                                            para3.Inlines.Add(new Run { Text = ", ", FontSize = 15, FontFamily = new FontFamily(FONTFAMILY) });
+                                        else //첫 단어
+                                            para3.Inlines.Add(new Run { Text = " ≒ ", FontSize = 15, FontFamily = new FontFamily(FONTFAMILY) });
+
+                                        Hyperlink link = new Hyperlink();
+                                        link.Inlines.Add(new Run { Text = lexicals[l].word, FontSize = 15, FontFamily = new FontFamily(FONTFAMILY) });
+                                        link.Inlines.Add(new Run { FontFamily = new FontFamily(lexicals[l].target_code) });
+                                        link.Click += Hyperlink_Click;
+                                        para3.Inlines.Add(link);
+                                    }
+                                }
+                            }
+
+                            para3.Inlines.Add(new Run { Text = "." });
                             rtb.Blocks.Add(para3);
 
 
@@ -378,6 +486,51 @@ namespace 표준국어대사전.Classes
                                     para4.Margin = new Thickness(30, 4, 0, 4);
                                     para4.Inlines.Add(new Run { Text = "· " + examples[l], FontSize = 14, FontFamily = new FontFamily(FONTFAMILY) });
                                     rtb.Blocks.Add(para4);
+                                }
+                            }
+
+                            //단어 관계
+                            if(IsExampleVisible && definitions[k].lexicals != null)
+                            {
+                                List<LexicalItem> lexicals = definitions[k].lexicals;
+
+                                List<Paragraph> paras = new List<Paragraph>();
+                                for (int l = 0; l < lexicals.Count; l++)
+                                {
+                                    if (lexicals[l].type == "동의어")
+                                        continue;
+
+                                    if (l != 0 && lexicals[l - 1].type == lexicals[l].type)
+                                    {
+                                        paras[paras.Count - 1].Inlines.Add(new Run { Text = ", ", FontSize = 13, FontFamily = new FontFamily(FONTFAMILY) });
+
+                                        Hyperlink link = new Hyperlink();
+                                        link.Inlines.Add(new Run { Text = lexicals[l].word, FontSize = 13, FontFamily = new FontFamily(FONTFAMILY) });
+                                        link.Inlines.Add(new Run { FontFamily = new FontFamily(lexicals[l].target_code) });
+                                        link.Click += Hyperlink_Click;
+                                        paras[paras.Count - 1].Inlines.Add(link);
+                                    }
+                                    else //첫 단어
+                                    {
+                                        Paragraph para4 = new Paragraph();
+                                        para4.Margin = new Thickness(30, 8, 0, 4);
+
+                                        para4.Inlines.Add(new Run { Text = $"「{lexicals[l].type}」 ", FontSize = 13, FontFamily = new FontFamily(FONTFAMILY) });
+
+                                        Hyperlink link = new Hyperlink();
+                                        link.Inlines.Add(new Run { Text = lexicals[l].word, FontSize = 13, FontFamily = new FontFamily(FONTFAMILY) });
+                                        link.Inlines.Add(new Run { FontFamily = new FontFamily(lexicals[l].target_code) });
+                                        link.Click += Hyperlink_Click;
+                                        para4.Inlines.Add(link);
+
+                                        paras.Add(para4);
+                                    }
+                                }
+                                
+                                for (int l = 0; l < paras.Count; l++)
+                                {
+                                    paras[l].Inlines.Add(new Run { Text = " " });
+                                    rtb.Blocks.Add(paras[l]);
                                 }
                             }
                         }
@@ -430,7 +583,7 @@ namespace 표준국어대사전.Classes
         {
             get
             {
-                RichTextBlock rtb = new RichTextBlock();
+                RichTextBlock rtb = new RichTextBlock { HorizontalAlignment = HorizontalAlignment.Left };
 
                 if (relations != null)
                 {
@@ -451,7 +604,12 @@ namespace 표준국어대사전.Classes
                             type = "속담";
 
                         para.Inlines.Add(new Run { Text = $"[{type}] ", FontSize = 15, FontFamily = new FontFamily(FONTFAMILY), Foreground = new SolidColorBrush(Windows.UI.Colors.Blue) });
-                        para.Inlines.Add(new Run { Text = relations[i].word, FontSize = 15, FontFamily = new FontFamily(FONTFAMILY) });
+                        Hyperlink link = new Hyperlink();
+                        link.Inlines.Add(new Run { Text = relations[i].word, FontSize = 15, FontFamily = new FontFamily(FONTFAMILY) });
+                        link.Inlines.Add(new Run { FontFamily = new FontFamily(relations[i].target_code) });
+                        link.Click += Hyperlink_Click;
+                        para.Inlines.Add(link);
+                        para.Inlines.Add(new Run { Text = " " });
                         rtb.Blocks.Add(para);
                     }
                 }
@@ -495,6 +653,7 @@ namespace 표준국어대사전.Classes
             public string sense_grammar;
             public string definition;
             public List<string> examples;
+            public List<LexicalItem> lexicals;
         }
         //관용구 속담 클래스
         public class RelationItem
@@ -503,7 +662,44 @@ namespace 표준국어대사전.Classes
             public ERelationType type;
             public string target_code;
         }
+        //어휘 관계 클래스
+        public class LexicalItem
+        {
+            public string word;
+            public string type;
+            public string target_code;
+        }
 
+
+        private void Hyperlink_Click(Hyperlink sender, HyperlinkClickEventArgs args)
+        {
+            Hyperlink hyperlink = sender as Hyperlink;
+            if (hyperlink.FindName("DetailGrid") != null)
+            {
+                Grid DetailGrid = hyperlink.FindName("DetailGrid") as Grid;
+
+                if (DetailGrid.FindName("HyperViewer") == null)
+                {
+                    ConWordDetail HyperViewer = new ConWordDetail();
+                    HyperViewer.Name = "HyperViewer";
+                    Run word = hyperlink.Inlines[0] as Run;
+                    int sup_no = 0;
+                    int.TryParse(Regex.Replace(word.Text, "[^0-9.]", ""), out sup_no);
+                    HyperViewer.Load_WordDetail(hyperlink.Inlines[1].FontFamily.Source, sup_no);
+
+                    DetailGrid.Children.Add(HyperViewer);
+                }
+            }
+            else if (hyperlink.FindName("ConWordDetailGrid") != null)
+            {
+                Grid ConWordDetailGrid = hyperlink.FindName("ConWordDetailGrid") as Grid;
+                ConWordDetail HyperViewer = ConWordDetailGrid.Parent as ConWordDetail;
+                Run word = hyperlink.Inlines[0] as Run;
+                int sup_no = 0;
+                int.TryParse(Regex.Replace(word.Text, "[^0-9.]", ""), out sup_no);
+                HyperViewer.Load_WordDetail(hyperlink.Inlines[1].FontFamily.Source, sup_no);
+            }
+        }
 
         //로마자 변환
         private string ToRoman(int number)

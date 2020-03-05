@@ -122,6 +122,9 @@
     <Compile Include="Controls\ConMemo.xaml.cs">
       <DependentUpon>ConMemo.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\ConWordDetail.xaml.cs">
+      <DependentUpon>ConWordDetail.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\PronunciationBlock.cs" />
     <Compile Include="Controls\WordReader.cs" />
     <Compile Include="Main.xaml.cs">
@@ -222,6 +225,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\ConMemo.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\ConWordDetail.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
