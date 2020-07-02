@@ -18,6 +18,7 @@ namespace 표준국어대사전.Classes
         public const string SpellingCheckerAgreement = "#SpellingCheckerAgreement";     //bool
         public const string Language = "#Language";                                     //string
         public const string ColorTheme = "#ColorTheme";                                 //string(Light, Dark, system)
+        public const string MemoData = "#MemoData";                                     //string
 
         //Lab Function
         public const string LabWordReaderEnabled = "#LabWordReaderEnabled";             //bool
@@ -52,6 +53,13 @@ namespace 표준국어대사전.Classes
                 //LabFunction
                 localSettings.Values[LabWordReaderEnabled] = false;
             }
+
+            //2.2.2.2 - 메모 저장
+            if ((int)localSettings.Values[FirstSetup] < 5)
+            {
+                localSettings.Values[FirstSetup] = 5;
+                localSettings.Values[MemoData] = "";
+            }
         }
 
         public static void FirstUpSetUp()
@@ -67,6 +75,7 @@ namespace 표준국어대사전.Classes
             localSettings.Values[SpellingCheckerAgreement] = false;
             localSettings.Values[Language] = "system";
             localSettings.Values[ColorTheme] = "system";
+            localSettings.Values[MemoData] = "";
 
             //LabFunction
             localSettings.Values[LabWordReaderEnabled] = false;
