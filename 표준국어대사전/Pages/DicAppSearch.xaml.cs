@@ -36,7 +36,7 @@ namespace 표준국어대사전.Pages
         private ObservableCollection<SearchResultItem> SearchResults;
         private ObservableCollection<WordDetailItem> wordDetail;
 
-        bool IsWebViewOpen = false;
+        private bool IsWebViewOpen = false;
 
         public DicAppSearch()
         {
@@ -247,15 +247,20 @@ namespace 표준국어대사전.Pages
 
         private void BtnMemo_Click(object sender, RoutedEventArgs e)
         {
-            if (MemoGrid.Visibility == Visibility.Collapsed)
-                MemoGrid.Visibility = Visibility.Visible;
-            else
-                MemoGrid.Visibility = Visibility.Collapsed;
-        }
+            Controls.ConMemo conMemo = MasterGrid.FindName("Memo") as Controls.ConMemo;
 
-        private void BtnMemoClose_Click(object sender, RoutedEventArgs e)
-        {
-            MemoGrid.Visibility = Visibility.Collapsed;
+            if (conMemo != null)
+            {
+                MasterGrid.Children.Remove(conMemo);
+            }
+            else
+            {
+                Controls.ConMemo memo = new Controls.ConMemo();
+                memo.Name = "Memo";
+                memo.VerticalAlignment = VerticalAlignment.Bottom;
+
+                MasterGrid.Children.Add(memo);
+            }
         }
 
         private void BasicGrid_SizeChanged(object sender, SizeChangedEventArgs e)
