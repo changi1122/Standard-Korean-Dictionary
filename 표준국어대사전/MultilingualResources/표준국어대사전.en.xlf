@@ -14,10 +14,6 @@
           <source>일러두기</source>
           <target state="translated">Preface</target>
         </trans-unit>
-        <trans-unit id="DA_BtnMasterDetail.Label" translate="yes" xml:space="preserve">
-          <source>닫기</source>
-          <target state="translated">Close</target>
-        </trans-unit>
         <trans-unit id="DA_BtnMultiSearch.Label" translate="yes" xml:space="preserve">
           <source>다중 검색</source>
           <target state="translated">Multi Search</target>
@@ -185,10 +181,6 @@
         <trans-unit id="Set_DisplayFont.Text" translate="yes" xml:space="preserve">
           <source>표시 글꼴</source>
           <target state="translated">Display Font</target>
-        </trans-unit>
-        <trans-unit id="DA_BtnMasterDetail.ToolTipService.ToolTip" translate="yes" xml:space="preserve">
-          <source>닫기</source>
-          <target state="translated">Close</target>
         </trans-unit>
         <trans-unit id="DA_BtnMemo.ToolTipService.ToolTip" translate="yes" xml:space="preserve">
           <source>메모</source>
@@ -405,6 +397,10 @@
         <trans-unit id="DC_BtnFilter_Meaning" translate="yes" xml:space="preserve">
           <source>뜻</source>
           <target state="translated">Meaning</target>
+        </trans-unit>
+        <trans-unit id="DA_BtnCloseDetail.ToolTipService.ToolTip" translate="yes" xml:space="preserve">
+          <source>닫기</source>
+          <target state="new">닫기</target>
         </trans-unit>
       </group>
     </body>

@@ -113,8 +113,7 @@ namespace 표준국어대사전.Pages
             if (BasicGrid.ActualWidth < 686)
             {
                 DetailGrid.Visibility = Visibility.Visible;
-                Separator.Visibility = Visibility.Visible;
-                BtnMasterDetail.Visibility = Visibility.Visible;
+                BtnCloseDetail.Visibility = Visibility.Visible;
             }
 
             //뜻풀이 감추기
@@ -297,18 +296,16 @@ namespace 표준국어대사전.Pages
             }
 
             //뒤로가기 키 지우기
-            Separator.Visibility = Visibility.Collapsed;
-            BtnMasterDetail.Visibility = Visibility.Collapsed;
+            BtnCloseDetail.Visibility = Visibility.Collapsed;
         }
 
-        private void BtnMasterDetail_Click(object sender, RoutedEventArgs e)
+        private void BtnCloseDetail_Click(object sender, RoutedEventArgs e)
         {
             //뜻풀이 감추기
             WordDetailViewer.Visibility = Visibility.Collapsed;
 
             DetailGrid.Visibility = Visibility.Collapsed;
-            Separator.Visibility = Visibility.Collapsed;
-            BtnMasterDetail.Visibility = Visibility.Collapsed;
+            BtnCloseDetail.Visibility = Visibility.Collapsed;
         }
 
         private void BtnMultiSearch_Click(object sender, RoutedEventArgs e)

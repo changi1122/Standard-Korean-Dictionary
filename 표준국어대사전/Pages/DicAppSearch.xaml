@@ -344,7 +344,7 @@
 
     <Grid x:Name="BasicGrid" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" SizeChanged="BasicGrid_SizeChanged">
 
-        <CommandBar>
+        <CommandBar DefaultLabelPosition="Right">
             <CommandBar.SecondaryCommands>
                 <AppBarButton x:Name="BtnInform" x:Uid="DA_BtnInform" Label="일러두기" Click="BtnInform_Click">
                     <AppBarButton.Icon>
@@ -358,8 +358,6 @@
                 </AppBarButton>
             </CommandBar.SecondaryCommands>
 
-            <AppBarButton x:Name="BtnMasterDetail" x:Uid="DA_BtnMasterDetail" Label="닫기" ToolTipService.ToolTip="닫기" Icon="Clear" Click="BtnMasterDetail_Click" Visibility="Collapsed"/>
-            <AppBarSeparator x:Name="Separator" Visibility="Collapsed"/>
             <AppBarButton x:Name="BtnBack" Label="뒤로" ToolTipService.ToolTip="뒤로" Icon="Back" IsEnabled="False" Visibility="Collapsed"/>
             <AppBarButton x:Name="BtnForward" Label="앞으로" ToolTipService.ToolTip="앞으로" Icon="Forward" IsEnabled="False" Visibility="Collapsed"/>
             <AppBarButton x:Name="BtnMemo" x:Uid="DA_BtnMemo" Label="메모" ToolTipService.ToolTip="메모" Click="BtnMemo_Click" Visibility="Visible">
@@ -373,6 +371,12 @@
                 </AppBarButton.Icon>
             </AppBarButton>
         </CommandBar>
+
+        <AppBarButton x:Name="BtnCloseDetail" x:Uid="DA_BtnCloseDetail" ToolTipService.ToolTip="닫기" Width="40" Height="41" Margin="40,-1,0,0" Click="BtnCloseDetail_Click" Visibility="Collapsed">
+            <AppBarButton.Icon>
+                <FontIcon Glyph="&#xE106;" FontSize="16"/>
+            </AppBarButton.Icon>
+        </AppBarButton>
 
         <Grid x:Name="MasterGrid" Margin="0,40,0,0" HorizontalAlignment="Left" Width="320" BorderThickness="0,0,1,0" BorderBrush="LightGray">
             <ListView ItemContainerStyle="{StaticResource MasterListViewItemContainerStyle}" x:Name="ListviewSearchResult" HorizontalAlignment="Stretch" Margin="0,60,0,0" 
