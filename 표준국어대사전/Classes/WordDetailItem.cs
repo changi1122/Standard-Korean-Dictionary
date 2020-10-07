@@ -16,7 +16,7 @@ namespace 표준국어대사전.Classes
     public class WordDetailItem : INotifyPropertyChanged
     {
         string FONTFAMILY = "/Fonts/NanumBarunGothic-YetHangul.ttf#NanumBarunGothic YetHangul";
-        bool LabWordReaderEnabled = DataStorageClass.GetSetting<bool>(DataStorageClass.LabWordReaderEnabled);
+        bool LabWordReaderEnabled = StorageManager.GetSetting<bool>(StorageManager.LabWordReaderEnabled);
 
         //필터
         public bool IsExampleVisible = true;
@@ -86,7 +86,7 @@ namespace 표준국어대사전.Classes
         public WordDetailItem()
         {
             //글꼴
-            if (DataStorageClass.GetSetting<string>(DataStorageClass.DisplayFont) == "맑은 고딕")
+            if (StorageManager.GetSetting<string>(StorageManager.DisplayFont) == "맑은 고딕")
                 FONTFAMILY = "#Malgun Gothic";
             else
                 FONTFAMILY = "/Fonts/NanumBarunGothic-YetHangul.ttf#NanumBarunGothic YetHangul";

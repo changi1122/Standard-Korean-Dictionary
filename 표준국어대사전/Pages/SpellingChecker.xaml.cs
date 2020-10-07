@@ -58,7 +58,7 @@ namespace 표준국어대사전.Pages
 
         private async void WebViewMain_Loaded(object sender, RoutedEventArgs e)
         {
-            bool value = DataStorageClass.GetSetting<bool>(DataStorageClass.SpellingCheckerAgreement);
+            bool value = StorageManager.GetSetting<bool>(StorageManager.SpellingCheckerAgreement);
 
             if (value == true)
             {
@@ -85,7 +85,7 @@ namespace 표준국어대사전.Pages
 
             if (command.Label == res.GetString("SPC_Agree"))
             {
-                DataStorageClass.SetSetting<bool>(DataStorageClass.SpellingCheckerAgreement, true);
+                StorageManager.SetSetting<bool>(StorageManager.SpellingCheckerAgreement, true);
                 WebViewMain.Navigate(new Uri(SPELLCHECKURL));
                 BtnAgree.Visibility = Visibility.Collapsed;
             }

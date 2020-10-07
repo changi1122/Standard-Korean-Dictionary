@@ -35,10 +35,10 @@ namespace 표준국어대사전.Controls
         {
             WordDetailSP.Visibility = Visibility.Collapsed;
 
-            DictionaryClass dc = new DictionaryClass(DetailProgressBar);
-            WordDetailItem wd = await dc.GetWordDetail(target_code, null, sup_no);
-            if (wd != null)
-                wordDetail[0] = wd;
+            DefinitionParser definitionParser = new DefinitionParser(DetailProgressBar);
+            WordDetailItem definitionItem = await definitionParser.GetWordDetail(target_code, null, sup_no);
+            if (definitionItem != null)
+                wordDetail[0] = definitionItem;
 
             WordDetailSP.Visibility = Visibility.Visible;
         }

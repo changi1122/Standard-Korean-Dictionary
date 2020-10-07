@@ -29,7 +29,7 @@ namespace 표준국어대사전
         public App()
         {
             //앱 색상 테마
-            string theme = 표준국어대사전.Classes.DataStorageClass.GetSetting<string>(표준국어대사전.Classes.DataStorageClass.ColorTheme);
+            string theme = 표준국어대사전.Classes.StorageManager.GetSetting<string>(표준국어대사전.Classes.StorageManager.ColorTheme);
             if (theme != "system")
             {
                 if (theme == "Light")
@@ -40,7 +40,7 @@ namespace 표준국어대사전
 
             this.InitializeComponent();
             this.Suspending += OnSuspending;
-            표준국어대사전.Classes.DataStorageClass.StartUpSetup();
+            표준국어대사전.Classes.StorageManager.StartUpSetup();
         }
 
         /// <summary>
@@ -51,7 +51,7 @@ namespace 표준국어대사전
         protected override void OnLaunched(LaunchActivatedEventArgs e)
         {
             //언어 설정
-            string lang = 표준국어대사전.Classes.DataStorageClass.GetSetting<string>(표준국어대사전.Classes.DataStorageClass.Language);
+            string lang = 표준국어대사전.Classes.StorageManager.GetSetting<string>(표준국어대사전.Classes.StorageManager.Language);
             if (lang == "system")
             {
                 int i;

@@ -113,8 +113,8 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Classes\DataStorageClass.cs" />
-    <Compile Include="Classes\SearchClass.cs" />
+    <Compile Include="Classes\StorageManager.cs" />
+    <Compile Include="Classes\WordFinder.cs" />
     <Compile Include="Classes\WordDetailItem.cs" />
     <Compile Include="Controls\ConMultiSearch.xaml.cs">
       <DependentUpon>ConMultiSearch.xaml</DependentUpon>
@@ -130,7 +130,7 @@
     <Compile Include="Main.xaml.cs">
       <DependentUpon>Main.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Classes\DictionaryClass.cs" />
+    <Compile Include="Classes\DefinitionParser.cs" />
     <Compile Include="Classes\SearchResultItem.cs" />
     <Compile Include="Pages\Adjustment.xaml.cs">
       <DependentUpon>Adjustment.xaml</DependentUpon>

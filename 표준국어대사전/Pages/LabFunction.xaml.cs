@@ -25,8 +25,8 @@ namespace 표준국어대사전.Pages
     {
         public bool LabWordReaderEnabled
         {
-            get { return DataStorageClass.GetSetting<bool>(DataStorageClass.LabWordReaderEnabled); }
-            set { DataStorageClass.SetSetting<bool>(DataStorageClass.LabWordReaderEnabled, value); }
+            get { return StorageManager.GetSetting<bool>(StorageManager.LabWordReaderEnabled); }
+            set { StorageManager.SetSetting<bool>(StorageManager.LabWordReaderEnabled, value); }
         }
 
         public LabFunction()

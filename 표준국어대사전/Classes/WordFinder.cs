@@ -12,7 +12,7 @@ using Windows.UI.Xaml.Controls;
 
 namespace 표준국어대사전.Classes
 {
-    class SearchClass
+    class WordFinder
     {
         string API_KEY;
         const string WORD_SEARCH_URL = "https://stdict.korean.go.kr/api/search.do?&key={0}&type_search=search&method={1}&part=all&start={2}&num={3}&q={4}";
@@ -21,7 +21,7 @@ namespace 표준국어대사전.Classes
         ProgressBar MasterProgressBar;
         TextBlock TextBlockErrorMessage;
 
-        public SearchClass(ObservableCollection<SearchResultItem> searchResultItems, ProgressBar pBar, TextBlock textBlock)
+        public WordFinder(ObservableCollection<SearchResultItem> searchResultItems, ProgressBar pBar, TextBlock textBlock)
         {
             //생성자
             SearchResults = searchResultItems;
@@ -29,7 +29,7 @@ namespace 표준국어대사전.Classes
             TextBlockErrorMessage = textBlock;
 
             //API 키 처리
-            API_KEY = DataStorageClass.GetSetting<string>(DataStorageClass.APIKey);
+            API_KEY = StorageManager.GetSetting<string>(StorageManager.APIKey);
         }
 
         public async void GetSearchResults(int start, int num, string searchText)

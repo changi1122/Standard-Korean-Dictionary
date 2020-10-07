@@ -59,7 +59,7 @@ namespace 표준국어대사전.Controls
 
         private void BtnMemoClose_Click(object sender, RoutedEventArgs e)
         {
-            DataStorageClass.SetSetting(DataStorageClass.MemoData, TextboxMemoBox.Text);
+            StorageManager.SetSetting(StorageManager.MemoData, TextboxMemoBox.Text);
 
             if (this.Parent as Grid != null)
                 (this.Parent as Grid).Children.Remove(this);
@@ -67,7 +67,7 @@ namespace 표준국어대사전.Controls
 
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
-            string MemoData = DataStorageClass.GetSetting<string>(DataStorageClass.MemoData);
+            string MemoData = StorageManager.GetSetting<string>(StorageManager.MemoData);
             if (MemoData != null)
                 TextboxMemoBox.Text = MemoData;
 
@@ -95,7 +95,7 @@ namespace 표준국어대사전.Controls
 
         private void TextboxMemoBox_TextChanged(object sender, TextChangedEventArgs e)
         {
-            DataStorageClass.SetSetting(DataStorageClass.MemoData, TextboxMemoBox.Text);
+            StorageManager.SetSetting(StorageManager.MemoData, TextboxMemoBox.Text);
         }
     }
 }

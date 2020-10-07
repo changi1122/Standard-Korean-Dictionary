@@ -14,20 +14,20 @@ using 표준국어대사전.Controls;
 
 namespace 표준국어대사전.Classes
 {
-    public class DictionaryClass
+    public class DefinitionParser
     {
         const string WORD_DETAIL_URL = "https://stdict.korean.go.kr/api/view.do?&key={0}&method=TARGET_CODE&q={1}";
         string API_KEY;
 
         ProgressBar DetailProgressBar;
 
-        public DictionaryClass(ProgressBar pbar)
+        public DefinitionParser(ProgressBar pbar)
         {
             //생성자
             DetailProgressBar = pbar;
 
             //API 키 처리
-            API_KEY = DataStorageClass.GetSetting<string>(DataStorageClass.APIKey);
+            API_KEY = StorageManager.GetSetting<string>(StorageManager.APIKey);
         }
 
         public async Task<WordDetailItem> GetWordDetail(string target_code, string wordname, int sup_no)

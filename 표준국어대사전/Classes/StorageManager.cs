@@ -7,7 +7,7 @@ using Windows.Storage;
 
 namespace 표준국어대사전.Classes
 {
-    public static class DataStorageClass
+    public static class StorageManager
     {
         public const string FirstSetup = "#FirstSetup";                                 //int
         public const string SearchEngine = "#SearchEngine";                             //string

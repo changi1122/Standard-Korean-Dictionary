@@ -102,8 +102,8 @@ namespace 표준국어대사전.Pages
             if (clickedItem.target_code == -321)
             {
                 //더보기 누를 시 동작
-                SearchClass sc = new SearchClass(SearchResults, MasterProgressBar, TextBlockErrorMessage);
-                sc.GetSearchResults(clickedItem.sup_no + 1, 10, clickedItem.definition);
+                WordFinder wordFinder = new WordFinder(SearchResults, MasterProgressBar, TextBlockErrorMessage);
+                wordFinder.GetSearchResults(clickedItem.sup_no + 1, 10, clickedItem.definition);
                 SearchResults.Remove(clickedItem);
                 return;
             }
@@ -119,11 +119,11 @@ namespace 표준국어대사전.Pages
             //뜻풀이 감추기
             WordDetailViewer.Visibility = Visibility.Collapsed;
 
-            DictionaryClass dc = new DictionaryClass(DetailProgressBar);
-            WordDetailItem wd = await dc.GetWordDetail(clickedItem.target_code.ToString(), clickedItem.word, clickedItem.sup_no);
-            if (wd != null)
+            DefinitionParser definitionParser = new DefinitionParser(DetailProgressBar);
+            WordDetailItem definitionItem = await definitionParser.GetWordDetail(clickedItem.target_code.ToString(), clickedItem.word, clickedItem.sup_no);
+            if (definitionItem != null)
             {
-                wordDetail[0] = wd;
+                wordDetail[0] = definitionItem;
             }
 
             //뜻풀이 보이기
@@ -156,8 +156,8 @@ namespace 표준국어대사전.Pages
             SearchResults.Clear();
             //뜻풀이 감추기
             WordDetailViewer.Visibility = Visibility.Collapsed;
-            SearchClass sc = new SearchClass(SearchResults, MasterProgressBar, TextBlockErrorMessage);
-            sc.GetSearchResults(1, 10, searchText);
+            WordFinder wordFinder = new WordFinder(SearchResults, MasterProgressBar, TextBlockErrorMessage);
+            wordFinder.GetSearchResults(1, 10, searchText);
         }
 
         private void SearchBox_KeyDown(object sender, KeyRoutedEventArgs e)
