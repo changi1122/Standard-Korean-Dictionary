@@ -53,18 +53,19 @@ namespace 표준국어대사전.Pages
         public DicAppSearch()
         {
             this.InitializeComponent();
-            SearchResults = new ObservableCollection<SearchResultItem>();
-            //SearchResults = new ObservableCollection<SearchResultItem>(SampleManager.GetWords());
-
-            NetworkCheck();
-
-            Definitions = new ObservableCollection<WordDetailItem>();
-            Definitions.Add(new WordDetailItem());
-            //Definitions.Add(WordDetailItemSample.GetDetails());
 
             History = new HistoryManager();
+
+            SearchResults = new ObservableCollection<SearchResultItem>(SearchResultStaticPage.GetHomeTab());
+
+            Definitions = new ObservableCollection<WordDetailItem>();
+            Definitions.Add(WordDetailStaticPage.GetHomepage());
+            ListviewSearchResult.SelectedIndex = 0;
+            UpdateControls();
+
+            NetworkCheck();
         }
-        
+
         /// <summary>
         /// 바인딩과 유사하게 필요할 때마다 엘리먼트 속성을 관리
         /// </summary>
@@ -140,6 +141,19 @@ namespace 표준국어대사전.Pages
                 WordFinder wordFinder = new WordFinder(SearchResults, MasterProgressBar, TextBlockErrorMessage);
                 wordFinder.GetSearchResults(clickedItem.sup_no + 1, 10, clickedItem.definition);
                 SearchResults.Remove(clickedItem);
+                return;
+            }
+            else if (clickedItem.target_code == -200)
+            {
+                //시작 누를 시 동작
+                Definitions[0] = WordDetailStaticPage.GetHomepage();
+
+                if (BasicGrid.ActualWidth < 686)
+                {
+                    DetailGrid.Visibility = Visibility.Visible;
+                    BtnCloseDetail.Visibility = Visibility.Visible;
+                }
+                UpdateControls();
                 return;
             }
 

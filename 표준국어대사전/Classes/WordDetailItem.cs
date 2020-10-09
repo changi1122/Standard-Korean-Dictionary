@@ -733,6 +733,46 @@ namespace 표준국어대사전.Classes
         public List<string> prons { get; set; }
     }
 
+    public class WordDetailStaticPage
+    {
+        public static WordDetailItem GetHomepage()
+        {
+            WordDetailItem item = new WordDetailItem
+            {
+                target_code = "-200",
+                wordname = "표준국어대사전",
+                sup_no = 0,
+                original_language = "",
+            };
+            item.poses = new List<WordDetailItem.PosItem>
+            {
+                new WordDetailItem.PosItem
+                {
+                    pos = "품사 없음",
+                    patterns = new List<WordDetailItem.PatternItem>
+                    {
+                        new WordDetailItem.PatternItem
+                        {
+                            pattern = new List<string>(),
+                            definitions = new List<WordDetailItem.DefinitionItem>
+                            {
+                                new WordDetailItem.DefinitionItem
+                                {
+                                    definition = "《표준국어대사전》(標準國語大辭典)은 표준어 규정, 한글 맞춤법 등의 어문 규정을 준수하여 국립국어원에서 발행하는 한국어 사전이다.",
+                                    examples = new List<string>
+                                    {
+                                        "검색창에 단어를 검색하여 모르는 단어를 찾고, 뜻풀이를 확인할 수 있습니다."
+                                    }
+                                },
+                            }
+                        },
+                    }
+                },
+            };
+            return item;
+        }
+    }
+
     public static class WordDetailItemSample
     {
         public static WordDetailItem GetDetails()
@@ -759,7 +799,7 @@ namespace 표준국어대사전.Classes
                             abbreviation_prons = new List<string> { "준말 발음" }
                         }
                     }
-        },
+                },
                 new WordDetailItem.ConjusItem
                 {
                     conjus = "활용2",

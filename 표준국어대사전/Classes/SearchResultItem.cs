@@ -8,6 +8,15 @@ namespace 표준국어대사전.Classes
 {
     public class SearchResultItem
     {
+        public string FONTFAMILY
+        {
+            get 
+            {
+                return (StorageManager.GetSetting<string>(StorageManager.DisplayFont) == "맑은 고딕") ?
+                    "#Malgun Gothic" : "/Fonts/NanumBarunGothic-YetHangul.ttf#NanumBarunGothic YetHangul";
+            }
+        }
+            
         //코드 번호
         public int target_code { get; set; }
         //단어 명
@@ -19,6 +28,16 @@ namespace 표준국어대사전.Classes
         public string display_sup_no { get; set; }
         //간단 뜻풀이
         public string definition { get; set; }
+    }
+
+    public class SearchResultStaticPage
+    {
+        public static List<SearchResultItem> GetHomeTab()
+        {
+            List<SearchResultItem> SearchResults = new List<SearchResultItem>();
+            SearchResults.Add(new SearchResultItem { target_code = -200, word = "[시작]", sup_no = 0, display_sup_no = "", definition = "" });
+            return SearchResults;
+        }
     }
 
     public class SearchResultItemSample

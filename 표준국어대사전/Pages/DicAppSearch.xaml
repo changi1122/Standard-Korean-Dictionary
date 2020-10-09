@@ -16,10 +16,10 @@
         <DataTemplate x:Key="WordListDataTemplate" x:DataType="data:SearchResultItem">
             <StackPanel Height="68" Orientation="Horizontal" HorizontalAlignment="Stretch" Margin="0,0,0,0">
                 <Grid Margin="0,0,0,0">
-                    <RichTextBlock HorizontalAlignment="Left" Margin="10,20,0,0" IsTextSelectionEnabled="False">
+                    <RichTextBlock HorizontalAlignment="Left" Margin="10,24,0,0" IsTextSelectionEnabled="False">
                         <Paragraph>
-                            <Run Text="{x:Bind word}" FontSize="20"/>
-                            <Run Text="{x:Bind display_sup_no}" FontSize="15"/>
+                            <Run Text="{x:Bind word}" FontFamily="{x:Bind FONTFAMILY}" FontSize="20"/>
+                            <Run Text="{x:Bind display_sup_no}" FontFamily="{x:Bind FONTFAMILY}" FontSize="15"/>
                         </Paragraph>
                     </RichTextBlock>
                     <Rectangle VerticalAlignment="Bottom" Height="1" Width="50000" Fill="LightGray" Margin="0,0,0,0"/>
@@ -384,7 +384,8 @@
                       ItemClick="ListviewSearchResult_ItemClick" 
                       IsItemClickEnabled="True"
                       ItemsSource="{x:Bind SearchResults}"
-                      ItemTemplate="{StaticResource WordListDataTemplate}" Padding="0,0,0,80" UseLayoutRounding="False" IsTabStop="True"/>
+                      ItemTemplate="{StaticResource WordListDataTemplate}"
+                      Padding="0,0,0,80" UseLayoutRounding="False" IsTabStop="True"/>
             <AutoSuggestBox Style="{StaticResource SearchBoxStyle}" x:Name="SearchBox" x:Uid="DA_SearchBox" VerticalAlignment="Top" Margin="10,10,10,0" HorizontalAlignment="Stretch" PlaceholderText="검색할 단어를 입력하세요" QueryIcon="Find" QuerySubmitted="SearchBox_QuerySubmitted" KeyDown="SearchBox_KeyDown"/>
             <ProgressBar x:Name="MasterProgressBar" IsIndeterminate="True" ShowPaused="False" ShowError="False" VerticalAlignment="Top" Visibility="Collapsed" Margin="0,0,0,0"/>
             <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
