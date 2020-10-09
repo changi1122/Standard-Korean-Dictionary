@@ -346,6 +346,17 @@
 
         <CommandBar DefaultLabelPosition="Right">
             <CommandBar.SecondaryCommands>
+                <AppBarButton x:Name="BtnMemo" x:Uid="DA_BtnMemo" Label="메모" ToolTipService.ToolTip="메모" Click="BtnMemo_Click" Visibility="Visible">
+                    <AppBarButton.Icon>
+                        <FontIcon Glyph="&#xE70B;"/>
+                    </AppBarButton.Icon>
+                </AppBarButton>
+                <AppBarButton x:Name="BtnMultiSearch" x:Uid="DA_BtnMultiSearch" Label="다중 검색" ToolTipService.ToolTip="다중 검색" Click="BtnMultiSearch_Click">
+                    <AppBarButton.Icon>
+                        <FontIcon Glyph="&#xE177;"/>
+                    </AppBarButton.Icon>
+                </AppBarButton>
+                <AppBarSeparator/>
                 <AppBarButton x:Name="BtnInform" x:Uid="DA_BtnInform" Label="일러두기" Click="BtnInform_Click">
                     <AppBarButton.Icon>
                         <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE946;" />
@@ -358,18 +369,8 @@
                 </AppBarButton>
             </CommandBar.SecondaryCommands>
 
-            <AppBarButton x:Name="BtnBack" Label="뒤로" ToolTipService.ToolTip="뒤로" Icon="Back" IsEnabled="False" Visibility="Collapsed"/>
-            <AppBarButton x:Name="BtnForward" Label="앞으로" ToolTipService.ToolTip="앞으로" Icon="Forward" IsEnabled="False" Visibility="Collapsed"/>
-            <AppBarButton x:Name="BtnMemo" x:Uid="DA_BtnMemo" Label="메모" ToolTipService.ToolTip="메모" Click="BtnMemo_Click" Visibility="Visible">
-                <AppBarButton.Icon>
-                    <FontIcon Glyph="&#xE70B;"/>
-                </AppBarButton.Icon>
-            </AppBarButton>
-            <AppBarButton x:Name="BtnMultiSearch" x:Uid="DA_BtnMultiSearch" Label="다중 검색" ToolTipService.ToolTip="다중 검색" Click="BtnMultiSearch_Click">
-                <AppBarButton.Icon>
-                    <FontIcon Glyph="&#xE177;"/>
-                </AppBarButton.Icon>
-            </AppBarButton>
+            <AppBarButton x:Name="BtnBack" Label="뒤로" ToolTipService.ToolTip="뒤로" Icon="Back" IsEnabled="False" Click="BtnBack_Click"/>
+            <AppBarButton x:Name="BtnForward" Label="앞으로" ToolTipService.ToolTip="앞으로" Icon="Forward" IsEnabled="False" Click="BtnForward_Click"/>
         </CommandBar>
 
         <AppBarButton x:Name="BtnCloseDetail" x:Uid="DA_BtnCloseDetail" ToolTipService.ToolTip="닫기" Width="40" Height="41" Margin="40,-1,0,0" Click="BtnCloseDetail_Click" Visibility="Collapsed">
@@ -380,10 +381,10 @@
 
         <Grid x:Name="MasterGrid" Margin="0,40,0,0" HorizontalAlignment="Left" Width="320" BorderThickness="0,0,1,0" BorderBrush="LightGray">
             <ListView ItemContainerStyle="{StaticResource MasterListViewItemContainerStyle}" x:Name="ListviewSearchResult" HorizontalAlignment="Stretch" Margin="0,60,0,0" 
-                      ItemClick="ListView_ItemClick" 
+                      ItemClick="ListviewSearchResult_ItemClick" 
                       IsItemClickEnabled="True"
                       ItemsSource="{x:Bind SearchResults}"
-                      ItemTemplate="{StaticResource WordListDataTemplate}" Padding="0,0,0,80" UseLayoutRounding="False"/>
+                      ItemTemplate="{StaticResource WordListDataTemplate}" Padding="0,0,0,80" UseLayoutRounding="False" IsTabStop="True"/>
             <AutoSuggestBox Style="{StaticResource SearchBoxStyle}" x:Name="SearchBox" x:Uid="DA_SearchBox" VerticalAlignment="Top" Margin="10,10,10,0" HorizontalAlignment="Stretch" PlaceholderText="검색할 단어를 입력하세요" QueryIcon="Find" QuerySubmitted="SearchBox_QuerySubmitted" KeyDown="SearchBox_KeyDown"/>
             <ProgressBar x:Name="MasterProgressBar" IsIndeterminate="True" ShowPaused="False" ShowError="False" VerticalAlignment="Top" Visibility="Collapsed" Margin="0,0,0,0"/>
             <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
@@ -392,7 +393,7 @@
             </StackPanel>
         </Grid>
         <Grid x:Name="DetailGrid" HorizontalAlignment="Stretch" Margin="321,40,0,0" VerticalAlignment="Stretch" Visibility="Visible" Background="{StaticResource ApplicationPageBackgroundThemeBrush}">
-            <ScrollViewer x:Name="DefinitionViewer" Visibility="Collapsed" Padding="20">
+            <ScrollViewer x:Name="DefinitionViewer" Padding="20" Visibility="Collapsed" IsTabStop="True">
                 <StackPanel x:Name="DefinitionSP" DataContext="{Binding Source={StaticResource WordSource}}">
                     <ContentPresenter Content="{Binding wordnameRtb}"/>
                     <StackPanel Margin="0,10,0,0">

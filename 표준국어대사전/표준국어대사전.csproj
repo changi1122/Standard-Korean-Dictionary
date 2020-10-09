@@ -113,6 +113,8 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Classes\HistoryManager.cs" />
+    <Compile Include="Classes\RecordPoint.cs" />
     <Compile Include="Classes\StorageManager.cs" />
     <Compile Include="Classes\WordFinder.cs" />
     <Compile Include="Classes\WordDetailItem.cs" />

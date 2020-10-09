@@ -41,6 +41,15 @@ namespace 표준국어대사전.Pages
 
         private bool IsWebViewOpen = false;
 
+
+        public Visibility IsDefinitionViewerVisible
+        {
+            get { return (Definitions[0].target_code != null) ? Visibility.Visible : Visibility.Collapsed; }
+        }
+
+        private HistoryManager History;
+
+
         public DicAppSearch()
         {
             this.InitializeComponent();
@@ -52,6 +61,26 @@ namespace 표준국어대사전.Pages
             Definitions = new ObservableCollection<WordDetailItem>();
             Definitions.Add(new WordDetailItem());
             //Definitions.Add(WordDetailItemSample.GetDetails());
+
+            History = new HistoryManager();
+        }
+        
+        /// <summary>
+        /// 바인딩과 유사하게 필요할 때마다 엘리먼트 속성을 관리
+        /// </summary>
+        private void UpdateControls()
+        {
+            BtnBack.IsEnabled = History.CanGoBack;
+            BtnForward.IsEnabled = History.CanGoForward;
+
+            DefinitionViewer.Visibility = IsDefinitionViewerVisible;
+            if (BtnCloseDetail.Visibility == Visibility.Visible && IsDefinitionViewerVisible == Visibility.Collapsed)
+            {
+                Definitions[0] = new WordDetailItem();
+                
+                DetailGrid.Visibility = Visibility.Collapsed;
+                BtnCloseDetail.Visibility = Visibility.Collapsed;
+            }
         }
 
         private static bool IsInternetConnected()
@@ -75,7 +104,7 @@ namespace 표준국어대사전.Pages
                 //검색 결과 Listview 지우기
                 SearchResults.Clear();
                 //뜻풀이 감추기
-                DefinitionViewer.Visibility = Visibility.Collapsed;
+                UpdateControls();
                 var res = Windows.ApplicationModel.Resources.ResourceLoader.GetForCurrentView();
                 TextBlockErrorMessage.Text = res.GetString("ErrorMessageNoInternet");
                 TextBlockErrorMessage.Visibility = Visibility.Visible;
@@ -95,7 +124,10 @@ namespace 표준국어대사전.Pages
             }
         }
 
-        private async void ListView_ItemClick(object sender, ItemClickEventArgs e)
+        /// <summary>
+        /// 검색 결과 리스트뷰의 항목을 클릭시 실행
+        /// </summary>
+        private async void ListviewSearchResult_ItemClick(object sender, ItemClickEventArgs e)
         {
             if (NetworkCheck() == false)
                 return;
@@ -111,16 +143,19 @@ namespace 표준국어대사전.Pages
                 return;
             }
 
-            //항목 클릭시 동작
+            //일반 단어 클릭시 동작
+
+            //되돌리기 위한 기록
+            History.RecordDefinition(SearchBox.Text, Definitions[0], ListviewSearchResult.SelectedIndex);
+            //뜻풀이 감추기
+            Definitions[0] = new WordDetailItem();
+            UpdateControls();
 
             if (BasicGrid.ActualWidth < 686)
             {
                 DetailGrid.Visibility = Visibility.Visible;
                 BtnCloseDetail.Visibility = Visibility.Visible;
             }
-
-            //뜻풀이 감추기
-            DefinitionViewer.Visibility = Visibility.Collapsed;
 
             DefinitionParser definitionParser = new DefinitionParser(DetailProgressBar);
             WordDetailItem definitionItem = await definitionParser.GetWordDetail(clickedItem.target_code.ToString(), clickedItem.word, clickedItem.sup_no);
@@ -130,7 +165,7 @@ namespace 표준국어대사전.Pages
             }
 
             //뜻풀이 보이기
-            DefinitionViewer.Visibility = Visibility.Visible;
+            UpdateControls();
         }
 
         private async void SearchBox_QuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
@@ -155,10 +190,14 @@ namespace 표준국어대사전.Pages
                 return;
             }
 
+            //되돌리기 위한 기록
+            History.RecordAll(SearchBox.Text, SearchResults, Definitions[0], ListviewSearchResult.SelectedIndex);
+            Definitions[0] = new WordDetailItem();
             //검색 결과 Listview 지우기
             SearchResults.Clear();
             //뜻풀이 감추기
-            DefinitionViewer.Visibility = Visibility.Collapsed;
+            UpdateControls();
+
             WordFinder wordFinder = new WordFinder(SearchResults, MasterProgressBar, TextBlockErrorMessage);
             wordFinder.GetSearchResults(1, 10, searchText);
         }
@@ -305,7 +344,8 @@ namespace 표준국어대사전.Pages
         private void BtnCloseDetail_Click(object sender, RoutedEventArgs e)
         {
             //뜻풀이 감추기
-            DefinitionViewer.Visibility = Visibility.Collapsed;
+            Definitions[0] = new WordDetailItem();
+            UpdateControls();
 
             DetailGrid.Visibility = Visibility.Collapsed;
             BtnCloseDetail.Visibility = Visibility.Collapsed;
@@ -367,6 +407,34 @@ namespace 표준국어대사전.Pages
         private void BtnMultiSearchClose_Click(object sender, RoutedEventArgs e)
         {
             BasicGrid.Children.Remove((UIElement)this.FindName("MultiSearchGrid"));
+        }
+
+        private void BtnBack_Click(object sender, RoutedEventArgs e)
+        {
+            string searchText = SearchBox.Text;
+            WordDetailItem definition = Definitions[0];
+            int selectedIndex = ListviewSearchResult.SelectedIndex;
+            History.Undo(ref searchText, ref SearchResults, ref definition, ref selectedIndex);
+
+            SearchBox.Text = searchText;
+            if (definition != null)
+                Definitions[0] = definition;
+            ListviewSearchResult.SelectedIndex = selectedIndex;
+            UpdateControls();
+        }
+
+        private void BtnForward_Click(object sender, RoutedEventArgs e)
+        {
+            string searchText = SearchBox.Text;
+            WordDetailItem definition = Definitions[0];
+            int selectedIndex = ListviewSearchResult.SelectedIndex;
+            History.Redo(ref searchText, ref SearchResults, ref definition, ref selectedIndex);
+
+            SearchBox.Text = searchText;
+            if (definition != null)
+                Definitions[0] = definition;
+            ListviewSearchResult.SelectedIndex = selectedIndex;
+            UpdateControls();
         }
     }
 }
