@@ -120,9 +120,6 @@
   <data name="ADJ_BtnDefaultbrowser.Content" xml:space="preserve">
     <value>기본 브라우저에서 보기</value>
   </data>
-  <data name="ADJ_BtnMSEdge.Content" xml:space="preserve">
-    <value>Microsoft Edge에서 보기</value>
-  </data>
   <data name="ADJ_Pivotitem2014.Header" xml:space="preserve">
     <value>2014년</value>
   </data>

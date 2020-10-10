@@ -45,9 +45,6 @@
   <data name="ADJ_BtnDefaultbrowser.Content" xml:space="preserve">
     <value>View on Default browser</value>
   </data>
-  <data name="ADJ_BtnMSEdge.Content" xml:space="preserve">
-    <value>View on Microsoft Edge</value>
-  </data>
   <data name="ADJ_Pivotitem2014.Header" xml:space="preserve">
     <value>2014</value>
   </data>

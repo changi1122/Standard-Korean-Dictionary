@@ -50,10 +50,6 @@
           <source>기본 브라우저에서 보기</source>
           <target state="translated">View on Default browser</target>
         </trans-unit>
-        <trans-unit id="ADJ_BtnMSEdge.Content" translate="yes" xml:space="preserve">
-          <source>Microsoft Edge에서 보기</source>
-          <target state="translated">View on Microsoft Edge</target>
-        </trans-unit>
         <trans-unit id="ADJ_Pivotitem2014.Header" translate="yes" xml:space="preserve">
           <source>2014년</source>
           <target state="translated">2014</target>
