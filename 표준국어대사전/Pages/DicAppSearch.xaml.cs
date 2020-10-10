@@ -40,7 +40,7 @@ namespace 표준국어대사전.Pages
         private ObservableCollection<WordDetailItem> Definitions;
 
         private bool IsWebViewOpen = false;
-
+        private static bool IsHomepageVisible = true;
 
         public Visibility IsDefinitionViewerVisible
         {
@@ -56,14 +56,29 @@ namespace 표준국어대사전.Pages
 
             History = new HistoryManager();
 
-            SearchResults = new ObservableCollection<SearchResultItem>(SearchResultStaticPage.GetHomeTab());
+            if (IsHomepageVisible)
+            {
+                SearchResults = new ObservableCollection<SearchResultItem>(SearchResultStaticPage.GetHomeTab());
+                Definitions = new ObservableCollection<WordDetailItem>();
+                Definitions.Add(WordDetailStaticPage.GetHomepage());
+                ListviewSearchResult.SelectedIndex = 0;
+                IsHomepageVisible = false;
+            }
+            else
+            {
+                SearchResults = new ObservableCollection<SearchResultItem>();
+                Definitions = new ObservableCollection<WordDetailItem>();
+                Definitions.Add(new WordDetailItem());
+            }
 
-            Definitions = new ObservableCollection<WordDetailItem>();
-            Definitions.Add(WordDetailStaticPage.GetHomepage());
-            ListviewSearchResult.SelectedIndex = 0;
             UpdateControls();
 
             NetworkCheck();
+        }
+
+        private void Page_Loaded(object sender, RoutedEventArgs e)
+        {
+            SearchBox.Focus(FocusState.Programmatic);
         }
 
         /// <summary>
@@ -105,6 +120,7 @@ namespace 표준국어대사전.Pages
                 //검색 결과 Listview 지우기
                 SearchResults.Clear();
                 //뜻풀이 감추기
+                Definitions[0] = new WordDetailItem();
                 UpdateControls();
                 var res = Windows.ApplicationModel.Resources.ResourceLoader.GetForCurrentView();
                 TextBlockErrorMessage.Text = res.GetString("ErrorMessageNoInternet");
@@ -214,6 +230,9 @@ namespace 표준국어대사전.Pages
 
             WordFinder wordFinder = new WordFinder(SearchResults, MasterProgressBar, TextBlockErrorMessage);
             wordFinder.GetSearchResults(1, 10, searchText);
+
+            //최근 검색 기록
+            RecentWordManager.Append(searchText);
         }
 
         private void SearchBox_KeyDown(object sender, KeyRoutedEventArgs e)
@@ -448,6 +467,27 @@ namespace 표준국어대사전.Pages
             if (definition != null)
                 Definitions[0] = definition;
             ListviewSearchResult.SelectedIndex = selectedIndex;
+            UpdateControls();
+        }
+
+        private void BtnHome_Click(object sender, RoutedEventArgs e)
+        {
+            //되돌리기 위한 기록
+            History.RecordAll(SearchBox.Text, SearchResults, Definitions[0], ListviewSearchResult.SelectedIndex);
+            Definitions[0] = new WordDetailItem();
+
+            //검색어 지우기
+            SearchBox.Text = "";
+            //검색 결과 Listview 지우기
+            SearchResults.Clear();
+
+            List<SearchResultItem> homeTab = SearchResultStaticPage.GetHomeTab();
+            foreach(SearchResultItem item in homeTab)
+            {
+                SearchResults.Add(item);
+            }
+            ListviewSearchResult.SelectedIndex = 0;
+            Definitions[0] = WordDetailStaticPage.GetHomepage();
             UpdateControls();
         }
     }

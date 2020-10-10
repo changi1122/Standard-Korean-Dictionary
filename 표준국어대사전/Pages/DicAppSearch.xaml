@@ -7,7 +7,8 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:data="using:표준국어대사전.Classes"
-    mc:Ignorable="d">
+    mc:Ignorable="d"
+    Loaded="Page_Loaded">
 
     <Page.Resources>
         <Style x:Key="SeperatorItem" TargetType="ListViewItem">
@@ -357,6 +358,8 @@
                     </AppBarButton.Icon>
                 </AppBarButton>
                 <AppBarSeparator/>
+                <AppBarButton x:Name="BtnHome" x:Uid="DA_BtnHome" Label="시작" ToolTipService.ToolTip="시작" Icon="Home" IsEnabled="True" Click="BtnHome_Click"/>
+                <AppBarSeparator/>
                 <AppBarButton x:Name="BtnInform" x:Uid="DA_BtnInform" Label="일러두기" Click="BtnInform_Click">
                     <AppBarButton.Icon>
                         <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE946;" />
@@ -369,13 +372,13 @@
                 </AppBarButton>
             </CommandBar.SecondaryCommands>
 
-            <AppBarButton x:Name="BtnBack" Label="뒤로" ToolTipService.ToolTip="뒤로" Icon="Back" IsEnabled="False" Click="BtnBack_Click"/>
-            <AppBarButton x:Name="BtnForward" Label="앞으로" ToolTipService.ToolTip="앞으로" Icon="Forward" IsEnabled="False" Click="BtnForward_Click"/>
+            <AppBarButton x:Name="BtnBack" x:Uid="DA_BtnBack" Label="뒤로" ToolTipService.ToolTip="뒤로" Icon="Back" IsEnabled="False" Click="BtnBack_Click"/>
+            <AppBarButton x:Name="BtnForward" x:Uid="DA_BtnForward" Label="앞으로" ToolTipService.ToolTip="앞으로" Icon="Forward" IsEnabled="False" Click="BtnForward_Click"/>
         </CommandBar>
 
-        <AppBarButton x:Name="BtnCloseDetail" x:Uid="DA_BtnCloseDetail" ToolTipService.ToolTip="닫기" Width="40" Height="41" Margin="40,-1,0,0" Click="BtnCloseDetail_Click" Visibility="Collapsed">
+        <AppBarButton x:Name="BtnCloseDetail" x:Uid="DA_BtnCloseDetail" ToolTipService.ToolTip="닫기" Width="80" Height="40" Margin="0,0,0,0" Click="BtnCloseDetail_Click" Visibility="Collapsed">
             <AppBarButton.Icon>
-                <FontIcon Glyph="&#xE106;" FontSize="16"/>
+                <FontIcon Glyph="&#xE106;" FontSize="16" Margin="40,0,0,0"/>
             </AppBarButton.Icon>
         </AppBarButton>
 
@@ -386,7 +389,8 @@
                       ItemsSource="{x:Bind SearchResults}"
                       ItemTemplate="{StaticResource WordListDataTemplate}"
                       Padding="0,0,0,80" UseLayoutRounding="False" IsTabStop="True"/>
-            <AutoSuggestBox Style="{StaticResource SearchBoxStyle}" x:Name="SearchBox" x:Uid="DA_SearchBox" VerticalAlignment="Top" Margin="10,10,10,0" HorizontalAlignment="Stretch" PlaceholderText="검색할 단어를 입력하세요" QueryIcon="Find" QuerySubmitted="SearchBox_QuerySubmitted" KeyDown="SearchBox_KeyDown"/>
+            <AutoSuggestBox x:Name="SearchBox" Style="{StaticResource SearchBoxStyle}" x:Uid="DA_SearchBox" VerticalAlignment="Top" Margin="10,10,10,0" HorizontalAlignment="Stretch"
+                            PlaceholderText="검색할 단어를 입력하세요" QueryIcon="Find" QuerySubmitted="SearchBox_QuerySubmitted" KeyDown="SearchBox_KeyDown"/>
             <ProgressBar x:Name="MasterProgressBar" IsIndeterminate="True" ShowPaused="False" ShowError="False" VerticalAlignment="Top" Visibility="Collapsed" Margin="0,0,0,0"/>
             <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
                 <TextBlock x:Name="TextBlockErrorMessage" Text="" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="20" Visibility="Collapsed"/>
@@ -410,6 +414,7 @@
                     <ContentPresenter Content="{Binding originRtb}" Visibility="{Binding IsOriginVisible}"/>
                     <Rectangle Visibility="{Binding IsRelationVisible}" Fill="WhiteSmoke" Margin="0,23,0,15" Height="3"/>
                     <ContentPresenter Content="{Binding relationRtb}" Visibility="{Binding IsRelationVisible}"/>
+                    <ContentPresenter Content="{Binding homeRtb}"/>
                     <StackPanel Height="60"/>
                 </StackPanel>
             </ScrollViewer>

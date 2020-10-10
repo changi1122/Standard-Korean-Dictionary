@@ -19,6 +19,7 @@ namespace 표준국어대사전.Classes
         public const string Language = "#Language";                                     //string
         public const string ColorTheme = "#ColorTheme";                                 //string(Light, Dark, system)
         public const string MemoData = "#MemoData";                                     //string
+        public const string RecentWord = "#RecentWord";                                 //string(연결리스트: ,로 단어 나열)
 
         //Lab Function
         public const string LabWordReaderEnabled = "#LabWordReaderEnabled";             //bool
@@ -60,6 +61,13 @@ namespace 표준국어대사전.Classes
                 localSettings.Values[FirstSetup] = 5;
                 localSettings.Values[MemoData] = "";
             }
+
+            //2.2.3.0 이상 - 최근 검색 단어
+            if ((int)localSettings.Values[FirstSetup] < 6)
+            {
+                localSettings.Values[FirstSetup] = 6;
+                localSettings.Values[RecentWord] = "";
+            }
         }
 
         public static void FirstUpSetUp()
@@ -76,6 +84,7 @@ namespace 표준국어대사전.Classes
             localSettings.Values[Language] = "system";
             localSettings.Values[ColorTheme] = "system";
             localSettings.Values[MemoData] = "";
+            localSettings.Values[RecentWord] = "";
 
             //LabFunction
             localSettings.Values[LabWordReaderEnabled] = false;

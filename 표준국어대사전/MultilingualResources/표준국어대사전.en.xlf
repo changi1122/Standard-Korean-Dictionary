@@ -400,7 +400,31 @@
         </trans-unit>
         <trans-unit id="DA_BtnCloseDetail.ToolTipService.ToolTip" translate="yes" xml:space="preserve">
           <source>닫기</source>
-          <target state="new">닫기</target>
+          <target state="translated">Close</target>
+        </trans-unit>
+        <trans-unit id="DA_BtnBack.Label" translate="yes" xml:space="preserve">
+          <source>뒤로</source>
+          <target state="translated">Back</target>
+        </trans-unit>
+        <trans-unit id="DA_BtnBack.ToolTipService.ToolTip" translate="yes" xml:space="preserve">
+          <source>뒤로</source>
+          <target state="translated">Back</target>
+        </trans-unit>
+        <trans-unit id="DA_BtnForward.Label" translate="yes" xml:space="preserve">
+          <source>앞으로</source>
+          <target state="translated">Forward</target>
+        </trans-unit>
+        <trans-unit id="DA_BtnForward.ToolTipService.ToolTip" translate="yes" xml:space="preserve">
+          <source>앞으로</source>
+          <target state="translated">Forward</target>
+        </trans-unit>
+        <trans-unit id="DA_BtnHome.Label" translate="yes" xml:space="preserve">
+          <source>시작</source>
+          <target state="translated">Welcome</target>
+        </trans-unit>
+        <trans-unit id="DA_BtnHome.ToolTipService.ToolTip" translate="yes" xml:space="preserve">
+          <source>시작</source>
+          <target state="translated">Welcome</target>
         </trans-unit>
       </group>
     </body>

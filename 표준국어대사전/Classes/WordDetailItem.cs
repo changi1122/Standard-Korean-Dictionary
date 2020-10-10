@@ -10,6 +10,7 @@ using Windows.UI.Xaml.Documents;
 using Windows.UI.Xaml.Media;
 using System.Text.RegularExpressions;
 using 표준국어대사전.Controls;
+using Windows.UI;
 
 namespace 표준국어대사전.Classes
 {
@@ -618,6 +619,91 @@ namespace 표준국어대사전.Classes
             }
         }
 
+        //시작 화면 RTB
+        public RichTextBlock homeRtb
+        {
+            get
+            {
+                RichTextBlock rtb = new RichTextBlock { HorizontalAlignment = HorizontalAlignment.Left, Margin = new Thickness(0, 40, 0, 0) };
+
+                if (target_code == "-200")
+                {
+                    //시작 화면인 경우
+
+                    //최근 검색
+                    Paragraph subTitle1 = new Paragraph();
+                    subTitle1.Inlines.Add(new Run { Text = "최근 검색", FontSize = 20, FontWeight = Windows.UI.Text.FontWeights.Bold, FontFamily = new FontFamily(FONTFAMILY) });
+                    subTitle1.Inlines.Add(new Run { Text = "   " });
+                    Hyperlink linkClear = new Hyperlink();
+                    linkClear.Inlines.Add(new Run { Text = "지우기", FontSize = 15, FontFamily = new FontFamily(FONTFAMILY), Foreground = new SolidColorBrush(Windows.UI.Colors.Red) });
+                    linkClear.Click += RecentWordClear_Click;
+                    subTitle1.Inlines.Add(linkClear);
+                    subTitle1.Inlines.Add(new Run { Text = " " });
+                    rtb.Blocks.Add(subTitle1);
+
+                    Paragraph recentSearch = new Paragraph();
+                    recentSearch.Margin = new Thickness(5, 15, 0, 15);
+
+                    List<string> recentWords = RecentWordManager.GetWords();
+                    for (int i = recentWords.Count - 1; 0 <= i; i--)
+                    {
+                        Hyperlink link = new Hyperlink();
+                        link.Inlines.Add(new Run { Text = recentWords[i], FontSize = 15, FontFamily = new FontFamily(FONTFAMILY) });
+                        link.Click += RecentWordLink_Click;
+                        recentSearch.Inlines.Add(link);
+                        if (i != 0)
+                            recentSearch.Inlines.Add(new Run { Text = ", ", FontSize = 15, FontFamily = new FontFamily(FONTFAMILY) });
+                        else
+                            recentSearch.Inlines.Add(new Run { Text = " " });
+                    }
+                    if (recentWords.Count == 0)
+                    {
+                        recentSearch.Inlines.Add(new Run { Text = "최근 검색어 없음.", FontSize = 15, FontFamily = new FontFamily(FONTFAMILY), Foreground = new SolidColorBrush(Windows.UI.Colors.Gray) });
+                    }
+                    
+                    rtb.Blocks.Add(recentSearch);
+
+                    //최근 검색
+                    Paragraph subTitle2 = new Paragraph();
+                    subTitle2.Margin = new Thickness(0, 40, 0, 0);
+                    subTitle2.Inlines.Add(new Run { Text = "도움말 및 관련 링크", FontSize = 20, FontWeight = Windows.UI.Text.FontWeights.Bold, FontFamily = new FontFamily(FONTFAMILY) });
+                    rtb.Blocks.Add(subTitle2);
+
+                    //웹 브라우저에서 열기
+                    Paragraph pOpenWeb = new Paragraph();
+                    pOpenWeb.Margin = new Thickness(5, 15, 0, 15);
+                    Hyperlink hOpenWeb = new Hyperlink();
+                    hOpenWeb.Inlines.Add(new Run { Text = "웹 브라우저에서 열기", FontSize = 15, FontFamily = new FontFamily(FONTFAMILY) });
+                    hOpenWeb.NavigateUri = new Uri("https://stdict.korean.go.kr/");
+                    pOpenWeb.Inlines.Add(hOpenWeb);
+                    pOpenWeb.Inlines.Add(new Run { Text = " " });
+                    rtb.Blocks.Add(pOpenWeb);
+
+                    //일러두기
+                    Paragraph pInform = new Paragraph();
+                    pInform.Margin = new Thickness(5, 15, 0, 15);
+                    Hyperlink hInform = new Hyperlink();
+                    hInform.Inlines.Add(new Run { Text = "일러두기", FontSize = 15, FontFamily = new FontFamily(FONTFAMILY) });
+                    hInform.NavigateUri = new Uri("https://stdict.korean.go.kr/help/popup/entry.do");
+                    pInform.Inlines.Add(hInform);
+                    pInform.Inlines.Add(new Run { Text = " " });
+                    rtb.Blocks.Add(pInform);
+
+                    //앱 도움말
+                    Paragraph pHelp = new Paragraph();
+                    pHelp.Margin = new Thickness(5, 15, 0, 15);
+                    Hyperlink hHelp = new Hyperlink();
+                    hHelp.Inlines.Add(new Run { Text = "앱 도움말", FontSize = 15, FontFamily = new FontFamily(FONTFAMILY) });
+                    hHelp.NavigateUri = new Uri("https://costudio1122.blogspot.com/p/blog-page_76.html");
+                    pHelp.Inlines.Add(hHelp);
+                    pHelp.Inlines.Add(new Run { Text = " " });
+                    rtb.Blocks.Add(pHelp);
+                }
+
+                return rtb;
+            }
+        }
+
 
         //활용과 활용의 발음 클래스
         public class ConjusItem
@@ -699,6 +785,38 @@ namespace 표준국어대사전.Classes
                 int.TryParse(Regex.Replace(word.Text, "[^0-9.]", ""), out sup_no);
                 HyperViewer.Load_WordDetail(hyperlink.Inlines[1].FontFamily.Source, sup_no);
             }
+        }
+
+        private void RecentWordLink_Click(Hyperlink sender, HyperlinkClickEventArgs args)
+        {
+            Hyperlink hyperlink = sender as Hyperlink;
+            if (hyperlink.FindName("SearchBox") != null)
+            {
+                AutoSuggestBox SearchBox = hyperlink.FindName("SearchBox") as AutoSuggestBox;
+                Run run = hyperlink.Inlines[0] as Run;
+                if (run != null)
+                    SearchBox.Text = run.Text;
+
+                Grid BasicGrid = hyperlink.FindName("BasicGrid") as Grid;
+                Grid DetailGrid = hyperlink.FindName("DetailGrid") as Grid;
+                AppBarButton BtnCloseDetail = hyperlink.FindName("BtnCloseDetail") as AppBarButton;
+                if (BasicGrid != null && DetailGrid != null && BtnCloseDetail != null)
+                {
+                    if (BasicGrid.ActualWidth < 686)
+                    {
+                        DetailGrid.Visibility = Visibility.Collapsed;
+                        BtnCloseDetail.Visibility = Visibility.Collapsed;
+                    }
+                }
+
+                SearchBox.Focus(FocusState.Programmatic);
+            }
+        }
+
+        private void RecentWordClear_Click(Hyperlink sender, HyperlinkClickEventArgs args)
+        {
+            RecentWordManager.Clear();
+            RaisePropertyChanged("homeRtb");
         }
 
         //로마자 변환

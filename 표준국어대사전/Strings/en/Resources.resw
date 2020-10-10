@@ -306,4 +306,25 @@
   <data name="DC_BtnFilter_Meaning" xml:space="preserve">
     <value>Meaning</value>
   </data>
+  <data name="DA_BtnCloseDetail.ToolTipService.ToolTip" xml:space="preserve">
+    <value>Close</value>
+  </data>
+  <data name="DA_BtnBack.Label" xml:space="preserve">
+    <value>Back</value>
+  </data>
+  <data name="DA_BtnBack.ToolTipService.ToolTip" xml:space="preserve">
+    <value>Back</value>
+  </data>
+  <data name="DA_BtnForward.Label" xml:space="preserve">
+    <value>Forward</value>
+  </data>
+  <data name="DA_BtnForward.ToolTipService.ToolTip" xml:space="preserve">
+    <value>Forward</value>
+  </data>
+  <data name="DA_BtnHome.Label" xml:space="preserve">
+    <value>Welcome</value>
+  </data>
+  <data name="DA_BtnHome.ToolTipService.ToolTip" xml:space="preserve">
+    <value>Welcome</value>
+  </data>
 </root>

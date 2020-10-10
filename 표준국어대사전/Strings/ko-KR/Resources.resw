@@ -414,4 +414,22 @@
   <data name="DC_BtnFilter_Meaning" xml:space="preserve">
     <value>뜻</value>
   </data>
+  <data name="DA_BtnBack.Label" xml:space="preserve">
+    <value>뒤로</value>
+  </data>
+  <data name="DA_BtnBack.ToolTipService.ToolTip" xml:space="preserve">
+    <value>뒤로</value>
+  </data>
+  <data name="DA_BtnForward.Label" xml:space="preserve">
+    <value>앞으로</value>
+  </data>
+  <data name="DA_BtnForward.ToolTipService.ToolTip" xml:space="preserve">
+    <value>앞으로</value>
+  </data>
+  <data name="DA_BtnHome.Label" xml:space="preserve">
+    <value>시작</value>
+  </data>
+  <data name="DA_BtnHome.ToolTipService.ToolTip" xml:space="preserve">
+    <value>시작</value>
+  </data>
 </root>

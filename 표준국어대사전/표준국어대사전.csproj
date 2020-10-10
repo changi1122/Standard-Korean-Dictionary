@@ -114,6 +114,7 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="Classes\HistoryManager.cs" />
+    <Compile Include="Classes\RecentWordManager.cs" />
     <Compile Include="Classes\RecordPoint.cs" />
     <Compile Include="Classes\StorageManager.cs" />
     <Compile Include="Classes\WordFinder.cs" />
