@@ -11,6 +11,11 @@ using Windows.UI.Xaml.Media;
 using System.Text.RegularExpressions;
 using 표준국어대사전.Controls;
 using Windows.UI;
+using Windows.UI.Xaml.Media.Imaging;
+using Windows.Storage.Streams;
+using System.Runtime.InteropServices.WindowsRuntime;
+using Windows.Graphics.Imaging;
+using System.IO;
 
 namespace 표준국어대사전.Classes
 {
@@ -510,8 +515,32 @@ namespace 표준국어대사전.Classes
                                         OutputList.Insert(it + 1, "&ITA" + fontsize + output.Substring(output.IndexOf("<i>") + 3, output.IndexOf("</i>") - output.IndexOf("<i>") - 3));
                                         OutputList.Insert(it + 2, "&FOS" + fontsize + output.Substring(output.IndexOf("</i>") + 4));
                                     }
+                                }    
+                            }
+
+                            //이미지
+                            for (int im = 0; im < OutputList.Count; im++)
+                            {
+                                while (true)
+                                {
+                                    if (!OutputList[im].Contains("<img") || !OutputList[im].Contains("/>"))
+                                        break;
+                                    else if (OutputList[im].Contains("<img") && OutputList[im].Contains("/>"))
+                                    {
+                                        string output = OutputList[im];
+                                        OutputList.RemoveAt(im);
+                                        string fontsize = "015"; //default
+                                        if (output.StartsWith("&FOS"))
+                                            fontsize = output.Substring(4, 3);
+                                        string source = output.Substring(output.IndexOf("src='") + 5, output.IndexOf("'", output.IndexOf("src='") + 5) - output.IndexOf("src='") - 5);
+                                        OutputList.Insert(im, output.Substring(0, output.IndexOf("<img")));
+                                        output = output.Substring(output.IndexOf("<img"));
+                                        OutputList.Insert(im + 1, "&IMG" + fontsize + $"<{source}>");
+                                        OutputList.Insert(im + 2, "&FOS" + fontsize + output.Substring(output.IndexOf("/>") + 2));
+                                    }
                                 }
                             }
+
 
                             Paragraph para3 = new Paragraph();
                             para3.Margin = new Thickness(5, 15, 0, 15);
@@ -543,6 +572,27 @@ namespace 표준국어대사전.Classes
                                     link.Inlines.Add(new Run { FontFamily = new FontFamily(OutputList[o].Substring(OutputList[o].IndexOf("<") + 1, OutputList[o].IndexOf(">") - OutputList[o].IndexOf("<") - 1)) });
                                     link.Click += Hyperlink_Click;
                                     para3.Inlines.Add(link);
+                                }
+                                else if (OutputList[o].StartsWith("&IMG"))
+                                {
+                                    int fontsize = int.Parse(OutputList[o].Substring(4, 3));
+                                    string source = OutputList[o].Substring(OutputList[o].IndexOf("<") + 1, OutputList[o].IndexOf(">") - OutputList[o].IndexOf("<") - 1);
+
+                                    InlineUIContainer container = new InlineUIContainer();
+                                    Image image = new Image();
+                                    
+                                    if (source.StartsWith("data:image"))
+                                    {
+                                        source = source.Substring(source.IndexOf("base64,") + 7);
+                                        BitmapImage bitmap = Base64StringToBitmap(source);
+                                        image.Source = bitmap;
+                                        image.Width = bitmap.PixelWidth;
+                                        image.Height = bitmap.PixelHeight;
+                                        image.Margin = new Thickness(0, 3, 0, -3);
+
+                                        container.Child = image;
+                                        para3.Inlines.Add(container);
+                                    }
                                 }
                             }
 
@@ -933,6 +983,19 @@ namespace 표준국어대사전.Classes
             if (number >= 4) return "IV" + ToRoman(number - 4);
             if (number >= 1) return "I" + ToRoman(number - 1);
             throw new ArgumentOutOfRangeException("something bad happened");
+        }
+
+        public static BitmapImage Base64StringToBitmap(string source)
+        {
+            var ims = new InMemoryRandomAccessStream();
+            var bytes = Convert.FromBase64String(source);
+            var dataWriter = new DataWriter(ims);
+            dataWriter.WriteBytes(bytes);
+            dataWriter.StoreAsync();
+            ims.Seek(0);
+            var img = new BitmapImage();
+            img.SetSource(ims);
+            return img;
         }
     }
 
