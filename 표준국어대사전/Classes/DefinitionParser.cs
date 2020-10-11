@@ -109,7 +109,7 @@ namespace 표준국어대사전.Classes
             wordDetail.original_language = "";
             if (xDoc.Root.Element("item").Element("word_info").Element("original_language_info") != null)
             {
-                IEnumerable<XElement> original_languages = xDoc.Root.Element("item").Element("word_info").Elements("original_language");
+                IEnumerable<XElement> original_languages = xDoc.Root.Element("item").Element("word_info").Elements("original_language_info").Elements("original_language");
                 for (int i = 0; i < original_languages.Count(); i++)
                     wordDetail.original_language += (string)original_languages.ElementAt(i);
             }
