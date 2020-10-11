@@ -140,28 +140,118 @@ namespace 표준국어대사전.Classes
             }
         }
 
+        //발음 및 활용 RTB (단어 읽기 기능 비활성화시 사용)
+        public RichTextBlock pronsconjusRtb
+        {
+            get
+            {
+                RichTextBlock rtb = new RichTextBlock();
+                rtb.TextWrapping = TextWrapping.Wrap;
+
+                if (LabWordReaderEnabled == false)
+                {
+                    //발음
+                    if (prons != null && prons.Count > 0) //발음 정보 없는 예외 처리
+                    {
+                        Paragraph pProns = new Paragraph();
+                        pProns.Margin = new Thickness(0, 4, 0, 4);
+                        pProns.Inlines.Add(new Run { Text = "발음  ", FontSize = 17, FontWeight = Windows.UI.Text.FontWeights.Bold, FontFamily = new FontFamily(FONTFAMILY) });
+
+                        pProns.Inlines.Add(new Run { Text = "[", FontSize = 16, FontFamily = new FontFamily(FONTFAMILY) });
+                        for (int i = 0; i < prons.Count; i++)
+                        {
+                            pProns.Inlines.Add(new Run { Text = prons[i], FontSize = 16, FontFamily = new FontFamily(FONTFAMILY) });
+                            if (i != prons.Count - 1)
+                            {
+                                pProns.Inlines.Add(new Run { Text = "/", FontSize = 16, FontFamily = new FontFamily(FONTFAMILY) });
+                            }
+                        }
+                        pProns.Inlines.Add(new Run { Text = "]", FontSize = 16, FontFamily = new FontFamily(FONTFAMILY) });
+                        rtb.Blocks.Add(pProns);
+                    }
+
+                    //활용
+                    if (conjus != null) //활용 정보 없는 예외 처리
+                    {
+                        Paragraph pConjus = new Paragraph();
+                        pConjus.Margin = new Thickness(0, 4, 0, 4);
+                        pConjus.Inlines.Add(new Run { Text = "활용  ", FontSize = 17, FontWeight = Windows.UI.Text.FontWeights.Bold, FontFamily = new FontFamily(FONTFAMILY) });
+
+                        for (int i = 0; i < conjus.Count; i++)
+                        {
+                            pConjus.Inlines.Add(new Run { Text = conjus[i].conjus, FontSize = 16, FontFamily = new FontFamily(FONTFAMILY) });
+
+                            if (conjus[i].conju_prons != null)
+                            {
+                                pConjus.Inlines.Add(new Run { Text = "[", FontSize = 16, FontFamily = new FontFamily(FONTFAMILY) });
+                                for (int j = 0; j < conjus[i].conju_prons.Count; j++)
+                                {
+                                    pConjus.Inlines.Add(new Run { Text = conjus[i].conju_prons[j], FontSize = 16, FontFamily = new FontFamily(FONTFAMILY) });
+                                    if (j != conjus[i].conju_prons.Count - 1)
+                                    {
+                                        pConjus.Inlines.Add(new Run { Text = "/", FontSize = 16, FontFamily = new FontFamily(FONTFAMILY) });
+                                    }
+                                }
+                                pConjus.Inlines.Add(new Run { Text = "]", FontSize = 16, FontFamily = new FontFamily(FONTFAMILY) });
+                            }
+
+                            if (conjus[i].abbreviations != null)
+                            {
+                                //준말
+                                List<AbbreviationItem> abbreviations = conjus[i].abbreviations;
+                                for (int j = 0; j < abbreviations.Count; j++)
+                                {
+                                    pConjus.Inlines.Add(new Run { Text = $"({abbreviations[j].abbreviations}", FontSize = 16, FontFamily = new FontFamily(FONTFAMILY) });
+                                    if (abbreviations[j].abbreviation_prons != null)
+                                    {
+                                        pConjus.Inlines.Add(new Run { Text = "[", FontSize = 16, FontFamily = new FontFamily(FONTFAMILY) });
+                                        for (int k = 0; k < abbreviations[j].abbreviation_prons.Count; k++)
+                                        {
+                                            pConjus.Inlines.Add(new Run { Text = abbreviations[j].abbreviation_prons[k], FontSize = 16, FontFamily = new FontFamily(FONTFAMILY) });
+                                            if (k != abbreviations[j].abbreviation_prons.Count - 1)
+                                            {
+                                                pConjus.Inlines.Add(new Run { Text = "/", FontSize = 16, FontFamily = new FontFamily(FONTFAMILY) });
+                                            }
+                                        }
+                                        pConjus.Inlines.Add(new Run { Text = "]", FontSize = 16, FontFamily = new FontFamily(FONTFAMILY) });
+                                    }
+                                    pConjus.Inlines.Add(new Run { Text = ")", FontSize = 16, FontFamily = new FontFamily(FONTFAMILY) });
+                                }
+                            }
+
+                            if (conjus.Count - i != 1)
+                                pConjus.Inlines.Add(new Run { Text = ", ", FontSize = 16, FontFamily = new FontFamily(FONTFAMILY) });
+                        }
+                        rtb.Blocks.Add(pConjus);
+                    }
+                }
+
+                if (rtb.Blocks.Count == 0)
+                    return null;
+
+                return rtb;
+            }
+        }
+        
         //발음 SP
         public StackPanel pronsSp
         {
             get
             {
-                StackPanel sp = new StackPanel { Orientation = Orientation.Horizontal, Margin = new Thickness(0, 4, 0, 4) };
+                StackPanel sp = null;
 
                 //null 예외
                 if (prons == null || prons.Count == 0)
                     return null;
 
-                string text = "";
-                for (int i = 0; i < prons.Count(); ++i)
+                if (LabWordReaderEnabled)
                 {
-                    text += prons[i];
-                    if (prons.Count() - i != 1)
-                        text += " / ";
-                }
+                    sp = new StackPanel { Orientation = Orientation.Horizontal, Margin = new Thickness(0, 4, 0, 4) };
 
-                TextBlock title = new TextBlock { Text = "발음", Margin = new Thickness(0, 0, 10, 0), FontSize = 17, FontWeight = Windows.UI.Text.FontWeights.Bold, FontFamily = new FontFamily(FONTFAMILY) };
-                sp.Children.Add(title);
-                sp.Children.Add(new PronunciationBlock { WordItems = prons, FontFamily = new FontFamily(FONTFAMILY), IsReaderEnabled = LabWordReaderEnabled });
+                    TextBlock title = new TextBlock { Text = "발음", Margin = new Thickness(0, 0, 10, 0), FontSize = 17, FontWeight = Windows.UI.Text.FontWeights.Bold, FontFamily = new FontFamily(FONTFAMILY) };
+                    sp.Children.Add(title);
+                    sp.Children.Add(new PronunciationBlock { WordItems = prons, FontFamily = new FontFamily(FONTFAMILY), IsReaderEnabled = LabWordReaderEnabled });
+                }
 
                 return sp;
             }
@@ -172,38 +262,43 @@ namespace 표준국어대사전.Classes
         {
             get
             {
-                StackPanel sp = new StackPanel { Orientation = Orientation.Horizontal, Margin = new Thickness(0, 4, 0, 4) };
+                StackPanel sp = null;
 
                 //null 예외
                 if (conjus == null)
                     return null;
 
-                TextBlock title = new TextBlock { Text = "활용", Margin = new Thickness(0, 0, 10, 0), FontSize = 17, FontWeight = Windows.UI.Text.FontWeights.Bold, FontFamily = new FontFamily(FONTFAMILY) };
-                sp.Children.Add(title);
-                
-                for (int i = 0; i < conjus.Count(); ++i)
+                if (LabWordReaderEnabled)
                 {
-                    sp.Children.Add(new TextBlock { Text = conjus[i].conjus, FontSize = 16, FontFamily = new FontFamily(FONTFAMILY) });
+                    sp = new StackPanel { Orientation = Orientation.Horizontal, Margin = new Thickness(0, 4, 0, 4) };
 
-                    if (conjus[i].conju_prons != null)
-                    {
-                        sp.Children.Add(new PronunciationBlock { WordItems = conjus[i].conju_prons, IsReaderEnabled = LabWordReaderEnabled, FontFamily = new FontFamily(FONTFAMILY) });
-                    }
+                    TextBlock title = new TextBlock { Text = "활용", Margin = new Thickness(0, 0, 10, 0), FontSize = 17, FontWeight = Windows.UI.Text.FontWeights.Bold, FontFamily = new FontFamily(FONTFAMILY) };
+                    sp.Children.Add(title);
 
-                    if (conjus[i].abbreviations != null)
+                    for (int i = 0; i < conjus.Count; i++)
                     {
-                        //준말
-                        List<AbbreviationItem> abbreviations = conjus[i].abbreviations;
-                        for (int j = 0; j < abbreviations.Count; j++)
+                        sp.Children.Add(new TextBlock { Text = conjus[i].conjus, FontSize = 16, FontFamily = new FontFamily(FONTFAMILY) });
+
+                        if (conjus[i].conju_prons != null)
                         {
-                            sp.Children.Add(new TextBlock { Text = "(" + abbreviations[j].abbreviations, FontSize = 16, FontFamily = new FontFamily(FONTFAMILY) });
-                            if (abbreviations[j].abbreviation_prons != null)
-                                sp.Children.Add(new PronunciationBlock { WordItems = abbreviations[j].abbreviation_prons, IsReaderEnabled = LabWordReaderEnabled, FontFamily = new FontFamily(FONTFAMILY) });
-                            sp.Children.Add(new TextBlock { Text = ")", FontSize = 16, FontFamily = new FontFamily(FONTFAMILY) });
+                            sp.Children.Add(new PronunciationBlock { WordItems = conjus[i].conju_prons, IsReaderEnabled = LabWordReaderEnabled, FontFamily = new FontFamily(FONTFAMILY) });
                         }
+
+                        if (conjus[i].abbreviations != null)
+                        {
+                            //준말
+                            List<AbbreviationItem> abbreviations = conjus[i].abbreviations;
+                            for (int j = 0; j < abbreviations.Count; j++)
+                            {
+                                sp.Children.Add(new TextBlock { Text = "(" + abbreviations[j].abbreviations, FontSize = 16, FontFamily = new FontFamily(FONTFAMILY) });
+                                if (abbreviations[j].abbreviation_prons != null)
+                                    sp.Children.Add(new PronunciationBlock { WordItems = abbreviations[j].abbreviation_prons, IsReaderEnabled = LabWordReaderEnabled, FontFamily = new FontFamily(FONTFAMILY) });
+                                sp.Children.Add(new TextBlock { Text = ")", FontSize = 16, FontFamily = new FontFamily(FONTFAMILY) });
+                            }
+                        }
+                        if (conjus.Count - i != 1)
+                            sp.Children.Add(new TextBlock { Text = ",", Margin = new Thickness(0, 0, 6, 0), FontSize = 16, FontFamily = new FontFamily(FONTFAMILY) });
                     }
-                    if (conjus.Count() - i != 1)
-                        sp.Children.Add(new TextBlock { Text = ",", Margin = new Thickness(0, 0, 6, 0), FontSize = 16, FontFamily = new FontFamily(FONTFAMILY) });
                 }
 
                 return sp;

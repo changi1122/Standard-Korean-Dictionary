@@ -21,9 +21,12 @@ namespace 표준국어대사전.Classes
             if (RecentWords == null)
                 LoadRecentWords();
 
-            if (!RecentWords.Contains(word))
-                RecentWords.Add(word);
-            
+            if (RecentWords.Contains(word))
+            {
+                RecentWords.Remove(word);
+            }
+            RecentWords.Add(word);
+
             if (RecentWords.Count > WORD_LIMIT)
                 RecentWords.RemoveAt(0);
             SaveRecentWords();
