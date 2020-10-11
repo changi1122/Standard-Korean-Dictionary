@@ -120,9 +120,6 @@
   <data name="ADJ_BtnDefaultbrowser.Content" xml:space="preserve">
     <value>기본 브라우저에서 보기</value>
   </data>
-  <data name="ADJ_BtnMSEdge.Content" xml:space="preserve">
-    <value>Microsoft Edge에서 보기</value>
-  </data>
   <data name="ADJ_Pivotitem2014.Header" xml:space="preserve">
     <value>2014년</value>
   </data>
@@ -140,9 +137,6 @@
   </data>
   <data name="DA_BtnInform.Label" xml:space="preserve">
     <value>일러두기</value>
-  </data>
-  <data name="DA_BtnMasterDetail.Label" xml:space="preserve">
-    <value>뒤로</value>
   </data>
   <data name="DA_BtnMemo.Label" xml:space="preserve">
     <value>메모</value>
@@ -258,8 +252,8 @@
   <data name="ComboBoxAPIKeyItemPublic" xml:space="preserve">
     <value>앱 전용 키</value>
   </data>
-  <data name="DA_BtnMasterDetail.ToolTipService.ToolTip" xml:space="preserve">
-    <value>뒤로</value>
+  <data name="DA_BtnCloseDetail.ToolTipService.ToolTip" xml:space="preserve">
+    <value>닫기</value>
   </data>
   <data name="DA_BtnMemo.ToolTipService.ToolTip" xml:space="preserve">
     <value>메모</value>
@@ -380,5 +374,59 @@
   </data>
   <data name="ADJ_Pivotitem2019.Header" xml:space="preserve">
     <value>2019년</value>
+  </data>
+  <data name="ComboBoxThemeDark" xml:space="preserve">
+    <value>어둡게</value>
+  </data>
+  <data name="ComboBoxThemeLight" xml:space="preserve">
+    <value>밝게</value>
+  </data>
+  <data name="ComboBoxThemeSystem" xml:space="preserve">
+    <value>시스템</value>
+  </data>
+  <data name="Set_ColorTheme.Text" xml:space="preserve">
+    <value>앱 색상 모드</value>
+  </data>
+  <data name="Lab_CheckWordReader.Content" xml:space="preserve">
+    <value>단어 발음 듣기 활성화</value>
+  </data>
+  <data name="Lab_CheckWordReaderText.Text" xml:space="preserve">
+    <value>단어 검색 화면에서 발음 옆에 표시되는 버튼을 클릭해 소리를 들을 수 있습니다. (발음이 정확하지 않을 수 있음.)</value>
+  </data>
+  <data name="Lab_Sound.Text" xml:space="preserve">
+    <value>소리</value>
+  </data>
+  <data name="Lab_Title.Text" xml:space="preserve">
+    <value>실험실 기능</value>
+  </data>
+  <data name="Set_BtnLabFunction.Content" xml:space="preserve">
+    <value>실험실 기능</value>
+  </data>
+  <data name="Set_DevTool.Text" xml:space="preserve">
+    <value>개발자 도구</value>
+  </data>
+  <data name="DC_BtnFilter_All" xml:space="preserve">
+    <value>전체</value>
+  </data>
+  <data name="DC_BtnFilter_Meaning" xml:space="preserve">
+    <value>뜻</value>
+  </data>
+  <data name="DA_BtnBack.Label" xml:space="preserve">
+    <value>뒤로</value>
+  </data>
+  <data name="DA_BtnBack.ToolTipService.ToolTip" xml:space="preserve">
+    <value>뒤로</value>
+  </data>
+  <data name="DA_BtnForward.Label" xml:space="preserve">
+    <value>앞으로</value>
+  </data>
+  <data name="DA_BtnForward.ToolTipService.ToolTip" xml:space="preserve">
+    <value>앞으로</value>
+  </data>
+  <data name="DA_BtnHome.Label" xml:space="preserve">
+    <value>시작</value>
+  </data>
+  <data name="DA_BtnHome.ToolTipService.ToolTip" xml:space="preserve">
+    <value>시작</value>
   </data>
 </root>

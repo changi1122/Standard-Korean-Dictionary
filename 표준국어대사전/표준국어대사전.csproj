@@ -22,13 +22,14 @@
     <AppxAutoIncrementPackageRevision>False</AppxAutoIncrementPackageRevision>
     <AppxBundle>Always</AppxBundle>
     <AppxBundlePlatforms>x86|x64|arm</AppxBundlePlatforms>
-    <PackageCertificateThumbprint>651B82303671B4B40A20A83BFE8AA2B620609E02</PackageCertificateThumbprint>
+    <PackageCertificateThumbprint>21DF435A23E1CE3F9DC43F3899659C0D3F095622</PackageCertificateThumbprint>
     <GenerateAppInstallerFile>False</GenerateAppInstallerFile>
     <AppInstallerUpdateFrequency>0</AppInstallerUpdateFrequency>
     <AppInstallerCheckForUpdateFrequency>OnApplicationRun</AppInstallerCheckForUpdateFrequency>
     <AppxPackageSigningEnabled>True</AppxPackageSigningEnabled>
     <GenerateTestArtifacts>True</GenerateTestArtifacts>
     <HoursBetweenUpdateChecks>0</HoursBetweenUpdateChecks>
+    <AppxPackageSigningTimestampDigestAlgorithm>SHA256</AppxPackageSigningTimestampDigestAlgorithm>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
     <DebugSymbols>true</DebugSymbols>
@@ -112,18 +113,27 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Classes\DataStorageClass.cs" />
-    <Compile Include="Classes\SearchClass.cs" />
+    <Compile Include="Classes\HistoryManager.cs" />
+    <Compile Include="Classes\RecentWordManager.cs" />
+    <Compile Include="Classes\RecordPoint.cs" />
+    <Compile Include="Classes\StorageManager.cs" />
+    <Compile Include="Classes\WordFinder.cs" />
+    <Compile Include="Classes\WordDetailItem.cs" />
     <Compile Include="Controls\ConMultiSearch.xaml.cs">
       <DependentUpon>ConMultiSearch.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\ConMemo.xaml.cs">
       <DependentUpon>ConMemo.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\ConWordDetail.xaml.cs">
+      <DependentUpon>ConWordDetail.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\PronunciationBlock.cs" />
+    <Compile Include="Controls\WordReader.cs" />
     <Compile Include="Main.xaml.cs">
       <DependentUpon>Main.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Classes\DictionaryClass.cs" />
+    <Compile Include="Classes\DefinitionParser.cs" />
     <Compile Include="Classes\SearchResultItem.cs" />
     <Compile Include="Pages\Adjustment.xaml.cs">
       <DependentUpon>Adjustment.xaml</DependentUpon>
@@ -133,6 +143,9 @@
     </Compile>
     <Compile Include="Pages\DicAppSearch.xaml.cs">
       <DependentUpon>DicAppSearch.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\LabFunction.xaml.cs">
+      <DependentUpon>LabFunction.xaml</DependentUpon>
     </Compile>
     <Compile Include="Pages\SpellingChecker.xaml.cs">
       <DependentUpon>SpellingChecker.xaml</DependentUpon>
@@ -204,6 +217,7 @@
     <None Include="Package.xml" />
     <Content Include="Fonts\README.txt" />
     <Content Include="Properties\Default.rd.xml" />
+    <None Include="표준국어대사전_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">
@@ -215,6 +229,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\ConMemo.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\ConWordDetail.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -234,6 +252,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Pages\LabFunction.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Pages\SpellingChecker.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -246,10 +268,14 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Themes\Generic.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform">
-      <Version>6.1.9</Version>
+      <Version>6.2.10</Version>
     </PackageReference>
   </ItemGroup>
   <ItemGroup />

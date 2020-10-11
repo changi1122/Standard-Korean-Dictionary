@@ -7,11 +7,13 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
     d:DesignHeight="300"
-    d:DesignWidth="400">
+    d:DesignWidth="400" SizeChanged="UserControl_SizeChanged" Loaded="UserControl_Loaded">
 
-    <Grid x:Name="MemoGrid" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Background="#FFBEBEBE">
-        <Rectangle Margin="1,1,1,1" Fill="#FFE6E6E6"/>
-        <TextBox x:Name="TextboxMemoBox" Margin="1,1,1,41" TextWrapping="Wrap" AcceptsReturn="True" Background="{x:Null}" BorderBrush="{x:Null}"/>
+    <Grid x:Name="MemoGrid" Background="#FFBEBEBE" VerticalAlignment="Bottom">
+        <Button x:Name="BtnMemoFold" Content="&#xE099;" HorizontalAlignment="Right" VerticalAlignment="Top" Height="40" Width="40" Margin="0,0,40,0" Background="{x:Null}" Foreground="Black" FontFamily="Segoe MDL2 Assets" FontSize="20" Click="BtnMemoFold_Click"/>
+        <Button x:Name="BtnMemoClose" Content="&#xE10A;" HorizontalAlignment="Right" VerticalAlignment="Top" Height="40" Width="40" Margin="0,0,0,0" Background="{x:Null}" Foreground="Black" FontFamily="Segoe MDL2 Assets" FontSize="20" Click="BtnMemoClose_Click"/>
+        <Rectangle x:Name="WhiteBack" Margin="1,40,1,1" Fill="{ThemeResource ApplicationPageBackgroundThemeBrush}"/>
+        <TextBox x:Name="TextboxMemoBox" Margin="1,40,1,41" TextWrapping="Wrap" AcceptsReturn="True" Background="{x:Null}" BorderBrush="{x:Null}" TextChanged="TextboxMemoBox_TextChanged"/>
         <Button x:Name="BtnMemoDelete" Content="&#xE107;" HorizontalAlignment="Right" VerticalAlignment="Bottom" Height="40" Width="40" Margin="0,0,1,1" Background="{x:Null}" FontFamily="Segoe MDL2 Assets" FontSize="20" Click="BtnMemoDelete_Click"/>
         <Button x:Name="BtnMemoCopy" Content="&#xE16F;" HorizontalAlignment="Right" VerticalAlignment="Bottom" Height="40" Width="40" Margin="0,0,51,1" Background="{x:Null}" FontFamily="Segoe MDL2 Assets" FontSize="20" Click="BtnMemoCopy_Click"/>
     </Grid>

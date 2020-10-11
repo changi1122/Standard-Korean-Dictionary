@@ -7,7 +7,7 @@ using Windows.Storage;
 
 namespace 표준국어대사전.Classes
 {
-    public class DataStorageClass
+    public static class StorageManager
     {
         public const string FirstSetup = "#FirstSetup";                                 //int
         public const string SearchEngine = "#SearchEngine";                             //string
@@ -17,8 +17,14 @@ namespace 표준국어대사전.Classes
         public const string UseDevelopermode = "#UseDevelopermode";                     //bool
         public const string SpellingCheckerAgreement = "#SpellingCheckerAgreement";     //bool
         public const string Language = "#Language";                                     //string
+        public const string ColorTheme = "#ColorTheme";                                 //string(Light, Dark, system)
+        public const string MemoData = "#MemoData";                                     //string
+        public const string RecentWord = "#RecentWord";                                 //string(연결리스트: ,로 단어 나열)
 
-        public void StartUpSetup()
+        //Lab Function
+        public const string LabWordReaderEnabled = "#LabWordReaderEnabled";             //bool
+
+        public static void StartUpSetup()
         {
             ApplicationDataContainer localSettings = ApplicationData.Current.LocalSettings;
 
@@ -39,9 +45,32 @@ namespace 표준국어대사전.Classes
                 localSettings.Values[Language] = "system";
                 localSettings.Values[FirstSetup] = 3;
             }
+
+            //2.1.0.0 - 라이트/다크 모드 지원 // 실험실 기능
+            if ((int)localSettings.Values[FirstSetup] < 4)
+            {
+                localSettings.Values[ColorTheme] = "system";
+                localSettings.Values[FirstSetup] = 4;
+                //LabFunction
+                localSettings.Values[LabWordReaderEnabled] = false;
+            }
+
+            //2.2.2.2 - 메모 저장
+            if ((int)localSettings.Values[FirstSetup] < 5)
+            {
+                localSettings.Values[FirstSetup] = 5;
+                localSettings.Values[MemoData] = "";
+            }
+
+            //2.3.0.0 - 최근 검색 단어
+            if ((int)localSettings.Values[FirstSetup] < 6)
+            {
+                localSettings.Values[FirstSetup] = 6;
+                localSettings.Values[RecentWord] = "";
+            }
         }
 
-        void FirstUpSetUp()
+        public static void FirstUpSetUp()
         {
             ApplicationDataContainer localSettings = ApplicationData.Current.LocalSettings;
             //최초 설정
@@ -53,21 +82,27 @@ namespace 표준국어대사전.Classes
             localSettings.Values[UseDevelopermode] = false;
             localSettings.Values[SpellingCheckerAgreement] = false;
             localSettings.Values[Language] = "system";
+            localSettings.Values[ColorTheme] = "system";
+            localSettings.Values[MemoData] = "";
+            localSettings.Values[RecentWord] = "";
+
+            //LabFunction
+            localSettings.Values[LabWordReaderEnabled] = false;
         }
 
-        public T GetSetting<T>(string name)
+        public static T GetSetting<T>(string name)
         {
             ApplicationDataContainer localSettings = ApplicationData.Current.LocalSettings;
             return (T)localSettings.Values[name];
         }
 
-        public void SetSetting<T>(string name, T value)
+        public static void SetSetting<T>(string name, T value)
         {
             ApplicationDataContainer localSettings = ApplicationData.Current.LocalSettings;
             localSettings.Values[name] = value;
         }
 
-        public void Clear()
+        public static void Clear()
         {
             ApplicationDataContainer localSettings = ApplicationData.Current.LocalSettings;
             localSettings.Values.Clear();

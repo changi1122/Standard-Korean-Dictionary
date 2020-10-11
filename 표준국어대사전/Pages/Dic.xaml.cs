@@ -36,7 +36,7 @@ namespace 표준국어대사전.Pages
         {
             this.InitializeComponent();
 
-            if (new DataStorageClass().GetSetting<bool>(DataStorageClass.UseDevelopermode) == false)
+            if (StorageManager.GetSetting<bool>(StorageManager.UseDevelopermode) == false)
                 BtnReadingMode.Visibility = Visibility.Collapsed;
             else
                 BtnReadingMode.Visibility = Visibility.Visible;
@@ -45,7 +45,7 @@ namespace 표준국어대사전.Pages
             NetworkCheck();
         }
 
-        public static bool IsInternetConnected()
+        private static bool IsInternetConnected()
         {
             ConnectionProfile connections = NetworkInformation.GetInternetConnectionProfile();
             bool internet = (connections != null) &&

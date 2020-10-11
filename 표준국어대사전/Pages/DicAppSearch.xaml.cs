@@ -33,22 +33,73 @@ namespace 표준국어대사전.Pages
         const int MASTERGRID_WIDTH = 320;
         const int MULTISEARCHGRID_WIDTH = 400;
 
+        //검색 결과 리스트뷰에 바인딩
         private ObservableCollection<SearchResultItem> SearchResults;
+        
+        //단어 정의에 바인딩
+        private ObservableCollection<WordDetailItem> Definitions;
 
-        bool IsWebViewOpen = false;
+        private bool IsWebViewOpen = false;
+        private static bool IsHomepageVisible = true;
+
+        public Visibility IsDefinitionViewerVisible
+        {
+            get { return (Definitions[0].target_code != null) ? Visibility.Visible : Visibility.Collapsed; }
+        }
+
+        private HistoryManager History;
+
 
         public DicAppSearch()
         {
             this.InitializeComponent();
-            SearchResults = new ObservableCollection<SearchResultItem>();
-            //SearchResults = new ObservableCollection<SearchResultItem>(SampleManager.GetWords());
+
+            History = new HistoryManager();
+
+            if (IsHomepageVisible)
+            {
+                SearchResults = new ObservableCollection<SearchResultItem>(SearchResultStaticPage.GetHomeTab());
+                Definitions = new ObservableCollection<WordDetailItem>();
+                Definitions.Add(WordDetailStaticPage.GetHomepage());
+                ListviewSearchResult.SelectedIndex = 0;
+                IsHomepageVisible = false;
+            }
+            else
+            {
+                SearchResults = new ObservableCollection<SearchResultItem>();
+                Definitions = new ObservableCollection<WordDetailItem>();
+                Definitions.Add(new WordDetailItem());
+            }
+
+            UpdateControls();
 
             NetworkCheck();
-
-            return;
         }
 
-        public static bool IsInternetConnected()
+        private void Page_Loaded(object sender, RoutedEventArgs e)
+        {
+            SearchBox.Focus(FocusState.Programmatic);
+        }
+
+        /// <summary>
+        /// 바인딩과 유사하게 필요할 때마다 엘리먼트 속성을 관리
+        /// </summary>
+        private void UpdateControls()
+        {
+            BtnBack.IsEnabled = History.CanGoBack;
+            BtnForward.IsEnabled = History.CanGoForward;
+
+            DefinitionViewer.Visibility = IsDefinitionViewerVisible;
+            if (BtnCloseDetail.Visibility == Visibility.Visible && IsDefinitionViewerVisible == Visibility.Collapsed)
+            {
+                Definitions[0] = new WordDetailItem();
+                
+                DetailGrid.Visibility = Visibility.Collapsed;
+                BtnCloseDetail.Visibility = Visibility.Collapsed;
+            }
+        }
+
+        private static bool IsInternetConnected()
         {
             ConnectionProfile connections = NetworkInformation.GetInternetConnectionProfile();
             bool internet = (connections != null) &&
@@ -68,8 +119,9 @@ namespace 표준국어대사전.Pages
 
                 //검색 결과 Listview 지우기
                 SearchResults.Clear();
-                //정의 Listview 지우기
-                ListviewWordDetail.Items.Clear();
+                //뜻풀이 감추기
+                Definitions[0] = new WordDetailItem();
+                UpdateControls();
                 var res = Windows.ApplicationModel.Resources.ResourceLoader.GetForCurrentView();
                 TextBlockErrorMessage.Text = res.GetString("ErrorMessageNoInternet");
                 TextBlockErrorMessage.Visibility = Visibility.Visible;
@@ -89,7 +141,10 @@ namespace 표준국어대사전.Pages
             }
         }
 
-        private void ListView_ItemClick(object sender, ItemClickEventArgs e)
+        /// <summary>
+        /// 검색 결과 리스트뷰의 항목을 클릭시 실행
+        /// </summary>
+        private async void ListviewSearchResult_ItemClick(object sender, ItemClickEventArgs e)
         {
             if (NetworkCheck() == false)
                 return;
@@ -99,28 +154,48 @@ namespace 표준국어대사전.Pages
             if (clickedItem.target_code == -321)
             {
                 //더보기 누를 시 동작
-
-                SearchClass sc = new SearchClass(ListviewSearchResult, SearchResults, MasterProgressBar, TextBlockErrorMessage);
-                sc.GetSearchResults(clickedItem.sup_no + 1, 10, clickedItem.definition);
+                WordFinder wordFinder = new WordFinder(SearchResults, MasterProgressBar, TextBlockErrorMessage);
+                wordFinder.GetSearchResults(clickedItem.sup_no + 1, 10, clickedItem.definition);
                 SearchResults.Remove(clickedItem);
                 return;
             }
+            else if (clickedItem.target_code == -200)
+            {
+                //시작 누를 시 동작
+                Definitions[0] = WordDetailStaticPage.GetHomepage();
 
-            ListviewWordDetail.Visibility = Visibility.Visible;
+                if (BasicGrid.ActualWidth < 686)
+                {
+                    DetailGrid.Visibility = Visibility.Visible;
+                    BtnCloseDetail.Visibility = Visibility.Visible;
+                }
+                UpdateControls();
+                return;
+            }
 
-            //항목 클릭시 동작
+            //일반 단어 클릭시 동작
 
-            //정의 Listview 지우기
-            ListviewWordDetail.Items.Clear();
-            DictionaryClass dc = new DictionaryClass(ListviewWordDetail, this, DetailProgressBar);
-            dc.GetWordDetail(clickedItem.target_code.ToString(), clickedItem.word, clickedItem.sup_no);
+            //되돌리기 위한 기록
+            History.RecordDefinition(SearchBox.Text, Definitions[0], ListviewSearchResult.SelectedIndex);
+            //뜻풀이 감추기
+            Definitions[0] = new WordDetailItem();
+            UpdateControls();
 
             if (BasicGrid.ActualWidth < 686)
             {
-                Separator.Visibility = Visibility.Visible;
-                BtnMasterDetail.Visibility = Visibility.Visible;
                 DetailGrid.Visibility = Visibility.Visible;
+                BtnCloseDetail.Visibility = Visibility.Visible;
             }
+
+            DefinitionParser definitionParser = new DefinitionParser(DetailProgressBar);
+            WordDetailItem definitionItem = await definitionParser.GetWordDetail(clickedItem.target_code.ToString(), clickedItem.word, clickedItem.sup_no);
+            if (definitionItem != null)
+            {
+                Definitions[0] = definitionItem;
+            }
+
+            //뜻풀이 보이기
+            UpdateControls();
         }
 
         private async void SearchBox_QuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
@@ -145,12 +220,19 @@ namespace 표준국어대사전.Pages
                 return;
             }
 
+            //되돌리기 위한 기록
+            History.RecordAll(SearchBox.Text, SearchResults, Definitions[0], ListviewSearchResult.SelectedIndex);
+            Definitions[0] = new WordDetailItem();
             //검색 결과 Listview 지우기
             SearchResults.Clear();
-            //정의 Listview 지우기
-            ListviewWordDetail.Items.Clear();
-            SearchClass sc = new SearchClass(ListviewSearchResult, SearchResults, MasterProgressBar, TextBlockErrorMessage);
-            sc.GetSearchResults(1, 10, searchText);
+            //뜻풀이 감추기
+            UpdateControls();
+
+            WordFinder wordFinder = new WordFinder(SearchResults, MasterProgressBar, TextBlockErrorMessage);
+            wordFinder.GetSearchResults(1, 10, searchText);
+
+            //최근 검색 기록
+            RecentWordManager.Append(searchText);
         }
 
         private void SearchBox_KeyDown(object sender, KeyRoutedEventArgs e)
@@ -239,15 +321,20 @@ namespace 표준국어대사전.Pages
 
         private void BtnMemo_Click(object sender, RoutedEventArgs e)
         {
-            if (MemoGrid.Visibility == Visibility.Collapsed)
-                MemoGrid.Visibility = Visibility.Visible;
-            else
-                MemoGrid.Visibility = Visibility.Collapsed;
-        }
+            Controls.ConMemo conMemo = MasterGrid.FindName("Memo") as Controls.ConMemo;
 
-        private void BtnMemoClose_Click(object sender, RoutedEventArgs e)
-        {
-            MemoGrid.Visibility = Visibility.Collapsed;
+            if (conMemo != null)
+            {
+                MasterGrid.Children.Remove(conMemo);
+            }
+            else
+            {
+                Controls.ConMemo memo = new Controls.ConMemo();
+                memo.Name = "Memo";
+                memo.VerticalAlignment = VerticalAlignment.Bottom;
+
+                MasterGrid.Children.Add(memo);
+            }
         }
 
         private void BasicGrid_SizeChanged(object sender, SizeChangedEventArgs e)
@@ -255,10 +342,10 @@ namespace 표준국어대사전.Pages
             //반응형
             if (BasicGrid.ActualWidth >= 686)
             {
-                MasterGrid.Margin = new Thickness(0, 48, 0, 0);
+                MasterGrid.Margin = new Thickness(0, 40, 0, 0);
                 MasterGrid.Width = MASTERGRID_WIDTH;
                 MasterGrid.HorizontalAlignment = HorizontalAlignment.Left;
-                DetailGrid.Margin = new Thickness(MASTERGRID_WIDTH, 48, 0, 0);
+                DetailGrid.Margin = new Thickness(MASTERGRID_WIDTH, 40, 0, 0);
                 DetailGrid.Visibility = Visibility.Visible;
                 if (BasicGrid.FindName("MultiSearchGrid") != null)
                 {
@@ -270,10 +357,10 @@ namespace 표준국어대사전.Pages
 
             else if (BasicGrid.ActualWidth < 686)
             {
-                MasterGrid.Margin = new Thickness(0, 48, 0, 0);
+                MasterGrid.Margin = new Thickness(0, 40, 0, 0);
                 MasterGrid.ClearValue(WidthProperty);
                 MasterGrid.HorizontalAlignment = HorizontalAlignment.Stretch;
-                DetailGrid.Margin = new Thickness(0, 48, 0, 0);
+                DetailGrid.Margin = new Thickness(0, 40, 0, 0);
                 DetailGrid.Visibility = Visibility.Collapsed;
                 if (BasicGrid.FindName("MultiSearchGrid") != null)
                 {
@@ -284,18 +371,17 @@ namespace 표준국어대사전.Pages
             }
 
             //뒤로가기 키 지우기
-            Separator.Visibility = Visibility.Collapsed;
-            BtnMasterDetail.Visibility = Visibility.Collapsed;
+            BtnCloseDetail.Visibility = Visibility.Collapsed;
         }
 
-        private void BtnMasterDetail_Click(object sender, RoutedEventArgs e)
+        private void BtnCloseDetail_Click(object sender, RoutedEventArgs e)
         {
-            //정의 Listview 지우기
-            ListviewWordDetail.Items.Clear();
+            //뜻풀이 감추기
+            Definitions[0] = new WordDetailItem();
+            UpdateControls();
 
             DetailGrid.Visibility = Visibility.Collapsed;
-            Separator.Visibility = Visibility.Collapsed;
-            BtnMasterDetail.Visibility = Visibility.Collapsed;
+            BtnCloseDetail.Visibility = Visibility.Collapsed;
         }
 
         private void BtnMultiSearch_Click(object sender, RoutedEventArgs e)
@@ -354,6 +440,55 @@ namespace 표준국어대사전.Pages
         private void BtnMultiSearchClose_Click(object sender, RoutedEventArgs e)
         {
             BasicGrid.Children.Remove((UIElement)this.FindName("MultiSearchGrid"));
+        }
+
+        private void BtnBack_Click(object sender, RoutedEventArgs e)
+        {
+            string searchText = SearchBox.Text;
+            WordDetailItem definition = Definitions[0];
+            int selectedIndex = ListviewSearchResult.SelectedIndex;
+            History.Undo(ref searchText, ref SearchResults, ref definition, ref selectedIndex);
+
+            SearchBox.Text = searchText;
+            if (definition != null)
+                Definitions[0] = definition;
+            ListviewSearchResult.SelectedIndex = selectedIndex;
+            UpdateControls();
+        }
+
+        private void BtnForward_Click(object sender, RoutedEventArgs e)
+        {
+            string searchText = SearchBox.Text;
+            WordDetailItem definition = Definitions[0];
+            int selectedIndex = ListviewSearchResult.SelectedIndex;
+            History.Redo(ref searchText, ref SearchResults, ref definition, ref selectedIndex);
+
+            SearchBox.Text = searchText;
+            if (definition != null)
+                Definitions[0] = definition;
+            ListviewSearchResult.SelectedIndex = selectedIndex;
+            UpdateControls();
+        }
+
+        private void BtnHome_Click(object sender, RoutedEventArgs e)
+        {
+            //되돌리기 위한 기록
+            History.RecordAll(SearchBox.Text, SearchResults, Definitions[0], ListviewSearchResult.SelectedIndex);
+            Definitions[0] = new WordDetailItem();
+
+            //검색어 지우기
+            SearchBox.Text = "";
+            //검색 결과 Listview 지우기
+            SearchResults.Clear();
+
+            List<SearchResultItem> homeTab = SearchResultStaticPage.GetHomeTab();
+            foreach(SearchResultItem item in homeTab)
+            {
+                SearchResults.Add(item);
+            }
+            ListviewSearchResult.SelectedIndex = 0;
+            Definitions[0] = WordDetailStaticPage.GetHomepage();
+            UpdateControls();
         }
     }
 }
