@@ -62,7 +62,7 @@ namespace 표준국어대사전.Classes
                 localSettings.Values[MemoData] = "";
             }
 
-            //2.2.3.0 이상 - 최근 검색 단어
+            //2.3.0.0 - 최근 검색 단어
             if ((int)localSettings.Values[FirstSetup] < 6)
             {
                 localSettings.Values[FirstSetup] = 6;
