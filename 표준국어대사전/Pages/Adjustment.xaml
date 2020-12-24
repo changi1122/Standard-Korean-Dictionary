@@ -19,7 +19,7 @@
                         <StackPanel>
                             <TextBlock Text="2020년 3/4분기 수정 내용 공개 (2020. 11. 12.)" TextWrapping="Wrap" Margin="0,10,0,0"/>
                             <StackPanel Margin="20,10,0,10" Orientation="Horizontal">
-                                <Button x:Name="BtnDNotice202012" x:Uid="ADJ_BtnDefaultbrowser" Content="기본 브라우저에서 보기" Click="BtnDNotice20203_Click"/>
+                                <Button x:Name="BtnDNotice20203" x:Uid="ADJ_BtnDefaultbrowser" Content="기본 브라우저에서 보기" Click="BtnDNotice20203_Click"/>
                             </StackPanel>
                         </StackPanel>
                     </ListViewItem>
@@ -27,7 +27,7 @@
                         <StackPanel>
                             <TextBlock Text="2020년 1/4-2/4분기 수정 내용 공개 (2020. 08. 20.)" TextWrapping="Wrap" Margin="0,10,0,0"/>
                             <StackPanel Margin="20,10,0,10" Orientation="Horizontal">
-                                <Button x:Name="BtnDNotice20203" x:Uid="ADJ_BtnDefaultbrowser" Content="기본 브라우저에서 보기" Click="BtnDNotice202012_Click"/>
+                                <Button x:Name="BtnDNotice202012" x:Uid="ADJ_BtnDefaultbrowser" Content="기본 브라우저에서 보기" Click="BtnDNotice202012_Click"/>
                             </StackPanel>
                         </StackPanel>
                     </ListViewItem>
