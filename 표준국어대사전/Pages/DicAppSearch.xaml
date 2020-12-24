@@ -398,7 +398,7 @@
             </StackPanel>
         </Grid>
         <Grid x:Name="DetailGrid" HorizontalAlignment="Stretch" Margin="321,40,0,0" VerticalAlignment="Stretch" Visibility="Visible" Background="{StaticResource ApplicationPageBackgroundThemeBrush}">
-            <ScrollViewer x:Name="DefinitionViewer" Padding="20" Visibility="Collapsed" IsTabStop="True" VerticalScrollBarVisibility="Disabled">
+            <ScrollViewer x:Name="DefinitionViewer" Padding="20" Visibility="Collapsed" IsTabStop="True">
                 <StackPanel x:Name="DefinitionSP" DataContext="{Binding Source={StaticResource WordSource}}">
                     <ContentPresenter Content="{Binding wordnameRtb}"/>
                     <StackPanel Margin="0,10,0,0">
