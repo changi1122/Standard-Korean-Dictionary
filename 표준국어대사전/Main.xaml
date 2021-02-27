@@ -108,7 +108,7 @@
     </Page.Resources>
 
     <Grid x:Name="FirstGrid" Background="#FFE6E6E6">
-        <NavigationView Loaded="NavigationView_Loaded" Margin="0,0,0,0" Grid.Row="1" SelectionChanged="NavigationView_SelectionChanged" x:Name="Main_Navigation" IsSettingsVisible="{Binding ElementName=settingsCheck,Path=IsChecked}" IsTabStop="False" IsPaneOpen="True" AlwaysShowHeader="False" CompositeMode="SourceOver" ItemInvoked="Main_Navigation_ItemInvoked" IsBackButtonVisible="Collapsed">
+        <NavigationView Loaded="NavigationView_Loaded" Margin="0,0,0,0" Grid.Row="1" SelectionChanged="NavigationView_SelectionChanged" x:Name="Main_Navigation" IsSettingsVisible="True" IsTabStop="False" IsPaneOpen="False" AlwaysShowHeader="False" CompositeMode="SourceOver" ItemInvoked="Main_Navigation_ItemInvoked" IsBackButtonVisible="Collapsed" PaneDisplayMode="LeftMinimal">
             <NavigationView.MenuItems>
                 <NavigationViewItem x:Uid="NaviItem1" Content="단어 검색" Tag="Pages.Dic">
                     <NavigationViewItem.Icon>
