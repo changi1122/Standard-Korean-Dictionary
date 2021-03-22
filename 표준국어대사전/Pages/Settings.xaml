@@ -95,7 +95,7 @@
                     <TextBlock x:Uid="Set_Contact" HorizontalAlignment="Left" Margin="5,202,0,0" TextWrapping="Wrap" Text="프로그램 문의" VerticalAlignment="Top"/>
                     <HyperlinkButton x:Name="Mail" Content="changi112242@gmail.com" HorizontalAlignment="Left" Margin="105,196,0,0" VerticalAlignment="Top" Click="Mail_Click"/>
                     <TextBlock x:Uid="Set_Homepage" HorizontalAlignment="Left" Margin="5,227,0,0" TextWrapping="Wrap" Text="홈페이지" VerticalAlignment="Top"/>
-                    <HyperlinkButton x:Name="HomePage" Content="https://costudio1122.blogspot.com/" HorizontalAlignment="Left" Margin="105,221,0,0" VerticalAlignment="Top" NavigateUri="https://costudio1122.blogspot.com/"/>
+                    <HyperlinkButton x:Name="HomePage" Content="http://studio1122.net/" HorizontalAlignment="Left" Margin="105,221,0,0" VerticalAlignment="Top" NavigateUri="http://studio1122.net/"/>
                     <Button x:Name="BtnReview" x:Uid="Set_BtnReview" Content="평점 및 리뷰" HorizontalAlignment="Left" Margin="0,264,0,0" VerticalAlignment="Top" Width="150" Click="BtnReview_Click"/>
                     <Button x:Name="BtnMail" x:Uid="Set_BtnMail" Content="메일" HorizontalAlignment="Left" Margin="160,264,0,0" VerticalAlignment="Top" Width="60" Click="BtnMail_Click"/>
                     <TextBlock x:Uid="Set_Institute" HorizontalAlignment="Left" Margin="0,314,0,0" TextWrapping="Wrap" Text="국립국어원" VerticalAlignment="Top" Style="{ThemeResource BaseTextBlockStyle}"/>
