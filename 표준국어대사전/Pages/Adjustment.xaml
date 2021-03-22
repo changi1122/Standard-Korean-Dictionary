@@ -17,6 +17,14 @@
                 <ListView Margin="0,20,0,30" SelectionMode="None">
                     <ListViewItem>
                         <StackPanel>
+                            <TextBlock Text="2020년 4/4분기 수정 내용 공개 (2021. 02. 04.)" TextWrapping="Wrap" Margin="0,10,0,0"/>
+                            <StackPanel Margin="20,10,0,10" Orientation="Horizontal">
+                                <Button x:Name="BtnDNotice20204" x:Uid="ADJ_BtnDefaultbrowser" Content="기본 브라우저에서 보기" Click="BtnDNotice20204_Click"/>
+                            </StackPanel>
+                        </StackPanel>
+                    </ListViewItem>
+                    <ListViewItem>
+                        <StackPanel>
                             <TextBlock Text="2020년 3/4분기 수정 내용 공개 (2020. 11. 12.)" TextWrapping="Wrap" Margin="0,10,0,0"/>
                             <StackPanel Margin="20,10,0,10" Orientation="Horizontal">
                                 <Button x:Name="BtnDNotice20203" x:Uid="ADJ_BtnDefaultbrowser" Content="기본 브라우저에서 보기" Click="BtnDNotice20203_Click"/>
@@ -37,9 +45,9 @@
                 <ListView Margin="0,20,0,30" SelectionMode="None">
                     <ListViewItem>
                         <StackPanel>
-                            <TextBlock Text="2019년 1/4-2/4분기 수정 내용 공개 (2019. 09. 19.)" TextWrapping="Wrap" Margin="0,10,0,0"/>
+                            <TextBlock Text="2019년 4/4분기 수정 내용 공개 (2020. 02. 14.)" TextWrapping="Wrap" Margin="0,10,0,0"/>
                             <StackPanel Margin="20,10,0,10" Orientation="Horizontal">
-                                <Button x:Name="BtnDNotice201912" x:Uid="ADJ_BtnDefaultbrowser" Content="기본 브라우저에서 보기" Click="BtnDNotice201912_Click"/>
+                                <Button x:Name="BtnDNotice20194" x:Uid="ADJ_BtnDefaultbrowser" Content="기본 브라우저에서 보기" Click="BtnDNotice20194_Click"/>
                             </StackPanel>
                         </StackPanel>
                     </ListViewItem>
@@ -53,9 +61,9 @@
                     </ListViewItem>
                     <ListViewItem>
                         <StackPanel>
-                            <TextBlock Text="2019년 4/4분기 수정 내용 공개 (2020. 02. 14.)" TextWrapping="Wrap" Margin="0,10,0,0"/>
+                            <TextBlock Text="2019년 1/4-2/4분기 수정 내용 공개 (2019. 09. 19.)" TextWrapping="Wrap" Margin="0,10,0,0"/>
                             <StackPanel Margin="20,10,0,10" Orientation="Horizontal">
-                                <Button x:Name="BtnDNotice20194" x:Uid="ADJ_BtnDefaultbrowser" Content="기본 브라우저에서 보기" Click="BtnDNotice20194_Click"/>
+                                <Button x:Name="BtnDNotice201912" x:Uid="ADJ_BtnDefaultbrowser" Content="기본 브라우저에서 보기" Click="BtnDNotice201912_Click"/>
                             </StackPanel>
                         </StackPanel>
                     </ListViewItem>
