@@ -17,8 +17,8 @@
     <Grid x:Name="ConWordDetailGrid" Background="{StaticResource ApplicationPageBackgroundThemeBrush}" BorderBrush="{StaticResource BarColor}" BorderThickness="1">
         <Rectangle Fill="{StaticResource BarColor}" Margin="-1,-1,-1,0" VerticalAlignment="Top" Height="40"/>
         <Button x:Name="BtnClose" Content="" Background="Transparent" Foreground="Black" Width="40" Height="40" Margin="0, -1, -1, 0" HorizontalAlignment="Right" VerticalAlignment="Top" FontSize="20" FontFamily="Segoe MDL2 Assets" Click="BtnClose_Click"/>
-        <ScrollViewer x:Name="WordDetailViewer" Margin="20,60,20,20">
-            <StackPanel x:Name="WordDetailSP" Visibility="Collapsed" DataContext="{Binding Source={StaticResource WordSource}}">
+        <ScrollViewer x:Name="WordDetailViewer" Margin="0,40,0,0">
+            <StackPanel x:Name="WordDetailSP" Padding="20" Visibility="Collapsed" DataContext="{Binding Source={StaticResource WordSource}}">
                 <ContentPresenter Content="{Binding wordnameRtb}"/>
                 <StackPanel Margin="0,10,0,0">
                     <ContentPresenter Content="{Binding pronsSp}" Margin="0,4,0,4"/>
