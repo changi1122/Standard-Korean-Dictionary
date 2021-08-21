@@ -10,11 +10,9 @@ namespace 표준국어대사전.Classes
     public static class StorageManager
     {
         public const string FirstSetup = "#FirstSetup";                                 //int
-        public const string SearchEngine = "#SearchEngine";                             //string
         public const string DisplayFont = "#DisplayFont";                               //string
         public const string UseCustomAPIKey = "#UseCustomAPIKey";                       //bool
         public const string APIKey = "#APIKey";                                         //string
-        public const string UseDevelopermode = "#UseDevelopermode";                     //bool
         public const string SpellingCheckerAgreement = "#SpellingCheckerAgreement";     //bool
         public const string Language = "#Language";                                     //string
         public const string ColorTheme = "#ColorTheme";                                 //string(Light, Dark, system)
@@ -68,6 +66,14 @@ namespace 표준국어대사전.Classes
                 localSettings.Values[FirstSetup] = 6;
                 localSettings.Values[RecentWord] = "";
             }
+
+            //2.4.0.0 - 웹뷰 단어 검색 기능 삭제
+            if ((int)localSettings.Values[FirstSetup] < 7)
+            {
+                localSettings.Values[FirstSetup] = 7;
+                localSettings.Values.Remove("#SearchEngine");
+                localSettings.Values.Remove("#UseDevelopermode");
+            }
         }
 
         public static void FirstUpSetUp()
@@ -75,11 +81,9 @@ namespace 표준국어대사전.Classes
             ApplicationDataContainer localSettings = ApplicationData.Current.LocalSettings;
             //최초 설정
             localSettings.Values[FirstSetup] = 0;
-            localSettings.Values[SearchEngine] = "DicAppSearch";
             localSettings.Values[DisplayFont] = "나눔바른고딕 옛한글";
             localSettings.Values[UseCustomAPIKey] = false;
             localSettings.Values[APIKey] = "C58534E2D39CF7CA69BCA193541C1688";
-            localSettings.Values[UseDevelopermode] = false;
             localSettings.Values[SpellingCheckerAgreement] = false;
             localSettings.Values[Language] = "system";
             localSettings.Values[ColorTheme] = "system";

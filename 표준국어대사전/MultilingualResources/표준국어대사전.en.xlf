@@ -74,10 +74,6 @@
           <source>국립국어원이 만든 표준국어대사전에서 단어를 검색하고, 의미를 보여줍니다.</source>
           <target state="translated">This app searches words in Standard Korean Language Dictionary created by National Institute of the Korean Language and shows meaning.</target>
         </trans-unit>
-        <trans-unit id="Set_Address.Text" translate="yes" xml:space="preserve">
-          <source>주소</source>
-          <target state="translated">Address</target>
-        </trans-unit>
         <trans-unit id="Set_BtnMail.Content" translate="yes" xml:space="preserve">
           <source>메일</source>
           <target state="translated">Mail</target>
@@ -85,14 +81,6 @@
         <trans-unit id="Set_BtnReview.Content" translate="yes" xml:space="preserve">
           <source>평점 및 리뷰</source>
           <target state="translated">Ratings and Reviews</target>
-        </trans-unit>
-        <trans-unit id="Set_Call.Text" translate="yes" xml:space="preserve">
-          <source>대표 전화</source>
-          <target state="translated">Call</target>
-        </trans-unit>
-        <trans-unit id="Set_CheckDevelopermode.Content" translate="yes" xml:space="preserve">
-          <source>개발자 도구 활성화</source>
-          <target state="translated">Enable Developer Tools</target>
         </trans-unit>
         <trans-unit id="Set_Contact.Text" translate="yes" xml:space="preserve">
           <source>프로그램 문의</source>
@@ -105,10 +93,6 @@
         <trans-unit id="Set_Include.Text" translate="yes" xml:space="preserve">
           <source>이 앱은 아래 항목을 포함하고 있습니다.</source>
           <target state="translated">This app includes:</target>
-        </trans-unit>
-        <trans-unit id="Set_Institute.Text" translate="yes" xml:space="preserve">
-          <source>국립국어원</source>
-          <target state="translated">National Institute of the Korean Language</target>
         </trans-unit>
         <trans-unit id="Set_Option.Text" translate="yes" xml:space="preserve">
           <source>옵션</source>
@@ -129,30 +113,6 @@
         <trans-unit id="Set_Pivotitem3.Header" translate="yes" xml:space="preserve">
           <source>정보</source>
           <target state="translated">About</target>
-        </trans-unit>
-        <trans-unit id="Set_RadioButtonDic.Content" translate="yes" xml:space="preserve">
-          <source>웹뷰 기반 검색</source>
-          <target state="translated">WebView based search</target>
-        </trans-unit>
-        <trans-unit id="Set_RadioButtonDicAppSearch.Content" translate="yes" xml:space="preserve">
-          <source>인앱 검색</source>
-          <target state="translated">In-App Search</target>
-        </trans-unit>
-        <trans-unit id="Set_RadioButtonDicAppSearchText.Text" translate="yes" xml:space="preserve">
-          <source>앱 내에서 단어를 검색하고, 검색 결과를 가져와 표시합니다.</source>
-          <target state="translated">Search for words within the app and display their meanings.</target>
-        </trans-unit>
-        <trans-unit id="Set_RadioButtonDicWeb.Content" translate="yes" xml:space="preserve">
-          <source>웹 페이지로 보기</source>
-          <target state="translated">View as web page</target>
-        </trans-unit>
-        <trans-unit id="Set_RadioButtonDicWebText.Text" translate="yes" xml:space="preserve">
-          <source>웹뷰를 통해 웹 페이지를 표시합니다.</source>
-          <target state="translated">Displays web pages in WebView.</target>
-        </trans-unit>
-        <trans-unit id="Set_SearchEngine.Text" translate="yes" xml:space="preserve">
-          <source>검색 방식</source>
-          <target state="translated">Search method</target>
         </trans-unit>
         <trans-unit id="SPC_Agree" translate="yes" xml:space="preserve">
           <source>동의함</source>
@@ -383,8 +343,9 @@
           <target state="translated">Lab features</target>
         </trans-unit>
         <trans-unit id="Set_DevTool.Text" translate="yes" xml:space="preserve">
-          <source>개발자 도구</source>
-          <target state="translated">Developer Tools</target>
+          <source>추가 기능</source>
+          <target state="needs-review-translation">Developer Tools</target>
+          <note from="MultilingualUpdate" annotates="source" priority="2">Please verify the translation’s accuracy as the source string was updated after it was translated.</note>
         </trans-unit>
         <trans-unit id="DC_BtnFilter_All" translate="yes" xml:space="preserve">
           <source>전체</source>

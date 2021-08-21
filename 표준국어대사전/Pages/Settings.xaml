@@ -21,17 +21,7 @@
                 <ScrollViewer>
                     <StackPanel>
                         <TextBlock x:Uid="Set_Option" HorizontalAlignment="Left" Margin="0,10,0,0" TextWrapping="Wrap" Text="옵션" VerticalAlignment="Top" FontSize="24"/>
-                        <StackPanel Margin="5,20,0,0">
-                            <TextBlock x:Uid="Set_SearchEngine" Text="검색 방식" Style="{ThemeResource BaseTextBlockStyle}" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top"/>
-                            <RadioButton x:Name="RadioButtonDicAppSearch" x:Uid="Set_RadioButtonDicAppSearch" Content="인앱 검색" GroupName="Search" IsChecked="{x:Bind RadioBtnDicAppSearch, Mode=TwoWay}" Checked="RadioButtonDicAppSearch_Checked" Margin="0,10,0,0"/>
-                            <TextBlock x:Uid="Set_RadioButtonDicAppSearchText" Text="앱 내에서 단어를 검색하고, 검색 결과를 가져와 표시합니다." Foreground="Gray" FontSize="12" Margin="30,0,0,0" TextWrapping="Wrap"/>
-                            <RadioButton x:Name="RadioButtonDicWeb" x:Uid="Set_RadioButtonDicWeb" Content="웹 페이지로 보기" GroupName="Search" IsChecked="{x:Bind RadioBtnDic, Mode=TwoWay}" Checked="RadioButtonDicWeb_Checked" Margin="0,6,0,0"/>
-                            <TextBlock x:Uid="Set_RadioButtonDicWebText" Text="웹뷰를 통해 웹 페이지를 표시합니다." Foreground="Gray" FontSize="12" Margin="30,0,0,0" TextWrapping="Wrap"/>
-                            <StackPanel Margin="0,30,0,0">
-                                <TextBlock x:Uid="Set_DevTool" Text="개발자 도구" Style="{ThemeResource BaseTextBlockStyle}" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top"/>
-                                <CheckBox x:Name="CheckDevelopermode" x:Uid="Set_CheckDevelopermode" Margin="0,10,0,0" VerticalAlignment="Top" Content="개발자 도구 활성화" IsChecked="{x:Bind IsEnableDevelopermode, Mode=TwoWay}"/>
-                                <Button x:Name="BtnLabFunction" x:Uid="Set_BtnLabFunction" Content="실험실 기능" Margin="0,10,0,0" Click="BtnLabFunction_Click"/>
-                            </StackPanel>
+                        <StackPanel Margin="5,0,0,0">
                             <StackPanel Margin="0,30,0,0">
                                 <TextBlock x:Uid="Set_Language" Text="언어 (Language)" Style="{ThemeResource BaseTextBlockStyle}" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top"/>
                                 <StackPanel Margin="0,10,0,0" Orientation="Horizontal">
@@ -59,6 +49,10 @@
                                         <x:String>맑은 고딕</x:String>
                                     </ComboBox>
                                 </StackPanel>
+                            </StackPanel>
+                            <StackPanel Margin="0,30,0,0">
+                                <TextBlock x:Uid="Set_DevTool" Text="추가 기능" Style="{ThemeResource BaseTextBlockStyle}" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top"/>
+                                <Button x:Name="BtnLabFunction" x:Uid="Set_BtnLabFunction" Content="실험실 기능" Margin="0,10,0,0" Click="BtnLabFunction_Click"/>
                             </StackPanel>
                             <StackPanel Margin="0,30,0,0">
                                 <TextBlock x:Uid="Set_APIKey" Text="오픈 API 인증키" Style="{ThemeResource BaseTextBlockStyle}" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top"/>
@@ -98,12 +92,6 @@
                     <HyperlinkButton x:Name="HomePage" Content="http://studio1122.net/" HorizontalAlignment="Left" Margin="105,221,0,0" VerticalAlignment="Top" NavigateUri="http://studio1122.net/"/>
                     <Button x:Name="BtnReview" x:Uid="Set_BtnReview" Content="평점 및 리뷰" HorizontalAlignment="Left" Margin="0,264,0,0" VerticalAlignment="Top" Width="150" Click="BtnReview_Click"/>
                     <Button x:Name="BtnMail" x:Uid="Set_BtnMail" Content="메일" HorizontalAlignment="Left" Margin="160,264,0,0" VerticalAlignment="Top" Width="60" Click="BtnMail_Click"/>
-                    <TextBlock x:Uid="Set_Institute" HorizontalAlignment="Left" Margin="0,314,0,0" TextWrapping="Wrap" Text="국립국어원" VerticalAlignment="Top" Style="{ThemeResource BaseTextBlockStyle}"/>
-                    <TextBlock x:Uid="Set_Call" HorizontalAlignment="Left" Margin="5,343,0,0" TextWrapping="Wrap" Text="대표 전화" VerticalAlignment="Top"/>
-                    <HyperlinkButton Content="02-2669-9775" HorizontalAlignment="Left" Margin="105,337,0,0" VerticalAlignment="Top"/>
-                    <TextBlock x:Uid="Set_Address" HorizontalAlignment="Left" Margin="5,368,0,0" TextWrapping="Wrap" Text="주소" VerticalAlignment="Top"/>
-                    <TextBlock Text="서울특별시 강서구 금낭화로 154 국립국어원" HorizontalAlignment="Left" Margin="105,368,0,0" VerticalAlignment="Top" TextWrapping="Wrap"/>
-                    <TextBlock Text="우편 번호 : 07511" HorizontalAlignment="Left" Margin="105,391,0,0" VerticalAlignment="Top"/>
                 </Grid>
             </PivotItem>
         </Pivot>

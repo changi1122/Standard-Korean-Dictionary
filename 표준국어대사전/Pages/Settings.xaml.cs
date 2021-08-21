@@ -24,37 +24,6 @@ namespace 표준국어대사전.Pages
     /// </summary>
     public sealed partial class Settings : Page
     {
-        public bool RadioBtnDicAppSearch
-        {
-            get
-            {
-                if (StorageManager.GetSetting<string>(StorageManager.SearchEngine) == "DicAppSearch") return true;
-                else return false;
-            }
-            set
-            {
-                if (value == true) StorageManager.SetSetting<string>(StorageManager.SearchEngine, "DicAppSearch");
-                else StorageManager.SetSetting<string>(StorageManager.SearchEngine, "Dic");
-            }
-        }
-        public bool RadioBtnDic
-        {
-            get
-            {
-                if (StorageManager.GetSetting<string>(StorageManager.SearchEngine) == "Dic") return true;
-                else return false;
-            }
-            set
-            {
-                if (value == true) StorageManager.SetSetting<string>(StorageManager.SearchEngine, "Dic");
-                else StorageManager.SetSetting<string>(StorageManager.SearchEngine, "DicAppSearch");
-            }
-        }
-        public bool IsEnableDevelopermode
-        {
-            get { return StorageManager.GetSetting<bool>(StorageManager.UseDevelopermode); }
-            set { StorageManager.SetSetting<bool>(StorageManager.UseDevelopermode, value); }
-        }
         public int ComboBoxFontSelectedIndex
         {
             get
@@ -163,24 +132,10 @@ namespace 표준국어대사전.Pages
         {
             StorageManager.Clear();
             StorageManager.StartUpSetup();
-            RadioButtonDicAppSearch.IsChecked = true;
-            CheckDevelopermode.IsChecked = false;
             ComboBoxFont.SelectedIndex = 0; ;
             ComboBoxAPIKey.SelectedIndex = 0;
             ComboBoxLang.SelectedIndex = 0;
             ComboBoxTheme.SelectedIndex = 0;
-        }
-
-        private void RadioButtonDicAppSearch_Checked(object sender, RoutedEventArgs e)
-        {
-            RadioBtnDicAppSearch = true;
-            RadioBtnDic = false;
-        }
-
-        private void RadioButtonDicWeb_Checked(object sender, RoutedEventArgs e)
-        {
-            RadioBtnDicAppSearch = false;
-            RadioBtnDic = true;
         }
 
         private void ComboBoxAPIKey_SelectionChanged(object sender, SelectionChangedEventArgs e)

@@ -80,10 +80,7 @@ namespace 표준국어대사전
                 switch (args.InvokedItem)
                 {
                     case "Pages.Dic":  //검색
-                        if (StorageManager.GetSetting<string>(StorageManager.SearchEngine) == "DicAppSearch")
-                            ContentFrame.Navigate(typeof(Pages.DicAppSearch));
-                        else
-                            ContentFrame.Navigate(typeof(Pages.Dic));
+                        ContentFrame.Navigate(typeof(Pages.DicAppSearch));
                         break;
 
                     case "Pages.HangulSpelling":  //한글 맞춤법
@@ -116,11 +113,8 @@ namespace 표준국어대사전
 
                 switch (item.Tag)
                 {
-                    case "Pages.Dic":  //검색
-                        if (StorageManager.GetSetting<string>(StorageManager.SearchEngine) == "DicAppSearch")
-                            ContentFrame.Navigate(typeof(Pages.DicAppSearch));
-                        else
-                            ContentFrame.Navigate(typeof(Pages.Dic));
+                    case "Pages.Dic":  //검색  
+                        ContentFrame.Navigate(typeof(Pages.DicAppSearch));
                         break;
 
                     case "Pages.HangulSpelling":  //한글 맞춤법
