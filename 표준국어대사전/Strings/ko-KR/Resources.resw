@@ -396,7 +396,13 @@
   <data name="DA_BtnHome.ToolTipService.ToolTip" xml:space="preserve">
     <value>시작</value>
   </data>
-  <data name="Set_FontSize" xml:space="preserve">
+  <data name="Set_FontSize.Text" xml:space="preserve">
     <value>글꼴 크기</value>
+  </data>
+  <data name="ADJ_Pivotitem2020.Header" xml:space="preserve">
+    <value>2020년</value>
+  </data>
+  <data name="ADJ_Pivotitem2021.Header" xml:space="preserve">
+    <value>2021년</value>
   </data>
 </root>

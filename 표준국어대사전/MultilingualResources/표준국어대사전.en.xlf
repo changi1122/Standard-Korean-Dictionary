@@ -379,7 +379,15 @@
           <source>시작</source>
           <target state="translated">Welcome</target>
         </trans-unit>
-        <trans-unit id="Set_FontSize" translate="yes" xml:space="preserve">
+        <trans-unit id="ADJ_Pivotitem2020.Header" translate="yes" xml:space="preserve">
+          <source>2020년</source>
+          <target state="translated">2020</target>
+        </trans-unit>
+        <trans-unit id="ADJ_Pivotitem2021.Header" translate="yes" xml:space="preserve">
+          <source>2021년</source>
+          <target state="translated">2021</target>
+        </trans-unit>
+        <trans-unit id="Set_FontSize.Text" translate="yes" xml:space="preserve">
           <source>글꼴 크기</source>
           <target state="translated">Font Size</target>
         </trans-unit>

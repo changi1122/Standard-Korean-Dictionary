@@ -291,7 +291,13 @@
   <data name="DA_BtnHome.ToolTipService.ToolTip" xml:space="preserve">
     <value>Welcome</value>
   </data>
-  <data name="Set_FontSize" xml:space="preserve">
+  <data name="ADJ_Pivotitem2020.Header" xml:space="preserve">
+    <value>2020</value>
+  </data>
+  <data name="ADJ_Pivotitem2021.Header" xml:space="preserve">
+    <value>2021</value>
+  </data>
+  <data name="Set_FontSize.Text" xml:space="preserve">
     <value>Font Size</value>
   </data>
 </root>
