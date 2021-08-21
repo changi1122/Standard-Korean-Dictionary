@@ -10,16 +10,15 @@ namespace 표준국어대사전.Classes
     public static class StorageManager
     {
         public const string FirstSetup = "#FirstSetup";                                 //int
-        public const string SearchEngine = "#SearchEngine";                             //string
         public const string DisplayFont = "#DisplayFont";                               //string
         public const string UseCustomAPIKey = "#UseCustomAPIKey";                       //bool
         public const string APIKey = "#APIKey";                                         //string
-        public const string UseDevelopermode = "#UseDevelopermode";                     //bool
         public const string SpellingCheckerAgreement = "#SpellingCheckerAgreement";     //bool
         public const string Language = "#Language";                                     //string
         public const string ColorTheme = "#ColorTheme";                                 //string(Light, Dark, system)
         public const string MemoData = "#MemoData";                                     //string
         public const string RecentWord = "#RecentWord";                                 //string(연결리스트: ,로 단어 나열)
+        public const string FONTMAGNIFICATION = "#FONTMAGNIFICATION";                   //double(1.0, 1.1, 1.2, 1.3, 1.4, 1.5, 1.6)
 
         //Lab Function
         public const string LabWordReaderEnabled = "#LabWordReaderEnabled";             //bool
@@ -68,6 +67,15 @@ namespace 표준국어대사전.Classes
                 localSettings.Values[FirstSetup] = 6;
                 localSettings.Values[RecentWord] = "";
             }
+
+            //2.4.0.0 - 웹뷰 단어 검색 기능 삭제
+            if ((int)localSettings.Values[FirstSetup] < 7)
+            {
+                localSettings.Values[FirstSetup] = 7;
+                localSettings.Values.Remove("#SearchEngine");
+                localSettings.Values.Remove("#UseDevelopermode");
+                localSettings.Values[FONTMAGNIFICATION] = 1.0;
+            }
         }
 
         public static void FirstUpSetUp()
@@ -75,16 +83,15 @@ namespace 표준국어대사전.Classes
             ApplicationDataContainer localSettings = ApplicationData.Current.LocalSettings;
             //최초 설정
             localSettings.Values[FirstSetup] = 0;
-            localSettings.Values[SearchEngine] = "DicAppSearch";
             localSettings.Values[DisplayFont] = "나눔바른고딕 옛한글";
             localSettings.Values[UseCustomAPIKey] = false;
             localSettings.Values[APIKey] = "C58534E2D39CF7CA69BCA193541C1688";
-            localSettings.Values[UseDevelopermode] = false;
             localSettings.Values[SpellingCheckerAgreement] = false;
             localSettings.Values[Language] = "system";
             localSettings.Values[ColorTheme] = "system";
             localSettings.Values[MemoData] = "";
             localSettings.Values[RecentWord] = "";
+            localSettings.Values[FONTMAGNIFICATION] = 1.0;
 
             //LabFunction
             localSettings.Values[LabWordReaderEnabled] = false;

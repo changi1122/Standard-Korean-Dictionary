@@ -13,6 +13,26 @@
         </CommandBar>
 
         <Pivot Margin="10,44,10,0">
+            <PivotItem x:Uid="ADJ_Pivotitem2021" Header="2021년">
+                <ListView Margin="0,20,0,30" SelectionMode="None">
+                    <ListViewItem>
+                        <StackPanel>
+                            <TextBlock Text="2021년 2분기 수정 내용 공개 (2021. 07. 27.)" TextWrapping="Wrap" Margin="0,10,0,0"/>
+                            <StackPanel Margin="20,10,0,10" Orientation="Horizontal">
+                                <Button x:Name="BtnDNotice20212" x:Uid="ADJ_BtnDefaultbrowser" Content="기본 브라우저에서 보기" Click="BtnDNotice20212_Click"/>
+                            </StackPanel>
+                        </StackPanel>
+                    </ListViewItem>
+                    <ListViewItem>
+                        <StackPanel>
+                            <TextBlock Text="2021년 1분기 수정 내용 공개 (2021. 04. 15.)" TextWrapping="Wrap" Margin="0,10,0,0"/>
+                            <StackPanel Margin="20,10,0,10" Orientation="Horizontal">
+                                <Button x:Name="BtnDNotice20211" x:Uid="ADJ_BtnDefaultbrowser" Content="기본 브라우저에서 보기" Click="BtnDNotice20211_Click"/>
+                            </StackPanel>
+                        </StackPanel>
+                    </ListViewItem>
+                </ListView>
+            </PivotItem>
             <PivotItem x:Uid="ADJ_Pivotitem2020" Header="2020년">
                 <ListView Margin="0,20,0,30" SelectionMode="None">
                     <ListViewItem>

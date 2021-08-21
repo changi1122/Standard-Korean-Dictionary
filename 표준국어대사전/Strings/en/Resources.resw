@@ -63,20 +63,11 @@
   <data name="Set_AboutText.Text" xml:space="preserve">
     <value>This app searches words in Standard Korean Language Dictionary created by National Institute of the Korean Language and shows meaning.</value>
   </data>
-  <data name="Set_Address.Text" xml:space="preserve">
-    <value>Address</value>
-  </data>
   <data name="Set_BtnMail.Content" xml:space="preserve">
     <value>Mail</value>
   </data>
   <data name="Set_BtnReview.Content" xml:space="preserve">
     <value>Ratings and Reviews</value>
-  </data>
-  <data name="Set_Call.Text" xml:space="preserve">
-    <value>Call</value>
-  </data>
-  <data name="Set_CheckDevelopermode.Content" xml:space="preserve">
-    <value>Enable Developer Tools</value>
   </data>
   <data name="Set_Contact.Text" xml:space="preserve">
     <value>Contact</value>
@@ -86,9 +77,6 @@
   </data>
   <data name="Set_Include.Text" xml:space="preserve">
     <value>This app includes:</value>
-  </data>
-  <data name="Set_Institute.Text" xml:space="preserve">
-    <value>National Institute of the Korean Language</value>
   </data>
   <data name="Set_Option.Text" xml:space="preserve">
     <value>Option</value>
@@ -104,24 +92,6 @@
   </data>
   <data name="Set_Pivotitem3.Header" xml:space="preserve">
     <value>About</value>
-  </data>
-  <data name="Set_RadioButtonDic.Content" xml:space="preserve">
-    <value>WebView based search</value>
-  </data>
-  <data name="Set_RadioButtonDicAppSearch.Content" xml:space="preserve">
-    <value>In-App Search</value>
-  </data>
-  <data name="Set_RadioButtonDicAppSearchText.Text" xml:space="preserve">
-    <value>Search for words within the app and display their meanings.</value>
-  </data>
-  <data name="Set_RadioButtonDicWeb.Content" xml:space="preserve">
-    <value>View as web page</value>
-  </data>
-  <data name="Set_RadioButtonDicWebText.Text" xml:space="preserve">
-    <value>Displays web pages in WebView.</value>
-  </data>
-  <data name="Set_SearchEngine.Text" xml:space="preserve">
-    <value>Search method</value>
   </data>
   <data name="SPC_Agree" xml:space="preserve">
     <value>Agree</value>
@@ -303,9 +273,6 @@
   <data name="DC_BtnFilter_Meaning" xml:space="preserve">
     <value>Meaning</value>
   </data>
-  <data name="DA_BtnCloseDetail.ToolTipService.ToolTip" xml:space="preserve">
-    <value>Close</value>
-  </data>
   <data name="DA_BtnBack.Label" xml:space="preserve">
     <value>Back</value>
   </data>
@@ -323,5 +290,14 @@
   </data>
   <data name="DA_BtnHome.ToolTipService.ToolTip" xml:space="preserve">
     <value>Welcome</value>
+  </data>
+  <data name="ADJ_Pivotitem2020.Header" xml:space="preserve">
+    <value>2020</value>
+  </data>
+  <data name="ADJ_Pivotitem2021.Header" xml:space="preserve">
+    <value>2021</value>
+  </data>
+  <data name="Set_FontSize.Text" xml:space="preserve">
+    <value>Font Size</value>
   </data>
 </root>

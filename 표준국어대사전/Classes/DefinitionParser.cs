@@ -261,6 +261,10 @@ namespace 표준국어대사전.Classes
                                     if (sense_infos.ElementAt(k).Element("cat_info") != null)
                                         wordDetail.poses[i].patterns[j].definitions[k].cat = (string)sense_infos.ElementAt(k).Element("cat_info").Element("cat");
 
+                                    //학명
+                                    if (sense_infos.ElementAt(k).Element("scientific_name") != null)
+                                        wordDetail.poses[i].patterns[j].definitions[k].scientific_name = (string)sense_infos.ElementAt(k).Element("scientific_name");
+
                                     //sense_pattern_info 정의 문형
                                     if (sense_infos.ElementAt(k).Element("sense_pattern_info") != null)
                                         wordDetail.poses[i].patterns[j].definitions[k].sense_pattern_info = (string)sense_infos.ElementAt(k).Element("sense_pattern_info").Element("pattern");

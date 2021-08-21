@@ -18,15 +18,15 @@
             <StackPanel Height="68" Orientation="Horizontal" HorizontalAlignment="Stretch" Margin="0,0,0,0">
                 <Grid Margin="0,0,0,0">
                     <RichTextBlock HorizontalAlignment="Left" Margin="10,24,0,0" IsTextSelectionEnabled="False">
-                        <Paragraph>
-                            <Run Text="{x:Bind word}" FontFamily="{x:Bind FONTFAMILY}" FontSize="20"/>
-                            <Run Text="{x:Bind display_sup_no}" FontFamily="{x:Bind FONTFAMILY}" FontSize="15"/>
+                        <Paragraph FontSize="20">
+                            <Run Text="{x:Bind word}" FontFamily="{x:Bind FONTFAMILY}"/><Run Text="{x:Bind display_sup_no}" FontFamily="Arial"/>
                         </Paragraph>
                     </RichTextBlock>
                     <Rectangle VerticalAlignment="Bottom" Height="1" Width="50000" Fill="LightGray" Margin="0,0,0,0"/>
                 </Grid>
             </StackPanel>
         </DataTemplate>
+        <CollectionViewSource x:Name="WordSource" Source="{x:Bind Definitions}"/>
         <Style x:Key="ListViewItemRevealStyle" TargetType="ListViewItem">
             <Setter Property="FontFamily" Value="{ThemeResource ContentControlThemeFontFamily}"/>
             <Setter Property="FontSize" Value="{ThemeResource ControlContentThemeFontSize}"/>
@@ -49,7 +49,7 @@
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="ListViewItem">
-                        <ListViewItemPresenter x:Name="Root" CheckBrush="{ThemeResource ListViewItemCheckBrush}" ContentMargin="{TemplateBinding Padding}" CheckBoxBrush="{ThemeResource ListViewItemCheckBoxBrush}" ContentTransitions="{TemplateBinding ContentTransitions}" CheckMode="{ThemeResource ListViewItemCheckMode}" DragOpacity="{ThemeResource ListViewItemDragThemeOpacity}" DisabledOpacity="{ThemeResource ListViewItemDisabledThemeOpacity}" DragBackground="{ThemeResource ListViewItemDragBackground}" DragForeground="{ThemeResource ListViewItemDragForeground}" FocusVisualSecondaryBrush="{TemplateBinding FocusVisualSecondaryBrush}" FocusVisualPrimaryThickness="{TemplateBinding FocusVisualPrimaryThickness}" FocusVisualSecondaryThickness="{TemplateBinding FocusVisualSecondaryThickness}" FocusBorderBrush="{ThemeResource ListViewItemFocusBorderBrush}" FocusVisualMargin="{TemplateBinding FocusVisualMargin}" FocusVisualPrimaryBrush="{TemplateBinding FocusVisualPrimaryBrush}" FocusSecondaryBorderBrush="{ThemeResource ListViewItemFocusSecondaryBorderBrush}" HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}" Control.IsTemplateFocusTarget="True" PressedBackground="{ThemeResource ListViewItemBackgroundPressed}" PlaceholderBackground="{ThemeResource ListViewItemPlaceholderBackground}" PointerOverForeground="{ThemeResource ListViewItemForegroundPointerOver}" PointerOverBackground="{ThemeResource ListViewItemBackgroundPointerOver}" RevealBorderThickness="{ThemeResource ListViewItemRevealBorderThemeThickness}" ReorderHintOffset="{ThemeResource ListViewItemReorderHintThemeOffset}" RevealBorderBrush="{ThemeResource ListViewItemRevealBorderBrush}" RevealBackground="{ThemeResource ListViewItemRevealBackground}" SelectedForeground="{ThemeResource ListViewItemForegroundSelected}" SelectionCheckMarkVisualEnabled="{ThemeResource ListViewItemSelectionCheckMarkVisualEnabled}" SelectedBackground="{ThemeResource SystemControlBackgroundListMediumBrush}" SelectedPressedBackground="{ThemeResource SystemControlBackgroundListMediumBrush}" SelectedPointerOverBackground="{ThemeResource SystemControlBackgroundListMediumBrush}" VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}">
+                        <ListViewItemPresenter x:Name="Root" CheckBrush="{ThemeResource ListViewItemCheckBrush}" ContentMargin="{TemplateBinding Padding}" CheckBoxBrush="{ThemeResource ListViewItemCheckBoxBrush}" ContentTransitions="{TemplateBinding ContentTransitions}" CheckMode="{ThemeResource ListViewItemCheckMode}" DragOpacity="{ThemeResource ListViewItemDragThemeOpacity}" DisabledOpacity="{ThemeResource ListViewItemDisabledThemeOpacity}" DragBackground="{ThemeResource ListViewItemDragBackground}" DragForeground="{ThemeResource ListViewItemDragForeground}" FocusVisualSecondaryBrush="{TemplateBinding FocusVisualSecondaryBrush}" FocusVisualPrimaryThickness="{TemplateBinding FocusVisualPrimaryThickness}" FocusVisualSecondaryThickness="{TemplateBinding FocusVisualSecondaryThickness}" FocusBorderBrush="{ThemeResource ListViewItemFocusBorderBrush}" FocusVisualMargin="{TemplateBinding FocusVisualMargin}" FocusVisualPrimaryBrush="{TemplateBinding FocusVisualPrimaryBrush}" FocusSecondaryBorderBrush="{ThemeResource ListViewItemFocusSecondaryBorderBrush}" HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}" Control.IsTemplateFocusTarget="True" PressedBackground="{ThemeResource ListViewItemBackgroundPressed}" PlaceholderBackground="{ThemeResource ListViewItemPlaceholderBackground}" PointerOverForeground="{ThemeResource ListViewItemForegroundPointerOver}" PointerOverBackground="{ThemeResource ListViewItemBackgroundPointerOver}" RevealBorderThickness="{ThemeResource ListViewItemRevealBorderThemeThickness}" ReorderHintOffset="{ThemeResource ListViewItemReorderHintThemeOffset}" RevealBorderBrush="{ThemeResource ListViewItemRevealBorderBrush}" RevealBackground="{ThemeResource ListViewItemRevealBackground}" SelectedForeground="{ThemeResource ListViewItemForegroundSelected}" SelectionCheckMarkVisualEnabled="{ThemeResource ListViewItemSelectionCheckMarkVisualEnabled}" SelectedBackground="{ThemeResource SystemControlBackgroundListLowBrush}" SelectedPressedBackground="{ThemeResource SystemControlBackgroundListLowBrush}" SelectedPointerOverBackground="{ThemeResource SystemControlBackgroundListLowBrush}" VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}">
                             <VisualStateManager.VisualStateGroups>
                                 <VisualStateGroup x:Name="CommonStates">
                                     <VisualState x:Name="Normal"/>
@@ -340,9 +340,9 @@
                 </Setter.Value>
             </Setter>
         </Style>
-        <CollectionViewSource x:Name="WordSource" Source="{x:Bind Definitions}"/>
     </Page.Resources>
 
+    
     <Grid x:Name="BasicGrid" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" SizeChanged="BasicGrid_SizeChanged">
 
         <CommandBar DefaultLabelPosition="Right">
@@ -376,15 +376,9 @@
             <AppBarButton x:Name="BtnForward" x:Uid="DA_BtnForward" Label="앞으로" ToolTipService.ToolTip="앞으로" Icon="Forward" IsEnabled="False" Click="BtnForward_Click"/>
         </CommandBar>
 
-        <AppBarButton x:Name="BtnCloseDetail" x:Uid="DA_BtnCloseDetail" ToolTipService.ToolTip="닫기" Width="40" Height="40" Margin="40,0,0,0" Click="BtnCloseDetail_Click" Visibility="Collapsed">
-            <AppBarButton.Icon>
-                <FontIcon Glyph="&#xE106;" FontSize="16"/>
-            </AppBarButton.Icon>
-        </AppBarButton>
-
         <Grid x:Name="MasterGrid" Margin="0,40,0,0" HorizontalAlignment="Left" Width="320" BorderThickness="0,0,1,0" BorderBrush="LightGray">
             <ListView ItemContainerStyle="{StaticResource MasterListViewItemContainerStyle}" x:Name="ListviewSearchResult" HorizontalAlignment="Stretch" Margin="0,60,0,0" 
-                      ItemClick="ListviewSearchResult_ItemClick" 
+                      ItemClick="ListviewSearchResult_ItemClick"
                       IsItemClickEnabled="True"
                       ItemsSource="{x:Bind SearchResults}"
                       ItemTemplate="{StaticResource WordListDataTemplate}"
@@ -407,7 +401,7 @@
                         <ContentPresenter Content="{Binding pronsconjusRtb}"/>
                         <ContentPresenter Content="{Binding lexicalsRtb}"/>
                     </StackPanel>
-                    <Rectangle Fill="WhiteSmoke" Margin="0,13,0,15" Height="3"/>
+                    <Rectangle Fill="WhiteSmoke" Margin="0,13,0,5" Height="3"/>
                     <ContentPresenter Content="{Binding ToolBarSp}"/>
                     <StackPanel Height="10"/>
                     <ContentPresenter Content="{Binding detailRtb}"/>

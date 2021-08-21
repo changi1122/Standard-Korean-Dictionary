@@ -131,8 +131,7 @@ namespace 표준국어대사전.Classes
             List<SearchResultItem> wordlist = words.ToList();
             for (int i = 0; i < wordlist.Count(); ++i)
             {
-                if (wordlist[i].sup_no == 0)
-                    wordlist[i].display_sup_no = "";
+                wordlist[i].display_sup_no = (wordlist[i].sup_no != 0) ? ToSup(wordlist[i].sup_no) : "";
                 SearchResults.Add(new ObservableCollection<SearchResultItem>(wordlist)[i]);
             }
 
@@ -169,6 +168,51 @@ namespace 표준국어대사전.Classes
                 else if (error_code == "021")
                     await Windows.System.Launcher.LaunchUriAsync(new Uri(URLCODE021));
             }
+        }
+
+        // 위 첨자로 변환
+        private string ToSup(int number)
+        {
+            StringBuilder numString = new StringBuilder(number.ToString());
+            for (int i = 0; i < numString.Length; i++)
+            {
+                switch (numString[i])
+                {
+                    case '1':
+                        numString[i] = '¹';
+                        break;
+                    case '2':
+                        numString[i] = '²';
+                        break;
+                    case '3':
+                        numString[i] = '³';
+                        break;
+                    case '4':
+                        numString[i] = '⁴';
+                        break;
+                    case '5':
+                        numString[i] = '⁵';
+                        break;
+                    case '6':
+                        numString[i] = '⁶';
+                        break;
+                    case '7':
+                        numString[i] = '⁷';
+                        break;
+                    case '8':
+                        numString[i] = '⁸';
+                        break;
+                    case '9':
+                        numString[i] = '⁹';
+                        break;
+                    case '0':
+                        numString[i] = '⁰';
+                        break;
+                    default:
+                        break;
+                }
+            }
+            return numString.ToString();
         }
 
     }

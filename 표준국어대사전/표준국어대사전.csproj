@@ -138,9 +138,6 @@
     <Compile Include="Pages\Adjustment.xaml.cs">
       <DependentUpon>Adjustment.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Pages\Dic.xaml.cs">
-      <DependentUpon>Dic.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Pages\DicAppSearch.xaml.cs">
       <DependentUpon>DicAppSearch.xaml</DependentUpon>
     </Compile>
@@ -241,10 +238,6 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Pages\Adjustment.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Pages\Dic.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

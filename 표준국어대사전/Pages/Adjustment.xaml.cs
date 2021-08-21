@@ -47,6 +47,8 @@ namespace 표준국어대사전.Pages
         const string NOTICE202012 = "https://drive.google.com/file/d/19HpB-BTFGz56JbtGDlLz1PcYze0AtyHd/view?usp=sharing";
         const string NOTICE20203 = "https://drive.google.com/file/d/1NTMV2SwB60tpnuYJKj6d8JAmsreptUjC/view?usp=sharing";
         const string NOTICE20204 = "https://drive.google.com/file/d/1i0Ea7jjjCJalj0__3kSMm84He4c3GvGs/view?usp=sharing";
+        const string NOTICE20211 = "https://drive.google.com/file/d/1uCIfP7WGftN9fKPgIvcy8Gf_yeKANetD/view?usp=sharing";
+        const string NOTICE20212 = "https://drive.google.com/file/d/1vKDpsLJP3elS3Li7GTX181G-IASPOdlf/view?usp=sharing";
         #endregion
 
         public async void OpenWithDefaultBrowser(Uri uri)
@@ -200,6 +202,18 @@ namespace 표준국어대사전.Pages
         private void BtnDNotice20204_Click(object sender, RoutedEventArgs e)
         {
             var uri = new Uri(NOTICE20204);
+            OpenWithDefaultBrowser(uri);
+        }
+
+        private void BtnDNotice20211_Click(object sender, RoutedEventArgs e)
+        {
+            var uri = new Uri(NOTICE20211);
+            OpenWithDefaultBrowser(uri);
+        }
+
+        private void BtnDNotice20212_Click(object sender, RoutedEventArgs e)
+        {
+            var uri = new Uri(NOTICE20212);
             OpenWithDefaultBrowser(uri);
         }
     }

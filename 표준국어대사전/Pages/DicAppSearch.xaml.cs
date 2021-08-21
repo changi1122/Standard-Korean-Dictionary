@@ -3,28 +3,17 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
+using Windows.UI.Core;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
 using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
-using Windows.UI.Xaml.Navigation;
 using Windows.UI.Popups;
 using System.Collections.ObjectModel;
-using System.Net.NetworkInformation;
-using Windows.Management.Deployment;
-using System.Threading.Tasks;
-using Windows.ApplicationModel.Core;
 using Windows.Networking.Connectivity;
-using System.Net.Http;
-using System.Xml.Linq;
 using Windows.ApplicationModel.Resources;
 
-// 빈 페이지 항목 템플릿에 대한 설명은 https://go.microsoft.com/fwlink/?LinkId=234238에 나와 있습니다.
 
 namespace 표준국어대사전.Pages
 {
@@ -74,6 +63,10 @@ namespace 표준국어대사전.Pages
             UpdateControls();
 
             NetworkCheck();
+
+            // 뒤로가기 버튼 이벤트 핸들러 추가
+            var currentView = SystemNavigationManager.GetForCurrentView();
+            currentView.BackRequested += CloseDetailGrid;
         }
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
@@ -90,12 +83,14 @@ namespace 표준국어대사전.Pages
             BtnForward.IsEnabled = History.CanGoForward;
 
             DefinitionViewer.Visibility = IsDefinitionViewerVisible;
-            if (BtnCloseDetail.Visibility == Visibility.Visible && IsDefinitionViewerVisible == Visibility.Collapsed)
+            var currentView = SystemNavigationManager.GetForCurrentView();
+            if (currentView.AppViewBackButtonVisibility == AppViewBackButtonVisibility.Visible
+                && IsDefinitionViewerVisible == Visibility.Collapsed)
             {
                 Definitions[0] = new WordDetailItem();
                 
                 DetailGrid.Visibility = Visibility.Collapsed;
-                BtnCloseDetail.Visibility = Visibility.Collapsed;
+                currentView.AppViewBackButtonVisibility = AppViewBackButtonVisibility.Collapsed;
             }
         }
 
@@ -167,7 +162,7 @@ namespace 표준국어대사전.Pages
                 if (BasicGrid.ActualWidth < 686)
                 {
                     DetailGrid.Visibility = Visibility.Visible;
-                    BtnCloseDetail.Visibility = Visibility.Visible;
+                    ShowBackButton();
                 }
                 UpdateControls();
                 return;
@@ -184,7 +179,7 @@ namespace 표준국어대사전.Pages
             if (BasicGrid.ActualWidth < 686)
             {
                 DetailGrid.Visibility = Visibility.Visible;
-                BtnCloseDetail.Visibility = Visibility.Visible;
+                ShowBackButton();
             }
 
             DefinitionParser definitionParser = new DefinitionParser(DetailProgressBar);
@@ -371,17 +366,7 @@ namespace 표준국어대사전.Pages
             }
 
             //뒤로가기 키 지우기
-            BtnCloseDetail.Visibility = Visibility.Collapsed;
-        }
-
-        private void BtnCloseDetail_Click(object sender, RoutedEventArgs e)
-        {
-            //뜻풀이 감추기
-            Definitions[0] = new WordDetailItem();
-            UpdateControls();
-
-            DetailGrid.Visibility = Visibility.Collapsed;
-            BtnCloseDetail.Visibility = Visibility.Collapsed;
+            HideBackButton();
         }
 
         private void BtnMultiSearch_Click(object sender, RoutedEventArgs e)
@@ -489,6 +474,30 @@ namespace 표준국어대사전.Pages
             ListviewSearchResult.SelectedIndex = 0;
             Definitions[0] = WordDetailStaticPage.GetHomepage();
             UpdateControls();
+        }
+
+        private void ShowBackButton()
+        {
+            var currentView = SystemNavigationManager.GetForCurrentView();
+            currentView.AppViewBackButtonVisibility = AppViewBackButtonVisibility.Visible;
+        }
+
+        private void HideBackButton()
+        {
+            var currentView = SystemNavigationManager.GetForCurrentView();
+            currentView.AppViewBackButtonVisibility = AppViewBackButtonVisibility.Collapsed;
+        }
+
+        private void CloseDetailGrid(object sender, BackRequestedEventArgs e)
+        {
+
+            //뜻풀이 감추기
+            Definitions[0] = new WordDetailItem();
+            UpdateControls();
+
+            DetailGrid.Visibility = Visibility.Collapsed;
+            var currentView = SystemNavigationManager.GetForCurrentView();
+            currentView.AppViewBackButtonVisibility = AppViewBackButtonVisibility.Collapsed;
         }
     }
 }
