@@ -599,7 +599,6 @@ namespace 표준국어대사전.Classes
                                 }
                             }
 
-                            
                             Paragraph para3 = new Paragraph { Margin = new Thickness(5, 15, 0, 15), FontSize = 15 * FONTMAGNIFICATION, FontFamily = new FontFamily(FONTFAMILY) };
 
                             //의미 번호
@@ -680,6 +679,10 @@ namespace 표준국어대사전.Classes
                                 }
                                 para3.Inlines.Add(new Run { Text = "." });
                             }
+
+                            //학명
+                            if (patterns[j].definitions[k].scientific_name != null)
+                                para3.Inlines.Add(new Run { Text = $"  ({patterns[j].definitions[k].scientific_name})", FontSize = 15 * FONTMAGNIFICATION, FontStyle = Windows.UI.Text.FontStyle.Italic });
 
                             rtb.Blocks.Add(para3);
 
@@ -930,6 +933,7 @@ namespace 표준국어대사전.Classes
             public string sense_pattern_info;
             public string sense_grammar;
             public string definition;
+            public string scientific_name;
             public List<string> examples;
             public List<LexicalItem> lexicals;
         }
