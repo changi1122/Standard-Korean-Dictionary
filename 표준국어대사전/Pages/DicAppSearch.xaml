@@ -18,8 +18,8 @@
             <StackPanel Height="68" Orientation="Horizontal" HorizontalAlignment="Stretch" Margin="0,0,0,0">
                 <Grid Margin="0,0,0,0">
                     <RichTextBlock HorizontalAlignment="Left" Margin="10,24,0,0" IsTextSelectionEnabled="False">
-                        <Paragraph>
-                            <Run Text="{x:Bind word}" FontFamily="{x:Bind FONTFAMILY}" FontSize="20"/><Run Text="{x:Bind display_sup_no}" FontFamily="{x:Bind FONTFAMILY}" FontSize="15"/>
+                        <Paragraph FontSize="20">
+                            <Run Text="{x:Bind word}" FontFamily="{x:Bind FONTFAMILY}"/><Run Text="{x:Bind display_sup_no}" FontFamily="Arial"/>
                         </Paragraph>
                     </RichTextBlock>
                     <Rectangle VerticalAlignment="Bottom" Height="1" Width="50000" Fill="LightGray" Margin="0,0,0,0"/>
