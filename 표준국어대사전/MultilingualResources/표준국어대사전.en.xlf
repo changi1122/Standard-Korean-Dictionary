@@ -394,10 +394,6 @@
           <source>뜻</source>
           <target state="translated">Meaning</target>
         </trans-unit>
-        <trans-unit id="DA_BtnCloseDetail.ToolTipService.ToolTip" translate="yes" xml:space="preserve">
-          <source>닫기</source>
-          <target state="translated">Close</target>
-        </trans-unit>
         <trans-unit id="DA_BtnBack.Label" translate="yes" xml:space="preserve">
           <source>뒤로</source>
           <target state="translated">Back</target>

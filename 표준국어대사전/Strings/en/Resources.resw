@@ -303,9 +303,6 @@
   <data name="DC_BtnFilter_Meaning" xml:space="preserve">
     <value>Meaning</value>
   </data>
-  <data name="DA_BtnCloseDetail.ToolTipService.ToolTip" xml:space="preserve">
-    <value>Close</value>
-  </data>
   <data name="DA_BtnBack.Label" xml:space="preserve">
     <value>Back</value>
   </data>

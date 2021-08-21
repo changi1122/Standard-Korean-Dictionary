@@ -376,12 +376,6 @@
             <AppBarButton x:Name="BtnForward" x:Uid="DA_BtnForward" Label="앞으로" ToolTipService.ToolTip="앞으로" Icon="Forward" IsEnabled="False" Click="BtnForward_Click"/>
         </CommandBar>
 
-        <AppBarButton x:Name="BtnCloseDetail" x:Uid="DA_BtnCloseDetail" ToolTipService.ToolTip="닫기" Width="40" Height="40" Margin="40,0,0,0" Click="BtnCloseDetail_Click" Visibility="Collapsed">
-            <AppBarButton.Icon>
-                <FontIcon Glyph="&#xE106;" FontSize="16"/>
-            </AppBarButton.Icon>
-        </AppBarButton>
-
         <Grid x:Name="MasterGrid" Margin="0,40,0,0" HorizontalAlignment="Left" Width="320" BorderThickness="0,0,1,0" BorderBrush="LightGray">
             <ListView ItemContainerStyle="{StaticResource MasterListViewItemContainerStyle}" x:Name="ListviewSearchResult" HorizontalAlignment="Stretch" Margin="0,60,0,0" 
                       ItemClick="ListviewSearchResult_ItemClick" 

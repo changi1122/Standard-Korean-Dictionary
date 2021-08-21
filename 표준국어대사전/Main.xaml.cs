@@ -6,6 +6,8 @@ using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.Storage;
+using Windows.UI;
+using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -27,6 +29,31 @@ namespace 표준국어대사전
         public MainPage()
         {
             InitializeComponent();
+            SetTitleBarColor();
+        }
+
+        private void SetTitleBarColor()
+        {
+            // 제목 표시줄 색상 설정
+            ApplicationViewTitleBar titleBar = ApplicationView.GetForCurrentView().TitleBar;
+            if (App.Current.RequestedTheme == ApplicationTheme.Light)
+            {
+                titleBar.BackgroundColor = Color.FromArgb(0xFF, 0xE6, 0xE6, 0xE6);
+                titleBar.ButtonBackgroundColor = Color.FromArgb(0xFF, 0xE6, 0xE6, 0xE6);
+                titleBar.ButtonHoverBackgroundColor = Color.FromArgb(0xFF, 0xD6, 0xD6, 0xD6);
+                titleBar.ButtonInactiveBackgroundColor = Color.FromArgb(0xFF, 0xE6, 0xE6, 0xE6);
+                titleBar.InactiveBackgroundColor = Color.FromArgb(0xFF, 0xE6, 0xE6, 0xE6);
+                titleBar.ButtonHoverForegroundColor = Colors.Black;
+            }
+            else if (App.Current.RequestedTheme == ApplicationTheme.Dark)
+            {
+                titleBar.BackgroundColor = Color.FromArgb(0x1f, 0x1f, 0x1f, 0x1f);
+                titleBar.ButtonBackgroundColor = Color.FromArgb(0xFF, 0x1f, 0x1f, 0x1f);
+                titleBar.ButtonHoverBackgroundColor = Color.FromArgb(0xFF, 0x2f, 0x2f, 0x2f);
+                titleBar.ButtonHoverForegroundColor = Colors.White;
+                titleBar.ButtonInactiveBackgroundColor = Color.FromArgb(0x1f, 0x1f, 0x1f, 0x1f);
+                titleBar.InactiveBackgroundColor = Color.FromArgb(0xFF, 0x1f, 0x1f, 0x1f);
+            }
         }
 
         private void NavigationView_Loaded(object sender, RoutedEventArgs e)
