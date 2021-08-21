@@ -19,14 +19,14 @@
                 <Grid Margin="0,0,0,0">
                     <RichTextBlock HorizontalAlignment="Left" Margin="10,24,0,0" IsTextSelectionEnabled="False">
                         <Paragraph>
-                            <Run Text="{x:Bind word}" FontFamily="{x:Bind FONTFAMILY}" FontSize="20"/>
-                            <Run Text="{x:Bind display_sup_no}" FontFamily="{x:Bind FONTFAMILY}" FontSize="15"/>
+                            <Run Text="{x:Bind word}" FontFamily="{x:Bind FONTFAMILY}" FontSize="20"/><Run Text="{x:Bind display_sup_no}" FontFamily="{x:Bind FONTFAMILY}" FontSize="15"/>
                         </Paragraph>
                     </RichTextBlock>
                     <Rectangle VerticalAlignment="Bottom" Height="1" Width="50000" Fill="LightGray" Margin="0,0,0,0"/>
                 </Grid>
             </StackPanel>
         </DataTemplate>
+        <CollectionViewSource x:Name="WordSource" Source="{x:Bind Definitions}"/>
         <Style x:Key="ListViewItemRevealStyle" TargetType="ListViewItem">
             <Setter Property="FontFamily" Value="{ThemeResource ContentControlThemeFontFamily}"/>
             <Setter Property="FontSize" Value="{ThemeResource ControlContentThemeFontSize}"/>
@@ -340,9 +340,9 @@
                 </Setter.Value>
             </Setter>
         </Style>
-        <CollectionViewSource x:Name="WordSource" Source="{x:Bind Definitions}"/>
     </Page.Resources>
 
+    
     <Grid x:Name="BasicGrid" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" SizeChanged="BasicGrid_SizeChanged">
 
         <CommandBar DefaultLabelPosition="Right">
@@ -378,7 +378,7 @@
 
         <Grid x:Name="MasterGrid" Margin="0,40,0,0" HorizontalAlignment="Left" Width="320" BorderThickness="0,0,1,0" BorderBrush="LightGray">
             <ListView ItemContainerStyle="{StaticResource MasterListViewItemContainerStyle}" x:Name="ListviewSearchResult" HorizontalAlignment="Stretch" Margin="0,60,0,0" 
-                      ItemClick="ListviewSearchResult_ItemClick" 
+                      ItemClick="ListviewSearchResult_ItemClick"
                       IsItemClickEnabled="True"
                       ItemsSource="{x:Bind SearchResults}"
                       ItemTemplate="{StaticResource WordListDataTemplate}"
