@@ -291,4 +291,7 @@
   <data name="DA_BtnHome.ToolTipService.ToolTip" xml:space="preserve">
     <value>Welcome</value>
   </data>
+  <data name="Set_FontSize" xml:space="preserve">
+    <value>Font Size</value>
+  </data>
 </root>

@@ -16,13 +16,15 @@ using Windows.Storage.Streams;
 using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.Graphics.Imaging;
 using System.IO;
+using Windows.UI.Xaml.Data;
 
 namespace 표준국어대사전.Classes
 {
     public class WordDetailItem : INotifyPropertyChanged
     {
-        string FONTFAMILY = "/Fonts/NanumBarunGothic-YetHangul.ttf#NanumBarunGothic YetHangul";
-        bool LabWordReaderEnabled = StorageManager.GetSetting<bool>(StorageManager.LabWordReaderEnabled);
+        private string FONTFAMILY = "/Fonts/NanumBarunGothic-YetHangul.ttf#NanumBarunGothic YetHangul";
+        private double FONTMAGNIFICATION = 1.0;
+        private bool LabWordReaderEnabled = StorageManager.GetSetting<bool>(StorageManager.LabWordReaderEnabled);
 
         //필터
         public bool IsExampleVisible = true;
@@ -34,7 +36,15 @@ namespace 표준국어대사전.Classes
             {
                 StackPanel sp = new StackPanel { Orientation = Orientation.Horizontal, HorizontalAlignment = HorizontalAlignment.Right };
                 //ToolBar Buttons
-                Button BtnFilter = new Button { Width = 80, Margin = new Thickness(5, 0, 5, 0), Background = Application.Current.Resources["ApplicationPageBackgroundThemeBrush"] as SolidColorBrush };
+                Button BtnFontDecrease= new Button { Content = "", FontSize = 14, FontFamily= new FontFamily("Segoe MDL2 Assets"), Width = 36, Height = 36, Margin = new Thickness(5, 0, 2, 0), Background = Application.Current.Resources["ApplicationPageBackgroundThemeBrush"] as SolidColorBrush };
+                BtnFontDecrease.Click += BtnFontDecrease_Click;
+                sp.Children.Add(BtnFontDecrease);
+
+                Button BtnFontIncrease = new Button { Content = "", FontSize = 14, FontFamily = new FontFamily("Segoe MDL2 Assets"), Width = 36, Height = 36, Margin = new Thickness(2, 0, 2, 0), Background = Application.Current.Resources["ApplicationPageBackgroundThemeBrush"] as SolidColorBrush };
+                BtnFontIncrease.Click += BtnFontIncrease_Click;
+                sp.Children.Add(BtnFontIncrease);
+
+                Button BtnFilter = new Button { Width = 80, Height = 36, Margin = new Thickness(5, 0, 5, 0), Background = Application.Current.Resources["ApplicationPageBackgroundThemeBrush"] as SolidColorBrush };
                 var res = Windows.ApplicationModel.Resources.ResourceLoader.GetForCurrentView();
                 if (IsExampleVisible)
                     BtnFilter.Content = res.GetString("DC_BtnFilter_All");
@@ -48,6 +58,38 @@ namespace 표준국어대사전.Classes
             }
         }
 
+
+        public void BtnFontDecrease_Click(object sender, RoutedEventArgs e)
+        {
+            if (1.0 < FONTMAGNIFICATION)
+                FONTMAGNIFICATION -= 0.1;
+            StorageManager.SetSetting<double>(StorageManager.FONTMAGNIFICATION, FONTMAGNIFICATION);
+            RaisePropertyChanged("wordnameRtb");
+            RaisePropertyChanged("pronsconjusRtb");
+            RaisePropertyChanged("pronsSp");
+            RaisePropertyChanged("conjusSp");
+            RaisePropertyChanged("lexicalsRtb");
+            RaisePropertyChanged("detailRtb");
+            RaisePropertyChanged("originRtb");
+            RaisePropertyChanged("relationRtb");
+            RaisePropertyChanged("homeRtb");
+        }
+
+        public void BtnFontIncrease_Click(object sender, RoutedEventArgs e)
+        {
+            if (FONTMAGNIFICATION < 1.6)
+                FONTMAGNIFICATION += 0.1;
+            StorageManager.SetSetting<double>(StorageManager.FONTMAGNIFICATION, FONTMAGNIFICATION);
+            RaisePropertyChanged("wordnameRtb");
+            RaisePropertyChanged("pronsconjusRtb");
+            RaisePropertyChanged("pronsSp");
+            RaisePropertyChanged("conjusSp");
+            RaisePropertyChanged("lexicalsRtb");
+            RaisePropertyChanged("detailRtb");
+            RaisePropertyChanged("originRtb");
+            RaisePropertyChanged("relationRtb");
+            RaisePropertyChanged("homeRtb");
+        }
 
         public void BtnFilter_Click(object sender, RoutedEventArgs e)
         {
@@ -96,6 +138,8 @@ namespace 표준국어대사전.Classes
                 FONTFAMILY = "#Malgun Gothic";
             else
                 FONTFAMILY = "/Fonts/NanumBarunGothic-YetHangul.ttf#NanumBarunGothic YetHangul";
+            FONTMAGNIFICATION = StorageManager.GetSetting<double>(StorageManager.FONTMAGNIFICATION);
+            FONTMAGNIFICATION = Math.Truncate(FONTMAGNIFICATION * 10) / 10;
         }
 
         //코드 번호
@@ -132,13 +176,13 @@ namespace 표준국어대사전.Classes
             {
                 RichTextBlock rtb = new RichTextBlock();
 
-                Paragraph para = new Paragraph();
+                Paragraph para = new Paragraph { FontFamily = new FontFamily(FONTFAMILY) };
                 if (wordname != null)
-                    para.Inlines.Add(new Run { Text = wordname, FontSize = 32, FontFamily = new FontFamily(FONTFAMILY) });
+                    para.Inlines.Add(new Run { Text = wordname, FontSize = 32 * FONTMAGNIFICATION });
                 if (sup_no != 0)
-                    para.Inlines.Add(new Run { Text = sup_no.ToString(), FontSize = 18, FontFamily = new FontFamily(FONTFAMILY) });
+                    para.Inlines.Add(new Run { Text = sup_no.ToString(), FontSize = 18 * FONTMAGNIFICATION });
                 if (original_language != "")
-                    para.Inlines.Add(new Run { Text = $" ({original_language})", FontSize = 18, FontFamily = new FontFamily(FONTFAMILY) });
+                    para.Inlines.Add(new Run { Text = $" ({original_language})", FontSize = 18 * FONTMAGNIFICATION });
                 rtb.Blocks.Add(para);
 
                 return rtb;
@@ -150,15 +194,14 @@ namespace 표준국어대사전.Classes
         {
             get
             {
-                RichTextBlock rtb = new RichTextBlock();
-                rtb.TextWrapping = TextWrapping.Wrap;
+                RichTextBlock rtb = new RichTextBlock { TextWrapping = TextWrapping.Wrap };
 
                 if (LabWordReaderEnabled == false)
                 {
                     //발음
                     if (prons != null && prons.Count > 0) //발음 정보 없는 예외 처리
                     {
-                        Paragraph pProns = new Paragraph { FontSize = 16, FontFamily = new FontFamily(FONTFAMILY), Margin = new Thickness(0, 4, 0, 4) };
+                        Paragraph pProns = new Paragraph { FontSize = 16 * FONTMAGNIFICATION, FontFamily = new FontFamily(FONTFAMILY), Margin = new Thickness(0, 4, 0, 4) };
                         pProns.Inlines.Add(new Run { Text = "발음  ", FontWeight = Windows.UI.Text.FontWeights.Bold });
 
                         pProns.Inlines.Add(new Run { Text = "[" });
@@ -177,7 +220,7 @@ namespace 표준국어대사전.Classes
                     //활용
                     if (conjus != null) //활용 정보 없는 예외 처리
                     {
-                        Paragraph pConjus = new Paragraph { FontSize = 16, FontFamily = new FontFamily(FONTFAMILY), Margin = new Thickness(0, 4, 0, 4) };
+                        Paragraph pConjus = new Paragraph { FontSize = 16 * FONTMAGNIFICATION, FontFamily = new FontFamily(FONTFAMILY), Margin = new Thickness(0, 4, 0, 4) };
                         pConjus.Inlines.Add(new Run { Text = "활용  ", FontWeight = Windows.UI.Text.FontWeights.Bold });
 
                         for (int i = 0; i < conjus.Count; i++)
@@ -251,7 +294,7 @@ namespace 표준국어대사전.Classes
                 {
                     sp = new StackPanel { Orientation = Orientation.Horizontal, Margin = new Thickness(0, 4, 0, 4) };
 
-                    TextBlock title = new TextBlock { Text = "발음", Margin = new Thickness(0, 0, 10, 0), FontSize = 16, FontWeight = Windows.UI.Text.FontWeights.Bold, FontFamily = new FontFamily(FONTFAMILY) };
+                    TextBlock title = new TextBlock { Text = "발음", Margin = new Thickness(0, 0, 10, 0), FontSize = 16 * FONTMAGNIFICATION, FontWeight = Windows.UI.Text.FontWeights.Bold, FontFamily = new FontFamily(FONTFAMILY) };
                     sp.Children.Add(title);
                     sp.Children.Add(new PronunciationBlock { WordItems = prons, FontFamily = new FontFamily(FONTFAMILY), IsReaderEnabled = LabWordReaderEnabled });
                 }
@@ -275,12 +318,12 @@ namespace 표준국어대사전.Classes
                 {
                     sp = new StackPanel { Orientation = Orientation.Horizontal, Margin = new Thickness(0, 4, 0, 4) };
 
-                    TextBlock title = new TextBlock { Text = "활용", Margin = new Thickness(0, 0, 10, 0), FontSize = 16, FontWeight = Windows.UI.Text.FontWeights.Bold, FontFamily = new FontFamily(FONTFAMILY) };
+                    TextBlock title = new TextBlock { Text = "활용", Margin = new Thickness(0, 0, 10, 0), FontSize = 16 * FONTMAGNIFICATION, FontWeight = Windows.UI.Text.FontWeights.Bold, FontFamily = new FontFamily(FONTFAMILY) };
                     sp.Children.Add(title);
 
                     for (int i = 0; i < conjus.Count; i++)
                     {
-                        sp.Children.Add(new TextBlock { Text = conjus[i].conjus, FontSize = 16, FontFamily = new FontFamily(FONTFAMILY) });
+                        sp.Children.Add(new TextBlock { Text = conjus[i].conjus, FontSize = 16 * FONTMAGNIFICATION, FontFamily = new FontFamily(FONTFAMILY) });
 
                         if (conjus[i].conju_prons != null)
                         {
@@ -293,14 +336,14 @@ namespace 표준국어대사전.Classes
                             List<AbbreviationItem> abbreviations = conjus[i].abbreviations;
                             for (int j = 0; j < abbreviations.Count; j++)
                             {
-                                sp.Children.Add(new TextBlock { Text = "(" + abbreviations[j].abbreviations, FontSize = 16, FontFamily = new FontFamily(FONTFAMILY) });
+                                sp.Children.Add(new TextBlock { Text = "(" + abbreviations[j].abbreviations, FontSize = 16 * FONTMAGNIFICATION, FontFamily = new FontFamily(FONTFAMILY) });
                                 if (abbreviations[j].abbreviation_prons != null)
                                     sp.Children.Add(new PronunciationBlock { WordItems = abbreviations[j].abbreviation_prons, IsReaderEnabled = LabWordReaderEnabled, FontFamily = new FontFamily(FONTFAMILY) });
-                                sp.Children.Add(new TextBlock { Text = ")", FontSize = 16, FontFamily = new FontFamily(FONTFAMILY) });
+                                sp.Children.Add(new TextBlock { Text = ")", FontSize = 16 * FONTMAGNIFICATION, FontFamily = new FontFamily(FONTFAMILY) });
                             }
                         }
                         if (conjus.Count - i != 1)
-                            sp.Children.Add(new TextBlock { Text = ",", Margin = new Thickness(0, 0, 6, 0), FontSize = 16, FontFamily = new FontFamily(FONTFAMILY) });
+                            sp.Children.Add(new TextBlock { Text = ",", Margin = new Thickness(0, 0, 6, 0), FontSize = 16 * FONTMAGNIFICATION, FontFamily = new FontFamily(FONTFAMILY) });
                     }
                 }
 
@@ -334,7 +377,7 @@ namespace 표준국어대사전.Classes
                     }
                     else //첫 단어
                     {
-                        Paragraph para = new Paragraph { Margin = new Thickness(0, 0, 0, 4), FontSize = 16, FontFamily = new FontFamily(FONTFAMILY) };
+                        Paragraph para = new Paragraph { Margin = new Thickness(0, 0, 0, 4), FontSize = 16 * FONTMAGNIFICATION, FontFamily = new FontFamily(FONTFAMILY) };
 
                         para.Inlines.Add(new Run { Text = $"「{lexicals[i].type}」 ", FontWeight = Windows.UI.Text.FontWeights.Bold });
 
@@ -372,7 +415,7 @@ namespace 표준국어대사전.Classes
                 //관사와 하위 항목
                 for (int i = 0; i < poses.Count; i++)
                 {
-                    Paragraph para = new Paragraph { Margin = new Thickness(0, 40, 0, 0), FontSize = 20, FontWeight = Windows.UI.Text.FontWeights.Bold, FontFamily = new FontFamily(FONTFAMILY) };
+                    Paragraph para = new Paragraph { Margin = new Thickness(0, 40, 0, 0), FontSize = 20 * FONTMAGNIFICATION, FontWeight = Windows.UI.Text.FontWeights.Bold, FontFamily = new FontFamily(FONTFAMILY) };
 
                     // 관사 번호
                     if (1 < poses.Count)
@@ -395,7 +438,7 @@ namespace 표준국어대사전.Classes
 
                     for (int j = 0; j < patterns.Count; j++)
                     {
-                        Paragraph para2 = new Paragraph { Margin = new Thickness(20, 30, 0, 20), FontSize = 18, FontFamily = new FontFamily(FONTFAMILY) };
+                        Paragraph para2 = new Paragraph { Margin = new Thickness(20, 30, 0, 20), FontSize = 18 * FONTMAGNIFICATION, FontFamily = new FontFamily(FONTFAMILY) };
 
                         // 문형 번호
                         if (1 < patterns.Count)
@@ -435,27 +478,28 @@ namespace 표준국어대사전.Classes
                                 OutputList.Add("&FOS015" + $"(({patterns[j].definitions[k].sense_grammar})) ");
 
                             //글꼴 크기가 다른 경우
+                            string cloneDefinition = definitions[k].definition;
                             while (true)
                             {
-                                if (!definitions[k].definition.Contains("<sub style='font-size:"))
+                                if (!cloneDefinition.Contains("<sub style='font-size:"))
                                 {
-                                    OutputList.Add("&FOS015" + definitions[k].definition);
+                                    OutputList.Add("&FOS015" + cloneDefinition);
                                     break;
                                 }
                                 else
                                 {
-                                    if (definitions[k].definition.IndexOf("<sub style='font-size:") != 0)
+                                    if (cloneDefinition.IndexOf("<sub style='font-size:") != 0)
                                     {
-                                        OutputList.Add("&FOS015" + definitions[k].definition.Substring(0, definitions[k].definition.IndexOf("<sub style='font-size:")));
-                                        definitions[k].definition = definitions[k].definition.Substring(definitions[k].definition.IndexOf("<sub style='font-size:"));
+                                        OutputList.Add("&FOS015" + cloneDefinition.Substring(0, cloneDefinition.IndexOf("<sub style='font-size:")));
+                                        cloneDefinition = cloneDefinition.Substring(cloneDefinition.IndexOf("<sub style='font-size:"));
                                     }
-                                    string fontsize = definitions[k].definition.Substring(definitions[k].definition.IndexOf("<sub style='font-size:") + 22, definitions[k].definition.IndexOf("px;'>") - definitions[k].definition.IndexOf("<sub style='font-size:") - 22);
+                                    string fontsize = cloneDefinition.Substring(cloneDefinition.IndexOf("<sub style='font-size:") + 22, cloneDefinition.IndexOf("px;'>") - cloneDefinition.IndexOf("<sub style='font-size:") - 22);
                                     if (fontsize.Length == 1)
                                         fontsize = "00" + fontsize;
                                     else if (fontsize.Length == 2)
                                         fontsize = "0" + fontsize;
-                                    OutputList.Add("&FOS" + fontsize + definitions[k].definition.Substring(definitions[k].definition.IndexOf("<sub style='font-size:") + 29, definitions[k].definition.IndexOf("</sub>") - definitions[k].definition.IndexOf("<sub style='font-size:") - 29));
-                                    definitions[k].definition = definitions[k].definition.Substring(definitions[k].definition.IndexOf("</sub>") + 6);
+                                    OutputList.Add("&FOS" + fontsize + cloneDefinition.Substring(cloneDefinition.IndexOf("<sub style='font-size:") + 29, cloneDefinition.IndexOf("</sub>") - cloneDefinition.IndexOf("<sub style='font-size:") - 29));
+                                    cloneDefinition = cloneDefinition.Substring(cloneDefinition.IndexOf("</sub>") + 6);
                                 }
                             }
 
@@ -537,7 +581,7 @@ namespace 표준국어대사전.Classes
                             }
 
                             
-                            Paragraph para3 = new Paragraph { Margin = new Thickness(5, 15, 0, 15), FontSize = 15, FontFamily = new FontFamily(FONTFAMILY) };
+                            Paragraph para3 = new Paragraph { Margin = new Thickness(5, 15, 0, 15), FontSize = 15 * FONTMAGNIFICATION, FontFamily = new FontFamily(FONTFAMILY) };
 
                             //의미 번호
                             if (1 < definitions.Count)
@@ -550,19 +594,19 @@ namespace 표준국어대사전.Classes
                                 if (OutputList[o].StartsWith("&FOS"))
                                 {
                                     int fontsize = int.Parse(OutputList[o].Substring(4, 3));
-                                    para3.Inlines.Add(new Run { Text = OutputList[o].Substring(7), FontSize = fontsize });
+                                    para3.Inlines.Add(new Run { Text = OutputList[o].Substring(7), FontSize = fontsize * FONTMAGNIFICATION });
                                 }
                                 else if (OutputList[o].StartsWith("&ITA"))
                                 {
                                     int fontsize = int.Parse(OutputList[o].Substring(4, 3));
-                                    para3.Inlines.Add(new Run { Text = OutputList[o].Substring(7), FontSize = fontsize, FontStyle = Windows.UI.Text.FontStyle.Italic });
+                                    para3.Inlines.Add(new Run { Text = OutputList[o].Substring(7), FontSize = fontsize * FONTMAGNIFICATION, FontStyle = Windows.UI.Text.FontStyle.Italic });
                                 }
                                 else if (OutputList[o].StartsWith("&HLK"))
                                 {
                                     int fontsize = int.Parse(OutputList[o].Substring(4, 3));
 
                                     Hyperlink link = new Hyperlink();
-                                    link.Inlines.Add(new Run { Text = OutputList[o].Substring(OutputList[o].IndexOf(">") + 1), FontSize = fontsize });
+                                    link.Inlines.Add(new Run { Text = OutputList[o].Substring(OutputList[o].IndexOf(">") + 1), FontSize = fontsize * FONTMAGNIFICATION });
                                     link.Inlines.Add(new Run { FontFamily = new FontFamily(OutputList[o].Substring(OutputList[o].IndexOf("<") + 1, OutputList[o].IndexOf(">") - OutputList[o].IndexOf("<") - 1)) });
                                     link.Click += Hyperlink_Click;
                                     para3.Inlines.Add(link);
@@ -622,7 +666,7 @@ namespace 표준국어대사전.Classes
                                 List<string> examples = definitions[k].examples;
                                 for (int l = 0; l < examples.Count; l++)
                                 {
-                                    Paragraph para4 = new Paragraph { Margin = new Thickness(30, 4, 0, 4), FontSize = 14, FontFamily = new FontFamily(FONTFAMILY) };
+                                    Paragraph para4 = new Paragraph { Margin = new Thickness(30, 4, 0, 4), FontSize = 14 * FONTMAGNIFICATION, FontFamily = new FontFamily(FONTFAMILY) };
                                     para4.Inlines.Add(new Run { Text = "· " + examples[l] });
                                     rtb.Blocks.Add(para4);
                                 }
@@ -651,7 +695,7 @@ namespace 표준국어대사전.Classes
                                     }
                                     else //첫 단어
                                     {
-                                        Paragraph para4 = new Paragraph { Margin = new Thickness(30, 8, 0, 4) , FontSize = 13, FontFamily = new FontFamily(FONTFAMILY) };
+                                        Paragraph para4 = new Paragraph { Margin = new Thickness(30, 8, 0, 4) , FontSize = 13 * FONTMAGNIFICATION, FontFamily = new FontFamily(FONTFAMILY) };
 
                                         para4.Inlines.Add(new Run { Text = $"「{lexicals[l].type}」 " });
 
@@ -678,7 +722,7 @@ namespace 표준국어대사전.Classes
                 //norm 규범 정보
                 if(norms != null)
                 {
-                    Paragraph para = new Paragraph { Margin = new Thickness(0, 30, 0, 0), FontSize = 14, FontFamily = new FontFamily(FONTFAMILY) };
+                    Paragraph para = new Paragraph { Margin = new Thickness(0, 30, 0, 0), FontSize = 14 * FONTMAGNIFICATION, FontFamily = new FontFamily(FONTFAMILY) };
 
                     for (int i = 0; i < norms.Count; i++)
                     {
@@ -700,11 +744,11 @@ namespace 표준국어대사전.Classes
 
                 if (origin != null)
                 {
-                    Paragraph title = new Paragraph { Margin = new Thickness(0, 15, 0, 25), FontSize = 18, FontFamily = new FontFamily(FONTFAMILY) };
+                    Paragraph title = new Paragraph { Margin = new Thickness(0, 15, 0, 25), FontSize = 18 * FONTMAGNIFICATION, FontFamily = new FontFamily(FONTFAMILY) };
                     title.Inlines.Add(new Run { Text = "▹ 어원" });
                     rtb.Blocks.Add(title);
 
-                    Paragraph para = new Paragraph { Margin = new Thickness(0, 0, 0, 5), FontSize = 15, FontFamily = new FontFamily(FONTFAMILY) };
+                    Paragraph para = new Paragraph { Margin = new Thickness(0, 0, 0, 5), FontSize = 15 * FONTMAGNIFICATION, FontFamily = new FontFamily(FONTFAMILY) };
                     para.Inlines.Add(new Run { Text = origin });
                     rtb.Blocks.Add(para);
                 }
@@ -722,13 +766,13 @@ namespace 표준국어대사전.Classes
 
                 if (relations != null)
                 {
-                    Paragraph title = new Paragraph { Margin = new Thickness(0, 15, 0, 25), FontSize = 18, FontFamily = new FontFamily(FONTFAMILY) };
+                    Paragraph title = new Paragraph { Margin = new Thickness(0, 15, 0, 25), FontSize = 18 * FONTMAGNIFICATION, FontFamily = new FontFamily(FONTFAMILY) };
                     title.Inlines.Add(new Run { Text = "▹ 관용구/속담" });
                     rtb.Blocks.Add(title);
 
                     for (int i = 0; i < relations.Count; i++)
                     {
-                        Paragraph para = new Paragraph { Margin = new Thickness(0, 15, 0, 15), FontSize = 15, FontFamily = new FontFamily(FONTFAMILY) };
+                        Paragraph para = new Paragraph { Margin = new Thickness(0, 15, 0, 15), FontSize = 15 * FONTMAGNIFICATION, FontFamily = new FontFamily(FONTFAMILY) };
 
                         string type = "";
                         if (relations[i].type == ERelationType.idiom)
@@ -764,16 +808,16 @@ namespace 표준국어대사전.Classes
 
                     //최근 검색
                     Paragraph subTitle1 = new Paragraph { FontFamily = new FontFamily(FONTFAMILY) };
-                    subTitle1.Inlines.Add(new Run { Text = "최근 검색", FontSize = 20, FontWeight = Windows.UI.Text.FontWeights.Bold });
+                    subTitle1.Inlines.Add(new Run { Text = "최근 검색", FontSize = 20 * FONTMAGNIFICATION, FontWeight = Windows.UI.Text.FontWeights.Bold });
                     subTitle1.Inlines.Add(new Run { Text = "   " });
                     Hyperlink linkClear = new Hyperlink();
-                    linkClear.Inlines.Add(new Run { Text = "지우기", FontSize = 15, Foreground = new SolidColorBrush(Windows.UI.Colors.Red) });
+                    linkClear.Inlines.Add(new Run { Text = "지우기", FontSize = 15 * FONTMAGNIFICATION, Foreground = new SolidColorBrush(Windows.UI.Colors.Red) });
                     linkClear.Click += RecentWordClear_Click;
                     subTitle1.Inlines.Add(linkClear);
                     subTitle1.Inlines.Add(new Run { Text = " " });
                     rtb.Blocks.Add(subTitle1);
 
-                    Paragraph recentSearch = new Paragraph { Margin = new Thickness(5, 15, 0, 15), FontSize = 15, FontFamily = new FontFamily(FONTFAMILY) };
+                    Paragraph recentSearch = new Paragraph { Margin = new Thickness(5, 15, 0, 15), FontSize = 15 * FONTMAGNIFICATION, FontFamily = new FontFamily(FONTFAMILY) };
 
                     List<string> recentWords = RecentWordManager.GetWords();
                     for (int i = recentWords.Count - 1; 0 <= i; i--)
@@ -795,12 +839,12 @@ namespace 표준국어대사전.Classes
                     rtb.Blocks.Add(recentSearch);
 
                     //도움말 및 관련 링크
-                    Paragraph subTitle2 = new Paragraph { Margin = new Thickness(0, 40, 0, 0), FontSize = 20, FontFamily = new FontFamily(FONTFAMILY) };
+                    Paragraph subTitle2 = new Paragraph { Margin = new Thickness(0, 40, 0, 0), FontSize = 20 * FONTMAGNIFICATION, FontFamily = new FontFamily(FONTFAMILY) };
                     subTitle2.Inlines.Add(new Run { Text = "도움말 및 관련 링크", FontWeight = Windows.UI.Text.FontWeights.Bold });
                     rtb.Blocks.Add(subTitle2);
 
                     //웹 브라우저에서 열기
-                    Paragraph pOpenWeb = new Paragraph { Margin = new Thickness(5, 15, 0, 15), FontSize = 15, FontFamily = new FontFamily(FONTFAMILY) };
+                    Paragraph pOpenWeb = new Paragraph { Margin = new Thickness(5, 15, 0, 15), FontSize = 15 * FONTMAGNIFICATION, FontFamily = new FontFamily(FONTFAMILY) };
                     Hyperlink hOpenWeb = new Hyperlink { NavigateUri = new Uri("https://stdict.korean.go.kr/") };
                     hOpenWeb.Inlines.Add(new Run { Text = "웹 브라우저에서 열기" });
                     pOpenWeb.Inlines.Add(hOpenWeb);
@@ -808,7 +852,7 @@ namespace 표준국어대사전.Classes
                     rtb.Blocks.Add(pOpenWeb);
 
                     //일러두기
-                    Paragraph pInform = new Paragraph { Margin = new Thickness(5, 15, 0, 15), FontSize = 15, FontFamily = new FontFamily(FONTFAMILY) };
+                    Paragraph pInform = new Paragraph { Margin = new Thickness(5, 15, 0, 15), FontSize = 15 * FONTMAGNIFICATION, FontFamily = new FontFamily(FONTFAMILY) };
                     Hyperlink hInform = new Hyperlink { NavigateUri = new Uri("https://stdict.korean.go.kr/help/popup/entry.do") };
                     hInform.Inlines.Add(new Run { Text = "일러두기" });
                     pInform.Inlines.Add(hInform);
@@ -816,7 +860,7 @@ namespace 표준국어대사전.Classes
                     rtb.Blocks.Add(pInform);
 
                     //앱 도움말
-                    Paragraph pHelp = new Paragraph { Margin = new Thickness(5, 15, 0, 15), FontSize = 15, FontFamily = new FontFamily(FONTFAMILY) };
+                    Paragraph pHelp = new Paragraph { Margin = new Thickness(5, 15, 0, 15), FontSize = 15 * FONTMAGNIFICATION, FontFamily = new FontFamily(FONTFAMILY) };
                     Hyperlink hHelp = new Hyperlink { NavigateUri = new Uri("https://costudio1122.blogspot.com/p/blog-page_76.html") };
                     hHelp.Inlines.Add(new Run { Text = "앱 도움말" });
                     pHelp.Inlines.Add(hHelp);

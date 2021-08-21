@@ -396,4 +396,7 @@
   <data name="DA_BtnHome.ToolTipService.ToolTip" xml:space="preserve">
     <value>시작</value>
   </data>
+  <data name="Set_FontSize" xml:space="preserve">
+    <value>글꼴 크기</value>
+  </data>
 </root>

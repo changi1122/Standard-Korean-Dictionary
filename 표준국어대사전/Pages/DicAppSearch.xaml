@@ -401,7 +401,7 @@
                         <ContentPresenter Content="{Binding pronsconjusRtb}"/>
                         <ContentPresenter Content="{Binding lexicalsRtb}"/>
                     </StackPanel>
-                    <Rectangle Fill="WhiteSmoke" Margin="0,13,0,15" Height="3"/>
+                    <Rectangle Fill="WhiteSmoke" Margin="0,13,0,5" Height="3"/>
                     <ContentPresenter Content="{Binding ToolBarSp}"/>
                     <StackPanel Height="10"/>
                     <ContentPresenter Content="{Binding detailRtb}"/>

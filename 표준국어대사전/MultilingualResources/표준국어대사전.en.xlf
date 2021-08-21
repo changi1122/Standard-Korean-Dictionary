@@ -379,6 +379,10 @@
           <source>시작</source>
           <target state="translated">Welcome</target>
         </trans-unit>
+        <trans-unit id="Set_FontSize" translate="yes" xml:space="preserve">
+          <source>글꼴 크기</source>
+          <target state="translated">Font Size</target>
+        </trans-unit>
       </group>
     </body>
   </file>

@@ -23,6 +23,20 @@
                         <TextBlock x:Uid="Set_Option" HorizontalAlignment="Left" Margin="0,10,0,0" TextWrapping="Wrap" Text="옵션" VerticalAlignment="Top" FontSize="24"/>
                         <StackPanel Margin="5,0,0,0">
                             <StackPanel Margin="0,30,0,0">
+                                <TextBlock x:Uid="Set_FontSize" Text="글꼴 크기" Style="{ThemeResource BaseTextBlockStyle}" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top"/>
+                                <StackPanel Margin="0,10,0,0" Orientation="Horizontal">
+                                    <ComboBox x:Name="ComboBoxFontSize" SelectedIndex="{x:Bind ComboBoxFontSizeIndex, Mode=TwoWay}" Width="200">
+                                        <x:String>X1.0 (15pt)</x:String>
+                                        <x:String>X1.1 (16.5pt)</x:String>
+                                        <x:String>X1.2 (18pt)</x:String>
+                                        <x:String>X1.3 (19.5pt)</x:String>
+                                        <x:String>X1.4 (21pt)</x:String>
+                                        <x:String>X1.5 (22.5pt)</x:String>
+                                        <x:String>X1.6 (24pt)</x:String>
+                                    </ComboBox>
+                                </StackPanel>
+                            </StackPanel>
+                            <StackPanel Margin="0,30,0,0">
                                 <TextBlock x:Uid="Set_Language" Text="언어 (Language)" Style="{ThemeResource BaseTextBlockStyle}" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top"/>
                                 <StackPanel Margin="0,10,0,0" Orientation="Horizontal">
                                     <ComboBox x:Name="ComboBoxLang" SelectedIndex="{x:Bind ComboBoxLangIndex, Mode=TwoWay}" Width="200">

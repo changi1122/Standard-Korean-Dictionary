@@ -24,6 +24,56 @@ namespace 표준국어대사전.Pages
     /// </summary>
     public sealed partial class Settings : Page
     {
+        public int ComboBoxFontSizeIndex
+        {
+            get
+            {
+                switch (Math.Truncate(StorageManager.GetSetting<double>(StorageManager.FONTMAGNIFICATION) * 10) / 10)
+                {
+                    case 1.1:
+                        return 1;
+                    case 1.2:
+                        return 2;
+                    case 1.3:
+                        return 3;
+                    case 1.4:
+                        return 4;
+                    case 1.5:
+                        return 5;
+                    case 1.6:
+                        return 6;
+                    default:
+                        return 0;
+                }
+            }
+            set
+            {
+                switch (value)
+                {
+                    case 0:
+                        StorageManager.SetSetting<double>(StorageManager.FONTMAGNIFICATION, 1.0);
+                        break;
+                    case 1:
+                        StorageManager.SetSetting<double>(StorageManager.FONTMAGNIFICATION, 1.1);
+                        break;
+                    case 2:
+                        StorageManager.SetSetting<double>(StorageManager.FONTMAGNIFICATION, 1.2);
+                        break;
+                    case 3:
+                        StorageManager.SetSetting<double>(StorageManager.FONTMAGNIFICATION, 1.3);
+                        break;
+                    case 4:
+                        StorageManager.SetSetting<double>(StorageManager.FONTMAGNIFICATION, 1.4);
+                        break;
+                    case 5:
+                        StorageManager.SetSetting<double>(StorageManager.FONTMAGNIFICATION, 1.5);
+                        break;
+                    case 6:
+                        StorageManager.SetSetting<double>(StorageManager.FONTMAGNIFICATION, 1.6);
+                        break;
+                }
+            }
+        }
         public int ComboBoxFontSelectedIndex
         {
             get
@@ -54,15 +104,30 @@ namespace 표준국어대사전.Pages
         {
             get
             {
-                if (StorageManager.GetSetting<string>(StorageManager.Language) == "system") return 0;
-                else if (StorageManager.GetSetting<string>(StorageManager.Language) == "ko") return 1;
-                else return 2;
+                switch (StorageManager.GetSetting<string>(StorageManager.Language))
+                {
+                    case "system":
+                        return 0;
+                    case "ko":
+                        return 1;
+                    default:
+                        return 2;
+                }
             }
             set
             {
-                if (value == 0) StorageManager.SetSetting<string>(StorageManager.Language, "system");
-                else if (value == 1) StorageManager.SetSetting<string>(StorageManager.Language, "ko");
-                else if (value == 2) StorageManager.SetSetting<string>(StorageManager.Language, "en");
+                switch (value)
+                {
+                    case 0:
+                        StorageManager.SetSetting<string>(StorageManager.Language, "system");
+                        break;
+                    case 1:
+                        StorageManager.SetSetting<string>(StorageManager.Language, "ko");
+                        break;
+                    case 2:
+                        StorageManager.SetSetting<string>(StorageManager.Language, "en");
+                        break;
+                }
                 TextRestartNotice.Visibility = Visibility.Visible;
             }
         }
@@ -70,15 +135,30 @@ namespace 표준국어대사전.Pages
         {
             get
             {
-                if (StorageManager.GetSetting<string>(StorageManager.ColorTheme) == "system") return 0;
-                else if (StorageManager.GetSetting<string>(StorageManager.ColorTheme) == "Light") return 1;
-                else return 2;
+                switch (StorageManager.GetSetting<string>(StorageManager.ColorTheme))
+                {
+                    case "system":
+                        return 0;
+                    case "Light":
+                        return 1;
+                    default:
+                        return 2;
+                }
             }
             set
             {
-                if (value == 0) StorageManager.SetSetting<string>(StorageManager.ColorTheme, "system");
-                else if (value == 1) StorageManager.SetSetting<string>(StorageManager.ColorTheme, "Light");
-                else if (value == 2) StorageManager.SetSetting<string>(StorageManager.ColorTheme, "Dark");
+                switch (value)
+                {
+                    case 0:
+                        StorageManager.SetSetting<string>(StorageManager.ColorTheme, "system");
+                        break;
+                    case 1:
+                        StorageManager.SetSetting<string>(StorageManager.ColorTheme, "Light");
+                        break;
+                    case 2:
+                        StorageManager.SetSetting<string>(StorageManager.ColorTheme, "Dark");
+                        break;
+                }
                 TextRestartNotice2.Visibility = Visibility.Visible;
             }
         }
@@ -132,6 +212,7 @@ namespace 표준국어대사전.Pages
         {
             StorageManager.Clear();
             StorageManager.StartUpSetup();
+            ComboBoxFontSize.SelectedIndex = 0; ;
             ComboBoxFont.SelectedIndex = 0; ;
             ComboBoxAPIKey.SelectedIndex = 0;
             ComboBoxLang.SelectedIndex = 0;
