@@ -955,6 +955,10 @@ namespace 표준국어대사전.Classes
 
         private void Hyperlink_Click(Hyperlink sender, HyperlinkClickEventArgs args)
         {
+            // TO-DO
+            // '태허0' 뜻풀이의 '하늘' 링크처럼 어깨번호가 명확하지 않을 때는 검색 API로 검색 후
+            // '하늘'에 해당하는 단어 중 선택할 수 있게 만들기.
+
             Hyperlink hyperlink = sender as Hyperlink;
             if (hyperlink.FindName("DetailGrid") != null)
             {
