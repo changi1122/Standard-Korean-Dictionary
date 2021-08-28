@@ -576,6 +576,26 @@ namespace 표준국어대사전.Classes
                                 }    
                             }
 
+                            // 유니코드 문자
+                            for (int uc = 0; uc < OutputList.Count; uc++)
+                            {
+                                while (OutputList[uc].Contains("<span class=\"korean-webfont\"") && OutputList[uc].Contains("</span>"))
+                                {
+                                    string output = OutputList[uc];
+                                    OutputList.RemoveAt(uc);
+
+                                    string fontsize = "015"; //default
+                                    if (output.StartsWith("&FOS"))
+                                        fontsize = output.Substring(4, 3);
+                                    string text = output.Substring(output.IndexOf(">", output.IndexOf("<span class=\"korean-webfont\"")) + 1, output.IndexOf("</span>") - output.IndexOf(">", output.IndexOf("<span class=\"korean-webfont\"")) - 1);
+                                    text = System.Net.WebUtility.HtmlDecode(text);
+
+                                    OutputList.Insert(uc, output.Substring(0, output.IndexOf("<span class=\"korean-webfont\"")));
+                                    OutputList.Insert(uc + 1, "&FOS" + fontsize + text);
+                                    OutputList.Insert(uc + 2, "&FOS" + fontsize + output.Substring(output.IndexOf("</span>") + 7));
+                                }
+                            }
+
                             //이미지
                             for (int im = 0; im < OutputList.Count; im++)
                             {
