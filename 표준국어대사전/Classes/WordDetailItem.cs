@@ -617,7 +617,7 @@ namespace 표준국어대사전.Classes
                                 else if (OutputList[o].StartsWith("&SUP"))
                                 {
                                     int fontsize = int.Parse(OutputList[o].Substring(4, 3));
-                                    para3.Inlines.Add(new Run { Text = ToSup(int.Parse(OutputList[o].Substring(7))), FontSize = fontsize * FONTMAGNIFICATION, FontFamily = new FontFamily("Arial") });
+                                    para3.Inlines.Add(new Run { Text = ToSup(OutputList[o].Substring(7)), FontSize = fontsize * FONTMAGNIFICATION, FontFamily = new FontFamily("Arial") });
                                 }
                                 else if (OutputList[o].StartsWith("&ITA"))
                                 {
@@ -1043,7 +1043,11 @@ namespace 표준국어대사전.Classes
         // 위 첨자로 변환
         private string ToSup(int number)
         {
-            StringBuilder numString = new StringBuilder(number.ToString());
+            return ToSup(number.ToString());
+        }
+        private string ToSup(string number)
+        {
+            StringBuilder numString = new StringBuilder(number);
             for (int i = 0; i < numString.Length; i++)
             {
                 switch(numString[i])
@@ -1077,6 +1081,19 @@ namespace 표준국어대사전.Classes
                         break;
                     case '0':
                         numString[i] = '⁰';
+                        break;
+                    case '-':
+                    case '－':
+                        numString[i] = '⁻';
+                        break;
+                    case '(':
+                        numString[i] = '⁽';
+                        break;
+                    case ')':
+                        numString[i] = '⁾';
+                        break;
+                    case '+':
+                        numString[i] = '⁺';
                         break;
                     default:
                         break;
