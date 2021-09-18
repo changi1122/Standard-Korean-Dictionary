@@ -377,15 +377,18 @@
         </CommandBar>
 
         <Grid x:Name="MasterGrid" Margin="0,40,0,0" HorizontalAlignment="Left" Width="320" BorderThickness="0,0,1,0" BorderBrush="LightGray">
-            <ListView ItemContainerStyle="{StaticResource MasterListViewItemContainerStyle}" x:Name="ListviewSearchResult" HorizontalAlignment="Stretch" Margin="0,60,0,0" 
-                      ItemClick="ListviewSearchResult_ItemClick"
-                      IsItemClickEnabled="True"
-                      ItemsSource="{x:Bind SearchResults}"
-                      ItemTemplate="{StaticResource WordListDataTemplate}"
-                      Padding="0,0,0,80" UseLayoutRounding="False" IsTabStop="True"/>
             <AutoSuggestBox x:Name="SearchBox" Style="{StaticResource SearchBoxStyle}" x:Uid="DA_SearchBox" VerticalAlignment="Top" Margin="10,10,10,0" HorizontalAlignment="Stretch"
                             PlaceholderText="검색할 단어를 입력하세요" QueryIcon="Find" QuerySubmitted="SearchBox_QuerySubmitted" KeyDown="SearchBox_KeyDown"/>
+            <ScrollViewer x:Name="SearchResultScrollView" HorizontalAlignment="Stretch" Margin="0,60,0,0">
+                <StackPanel>
+                    <ListView ItemContainerStyle="{StaticResource MasterListViewItemContainerStyle}" x:Name="ListviewSearchResult" ItemClick="ListviewSearchResult_ItemClick"
+                            IsItemClickEnabled="True" ItemsSource="{x:Bind SearchResults}" ItemTemplate="{StaticResource WordListDataTemplate}" Margin="0,0,0,20" UseLayoutRounding="False" IsTabStop="True"/>
+                    <Button x:Name="BtnMore" x:Uid="DA_BtnMore" Style="{StaticResource AccentButtonStyle}" Content="더 보기" Margin="0,0,0,40" HorizontalAlignment="Center" FontSize="18" Click="BtnMore_Click" />
+                </StackPanel>
+            </ScrollViewer>
+
             <ProgressBar x:Name="MasterProgressBar" IsIndeterminate="True" ShowPaused="False" ShowError="False" VerticalAlignment="Top" Visibility="Collapsed" Margin="0,0,0,0"/>
+            <Button Style="{StaticResource AccentButtonStyle}" Content="Accent style button" Visibility="Collapsed" />
             <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
                 <TextBlock x:Name="TextBlockErrorMessage" Text="" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="20" Visibility="Collapsed"/>
                 <Button x:Name="BtnNetStatusRefresh" x:Uid="DA_BtnNetStatusRefresh" Content="다시 시도" Margin="0,20,0,0" Visibility="Collapsed" Click="BtnNetStatusRefresh_Click" HorizontalAlignment="Center"/>

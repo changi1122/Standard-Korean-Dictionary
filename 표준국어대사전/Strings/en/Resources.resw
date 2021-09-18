@@ -300,4 +300,7 @@
   <data name="Set_FontSize.Text" xml:space="preserve">
     <value>Font Size</value>
   </data>
+  <data name="DA_BtnMore.Content" xml:space="preserve">
+    <value>More</value>
+  </data>
 </root>
