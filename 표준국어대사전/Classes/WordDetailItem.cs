@@ -26,7 +26,7 @@ namespace 표준국어대사전.Classes
         private double FONTMAGNIFICATION = 1.0;
         private bool LabWordReaderEnabled = StorageManager.GetSetting<bool>(StorageManager.LabWordReaderEnabled);
 
-        //필터
+        // 필터
         public bool IsExampleVisible = true;
 
         #region Toolbar
@@ -35,7 +35,7 @@ namespace 표준국어대사전.Classes
             get
             {
                 StackPanel sp = new StackPanel { Orientation = Orientation.Horizontal, HorizontalAlignment = HorizontalAlignment.Right };
-                //ToolBar Buttons
+                // ToolBar Buttons
                 Button BtnFontDecrease= new Button { Content = "", FontSize = 14, FontFamily= new FontFamily("Segoe MDL2 Assets"), Width = 36, Height = 36, Margin = new Thickness(5, 0, 2, 0), Background = Application.Current.Resources["ApplicationPageBackgroundThemeBrush"] as SolidColorBrush };
                 BtnFontDecrease.Click += BtnFontDecrease_Click;
                 sp.Children.Add(BtnFontDecrease);
@@ -133,7 +133,7 @@ namespace 표준국어대사전.Classes
 
         public WordDetailItem()
         {
-            //글꼴
+            // 글꼴
             if (StorageManager.GetSetting<string>(StorageManager.DisplayFont) == "맑은 고딕")
                 FONTFAMILY = "#Malgun Gothic";
             else
@@ -142,34 +142,34 @@ namespace 표준국어대사전.Classes
             FONTMAGNIFICATION = Math.Truncate(FONTMAGNIFICATION * 10) / 10;
         }
 
-        //코드 번호
+        // 코드 번호
         public string target_code;
-        //단어 명
+        // 단어 명
         public string wordname;
-        //어깨번호
+        // 어깨번호
         public int sup_no;
-        //원어
+        // 원어
         public string original_language;
 
-        //발음
+        // 발음
         public List<string> prons;
-        //활용
+        // 활용
         public List<ConjusItem> conjus;
 
-        //단어 관계
+        // 단어 관계
         public List<LexicalItem> lexicals;
 
-        //관사와 하위 항목
+        // 관사와 하위 항목
         public List<PosItem> poses;
-        //규범 정보
+        // 규범 정보
         public List<string> norms;
-        //어원
+        // 어원
         public string origin;
 
-        //관용구 속담
+        // 관용구 속담
         public List<RelationItem> relations;
 
-        //단어명 RTB
+        // 단어명 RTB
         public RichTextBlock wordnameRtb
         {
             get
@@ -189,7 +189,7 @@ namespace 표준국어대사전.Classes
             }
         }
 
-        //발음 및 활용 RTB (단어 읽기 기능 비활성화시 사용)
+        // 발음 및 활용 RTB (단어 읽기 기능 비활성화시 사용)
         public RichTextBlock pronsconjusRtb
         {
             get
@@ -198,8 +198,8 @@ namespace 표준국어대사전.Classes
 
                 if (LabWordReaderEnabled == false)
                 {
-                    //발음
-                    if (prons != null && prons.Count > 0) //발음 정보 없는 예외 처리
+                    // 발음
+                    if (prons != null && prons.Count > 0) // 발음 정보 없는 예외 처리
                     {
                         Paragraph pProns = new Paragraph { FontSize = 16 * FONTMAGNIFICATION, FontFamily = new FontFamily(FONTFAMILY), Margin = new Thickness(0, 4, 0, 4) };
                         pProns.Inlines.Add(new Run { Text = "발음  ", FontWeight = Windows.UI.Text.FontWeights.Bold });
@@ -217,8 +217,8 @@ namespace 표준국어대사전.Classes
                         rtb.Blocks.Add(pProns);
                     }
 
-                    //활용
-                    if (conjus != null) //활용 정보 없는 예외 처리
+                    // 활용
+                    if (conjus != null) // 활용 정보 없는 예외 처리
                     {
                         Paragraph pConjus = new Paragraph { FontSize = 16 * FONTMAGNIFICATION, FontFamily = new FontFamily(FONTFAMILY), Margin = new Thickness(0, 4, 0, 4) };
                         pConjus.Inlines.Add(new Run { Text = "활용  ", FontWeight = Windows.UI.Text.FontWeights.Bold });
@@ -243,7 +243,7 @@ namespace 표준국어대사전.Classes
 
                             if (conjus[i].abbreviations != null)
                             {
-                                //준말
+                                // 준말
                                 List<AbbreviationItem> abbreviations = conjus[i].abbreviations;
                                 for (int j = 0; j < abbreviations.Count; j++)
                                 {
@@ -279,7 +279,7 @@ namespace 표준국어대사전.Classes
             }
         }
         
-        //발음 SP
+        // 발음 SP
         public StackPanel pronsSp
         {
             get
@@ -303,14 +303,14 @@ namespace 표준국어대사전.Classes
             }
         }
 
-        //활용 SP
+        // 활용 SP
         public StackPanel conjusSp
         {
             get
             {
                 StackPanel sp = null;
 
-                //null 예외
+                // null 예외
                 if (conjus == null)
                     return null;
 
@@ -332,7 +332,7 @@ namespace 표준국어대사전.Classes
 
                         if (conjus[i].abbreviations != null)
                         {
-                            //준말
+                            // 준말
                             List<AbbreviationItem> abbreviations = conjus[i].abbreviations;
                             for (int j = 0; j < abbreviations.Count; j++)
                             {
@@ -351,14 +351,14 @@ namespace 표준국어대사전.Classes
             }
         }
 
-        //단어 관계 RTB
+        // 단어 관계 RTB
         public RichTextBlock lexicalsRtb
         {
             get
             {
                 RichTextBlock rtb = new RichTextBlock { Margin = new Thickness(0, 4, 0, 4) };
 
-                //null 예외
+                // null 예외
                 if (lexicals == null || lexicals.Count == 0)
                     return null;
 
@@ -375,7 +375,7 @@ namespace 표준국어대사전.Classes
                         link.Click += Hyperlink_Click;
                         paras[paras.Count - 1].Inlines.Add(link);
                     }
-                    else //첫 단어
+                    else // 첫 단어
                     {
                         Paragraph para = new Paragraph { Margin = new Thickness(0, 0, 0, 4), FontSize = 16 * FONTMAGNIFICATION, FontFamily = new FontFamily(FONTFAMILY) };
 
@@ -401,18 +401,18 @@ namespace 표준국어대사전.Classes
             }
         }
 
-        //뜻풀이 RTB
+        // 뜻풀이 RTB
         public RichTextBlock detailRtb
         {
             get
             {
                 RichTextBlock rtb = new RichTextBlock();
 
-                //예외
+                // 예외
                 if (poses == null)
                     return rtb;
 
-                //관사와 하위 항목
+                // 관사와 하위 항목
                 for (int i = 0; i < poses.Count; i++)
                 {
                     Paragraph para = new Paragraph { Margin = new Thickness(0, 40, 0, 0), FontSize = 20 * FONTMAGNIFICATION, FontWeight = Windows.UI.Text.FontWeights.Bold, FontFamily = new FontFamily(FONTFAMILY) };
@@ -429,11 +429,11 @@ namespace 표준국어대사전.Classes
                         rtb.Blocks.Add(para);
                     }
 
-                    //예외
+                    // 예외
                     if (poses[i].patterns == null)
                        continue;
 
-                    //문형 정보와 하위 항목
+                    // 문형 정보와 하위 항목
                     List<PatternItem> patterns = poses[i].patterns;
 
                     for (int j = 0; j < patterns.Count; j++)
@@ -448,36 +448,36 @@ namespace 표준국어대사전.Classes
 
                         for (int k = 0; k < patterns[j].pattern.Count; k++)
                             para2.Inlines.Add(new Run { Text = $"【{patterns[j].pattern[k]}】" });
-                        //문형 적용 문법 정보
+                        // 문형 적용 문법 정보
                         if (patterns[j].grammar != null)
                             para2.Inlines.Add(new Run { Text = $" (({patterns[j].grammar}))" });
 
                         if (patterns.Count != 1 || patterns[j].pattern.Count > 0 || patterns[j].grammar != null)
                             rtb.Blocks.Add(para2);
 
-                        //예외
+                        // 예외
                         if (patterns[j].definitions == null)
                             continue;
 
-                        //정의
+                        // 정의
                         List<DefinitionItem> definitions = patterns[j].definitions;
                         for (int k = 0; k < definitions.Count; k++)
                         {
                             List<string> OutputList = new List<string>();
 
-                            //cat 전문 분야
+                            // cat 전문 분야
                             if (patterns[j].definitions[k].cat != null)
                                 OutputList.Add("&FOS015" + $"『{patterns[j].definitions[k].cat}』 ");
 
-                            //sense_pattern_info 정의 문형
+                            // sense_pattern_info 정의 문형
                             if (patterns[j].definitions[k].sense_pattern_info != null)
                                 OutputList.Add("&FOS015" + $"【{patterns[j].definitions[k].sense_pattern_info}】 ");
 
-                            //sense_grammar 정의에 참고하는 말
+                            // sense_grammar 정의에 참고하는 말
                             if (patterns[j].definitions[k].sense_grammar != null)
                                 OutputList.Add("&FOS015" + $"(({patterns[j].definitions[k].sense_grammar})) ");
 
-                            //글꼴 크기가 다른 경우
+                            // 글꼴 크기가 다른 경우
                             string cloneDefinition = definitions[k].definition;
                             while (true)
                             {
@@ -522,7 +522,7 @@ namespace 표준국어대사전.Classes
                                 }
                             }
 
-                            //하이퍼텍스트
+                            // 하이퍼텍스트
                             for (int ht = 0; ht < OutputList.Count; ht++)
                             {
                                 while (OutputList[ht].Contains("<link") && OutputList[ht].Contains("</link>"))
@@ -542,7 +542,7 @@ namespace 표준국어대사전.Classes
                                 }
                             }
 
-                            //이탤릭체
+                            // 이탤릭체
                             for (int it = 0; it < OutputList.Count; it++)
                             {
                                 while (true)
@@ -596,7 +596,7 @@ namespace 표준국어대사전.Classes
                                 }
                             }
 
-                            //이미지
+                            // 이미지
                             for (int im = 0; im < OutputList.Count; im++)
                             {
                                 while (true)
@@ -621,7 +621,7 @@ namespace 표준국어대사전.Classes
 
                             Paragraph para3 = new Paragraph { Margin = new Thickness(5, 15, 0, 15), FontSize = 15 * FONTMAGNIFICATION, FontFamily = new FontFamily(FONTFAMILY) };
 
-                            //의미 번호
+                            // 의미 번호
                             if (1 < definitions.Count)
                             {
                                 para3.Inlines.Add(new Run { Text = $"「{k + 1}」 ", Foreground = new SolidColorBrush(Windows.UI.Colors.Red) });
@@ -677,7 +677,7 @@ namespace 표준국어대사전.Classes
                                 }
                             }
 
-                            //동의어 관계
+                            // 동의어 관계
                             if (IsExampleVisible && definitions[k].lexicals != null)
                             {
                                 List<LexicalItem> lexicals = definitions[k].lexicals;
@@ -700,14 +700,14 @@ namespace 표준국어대사전.Classes
                                 para3.Inlines.Add(new Run { Text = "." });
                             }
 
-                            //학명
+                            // 학명
                             if (patterns[j].definitions[k].scientific_name != null)
                                 para3.Inlines.Add(new Run { Text = $"  ({patterns[j].definitions[k].scientific_name})", FontSize = 15 * FONTMAGNIFICATION, FontStyle = Windows.UI.Text.FontStyle.Italic });
 
                             rtb.Blocks.Add(para3);
 
 
-                            //예시
+                            // 예시
                             if (IsExampleVisible && definitions[k].examples != null)
                             {
                                 List<string> examples = definitions[k].examples;
@@ -719,7 +719,7 @@ namespace 표준국어대사전.Classes
                                 }
                             }
 
-                            //단어 관계
+                            // 단어 관계
                             if(IsExampleVisible && definitions[k].lexicals != null)
                             {
                                 List<LexicalItem> lexicals = definitions[k].lexicals;
@@ -766,7 +766,7 @@ namespace 표준국어대사전.Classes
                     }
                 }
 
-                //norm 규범 정보
+                // norm 규범 정보
                 if(norms != null)
                 {
                     Paragraph para = new Paragraph { Margin = new Thickness(0, 30, 0, 0), FontSize = 14 * FONTMAGNIFICATION, FontFamily = new FontFamily(FONTFAMILY) };
@@ -782,7 +782,7 @@ namespace 표준국어대사전.Classes
             }
         }
 
-        //어원 RTB
+        // 어원 RTB
         public RichTextBlock originRtb
         {
             get
@@ -804,7 +804,7 @@ namespace 표준국어대사전.Classes
             }
         }
 
-        //관용구 속담 RTB
+        // 관용구 속담 RTB
         public RichTextBlock relationRtb
         {
             get
@@ -842,7 +842,7 @@ namespace 표준국어대사전.Classes
             }
         }
 
-        //시작 화면 RTB
+        // 시작 화면 RTB
         public RichTextBlock homeRtb
         {
             get
@@ -851,9 +851,9 @@ namespace 표준국어대사전.Classes
 
                 if (target_code == "-200")
                 {
-                    //시작 화면인 경우
+                    // 시작 화면인 경우
 
-                    //최근 검색
+                    // 최근 검색
                     Paragraph subTitle1 = new Paragraph { FontFamily = new FontFamily(FONTFAMILY) };
                     subTitle1.Inlines.Add(new Run { Text = "최근 검색", FontSize = 20 * FONTMAGNIFICATION, FontWeight = Windows.UI.Text.FontWeights.Bold });
                     subTitle1.Inlines.Add(new Run { Text = "   " });
@@ -885,12 +885,12 @@ namespace 표준국어대사전.Classes
                     
                     rtb.Blocks.Add(recentSearch);
 
-                    //도움말 및 관련 링크
+                    // 도움말 및 관련 링크
                     Paragraph subTitle2 = new Paragraph { Margin = new Thickness(0, 40, 0, 0), FontSize = 20 * FONTMAGNIFICATION, FontFamily = new FontFamily(FONTFAMILY) };
                     subTitle2.Inlines.Add(new Run { Text = "도움말 및 관련 링크", FontWeight = Windows.UI.Text.FontWeights.Bold });
                     rtb.Blocks.Add(subTitle2);
 
-                    //웹 브라우저에서 열기
+                    // 웹 브라우저에서 열기
                     Paragraph pOpenWeb = new Paragraph { Margin = new Thickness(5, 15, 0, 15), FontSize = 15 * FONTMAGNIFICATION, FontFamily = new FontFamily(FONTFAMILY) };
                     Hyperlink hOpenWeb = new Hyperlink { NavigateUri = new Uri("https://stdict.korean.go.kr/") };
                     hOpenWeb.Inlines.Add(new Run { Text = "웹 브라우저에서 열기" });
@@ -898,7 +898,7 @@ namespace 표준국어대사전.Classes
                     pOpenWeb.Inlines.Add(new Run { Text = " " });
                     rtb.Blocks.Add(pOpenWeb);
 
-                    //일러두기
+                    // 일러두기
                     Paragraph pInform = new Paragraph { Margin = new Thickness(5, 15, 0, 15), FontSize = 15 * FONTMAGNIFICATION, FontFamily = new FontFamily(FONTFAMILY) };
                     Hyperlink hInform = new Hyperlink { NavigateUri = new Uri("https://stdict.korean.go.kr/help/popup/entry.do") };
                     hInform.Inlines.Add(new Run { Text = "일러두기" });
@@ -920,33 +920,33 @@ namespace 표준국어대사전.Classes
         }
 
 
-        //활용과 활용의 발음 클래스
+        // 활용과 활용의 발음 클래스
         public class ConjusItem
         {
             public string conjus;
             public List<string> conju_prons;
             public List<AbbreviationItem> abbreviations;
         }
-        //준말과 줄말의 발음 클래스
+        // 준말과 줄말의 발음 클래스
         public class AbbreviationItem
         {
             public string abbreviations;
             public List<string> abbreviation_prons;
         }
-        //관사와 하위 항목 클래스
+        // 관사와 하위 항목 클래스
         public class PosItem
         {
             public string pos;
             public List<PatternItem> patterns;
         }
-        //문형 정보와 하위 항목 클래스
+        // 문형 정보와 하위 항목 클래스
         public class PatternItem
         {
             public List<string> pattern;
             public string grammar;
             public List<DefinitionItem> definitions;
         }
-        //정의와 예시 클래스
+        // 정의와 예시 클래스
         public class DefinitionItem
         {
             public string cat;
@@ -957,14 +957,14 @@ namespace 표준국어대사전.Classes
             public List<string> examples;
             public List<LexicalItem> lexicals;
         }
-        //관용구 속담 클래스
+        // 관용구 속담 클래스
         public class RelationItem
         {
             public string word;
             public ERelationType type;
             public string target_code;
         }
-        //어휘 관계 클래스
+        // 어휘 관계 클래스
         public class LexicalItem
         {
             public string word;
@@ -1039,7 +1039,7 @@ namespace 표준국어대사전.Classes
             RaisePropertyChanged("homeRtb");
         }
 
-        //로마자 변환
+        // 로마자 변환
         private string ToRoman(int number)
         {
             if ((number < 0) || (number > 3999)) throw new ArgumentOutOfRangeException("insert value between 1 and 3999");
@@ -1138,10 +1138,10 @@ namespace 표준국어대사전.Classes
         }
     }
 
-    //관용구 속담 구분 열거형
+    // 관용구 속담 구분 열거형
     public enum ERelationType { idiom, proverb };
 
-    //활용과 활용의 발음 클래스
+    // s활용과 활용의 발음 클래스
     public class Conjus_AbbreviationItem
     {
         public string strings { get; set; }
