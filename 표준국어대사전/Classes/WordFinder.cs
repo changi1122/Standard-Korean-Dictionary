@@ -32,8 +32,13 @@ namespace 표준국어대사전.Classes
             API_KEY = StorageManager.GetSetting<string>(StorageManager.APIKey);
         }
 
-        public async void GetSearchResults(int start, int num, string searchText)
+        /// <summary>
+        /// 단어 검색 결과를 받아오고, SearchResults 리스트에 넣는다.
+        /// </summary>
+        /// <returns>남은 검색 결과 존재 여부(더 보기 버튼 표시 여부)</returns>
+        public async void GetSearchResults(int start, int num, string searchText, Visibility isMoreButtonVisible, Action<Visibility> setMoreButtonVisibility)
         {
+            setMoreButtonVisibility(Visibility.Collapsed);
             MasterProgressBar.Visibility = Visibility.Visible;
 
             string responseBody = await DownloadSearchResultsAsync(start, num, searchText);
@@ -43,10 +48,11 @@ namespace 표준국어대사전.Classes
                 string error_message = $"error_code : {error_code}" + Environment.NewLine + "message : Network Problem";
                 ShowErrorMessage(error_code, error_message, null);
                 MasterProgressBar.Visibility = Visibility.Collapsed;
+                setMoreButtonVisibility(isMoreButtonVisible);
                 return;
             }
 
-            ParseAndShowSearchResults(responseBody, start, num, searchText);
+            ParseAndShowSearchResults(responseBody, start, num, searchText, setMoreButtonVisibility);
 
             MasterProgressBar.Visibility = Visibility.Collapsed;
         }
@@ -69,7 +75,6 @@ namespace 표준국어대사전.Classes
             int letter_e = 1;*/
             #endregion
 
-            //string temp = string.Format(WORD_SEARCH_URL, API_KEY, method, start, num, advanced, target, type1, type2, pos, cat, multimedia, letter_s, letter_e, Search_Text);
             string url = string.Format(WORD_SEARCH_URL, API_KEY, method, start, num, searchText);
 
             HttpClient client = new HttpClient();
@@ -89,7 +94,7 @@ namespace 표준국어대사전.Classes
             }
         }
 
-        private void ParseAndShowSearchResults(string responseBody, int start, int num, string searchText)
+        private void ParseAndShowSearchResults(string responseBody, int start, int num, string searchText, Action<Visibility> setMoreButtonVisibility)
         {
             XDocument xDoc = XDocument.Parse(responseBody);
 
@@ -137,7 +142,7 @@ namespace 표준국어대사전.Classes
 
             if (start * 10 < total)
             {
-                SearchResults.Add(new SearchResultItem { target_code = -321, word = "[더 보기]", sup_no = start, display_sup_no = "", definition = searchText });
+                setMoreButtonVisibility(Visibility.Visible);
             }
         }
 

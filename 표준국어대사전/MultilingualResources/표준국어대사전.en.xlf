@@ -391,6 +391,10 @@
           <source>글꼴 크기</source>
           <target state="translated">Font Size</target>
         </trans-unit>
+        <trans-unit id="DA_BtnMore.Content" translate="yes" xml:space="preserve">
+          <source>더 보기</source>
+          <target state="translated">More</target>
+        </trans-unit>
       </group>
     </body>
   </file>

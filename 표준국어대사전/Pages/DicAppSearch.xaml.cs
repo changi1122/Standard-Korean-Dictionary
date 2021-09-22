@@ -22,10 +22,16 @@ namespace 표준국어대사전.Pages
         const int MASTERGRID_WIDTH = 320;
         const int MULTISEARCHGRID_WIDTH = 400;
 
-        //검색 결과 리스트뷰에 바인딩
+        // 검색어 임시 저장
+        private string lastSearchText;
+
+        // 더 보기 버튼 표시 여부
+        private Visibility isMoreButtonVisible;
+
+        // 검색 결과 리스트뷰에 바인딩
         private ObservableCollection<SearchResultItem> SearchResults;
         
-        //단어 정의에 바인딩
+        // 단어 정의에 바인딩
         private ObservableCollection<WordDetailItem> Definitions;
 
         private bool IsWebViewOpen = false;
@@ -42,6 +48,8 @@ namespace 표준국어대사전.Pages
         public DicAppSearch()
         {
             this.InitializeComponent();
+
+            isMoreButtonVisible = Visibility.Collapsed;
 
             History = new HistoryManager();
 
@@ -79,6 +87,7 @@ namespace 표준국어대사전.Pages
         /// </summary>
         private void UpdateControls()
         {
+            BtnMore.Visibility = isMoreButtonVisible;
             BtnBack.IsEnabled = History.CanGoBack;
             BtnForward.IsEnabled = History.CanGoForward;
 
@@ -146,15 +155,7 @@ namespace 표준국어대사전.Pages
 
             var clickedItem = (SearchResultItem)e.ClickedItem;
 
-            if (clickedItem.target_code == -321)
-            {
-                //더보기 누를 시 동작
-                WordFinder wordFinder = new WordFinder(SearchResults, MasterProgressBar, TextBlockErrorMessage);
-                wordFinder.GetSearchResults(clickedItem.sup_no + 1, 10, clickedItem.definition);
-                SearchResults.Remove(clickedItem);
-                return;
-            }
-            else if (clickedItem.target_code == -200)
+            if (clickedItem.target_code == -200)
             {
                 //시작 누를 시 동작
                 Definitions[0] = WordDetailStaticPage.GetHomepage();
@@ -171,7 +172,7 @@ namespace 표준국어대사전.Pages
             //일반 단어 클릭시 동작
 
             //되돌리기 위한 기록
-            History.RecordDefinition(SearchBox.Text, Definitions[0], ListviewSearchResult.SelectedIndex);
+            History.RecordDefinition(SearchBox.Text, lastSearchText, Definitions[0], ListviewSearchResult.SelectedIndex, false, isMoreButtonVisible);
             //뜻풀이 감추기
             Definitions[0] = new WordDetailItem();
             UpdateControls();
@@ -191,6 +192,19 @@ namespace 표준국어대사전.Pages
 
             //뜻풀이 보이기
             UpdateControls();
+        }
+
+        /// <summary>
+        /// 더 보기 버튼 클릭시 실행
+        /// </summary>
+        private void BtnMore_Click(object sender, RoutedEventArgs e)
+        {
+            int start = SearchResults.Last().sup_no / 10 + 1;
+            string word = lastSearchText;
+
+            WordFinder wordFinder = new WordFinder(SearchResults, MasterProgressBar, TextBlockErrorMessage);
+            wordFinder.GetSearchResults(start, 10, word, isMoreButtonVisible, (visibility) => { isMoreButtonVisible = visibility; UpdateControls(); } );
+            return;
         }
 
         private async void SearchBox_QuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
@@ -216,15 +230,16 @@ namespace 표준국어대사전.Pages
             }
 
             //되돌리기 위한 기록
-            History.RecordAll(SearchBox.Text, SearchResults, Definitions[0], ListviewSearchResult.SelectedIndex);
+            History.RecordAll(SearchBox.Text, lastSearchText, SearchResults, Definitions[0], ListviewSearchResult.SelectedIndex, false, isMoreButtonVisible);
             Definitions[0] = new WordDetailItem();
             //검색 결과 Listview 지우기
             SearchResults.Clear();
             //뜻풀이 감추기
             UpdateControls();
 
+            lastSearchText = searchText;
             WordFinder wordFinder = new WordFinder(SearchResults, MasterProgressBar, TextBlockErrorMessage);
-            wordFinder.GetSearchResults(1, 10, searchText);
+            wordFinder.GetSearchResults(1, 10, searchText, isMoreButtonVisible, (visibility) => { isMoreButtonVisible = visibility; UpdateControls(); } );
 
             //최근 검색 기록
             RecentWordManager.Append(searchText);
@@ -432,7 +447,7 @@ namespace 표준국어대사전.Pages
             string searchText = SearchBox.Text;
             WordDetailItem definition = Definitions[0];
             int selectedIndex = ListviewSearchResult.SelectedIndex;
-            History.Undo(ref searchText, ref SearchResults, ref definition, ref selectedIndex);
+            History.Undo(ref searchText, ref lastSearchText, ref SearchResults, ref definition, ref selectedIndex, ref isMoreButtonVisible);
 
             SearchBox.Text = searchText;
             if (definition != null)
@@ -446,7 +461,7 @@ namespace 표준국어대사전.Pages
             string searchText = SearchBox.Text;
             WordDetailItem definition = Definitions[0];
             int selectedIndex = ListviewSearchResult.SelectedIndex;
-            History.Redo(ref searchText, ref SearchResults, ref definition, ref selectedIndex);
+            History.Redo(ref searchText, ref lastSearchText, ref SearchResults, ref definition, ref selectedIndex, ref isMoreButtonVisible);
 
             SearchBox.Text = searchText;
             if (definition != null)
@@ -458,7 +473,7 @@ namespace 표준국어대사전.Pages
         private void BtnHome_Click(object sender, RoutedEventArgs e)
         {
             //되돌리기 위한 기록
-            History.RecordAll(SearchBox.Text, SearchResults, Definitions[0], ListviewSearchResult.SelectedIndex);
+            History.RecordAll(SearchBox.Text, lastSearchText, SearchResults, Definitions[0], ListviewSearchResult.SelectedIndex, false, isMoreButtonVisible);
             Definitions[0] = new WordDetailItem();
 
             //검색어 지우기

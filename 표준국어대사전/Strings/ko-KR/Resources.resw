@@ -405,4 +405,7 @@
   <data name="ADJ_Pivotitem2021.Header" xml:space="preserve">
     <value>2021년</value>
   </data>
+  <data name="DA_BtnMore.Content" xml:space="preserve">
+    <value>더 보기</value>
+  </data>
 </root>
