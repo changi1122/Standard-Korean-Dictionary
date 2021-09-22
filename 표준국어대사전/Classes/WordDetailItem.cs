@@ -370,7 +370,14 @@ namespace 표준국어대사전.Classes
                         paras[paras.Count - 1].Inlines.Add(new Run { Text = ", " });
 
                         Hyperlink link = new Hyperlink();
-                        link.Inlines.Add(new Run { Text = lexicals[i].word });
+                        string word = lexicals[i].word, number = "";
+                        if (SplitWordnameAndNumber(ref word, ref number))
+                        {
+                            link.Inlines.Add(new Run { Text = word });
+                            link.Inlines.Add(new Run { Text = ToSup(number), FontFamily = new FontFamily("Arial") });
+                        }
+                        else
+                            link.Inlines.Add(new Run { Text = lexicals[i].word });
                         link.Inlines.Add(new Run { FontFamily = new FontFamily(lexicals[i].target_code) });
                         link.Click += Hyperlink_Click;
                         paras[paras.Count - 1].Inlines.Add(link);
@@ -382,7 +389,14 @@ namespace 표준국어대사전.Classes
                         para.Inlines.Add(new Run { Text = $"「{lexicals[i].type}」 ", FontWeight = Windows.UI.Text.FontWeights.Bold });
 
                         Hyperlink link = new Hyperlink();
-                        link.Inlines.Add(new Run { Text = lexicals[i].word });
+                        string word = lexicals[i].word, number = "";
+                        if (SplitWordnameAndNumber(ref word, ref number))
+                        {
+                            link.Inlines.Add(new Run { Text = word });
+                            link.Inlines.Add(new Run { Text = ToSup(number), FontFamily = new FontFamily("Arial") });
+                        }
+                        else
+                            link.Inlines.Add(new Run { Text = lexicals[i].word });
                         link.Inlines.Add(new Run { FontFamily = new FontFamily(lexicals[i].target_code) });
                         link.Click += Hyperlink_Click;
                         para.Inlines.Add(link);
