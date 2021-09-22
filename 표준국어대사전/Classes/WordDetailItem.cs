@@ -687,11 +687,18 @@ namespace 표준국어대사전.Classes
                                     {
                                         if(l != 0 && lexicals[l - 1].type == "동의어")
                                             para3.Inlines.Add(new Run { Text = ", " });
-                                        else //첫 단어
+                                        else // 첫 단어
                                             para3.Inlines.Add(new Run { Text = " ≒ " });
 
                                         Hyperlink link = new Hyperlink();
-                                        link.Inlines.Add(new Run { Text = lexicals[l].word });
+                                        string word = lexicals[l].word, number = "";
+                                        if (SplitWordnameAndNumber(ref word, ref number))
+                                        {
+                                            link.Inlines.Add(new Run { Text = word });
+                                            link.Inlines.Add(new Run { Text = ToSup(number), FontFamily = new FontFamily("Arial") });
+                                        }
+                                        else
+                                            link.Inlines.Add(new Run { Text = lexicals[l].word });
                                         link.Inlines.Add(new Run { FontFamily = new FontFamily(lexicals[l].target_code) });
                                         link.Click += Hyperlink_Click;
                                         para3.Inlines.Add(link);
@@ -735,7 +742,14 @@ namespace 표준국어대사전.Classes
                                         paras[paras.Count - 1].Inlines.Add(new Run { Text = ", " });
 
                                         Hyperlink link = new Hyperlink();
-                                        link.Inlines.Add(new Run { Text = lexicals[l].word });
+                                        string word = lexicals[l].word, number = "";
+                                        if (SplitWordnameAndNumber(ref word, ref number))
+                                        {
+                                            link.Inlines.Add(new Run { Text = word });
+                                            link.Inlines.Add(new Run { Text = ToSup(number), FontFamily = new FontFamily("Arial") });
+                                        }
+                                        else
+                                            link.Inlines.Add(new Run { Text = lexicals[l].word });
                                         link.Inlines.Add(new Run { FontFamily = new FontFamily(lexicals[l].target_code) });
                                         link.Click += Hyperlink_Click;
                                         paras[paras.Count - 1].Inlines.Add(link);
@@ -747,7 +761,14 @@ namespace 표준국어대사전.Classes
                                         para4.Inlines.Add(new Run { Text = $"「{lexicals[l].type}」 " });
 
                                         Hyperlink link = new Hyperlink();
-                                        link.Inlines.Add(new Run { Text = lexicals[l].word });
+                                        string word = lexicals[l].word, number = "";
+                                        if (SplitWordnameAndNumber(ref word, ref number))
+                                        {
+                                            link.Inlines.Add(new Run { Text = word });
+                                            link.Inlines.Add(new Run { Text = ToSup(number), FontFamily = new FontFamily("Arial") });
+                                        }
+                                        else
+                                            link.Inlines.Add(new Run { Text = lexicals[l].word });
                                         link.Inlines.Add(new Run { FontFamily = new FontFamily(lexicals[l].target_code) });
                                         link.Click += Hyperlink_Click;
                                         para4.Inlines.Add(link);
@@ -988,10 +1009,12 @@ namespace 표준국어대사전.Classes
                 {
                     ConWordDetail HyperViewer = new ConWordDetail();
                     HyperViewer.Name = "HyperViewer";
-                    Run word = hyperlink.Inlines[0] as Run;
-                    int sup_no = 0;
-                    int.TryParse(Regex.Replace(word.Text, "[^0-9.]", ""), out sup_no);
-                    HyperViewer.Load_WordDetail(hyperlink.Inlines[1].FontFamily.Source, sup_no);
+                    int sup_no;
+                    if (2 < hyperlink.Inlines.Count)
+                        int.TryParse(ToNumber((hyperlink.Inlines[1] as Run).Text), out sup_no);
+                    else
+                        int.TryParse(Regex.Replace((hyperlink.Inlines[0] as Run).Text, "[^0-9.]", ""), out sup_no);
+                    HyperViewer.Load_WordDetail(hyperlink.Inlines[hyperlink.Inlines.Count - 1].FontFamily.Source, sup_no);
 
                     DetailGrid.Children.Add(HyperViewer);
                 }
@@ -1000,10 +1023,12 @@ namespace 표준국어대사전.Classes
             {
                 Grid ConWordDetailGrid = hyperlink.FindName("ConWordDetailGrid") as Grid;
                 ConWordDetail HyperViewer = ConWordDetailGrid.Parent as ConWordDetail;
-                Run word = hyperlink.Inlines[0] as Run;
-                int sup_no = 0;
-                int.TryParse(Regex.Replace(word.Text, "[^0-9.]", ""), out sup_no);
-                HyperViewer.Load_WordDetail(hyperlink.Inlines[1].FontFamily.Source, sup_no);
+                int sup_no;
+                if (2 < hyperlink.Inlines.Count)
+                    int.TryParse(ToNumber((hyperlink.Inlines[1] as Run).Text), out sup_no);
+                else
+                    int.TryParse(Regex.Replace((hyperlink.Inlines[0] as Run).Text, "[^0-9.]", ""), out sup_no);
+                HyperViewer.Load_WordDetail(hyperlink.Inlines[hyperlink.Inlines.Count - 1].FontFamily.Source, sup_no);
             }
         }
 
@@ -1120,6 +1145,82 @@ namespace 표준국어대사전.Classes
                 }
             }
             return numString.ToString();
+        }
+
+        // 위 첨자를 일반 숫자로 변환
+        private string ToNumber(string sup_no)
+        {
+            StringBuilder numString = new StringBuilder(sup_no);
+            for (int i = 0; i < numString.Length; i++)
+            {
+                switch (numString[i])
+                {
+                    case '¹':
+                        numString[i] = '1';
+                        break;
+                    case '²':
+                        numString[i] = '2';
+                        break;
+                    case '³':
+                        numString[i] = '3';
+                        break;
+                    case '⁴':
+                        numString[i] = '4';
+                        break;
+                    case '⁵':
+                        numString[i] = '5';
+                        break;
+                    case '⁶':
+                        numString[i] = '6';
+                        break;
+                    case '⁷':
+                        numString[i] = '7';
+                        break;
+                    case '⁸':
+                        numString[i] = '8';
+                        break;
+                    case '⁹':
+                        numString[i] = '9';
+                        break;
+                    case '⁰':
+                        numString[i] = '0';
+                        break;
+                    case '⁻':
+                        numString[i] = '-';
+                        break;
+                    case '⁽':
+                        numString[i] = '(';
+                        break;
+                    case '⁾':
+                        numString[i] = ')';
+                        break;
+                    case '⁺':
+                        numString[i] = '+';
+                        break;
+                    default:
+                        break;
+                }
+            }
+            return numString.ToString();
+        }
+
+        // 단어 이름과 어깨번호 분리 후 위 첨자로 변환
+        private bool SplitWordnameAndNumber(ref string word, ref string number)
+        {
+            int numberStartIndex;
+            for (numberStartIndex = word.Length - 1; 0 <= numberStartIndex; numberStartIndex--)
+            {
+                if (!char.IsDigit(word[numberStartIndex]))
+                    break;
+            }
+
+            if (numberStartIndex < word.Length - 1)
+            {
+                number = word.Substring(numberStartIndex + 1).TrimStart(new char[] { '0' });
+                word = word.Substring(0, numberStartIndex + 1);
+                return true;
+            }
+            return false;
         }
 
         public static BitmapImage Base64StringToBitmap(string source)
