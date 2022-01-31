@@ -16,6 +16,7 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 using 표준국어대사전.Classes;
+using Microsoft.UI.Xaml.Controls;
 
 // 빈 페이지 항목 템플릿에 대한 설명은 https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x412에 나와 있습니다.
 
@@ -56,52 +57,8 @@ namespace 표준국어대사전
             }
         }
 
-        private void NavigationView_Loaded(object sender, RoutedEventArgs e)
+        private void MainNavigation_SelectionChanged(Microsoft.UI.Xaml.Controls.NavigationView sender, Microsoft.UI.Xaml.Controls.NavigationViewSelectionChangedEventArgs args)
         {
-            // set the initial SelectedItem 
-            foreach (NavigationViewItemBase item in Main_Navigation.MenuItems)
-            {
-                if (item is NavigationViewItem && item.Tag.ToString() == "Pages.Dic")
-                {
-                    Main_Navigation.SelectedItem = item;
-                    break;
-                }
-            }
-        }
-
-        private void Main_Navigation_ItemInvoked(NavigationView sender, NavigationViewItemInvokedEventArgs args)
-        {
-            if (args.IsSettingsInvoked)
-            {
-                ContentFrame.Navigate(typeof(Pages.Settings));
-            }
-            else
-            {
-                switch (args.InvokedItem)
-                {
-                    case "Pages.Dic":  //검색
-                        ContentFrame.Navigate(typeof(Pages.DicAppSearch));
-                        break;
-
-                    case "Pages.HangulSpelling":  //한글 맞춤법
-                        ContentFrame.Navigate(typeof(Pages.HangulSpelling));
-                        break;
-
-                    case "Pages.Adjustment":  //수정 내용
-                        ContentFrame.Navigate(typeof(Pages.Adjustment));
-                        break;
-
-                    case "Pages.SpellingChecker":  //맞춤법/문법 검사기
-                        ContentFrame.Navigate(typeof(Pages.SpellingChecker));
-                        break;
-                }
-            }
-        }
-
-        private void NavigationView_SelectionChanged(NavigationView sender, NavigationViewSelectionChangedEventArgs args)
-        {
-            ApplicationDataContainer localSettings = ApplicationData.Current.LocalSettings;
-
             if (args.IsSettingsSelected)
             {
                 ContentFrame.Navigate(typeof(Pages.Settings));
@@ -109,7 +66,7 @@ namespace 표준국어대사전
             else
             {
 
-                NavigationViewItem item = args.SelectedItem as NavigationViewItem;
+                Microsoft.UI.Xaml.Controls.NavigationViewItem item = args.SelectedItem as Microsoft.UI.Xaml.Controls.NavigationViewItem;
 
                 switch (item.Tag)
                 {
