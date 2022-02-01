@@ -329,24 +329,6 @@ namespace 표준국어대사전.Pages
             await Windows.System.Launcher.LaunchUriAsync(new Uri("https://costudio1122.blogspot.com/p/blog-page_76.html"));
         }
 
-        private void BtnMemo_Click(object sender, RoutedEventArgs e)
-        {
-            Controls.ConMemo conMemo = MasterGrid.FindName("Memo") as Controls.ConMemo;
-
-            if (conMemo != null)
-            {
-                MasterGrid.Children.Remove(conMemo);
-            }
-            else
-            {
-                Controls.ConMemo memo = new Controls.ConMemo();
-                memo.Name = "Memo";
-                memo.VerticalAlignment = VerticalAlignment.Bottom;
-
-                MasterGrid.Children.Add(memo);
-            }
-        }
-
         private void BasicGrid_SizeChanged(object sender, SizeChangedEventArgs e)
         {
             //반응형
@@ -367,10 +349,10 @@ namespace 표준국어대사전.Pages
 
             else if (BasicGrid.ActualWidth < 686)
             {
-                MasterGrid.Margin = new Thickness(0, 40, 0, 0);
+                MasterGrid.Margin = new Thickness(10, 50, 10, 10);
                 MasterGrid.ClearValue(WidthProperty);
                 MasterGrid.HorizontalAlignment = HorizontalAlignment.Stretch;
-                DetailGrid.Margin = new Thickness(0, 40, 0, 0);
+                DetailGrid.Margin = new Thickness(10, 50, 10, 0);
                 DetailGrid.Visibility = Visibility.Collapsed;
                 if (BasicGrid.FindName("MultiSearchGrid") != null)
                 {

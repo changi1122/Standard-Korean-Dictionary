@@ -122,9 +122,6 @@
     <Compile Include="Controls\ConMultiSearch.xaml.cs">
       <DependentUpon>ConMultiSearch.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\ConMemo.xaml.cs">
-      <DependentUpon>ConMemo.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Controls\ConWordDetail.xaml.cs">
       <DependentUpon>ConWordDetail.xaml</DependentUpon>
     </Compile>
@@ -222,10 +219,6 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Page Include="Controls\ConMultiSearch.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Controls\ConMemo.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
