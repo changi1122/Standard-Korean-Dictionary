@@ -9,10 +9,9 @@
     xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
     mc:Ignorable="d">
 
-    
     <Grid x:Name="FirstGrid" Background="{ThemeResource NavigationViewBackground}">
-        <muxc:NavigationView x:Name="NaviView" Margin="0,0,0,0" Grid.Row="1" IsBackButtonVisible="Collapsed"
-                             CompositeMode="SourceOver" SelectionChanged="NaviView_SelectionChanged">
+        <muxc:NavigationView x:Name="NaviView" Margin="0,0,0,0" Grid.Row="1" IsBackButtonVisible="Collapsed" 
+                             PaneDisplayMode="LeftMinimal" SelectionChanged="NaviView_SelectionChanged" >
             <muxc:NavigationView.MenuItems>
                 <muxc:NavigationViewItem x:Uid="NaviItem1" Content="단어 검색" Tag="Pages.Dic">
                     <muxc:NavigationViewItem.Icon>
