@@ -19,7 +19,7 @@ namespace 표준국어대사전.Pages
 {
     public sealed partial class DicAppSearch : Page
     {
-        const int MASTERGRID_WIDTH = 320;
+        const int MASTERGRID_WIDTH = 310;
         const int MULTISEARCHGRID_WIDTH = 400;
 
         // 검색어 임시 저장
@@ -352,10 +352,10 @@ namespace 표준국어대사전.Pages
             //반응형
             if (BasicGrid.ActualWidth >= 686)
             {
-                MasterGrid.Margin = new Thickness(0, 40, 0, 0);
+                MasterGrid.Margin = new Thickness(10, 50, 0, 10);
                 MasterGrid.Width = MASTERGRID_WIDTH;
                 MasterGrid.HorizontalAlignment = HorizontalAlignment.Left;
-                DetailGrid.Margin = new Thickness(MASTERGRID_WIDTH, 40, 0, 0);
+                DetailGrid.Margin = new Thickness(MASTERGRID_WIDTH + 20, 50, 10, 0);
                 DetailGrid.Visibility = Visibility.Visible;
                 if (BasicGrid.FindName("MultiSearchGrid") != null)
                 {

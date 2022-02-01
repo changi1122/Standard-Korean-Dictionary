@@ -105,6 +105,7 @@ namespace 표준국어대사전.Classes
             RaisePropertyChanged("detailRtb");
             RaisePropertyChanged("IsOriginVisible");
             RaisePropertyChanged("IsRelationVisible");
+            RaisePropertyChanged("IsHomeVisible");
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -117,18 +118,24 @@ namespace 표준국어대사전.Classes
         }
         #endregion
 
-        //어원 문단 표시 여부
+        // 어원 문단 표시 여부
         public bool IsOriginExist = false;
         public Visibility IsOriginVisible
         {
             get { return (IsOriginExist && IsExampleVisible) ? Visibility.Visible : Visibility.Collapsed; }
         }
 
-        //관용구 속담 문단 표시 여부
+        // 관용구 속담 문단 표시 여부
         public bool IsRelationExist = false;
         public Visibility IsRelationVisible
         {
             get { return (IsRelationExist && IsExampleVisible) ? Visibility.Visible : Visibility.Collapsed; }
+        }
+
+        // 시작 화면 표시 여부
+        public Visibility IsHomeVisible
+        {
+            get { return (target_code == "-200") ? Visibility.Visible : Visibility.Collapsed; }
         }
 
         public WordDetailItem()
@@ -882,7 +889,7 @@ namespace 표준국어대사전.Classes
         {
             get
             {
-                RichTextBlock rtb = new RichTextBlock { HorizontalAlignment = HorizontalAlignment.Left, Margin = new Thickness(0, 40, 0, 0) };
+                RichTextBlock rtb = new RichTextBlock { HorizontalAlignment = HorizontalAlignment.Left };
 
                 if (target_code == "-200")
                 {
