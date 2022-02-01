@@ -130,8 +130,8 @@
     </Compile>
     <Compile Include="Controls\PronunciationBlock.cs" />
     <Compile Include="Controls\WordReader.cs" />
-    <Compile Include="Main.xaml.cs">
-      <DependentUpon>Main.xaml</DependentUpon>
+    <Compile Include="Views\MainNavigation.xaml.cs">
+      <DependentUpon>MainNavigation.xaml</DependentUpon>
     </Compile>
     <Compile Include="Classes\DefinitionParser.cs" />
     <Compile Include="Classes\SearchResultItem.cs" />
@@ -159,7 +159,6 @@
     <AppxManifest Include="Package.appxmanifest">
       <SubType>Designer</SubType>
     </AppxManifest>
-    <Content Include="Assets\icon_n_m.png" />
     <Content Include="Fonts\NanumBarunGothic-YetHangul.ttf" />
     <PRIResource Include="Strings\ko-KR\Resources.resw" />
     <PRIResource Include="Strings\en\Resources.resw" />
@@ -210,6 +209,7 @@
     <Content Include="Assets\Wide310x150Logo.scale-150.png" />
     <Content Include="Assets\Wide310x150Logo.scale-200.png" />
     <Content Include="Assets\Wide310x150Logo.scale-400.png" />
+    <Content Include="Fonts\iconfont.ttf" />
     <None Include="Package.StoreAssociation.xml" />
     <None Include="Package.xml" />
     <Content Include="Fonts\README.txt" />
@@ -233,7 +233,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Main.xaml">
+    <Page Include="Views\MainNavigation.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
