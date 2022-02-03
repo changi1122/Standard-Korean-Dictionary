@@ -127,6 +127,7 @@
     </Compile>
     <Compile Include="Controls\PronunciationBlock.cs" />
     <Compile Include="Controls\WordReader.cs" />
+    <Compile Include="ViewModels\SearchViewModel.cs" />
     <Compile Include="Views\MainNavigation.xaml.cs">
       <DependentUpon>MainNavigation.xaml</DependentUpon>
     </Compile>
@@ -135,8 +136,8 @@
     <Compile Include="Pages\Adjustment.xaml.cs">
       <DependentUpon>Adjustment.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Pages\DicAppSearch.xaml.cs">
-      <DependentUpon>DicAppSearch.xaml</DependentUpon>
+    <Compile Include="Views\Search.xaml.cs">
+      <DependentUpon>Search.xaml</DependentUpon>
     </Compile>
     <Compile Include="Pages\LabFunction.xaml.cs">
       <DependentUpon>LabFunction.xaml</DependentUpon>
@@ -234,7 +235,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Pages\DicAppSearch.xaml">
+    <Page Include="Views\Search.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

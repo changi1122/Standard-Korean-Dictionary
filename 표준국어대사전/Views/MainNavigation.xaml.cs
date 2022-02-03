@@ -67,7 +67,7 @@ namespace 표준국어대사전.Views
                 switch (item.Tag)
                 {
                     case "Pages.Dic":  // 검색  
-                        ContentFrame.Navigate(typeof(Pages.DicAppSearch));
+                        ContentFrame.Navigate(typeof(Views.Search));
                         break;
 
                     case "Pages.HangulSpelling":  // 한글 맞춤법

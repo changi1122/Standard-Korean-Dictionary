@@ -1,5 +1,4 @@
-﻿using 표준국어대사전.Classes;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -13,29 +12,29 @@ using Windows.UI.Popups;
 using System.Collections.ObjectModel;
 using Windows.Networking.Connectivity;
 using Windows.ApplicationModel.Resources;
+using 표준국어대사전.Classes;
+using 표준국어대사전.ViewModels;
 
 
-namespace 표준국어대사전.Pages
+namespace 표준국어대사전.Views
 {
-    public sealed partial class DicAppSearch : Page
+    public sealed partial class Search : Page
     {
         const int MASTERGRID_WIDTH = 310;
         const int MULTISEARCHGRID_WIDTH = 400;
-
-        // 검색어 임시 저장
-        private string lastSearchText;
 
         // 더 보기 버튼 표시 여부
         private Visibility isMoreButtonVisible;
 
         // 검색 결과 리스트뷰에 바인딩
         private ObservableCollection<SearchResultItem> SearchResults;
-        
+
         // 단어 정의에 바인딩
         private ObservableCollection<WordDetailItem> Definitions;
 
         private bool IsWebViewOpen = false;
         private static bool IsHomepageVisible = true;
+        private static bool IsFirstPageOpen = true;
 
         public Visibility IsDefinitionViewerVisible
         {
@@ -44,9 +43,12 @@ namespace 표준국어대사전.Pages
 
         private HistoryManager History;
 
+        private SearchViewModel ViewModel;
 
-        public DicAppSearch()
+        public Search()
         {
+            this.ViewModel = new SearchViewModel(ref IsFirstPageOpen);
+
             this.InitializeComponent();
 
             isMoreButtonVisible = Visibility.Collapsed;
@@ -88,8 +90,6 @@ namespace 표준국어대사전.Pages
         private void UpdateControls()
         {
             BtnMore.Visibility = isMoreButtonVisible;
-            BtnBack.IsEnabled = History.CanGoBack;
-            BtnForward.IsEnabled = History.CanGoForward;
 
             DefinitionViewer.Visibility = IsDefinitionViewerVisible;
             var currentView = SystemNavigationManager.GetForCurrentView();
@@ -134,94 +134,12 @@ namespace 표준국어대사전.Pages
             }
         }
 
-        private void BtnNetStatusRefresh_Click(object sender, RoutedEventArgs e)
-        {
-            if (NetworkCheck() == true)
-            {
-                SearchBox.IsEnabled = true;
-
-                TextBlockErrorMessage.Visibility = Visibility.Collapsed;
-                BtnNetStatusRefresh.Visibility = Visibility.Collapsed;
-            }
-        }
-
         /// <summary>
-        /// 검색 결과 리스트뷰의 항목을 클릭시 실행
+        /// 단어 검색시 실행
         /// </summary>
-        private async void ListviewSearchResult_ItemClick(object sender, ItemClickEventArgs e)
-        {
-            if (NetworkCheck() == false)
-                return;
-
-            var clickedItem = (SearchResultItem)e.ClickedItem;
-
-            if (clickedItem.target_code == -200)
-            {
-                //시작 누를 시 동작
-                Definitions[0] = WordDetailStaticPage.GetHomepage();
-
-                if (BasicGrid.ActualWidth < 686)
-                {
-                    DetailGrid.Visibility = Visibility.Visible;
-                    ShowBackButton();
-                }
-                UpdateControls();
-                return;
-            }
-
-            //일반 단어 클릭시 동작
-
-            //되돌리기 위한 기록
-            History.RecordDefinition(SearchBox.Text, lastSearchText, Definitions[0], ListviewSearchResult.SelectedIndex, false, isMoreButtonVisible);
-            //뜻풀이 감추기
-            Definitions[0] = new WordDetailItem();
-            UpdateControls();
-
-            if (BasicGrid.ActualWidth < 686)
-            {
-                DetailGrid.Visibility = Visibility.Visible;
-                ShowBackButton();
-            }
-
-            DefinitionParser definitionParser = new DefinitionParser(DetailProgressBar);
-            WordDetailItem definitionItem = await definitionParser.GetWordDetail(clickedItem.target_code.ToString(), clickedItem.word, clickedItem.sup_no);
-            if (definitionItem != null)
-            {
-                Definitions[0] = definitionItem;
-            }
-
-            //뜻풀이 보이기
-            UpdateControls();
-        }
-
-        /// <summary>
-        /// 더 보기 버튼 클릭시 실행
-        /// </summary>
-        private void BtnMore_Click(object sender, RoutedEventArgs e)
-        {
-            int start = SearchResults.Last().sup_no / 10 + 1;
-            string word = lastSearchText;
-
-            WordFinder wordFinder = new WordFinder(SearchResults, MasterProgressBar, TextBlockErrorMessage);
-            wordFinder.GetSearchResults(start, 10, word, isMoreButtonVisible, (visibility) => { isMoreButtonVisible = visibility; UpdateControls(); } );
-            return;
-        }
-
         private async void SearchBox_QuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
         {
-            TextBlockErrorMessage.Visibility = Visibility.Collapsed; //검색 결과 없음. 표시 지우기
-
-            if (NetworkCheck() == false)
-                return;
-
-            //검색어 숫자 지우기
-            string searchText = SearchBox.Text;
-            while (searchText.Length >= 1 && char.IsNumber(searchText[searchText.Length - 1]))
-            {
-                searchText = searchText.Substring(0, searchText.Length - 1);
-            }
-
-            if (searchText == "")
+            if (SearchBox.Text == "")
             {
                 var res = ResourceLoader.GetForCurrentView();
                 var messageDialog = new MessageDialog(res.GetString("DA_NoSearchText"));
@@ -229,29 +147,25 @@ namespace 표준국어대사전.Pages
                 return;
             }
 
-            //되돌리기 위한 기록
-            History.RecordAll(SearchBox.Text, lastSearchText, SearchResults, Definitions[0], ListviewSearchResult.SelectedIndex, false, isMoreButtonVisible);
-            Definitions[0] = new WordDetailItem();
-            //검색 결과 Listview 지우기
-            SearchResults.Clear();
-            //뜻풀이 감추기
-            UpdateControls();
-
-            lastSearchText = searchText;
-            WordFinder wordFinder = new WordFinder(SearchResults, MasterProgressBar, TextBlockErrorMessage);
-            wordFinder.GetSearchResults(1, 10, searchText, isMoreButtonVisible, (visibility) => { isMoreButtonVisible = visibility; UpdateControls(); } );
-
-            //최근 검색 기록
-            RecentWordManager.Append(searchText);
+            ViewModel.SearchWords();
         }
 
         private void SearchBox_KeyDown(object sender, KeyRoutedEventArgs e)
         {
             if (e.Key == Windows.System.VirtualKey.Enter)
-            {
                 SearchBox_QuerySubmitted(SearchBox, new AutoSuggestBoxQuerySubmittedEventArgs());
-            }
         }
+
+        /// <summary>
+        /// 검색 결과 리스트뷰의 항목을 클릭시 실행
+        /// </summary>
+        private void ListviewSearchResult_ItemClick(object sender, ItemClickEventArgs e)
+        {
+            var clickedItem = e.ClickedItem as SearchResultItem;
+
+            ViewModel.DisplayWordDetail(clickedItem);
+        }
+
 
         private void BtnSubSearchClose_Click(object sender, RoutedEventArgs e)
         {
@@ -413,7 +327,7 @@ namespace 표준국어대사전.Pages
                 VerticalAlignment = VerticalAlignment.Stretch,
                 HorizontalAlignment = HorizontalAlignment.Stretch,
             };
-            MultiSearchFrame.Navigate(typeof(Pages.DicAppSearch));
+            MultiSearchFrame.Navigate(typeof(Views.Search));
             MultiSearchGrid.Children.Add(MultiSearchFrame);
 
             BasicGrid.Children.Add(MultiSearchGrid);
@@ -422,55 +336,6 @@ namespace 표준국어대사전.Pages
         private void BtnMultiSearchClose_Click(object sender, RoutedEventArgs e)
         {
             BasicGrid.Children.Remove((UIElement)this.FindName("MultiSearchGrid"));
-        }
-
-        private void BtnBack_Click(object sender, RoutedEventArgs e)
-        {
-            string searchText = SearchBox.Text;
-            WordDetailItem definition = Definitions[0];
-            int selectedIndex = ListviewSearchResult.SelectedIndex;
-            History.Undo(ref searchText, ref lastSearchText, ref SearchResults, ref definition, ref selectedIndex, ref isMoreButtonVisible);
-
-            SearchBox.Text = searchText;
-            if (definition != null)
-                Definitions[0] = definition;
-            ListviewSearchResult.SelectedIndex = selectedIndex;
-            UpdateControls();
-        }
-
-        private void BtnForward_Click(object sender, RoutedEventArgs e)
-        {
-            string searchText = SearchBox.Text;
-            WordDetailItem definition = Definitions[0];
-            int selectedIndex = ListviewSearchResult.SelectedIndex;
-            History.Redo(ref searchText, ref lastSearchText, ref SearchResults, ref definition, ref selectedIndex, ref isMoreButtonVisible);
-
-            SearchBox.Text = searchText;
-            if (definition != null)
-                Definitions[0] = definition;
-            ListviewSearchResult.SelectedIndex = selectedIndex;
-            UpdateControls();
-        }
-
-        private void BtnHome_Click(object sender, RoutedEventArgs e)
-        {
-            //되돌리기 위한 기록
-            History.RecordAll(SearchBox.Text, lastSearchText, SearchResults, Definitions[0], ListviewSearchResult.SelectedIndex, false, isMoreButtonVisible);
-            Definitions[0] = new WordDetailItem();
-
-            //검색어 지우기
-            SearchBox.Text = "";
-            //검색 결과 Listview 지우기
-            SearchResults.Clear();
-
-            List<SearchResultItem> homeTab = SearchResultStaticPage.GetHomeTab();
-            foreach(SearchResultItem item in homeTab)
-            {
-                SearchResults.Add(item);
-            }
-            ListviewSearchResult.SelectedIndex = 0;
-            Definitions[0] = WordDetailStaticPage.GetHomepage();
-            UpdateControls();
         }
 
         private void ShowBackButton()
