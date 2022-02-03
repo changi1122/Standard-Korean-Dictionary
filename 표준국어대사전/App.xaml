@@ -15,11 +15,13 @@
                     <SolidColorBrush x:Key="NavigationViewBackground" Color="#F3F3F3"/>
                     <SolidColorBrush x:Key="PageBackgroundBrush" Color="#F9F9F9"/>
                     <SolidColorBrush x:Key="BorderBrush" Color="#E5E5E5"/>
+                    <SolidColorBrush x:Key="TextForeground" Color="#000"/>
                 </ResourceDictionary>
                 <ResourceDictionary x:Key="Dark">
                     <SolidColorBrush x:Key="NavigationViewBackground" Color="#202020"/>
                     <SolidColorBrush x:Key="PageBackgroundBrush" Color="#272727"/>
                     <SolidColorBrush x:Key="BorderBrush" Color="#1D1D1D"/>
+                    <SolidColorBrush x:Key="TextForeground" Color="#fff"/>
                 </ResourceDictionary>
             </ResourceDictionary.ThemeDictionaries>
 

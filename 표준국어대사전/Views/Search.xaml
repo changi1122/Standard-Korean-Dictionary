@@ -25,7 +25,6 @@
                 </Grid>
             </StackPanel>
         </DataTemplate>
-        <SolidColorBrush x:Key="BarColor" Color="#FFBEBEBE"/>
     </Page.Resources>
 
 
@@ -38,13 +37,6 @@
                           Icon="Forward" IsEnabled="{x:Bind ViewModel.CanGoForward, Mode=OneWay}" Click="{x:Bind ViewModel.Redo}"/>
 
             <CommandBar.SecondaryCommands>
-                <AppBarButton x:Name="BtnMultiSearch" x:Uid="DA_BtnMultiSearch" Label="다중 검색"
-                              ToolTipService.ToolTip="다중 검색" Click="BtnMultiSearch_Click">
-                    <AppBarButton.Icon>
-                        <FontIcon Glyph="&#xE177;"/>
-                    </AppBarButton.Icon>
-                </AppBarButton>
-                <AppBarSeparator/>
                 <AppBarButton x:Name="BtnHome" x:Uid="DA_BtnHome" Label="시작" ToolTipService.ToolTip="시작"
                               Icon="Home" IsEnabled="True" Click="{x:Bind ViewModel.GoHome}"/>
                 <AppBarSeparator/>
