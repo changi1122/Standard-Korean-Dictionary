@@ -6,8 +6,9 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:data="using:표준국어대사전.Classes"
+    xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
     mc:Ignorable="d"
-    Loaded="Page_Loaded">
+    >
 
     <Page.Resources>
         <Style x:Key="SeperatorItem" TargetType="ListViewItem">
@@ -76,8 +77,8 @@
                 </StackPanel>
             </ScrollViewer>
 
-            <ProgressBar x:Name="MasterProgressBar" Margin="0,0,0,0" VerticalAlignment="Top" Visibility="Collapsed"
-                         IsIndeterminate="True" ShowPaused="False" ShowError="False"/>
+            <muxc:ProgressBar x:Name="MasterProgressBar" Margin="0,0,0,0" VerticalAlignment="Top" IsIndeterminate="True" ShowPaused="False"
+                              ShowError="False" Visibility="{x:Bind ViewModel.IsMasterProgressBarVisible, Mode=OneWay}"/>
             <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
                 <TextBlock x:Name="TextBlockErrorMessage" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="20"
                            Text="{x:Bind ViewModel.ErrorMessageText, Mode=OneWay}" Visibility="{x:Bind ViewModel.IsErrorMessageVisible, Mode=OneWay}"/>
@@ -86,7 +87,7 @@
             </StackPanel>
         </Grid>
         <Grid x:Name="DetailGrid" HorizontalAlignment="Stretch" Margin="330,50,10,0" VerticalAlignment="Stretch"
-              Background="{ThemeResource NavigationViewBackground}">
+              Background="{ThemeResource NavigationViewBackground}" Visibility="{x:Bind ViewModel.IsDetailGridVisible, Mode=OneWay}">
             <ScrollViewer x:Name="DefinitionViewer" Visibility="{x:Bind ViewModel.IsDefinitionViewerVisible, Mode=OneWay}" IsTabStop="True">
                 <StackPanel x:Name="DefinitionSP" DataContext="{x:Bind ViewModel.Definitions, Mode=OneWay}">
                     <StackPanel Padding="20" Margin="0,0,0,10" Background="{ThemeResource PageBackgroundBrush}"
@@ -117,8 +118,8 @@
                     </StackPanel>
                 </StackPanel>
             </ScrollViewer>
-            <ProgressBar x:Name="DetailProgressBar" Margin="0,0,0,0" VerticalAlignment="Top" Visibility="Collapsed"
-                         IsIndeterminate="True" ShowPaused="False" ShowError="False"/>
+            <muxc:ProgressBar x:Name="DetailProgressBar" Margin="0,0,0,0" VerticalAlignment="Top" IsIndeterminate="True" ShowPaused="False"
+                              ShowError="False" Visibility="{x:Bind ViewModel.IsDetailProgressBarVisible, Mode=OneWay}"/>
         </Grid>
     </Grid>
 </Page>

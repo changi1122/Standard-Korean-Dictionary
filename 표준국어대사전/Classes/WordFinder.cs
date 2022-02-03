@@ -18,15 +18,15 @@ namespace 표준국어대사전.Classes
         const string WORD_SEARCH_URL = "https://stdict.korean.go.kr/api/search.do?&key={0}&type_search=search&method={1}&part=all&start={2}&num={3}&q={4}";
 
         ObservableCollection<SearchResultItem> SearchResults;
-        ProgressBar MasterProgressBar;
-        TextBlock TextBlockErrorMessage;
+        Action<Visibility> SetProgressBar;
+        Action<string> SetErrorMessageText;
 
-        public WordFinder(ObservableCollection<SearchResultItem> searchResultItems, ProgressBar pBar, TextBlock textBlock)
+        public WordFinder(ObservableCollection<SearchResultItem> searchResultItems, Action<Visibility> setProgressBar, Action<string> setErrorMessageText)
         {
             //생성자
-            SearchResults = searchResultItems;
-            MasterProgressBar = pBar;
-            TextBlockErrorMessage = textBlock;
+            this.SearchResults = searchResultItems;
+            this.SetProgressBar = setProgressBar;
+            this.SetErrorMessageText = setErrorMessageText;
 
             //API 키 처리
             API_KEY = StorageManager.GetSetting<string>(StorageManager.APIKey);
@@ -39,7 +39,7 @@ namespace 표준국어대사전.Classes
         public async void GetSearchResults(int start, int num, string searchText, Visibility isMoreButtonVisible, Action<Visibility> setMoreButtonVisibility)
         {
             setMoreButtonVisibility(Visibility.Collapsed);
-            MasterProgressBar.Visibility = Visibility.Visible;
+            SetProgressBar(Visibility.Visible);
 
             string responseBody = await DownloadSearchResultsAsync(start, num, searchText);
             if (responseBody == null) //실패 여부 확인
@@ -47,14 +47,14 @@ namespace 표준국어대사전.Classes
                 string error_code = "404";
                 string error_message = $"error_code : {error_code}" + Environment.NewLine + "message : Network Problem";
                 ShowErrorMessage(error_code, error_message, null);
-                MasterProgressBar.Visibility = Visibility.Collapsed;
+                SetProgressBar(Visibility.Collapsed);
                 setMoreButtonVisibility(isMoreButtonVisible);
                 return;
             }
 
             ParseAndShowSearchResults(responseBody, start, num, searchText, setMoreButtonVisibility);
 
-            MasterProgressBar.Visibility = Visibility.Collapsed;
+            SetProgressBar(Visibility.Collapsed);
         }
 
         private async Task<string> DownloadSearchResultsAsync(int start, int num, string searchText)
@@ -118,8 +118,7 @@ namespace 표준국어대사전.Classes
             if (total == 0)
             {
                 var res = Windows.ApplicationModel.Resources.ResourceLoader.GetForCurrentView();
-                TextBlockErrorMessage.Text = res.GetString("ErrorMessageNoResult");
-                TextBlockErrorMessage.Visibility = Visibility.Visible;
+                SetErrorMessageText(res.GetString("ErrorMessageNoResult"));
                 return;
             }
 

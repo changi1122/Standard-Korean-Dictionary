@@ -1014,6 +1014,7 @@ namespace 표준국어대사전.Classes
             public string target_code;
         }
 
+        // TO-DO 링크 정상작동하도록 고치기
 
         private void Hyperlink_Click(Hyperlink sender, HyperlinkClickEventArgs args)
         {

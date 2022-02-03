@@ -6,26 +6,31 @@ using System.Threading.Tasks;
 using System.ComponentModel;
 using System.Collections.ObjectModel;
 using System.Text.RegularExpressions;
+using Windows.UI.Core;
 using Windows.UI.Xaml;
 using Windows.ApplicationModel.Resources;
 using 표준국어대사전.Classes;
-
 
 namespace 표준국어대사전.ViewModels
 {
     internal class SearchViewModel : INotifyPropertyChanged
     {
+        public bool IsWidthBigEnough;
         private HistoryManager History;
-
         private string lastSearchedQuery;
+        Action SearchBoxFocus;
 
-        public SearchViewModel(ref bool IsFirstPageOpen)
+        public SearchViewModel(ref bool IsFirstPageOpen, Action searchBoxFocus)
         {
+            this.IsWidthBigEnough = true;
             this.History = new HistoryManager();
+            this.SearchBoxFocus = searchBoxFocus;
+            this.IsMasterProgressBarVisible = Visibility.Collapsed;
             this.Query = "";
             this.IsSearchBoxEnabled = true;
             this.IsMoreButtonVisible = Visibility.Collapsed;
             this.IsErrorMessageVisible = Visibility.Collapsed;
+            this.IsDetailProgressBarVisible = Visibility.Collapsed;
             this.IsDefinitionViewerVisible = Visibility.Collapsed;
             this.IsDetailGridVisible = Visibility.Visible;
 
@@ -55,18 +60,28 @@ namespace 표준국어대사전.ViewModels
 
         public bool CanGoBack { get { return History.CanGoBack; } }
         public bool CanGoForward { get { return History.CanGoForward; } }
+        public Visibility IsMasterProgressBarVisible { get; private set; }
         public string Query { get; set; }
+        public bool IsSearchBoxEnabled { get; private set; }
+
         public int SearchResultSelectedIndex { get; set; }
         public Visibility IsMoreButtonVisible { get; private set; }
-        public bool IsSearchBoxEnabled { get; private set; }
         public Visibility IsErrorMessageVisible { get; private set; }
         public string ErrorMessageText { get; private set; }
+        public Visibility IsDetailProgressBarVisible { get; private set; }
         public Visibility IsDefinitionViewerVisible { get; private set; }
 
-        // TO-DO
-        // BasicGrid.ActualWidth < 686 일때만 사용
         public Visibility IsDetailGridVisible { get; private set; }
-        public bool IsTitleBarBackButtonEnabled { get; private set; }
+        public bool IsTitleBarBackButtonEnabled
+        {
+            get { return IsTitleBarBackButtonEnabled; }
+            set
+            {
+                var currentView = SystemNavigationManager.GetForCurrentView();
+                currentView.AppViewBackButtonVisibility = (value) ? AppViewBackButtonVisibility.Visible
+                                                                  : AppViewBackButtonVisibility.Collapsed;
+            }
+        }
 
         public void SearchWords()
         {
@@ -89,8 +104,15 @@ namespace 표준국어대사전.ViewModels
             RaisePropertyChanged("SearchResultSelectedIndex", "IsDefinitionViewerVisible");
 
             lastSearchedQuery = query;
-            // TO-DO
-            WordFinder wordFinder = new WordFinder(SearchResults, new Windows.UI.Xaml.Controls.ProgressBar(), new Windows.UI.Xaml.Controls.TextBlock());
+            WordFinder wordFinder = new WordFinder(SearchResults, (Visibility visibility) => {
+                IsMasterProgressBarVisible = visibility;
+                RaisePropertyChanged("IsMasterProgressBarVisible");
+            }, (string text) =>
+            {
+                ErrorMessageText = text;
+                IsErrorMessageVisible = Visibility.Visible;
+                RaisePropertyChanged("ErrorMessageText", "IsErrorMessageVisible");
+            });
             wordFinder.GetSearchResults(1, 10, query, IsMoreButtonVisible, (visibility) => {
                 IsMoreButtonVisible = visibility;
                 RaisePropertyChanged("IsMoreButtonVisible");
@@ -105,8 +127,15 @@ namespace 표준국어대사전.ViewModels
         {
             int start = SearchResults.Last().sup_no / 10 + 1;
 
-            // TO-DO
-            WordFinder wordFinder = new WordFinder(SearchResults, new Windows.UI.Xaml.Controls.ProgressBar(), new Windows.UI.Xaml.Controls.TextBlock());
+            WordFinder wordFinder = new WordFinder(SearchResults, (Visibility visibility) => {
+                IsMasterProgressBarVisible = visibility;
+                RaisePropertyChanged("IsMasterProgressBarVisible");
+            }, (string text) =>
+            {
+                ErrorMessageText = text;
+                IsErrorMessageVisible = Visibility.Visible;
+                RaisePropertyChanged("ErrorMessageText", "IsErrorMessageVisible");
+            });
             wordFinder.GetSearchResults(start, 10, lastSearchedQuery, IsMoreButtonVisible, (visibility) => {
                 IsMoreButtonVisible = visibility;
                 RaisePropertyChanged("IsMoreButtonVisible");
@@ -123,7 +152,8 @@ namespace 표준국어대사전.ViewModels
                 //시작 누를 시 동작
                 Definitions = WordDetailStaticPage.GetHomepage();
                 IsDetailGridVisible = Visibility.Visible;
-                IsTitleBarBackButtonEnabled = true;
+                if (!IsWidthBigEnough)
+                    IsTitleBarBackButtonEnabled = true;
                 RaisePropertyChanged("Definitions", "IsDetailGridVisible", "IsTitleBarBackButtonEnabled");
                 return;
             }
@@ -136,11 +166,14 @@ namespace 표준국어대사전.ViewModels
             IsDefinitionViewerVisible = Visibility.Collapsed;
 
             IsDetailGridVisible = Visibility.Visible;
-            IsTitleBarBackButtonEnabled = true;
+            if (!IsWidthBigEnough)
+                IsTitleBarBackButtonEnabled = true;
             RaisePropertyChanged("IsDefinitionViewerVisible", "IsDetailGridVisible", "IsTitleBarBackButtonEnabled");
 
-            // TO-DO
-            DefinitionParser definitionParser = new DefinitionParser(new Windows.UI.Xaml.Controls.ProgressBar());
+            DefinitionParser definitionParser = new DefinitionParser((Visibility visibility) => {
+                IsDetailProgressBarVisible = visibility;
+                RaisePropertyChanged("IsDetailProgressBarVisible");
+            });
             WordDetailItem definitionItem = await definitionParser.GetWordDetail(clickedItem.target_code.ToString(), clickedItem.word, clickedItem.sup_no);
             if (definitionItem != null)
             {
@@ -165,13 +198,18 @@ namespace 표준국어대사전.ViewModels
             if (definition != null)
                 Definitions = definition;
             SearchResultSelectedIndex = selectedIndex;
-            if (selectedIndex < 0)
-                IsDefinitionViewerVisible = Visibility.Collapsed;
-            else
-                IsDefinitionViewerVisible = Visibility.Visible;
+            IsDefinitionViewerVisible = (selectedIndex < 0) ? Visibility.Collapsed : Visibility.Visible;
             IsMoreButtonVisible = isMoreButtonVisible;
             RaisePropertyChanged("Query", "Definitions", "SearchResultSelectedIndex", "IsDefinitionViewerVisible",
                                  "IsMoreButtonVisible", "CanGoBack", "CanGoForward");
+            
+            // 작은 창일 때
+            if (!IsWidthBigEnough)
+            {
+                IsDetailGridVisible = (selectedIndex < 0) ? Visibility.Collapsed : Visibility.Visible;
+                IsTitleBarBackButtonEnabled = (selectedIndex < 0) ? false : true;
+                RaisePropertyChanged("IsDetailGridVisible");
+            }
         }
 
         public void Redo()
@@ -188,13 +226,18 @@ namespace 표준국어대사전.ViewModels
             if (definition != null)
                 Definitions = definition;
             SearchResultSelectedIndex = selectedIndex;
-            if (selectedIndex < 0)
-                IsDefinitionViewerVisible = Visibility.Collapsed;
-            else
-                IsDefinitionViewerVisible = Visibility.Visible;
+            IsDefinitionViewerVisible = (selectedIndex < 0) ? Visibility.Collapsed : Visibility.Visible;
             IsMoreButtonVisible = isMoreButtonVisible;
             RaisePropertyChanged("Query", "Definitions", "SearchResultSelectedIndex", "IsDefinitionViewerVisible",
                                  "IsMoreButtonVisible", "CanGoBack", "CanGoForward");
+
+            // 작은 창일 때
+            if (!IsWidthBigEnough)
+            {
+                IsDetailGridVisible = (selectedIndex < 0) ? Visibility.Collapsed : Visibility.Visible;
+                IsTitleBarBackButtonEnabled = (selectedIndex < 0) ? false : true;
+                RaisePropertyChanged("IsDetailGridVisible");
+            }
         }
 
         public void GoHome()
@@ -220,6 +263,16 @@ namespace 표준국어대사전.ViewModels
             RaisePropertyChanged("Query", "SearchResultSelectedIndex", "Definitions", "IsDefinitionViewerVisible");
         }
 
+        public void CloseDetailGrid(object sender, BackRequestedEventArgs e)
+        {
+            //뜻풀이 감추기
+            IsDetailGridVisible = Visibility.Collapsed;
+            RaisePropertyChanged("IsDetailGridVisible");
+
+            var currentView = SystemNavigationManager.GetForCurrentView();
+            currentView.AppViewBackButtonVisibility = AppViewBackButtonVisibility.Collapsed;
+        }
+
         public void NetStatusRefresh()
         {
             if (NetworkCheck() == true)
@@ -227,9 +280,21 @@ namespace 표준국어대사전.ViewModels
                 IsSearchBoxEnabled = true;
                 IsErrorMessageVisible = Visibility.Collapsed;
                 RaisePropertyChanged("IsSearchBoxEnabled", "IsErrorMessageVisible");
+                SearchBoxFocus();
             }
         }
 
+        public void SetDetailGridVisible()
+        {
+            IsDetailGridVisible = Visibility.Visible;
+            RaisePropertyChanged("IsDetailGridVisible");
+        }
+
+        public void SetDetailGridCollapsed()
+        {
+            IsDetailGridVisible = Visibility.Collapsed;
+            RaisePropertyChanged("IsDetailGridVisible");
+        }
 
         protected void RaisePropertyChanged(string name)
         {

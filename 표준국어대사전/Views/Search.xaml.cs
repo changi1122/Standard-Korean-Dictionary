@@ -23,115 +23,23 @@ namespace 표준국어대사전.Views
         const int MASTERGRID_WIDTH = 310;
         const int MULTISEARCHGRID_WIDTH = 400;
 
-        // 더 보기 버튼 표시 여부
-        private Visibility isMoreButtonVisible;
-
-        // 검색 결과 리스트뷰에 바인딩
-        private ObservableCollection<SearchResultItem> SearchResults;
-
-        // 단어 정의에 바인딩
-        private ObservableCollection<WordDetailItem> Definitions;
-
         private bool IsWebViewOpen = false;
-        private static bool IsHomepageVisible = true;
         private static bool IsFirstPageOpen = true;
-
-        public Visibility IsDefinitionViewerVisible
-        {
-            get { return (Definitions[0].target_code != null) ? Visibility.Visible : Visibility.Collapsed; }
-        }
-
-        private HistoryManager History;
 
         private SearchViewModel ViewModel;
 
         public Search()
         {
-            this.ViewModel = new SearchViewModel(ref IsFirstPageOpen);
+            this.ViewModel = new SearchViewModel(ref IsFirstPageOpen, () => { SearchBox.Focus(FocusState.Programmatic); });
 
             this.InitializeComponent();
 
-            isMoreButtonVisible = Visibility.Collapsed;
-
-            History = new HistoryManager();
-
-            if (IsHomepageVisible)
-            {
-                SearchResults = new ObservableCollection<SearchResultItem>(SearchResultStaticPage.GetHomeTab());
-                Definitions = new ObservableCollection<WordDetailItem>();
-                Definitions.Add(WordDetailStaticPage.GetHomepage());
-                ListviewSearchResult.SelectedIndex = 0;
-                IsHomepageVisible = false;
-            }
-            else
-            {
-                SearchResults = new ObservableCollection<SearchResultItem>();
-                Definitions = new ObservableCollection<WordDetailItem>();
-                Definitions.Add(new WordDetailItem());
-            }
-
-            UpdateControls();
-
-            NetworkCheck();
+            this.ViewModel.IsWidthBigEnough = BasicGrid.ActualWidth >= 686;
+            this.ViewModel.NetStatusRefresh();
 
             // 뒤로가기 버튼 이벤트 핸들러 추가
             var currentView = SystemNavigationManager.GetForCurrentView();
-            currentView.BackRequested += CloseDetailGrid;
-        }
-
-        private void Page_Loaded(object sender, RoutedEventArgs e)
-        {
-            SearchBox.Focus(FocusState.Programmatic);
-        }
-
-        /// <summary>
-        /// 바인딩과 유사하게 필요할 때마다 엘리먼트 속성을 관리
-        /// </summary>
-        private void UpdateControls()
-        {
-            BtnMore.Visibility = isMoreButtonVisible;
-
-            DefinitionViewer.Visibility = IsDefinitionViewerVisible;
-            var currentView = SystemNavigationManager.GetForCurrentView();
-            if (currentView.AppViewBackButtonVisibility == AppViewBackButtonVisibility.Visible
-                && IsDefinitionViewerVisible == Visibility.Collapsed)
-            {
-                Definitions[0] = new WordDetailItem();
-                
-                DetailGrid.Visibility = Visibility.Collapsed;
-                currentView.AppViewBackButtonVisibility = AppViewBackButtonVisibility.Collapsed;
-            }
-        }
-
-        private static bool IsInternetConnected()
-        {
-            ConnectionProfile connections = NetworkInformation.GetInternetConnectionProfile();
-            bool internet = (connections != null) &&
-                (connections.GetNetworkConnectivityLevel() == NetworkConnectivityLevel.InternetAccess);
-            return internet;
-        }
-
-        private bool NetworkCheck()
-        {
-            if (IsInternetConnected() == true)
-            {
-                return true;
-            }
-            else
-            {
-                SearchBox.IsEnabled = false;
-
-                //검색 결과 Listview 지우기
-                SearchResults.Clear();
-                //뜻풀이 감추기
-                Definitions[0] = new WordDetailItem();
-                UpdateControls();
-                var res = Windows.ApplicationModel.Resources.ResourceLoader.GetForCurrentView();
-                TextBlockErrorMessage.Text = res.GetString("ErrorMessageNoInternet");
-                TextBlockErrorMessage.Visibility = Visibility.Visible;
-                BtnNetStatusRefresh.Visibility = Visibility.Visible;
-                return false;
-            }
+            currentView.BackRequested += ViewModel.CloseDetailGrid;
         }
 
         /// <summary>
@@ -245,14 +153,17 @@ namespace 표준국어대사전.Views
 
         private void BasicGrid_SizeChanged(object sender, SizeChangedEventArgs e)
         {
-            //반응형
+            // 반응형
             if (BasicGrid.ActualWidth >= 686)
             {
+                // 큰 창일 때
+                ViewModel.IsWidthBigEnough = true;
+
                 MasterGrid.Margin = new Thickness(10, 50, 0, 10);
                 MasterGrid.Width = MASTERGRID_WIDTH;
                 MasterGrid.HorizontalAlignment = HorizontalAlignment.Left;
                 DetailGrid.Margin = new Thickness(MASTERGRID_WIDTH + 20, 50, 10, 0);
-                DetailGrid.Visibility = Visibility.Visible;
+                ViewModel.SetDetailGridVisible();
                 if (BasicGrid.FindName("MultiSearchGrid") != null)
                 {
                     Grid g = (Grid)BasicGrid.FindName("MultiSearchGrid");
@@ -263,11 +174,14 @@ namespace 표준국어대사전.Views
 
             else if (BasicGrid.ActualWidth < 686)
             {
+                // 작은 창일 때
+                ViewModel.IsWidthBigEnough = false;
+
                 MasterGrid.Margin = new Thickness(10, 50, 10, 10);
                 MasterGrid.ClearValue(WidthProperty);
                 MasterGrid.HorizontalAlignment = HorizontalAlignment.Stretch;
                 DetailGrid.Margin = new Thickness(10, 50, 10, 0);
-                DetailGrid.Visibility = Visibility.Collapsed;
+                ViewModel.SetDetailGridCollapsed();
                 if (BasicGrid.FindName("MultiSearchGrid") != null)
                 {
                     Grid g = (Grid)BasicGrid.FindName("MultiSearchGrid");
@@ -277,7 +191,7 @@ namespace 표준국어대사전.Views
             }
 
             //뒤로가기 키 지우기
-            HideBackButton();
+            ViewModel.IsTitleBarBackButtonEnabled = false;
         }
 
         private void BtnMultiSearch_Click(object sender, RoutedEventArgs e)
@@ -338,28 +252,5 @@ namespace 표준국어대사전.Views
             BasicGrid.Children.Remove((UIElement)this.FindName("MultiSearchGrid"));
         }
 
-        private void ShowBackButton()
-        {
-            var currentView = SystemNavigationManager.GetForCurrentView();
-            currentView.AppViewBackButtonVisibility = AppViewBackButtonVisibility.Visible;
-        }
-
-        private void HideBackButton()
-        {
-            var currentView = SystemNavigationManager.GetForCurrentView();
-            currentView.AppViewBackButtonVisibility = AppViewBackButtonVisibility.Collapsed;
-        }
-
-        private void CloseDetailGrid(object sender, BackRequestedEventArgs e)
-        {
-
-            //뜻풀이 감추기
-            Definitions[0] = new WordDetailItem();
-            UpdateControls();
-
-            DetailGrid.Visibility = Visibility.Collapsed;
-            var currentView = SystemNavigationManager.GetForCurrentView();
-            currentView.AppViewBackButtonVisibility = AppViewBackButtonVisibility.Collapsed;
-        }
     }
 }

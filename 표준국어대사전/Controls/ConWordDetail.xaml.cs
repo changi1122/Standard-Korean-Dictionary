@@ -35,7 +35,8 @@ namespace 표준국어대사전.Controls
         {
             WordDetailSP.Visibility = Visibility.Collapsed;
 
-            DefinitionParser definitionParser = new DefinitionParser(DetailProgressBar);
+            // TO-DO
+            DefinitionParser definitionParser = new DefinitionParser((Visibility visibility) => { return; });
             WordDetailItem definitionItem = await definitionParser.GetWordDetail(target_code, null, sup_no);
             if (definitionItem != null)
                 wordDetail[0] = definitionItem;

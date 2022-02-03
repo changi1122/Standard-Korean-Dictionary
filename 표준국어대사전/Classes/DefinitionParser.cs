@@ -19,20 +19,20 @@ namespace 표준국어대사전.Classes
         const string WORD_DETAIL_URL = "https://stdict.korean.go.kr/api/view.do?&key={0}&method=TARGET_CODE&q={1}";
         string API_KEY;
 
-        ProgressBar DetailProgressBar;
+        Action<Visibility> SetProgressBar;
 
-        public DefinitionParser(ProgressBar pbar)
+        public DefinitionParser(Action<Visibility> setProgressBar)
         {
             //생성자
-            DetailProgressBar = pbar;
+            this.SetProgressBar = setProgressBar;
 
             //API 키 처리
-            API_KEY = StorageManager.GetSetting<string>(StorageManager.APIKey);
+            this.API_KEY = StorageManager.GetSetting<string>(StorageManager.APIKey);
         }
 
         public async Task<WordDetailItem> GetWordDetail(string target_code, string wordname, int sup_no)
         {
-            DetailProgressBar.Visibility = Visibility.Visible;
+            SetProgressBar(Visibility.Visible);
 
             string responseBody = await DownloadWordDetailAsync(target_code);
             if (responseBody == null) //실패 여부 확인
@@ -40,14 +40,14 @@ namespace 표준국어대사전.Classes
                 string error_code = "404";
                 string error_message = $"error_code : {error_code}" + Environment.NewLine + "message : Network Problem";
                 ShowErrorMessage(error_code, error_message, null);
-                DetailProgressBar.Visibility = Visibility.Collapsed;
+                SetProgressBar(Visibility.Collapsed);
                 return null;
             }
 
             WordDetailItem wordDetail = new WordDetailItem();
             wordDetail = ParseWordDetail(responseBody, target_code, wordname, sup_no);
 
-            DetailProgressBar.Visibility = Visibility.Collapsed;
+            SetProgressBar(Visibility.Collapsed);
             return wordDetail;
         }
 
