@@ -8,8 +8,12 @@ using System.Collections.ObjectModel;
 using System.Text.RegularExpressions;
 using Windows.UI.Core;
 using Windows.UI.Xaml;
+using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Documents;
 using Windows.ApplicationModel.Resources;
 using 표준국어대사전.Classes;
+using 표준국어대사전.Controls;
+using 표준국어대사전.Utils;
 
 namespace 표준국어대사전.ViewModels
 {
@@ -37,7 +41,7 @@ namespace 표준국어대사전.ViewModels
             if (IsFirstPageOpen)
             {
                 this.SearchResults = new ObservableCollection<SearchResultItem>(SearchResultStaticPage.GetHomeTab());
-                this.Definitions = WordDetailStaticPage.GetHomepage();
+                this.Definitions = WordDetailStaticPage.GetHomepage(HandleHyperlinkClick, HandleRecentWordClick);
                 this.IsDefinitionViewerVisible = Visibility.Visible;
                 this.SearchResultSelectedIndex = 0;
                 IsFirstPageOpen = false;
@@ -45,7 +49,7 @@ namespace 표준국어대사전.ViewModels
             else
             {
                 this.SearchResults = new ObservableCollection<SearchResultItem>();
-                this.Definitions = new WordDetailItem();
+                this.Definitions = new WordDetailItem(HandleHyperlinkClick);
                 this.SearchResultSelectedIndex = -1;
             }
         }
@@ -82,6 +86,7 @@ namespace 표준국어대사전.ViewModels
                                                                   : AppViewBackButtonVisibility.Collapsed;
             }
         }
+
 
         public void SearchWords()
         {
@@ -150,7 +155,7 @@ namespace 표준국어대사전.ViewModels
             if (clickedItem.target_code == -200)
             {
                 //시작 누를 시 동작
-                Definitions = WordDetailStaticPage.GetHomepage();
+                Definitions = WordDetailStaticPage.GetHomepage(HandleHyperlinkClick, HandleRecentWordClick);
                 IsDetailGridVisible = Visibility.Visible;
                 if (!IsWidthBigEnough)
                     IsTitleBarBackButtonEnabled = true;
@@ -173,7 +178,7 @@ namespace 표준국어대사전.ViewModels
             DefinitionParser definitionParser = new DefinitionParser((Visibility visibility) => {
                 IsDetailProgressBarVisible = visibility;
                 RaisePropertyChanged("IsDetailProgressBarVisible");
-            });
+            }, HandleHyperlinkClick);
             WordDetailItem definitionItem = await definitionParser.GetWordDetail(clickedItem.target_code.ToString(), clickedItem.word, clickedItem.sup_no);
             if (definitionItem != null)
             {
@@ -258,7 +263,7 @@ namespace 표준국어대사전.ViewModels
                 SearchResults.Add(item);
             }
             SearchResultSelectedIndex = 0;
-            Definitions = WordDetailStaticPage.GetHomepage();
+            Definitions = WordDetailStaticPage.GetHomepage(HandleHyperlinkClick, HandleRecentWordClick);
             IsDefinitionViewerVisible = Visibility.Visible;
             RaisePropertyChanged("Query", "SearchResultSelectedIndex", "Definitions", "IsDefinitionViewerVisible");
         }
@@ -296,6 +301,7 @@ namespace 표준국어대사전.ViewModels
             RaisePropertyChanged("IsDetailGridVisible");
         }
 
+
         protected void RaisePropertyChanged(string name)
         {
             if (PropertyChanged != null)
@@ -307,6 +313,73 @@ namespace 표준국어대사전.ViewModels
         {
             for (int i = 0; i < names.Length; i++)
                 RaisePropertyChanged(names[i]);
+        }
+
+        private void HandleHyperlinkClick(Hyperlink sender, HyperlinkClickEventArgs args)
+        {
+            // TO-DO
+            // '태허0' 뜻풀이의 '하늘' 링크처럼 어깨번호가 명확하지 않을 때는 검색 API로 검색 후
+            // '하늘'에 해당하는 단어 중 선택할 수 있게 만들기.
+
+            // TO-DO
+            // ConWordDetail과 함수 두 개로 하는 일 분리하기
+
+            // TO-DO
+            // HyperViewer 아래 부분에 Margin 주기
+
+            Hyperlink hyperlink = sender;
+            if (hyperlink.FindName("DetailGrid") != null)
+            {
+                Grid DetailGrid = hyperlink.FindName("DetailGrid") as Grid;
+
+                if (DetailGrid.FindName("HyperViewer") == null)
+                {
+                    ConWordDetail HyperViewer = new ConWordDetail();
+                    HyperViewer.Name = "HyperViewer";
+                    int sup_no;
+                    if (2 < hyperlink.Inlines.Count)
+                        int.TryParse(NumberConvertor.SupToNumber((hyperlink.Inlines[1] as Run).Text), out sup_no);
+                    else
+                        int.TryParse(Regex.Replace((hyperlink.Inlines[0] as Run).Text, "[^0-9.]", ""), out sup_no);
+                    HyperViewer.Load_WordDetail(hyperlink.Inlines[hyperlink.Inlines.Count - 1].FontFamily.Source, sup_no);
+
+                    DetailGrid.Children.Add(HyperViewer);
+                }
+            }
+            else if (hyperlink.FindName("ConWordDetailGrid") != null)
+            {
+                // 현재 표시 중인 ConWordDetail 존재시
+                Grid ConWordDetailGrid = hyperlink.FindName("ConWordDetailGrid") as Grid;
+                ConWordDetail HyperViewer = ConWordDetailGrid.Parent as ConWordDetail;
+                int sup_no;
+                if (2 < hyperlink.Inlines.Count)
+                    int.TryParse(NumberConvertor.SupToNumber((hyperlink.Inlines[1] as Run).Text), out sup_no);
+                else
+                    int.TryParse(Regex.Replace((hyperlink.Inlines[0] as Run).Text, "[^0-9.]", ""), out sup_no);
+                HyperViewer.Load_WordDetail(hyperlink.Inlines[hyperlink.Inlines.Count - 1].FontFamily.Source, sup_no);
+            }
+        }
+
+        private void HandleRecentWordClick(Hyperlink sender, HyperlinkClickEventArgs args)
+        {
+            Hyperlink hyperlink = sender;
+
+            // 검색어 설정
+            Run run = hyperlink.Inlines[0] as Run;
+            if (run != null)
+                Query = run.Text;
+            RaisePropertyChanged("Query");
+
+            // 작은 창일 때 DetailGrid 숨기기
+            if (!IsWidthBigEnough)
+            {
+                SearchResultSelectedIndex = -1;
+                IsDetailGridVisible = Visibility.Collapsed;
+                IsTitleBarBackButtonEnabled = false;
+                RaisePropertyChanged("SearchResultSelectedIndex", "IsDetailGridVisible", "IsTitleBarBackButtonEnabled");
+            }
+
+            SearchBoxFocus();
         }
 
         private static bool IsInternetConnected()

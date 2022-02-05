@@ -1,16 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Windows.UI.Core;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Popups;
-using System.Collections.ObjectModel;
-using Windows.Networking.Connectivity;
 using Windows.ApplicationModel.Resources;
 using 표준국어대사전.Classes;
 using 표준국어대사전.ViewModels;
@@ -40,6 +36,11 @@ namespace 표준국어대사전.Views
             // 뒤로가기 버튼 이벤트 핸들러 추가
             var currentView = SystemNavigationManager.GetForCurrentView();
             currentView.BackRequested += ViewModel.CloseDetailGrid;
+        }
+
+        private void Page_Loaded(object sender, RoutedEventArgs e)
+        {
+            SearchBox.Focus(FocusState.Programmatic);
         }
 
         /// <summary>
@@ -150,13 +151,15 @@ namespace 표준국어대사전.Views
                     BorderBrush = Application.Current.Resources["BorderBrush"] as SolidColorBrush
                 };
 
-                var ColorBar = new Windows.UI.Xaml.Shapes.Rectangle
+                var ColorBar = new Grid
                 {
                     Margin = new Thickness(0, 0, 0, 0),
                     VerticalAlignment = VerticalAlignment.Top,
                     HorizontalAlignment = HorizontalAlignment.Stretch,
-                    Height = 32,
-                    Fill = Application.Current.Resources["PageBackgroundBrush"] as SolidColorBrush
+                    Height = 33,
+                    Background = Application.Current.Resources["PageBackgroundBrush"] as SolidColorBrush,
+                    BorderBrush = Application.Current.Resources["BorderBrush"] as SolidColorBrush,
+                    BorderThickness = new Thickness(0, 0, 0, 1)
                 };
                 SubGrid.Children.Add(ColorBar);
 
@@ -178,7 +181,7 @@ namespace 표준국어대사전.Views
                 var SubWebView = new WebView
                 {
                     Name = "SubWebView",
-                    Margin = new Thickness(1, 32, 1, 1),
+                    Margin = new Thickness(1, 33, 1, 1),
                     VerticalAlignment = VerticalAlignment.Stretch,
                     HorizontalAlignment = HorizontalAlignment.Stretch,
                     Source = uri

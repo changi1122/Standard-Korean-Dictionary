@@ -3,20 +3,18 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
+using System.Text.RegularExpressions;
+using Windows.UI;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Documents;
 using Windows.UI.Xaml.Media;
-using System.Text.RegularExpressions;
-using 표준국어대사전.Controls;
-using Windows.UI;
 using Windows.UI.Xaml.Media.Imaging;
+using Windows.Foundation;
 using Windows.Storage.Streams;
-using System.Runtime.InteropServices.WindowsRuntime;
-using Windows.Graphics.Imaging;
-using System.IO;
-using Windows.UI.Xaml.Data;
+using 표준국어대사전.Controls;
+using 표준국어대사전.Utils;
+
 
 namespace 표준국어대사전.Classes
 {
@@ -138,15 +136,24 @@ namespace 표준국어대사전.Classes
             get { return (target_code == "-200") ? Visibility.Visible : Visibility.Collapsed; }
         }
 
-        public WordDetailItem()
+        // 하이퍼링크 클릭 이벤트 핸들러
+        TypedEventHandler<Hyperlink, HyperlinkClickEventArgs> HandleHyperlinkClick;
+        // 최근 단어 클릭 이벤트 핸들러
+        TypedEventHandler<Hyperlink, HyperlinkClickEventArgs> HandleRecentWordClick;
+
+        public WordDetailItem(TypedEventHandler<Hyperlink, HyperlinkClickEventArgs> handleHyperlinkClick,
+                              TypedEventHandler<Hyperlink, HyperlinkClickEventArgs> handleRecentWordClick = null)
         {
             // 글꼴
             if (StorageManager.GetSetting<string>(StorageManager.DisplayFont) == "맑은 고딕")
-                FONTFAMILY = "#Malgun Gothic";
+                this.FONTFAMILY = "#Malgun Gothic";
             else
-                FONTFAMILY = "/Fonts/NanumBarunGothic-YetHangul.ttf#NanumBarunGothic YetHangul";
-            FONTMAGNIFICATION = StorageManager.GetSetting<double>(StorageManager.FONTMAGNIFICATION);
-            FONTMAGNIFICATION = Math.Truncate(FONTMAGNIFICATION * 10) / 10;
+                this.FONTFAMILY = "/Fonts/NanumBarunGothic-YetHangul.ttf#NanumBarunGothic YetHangul";
+            this.FONTMAGNIFICATION = StorageManager.GetSetting<double>(StorageManager.FONTMAGNIFICATION);
+            this.FONTMAGNIFICATION = Math.Truncate(FONTMAGNIFICATION * 10) / 10;
+
+            this.HandleHyperlinkClick = handleHyperlinkClick;
+            this.HandleRecentWordClick = handleRecentWordClick;
         }
 
         // 코드 번호
@@ -187,7 +194,7 @@ namespace 표준국어대사전.Classes
                 if (wordname != null)
                     para.Inlines.Add(new Run { Text = wordname, FontSize = 32 * FONTMAGNIFICATION });
                 if (sup_no != 0)
-                    para.Inlines.Add(new Run { Text = ToSup(sup_no), FontSize = 32 * FONTMAGNIFICATION, FontFamily = new FontFamily("Arial") });
+                    para.Inlines.Add(new Run { Text = NumberConvertor.ToSup(sup_no), FontSize = 32 * FONTMAGNIFICATION, FontFamily = new FontFamily("Arial") });
                 if (original_language != "")
                     para.Inlines.Add(new Run { Text = $" ({original_language})", FontSize = 18 * FONTMAGNIFICATION });
                 rtb.Blocks.Add(para);
@@ -378,15 +385,15 @@ namespace 표준국어대사전.Classes
 
                         Hyperlink link = new Hyperlink();
                         string word = lexicals[i].word, number = "";
-                        if (SplitWordnameAndNumber(ref word, ref number))
+                        if (NumberConvertor.SplitWord(ref word, ref number))
                         {
                             link.Inlines.Add(new Run { Text = word });
-                            link.Inlines.Add(new Run { Text = ToSup(number), FontFamily = new FontFamily("Arial") });
+                            link.Inlines.Add(new Run { Text = NumberConvertor.ToSup(number), FontFamily = new FontFamily("Arial") });
                         }
                         else
                             link.Inlines.Add(new Run { Text = lexicals[i].word });
                         link.Inlines.Add(new Run { FontFamily = new FontFamily(lexicals[i].target_code) });
-                        link.Click += Hyperlink_Click;
+                        link.Click += HandleHyperlinkClick;
                         paras[paras.Count - 1].Inlines.Add(link);
                     }
                     else // 첫 단어
@@ -397,15 +404,15 @@ namespace 표준국어대사전.Classes
 
                         Hyperlink link = new Hyperlink();
                         string word = lexicals[i].word, number = "";
-                        if (SplitWordnameAndNumber(ref word, ref number))
+                        if (NumberConvertor.SplitWord(ref word, ref number))
                         {
                             link.Inlines.Add(new Run { Text = word });
-                            link.Inlines.Add(new Run { Text = ToSup(number), FontFamily = new FontFamily("Arial") });
+                            link.Inlines.Add(new Run { Text = NumberConvertor.ToSup(number), FontFamily = new FontFamily("Arial") });
                         }
                         else
                             link.Inlines.Add(new Run { Text = lexicals[i].word });
                         link.Inlines.Add(new Run { FontFamily = new FontFamily(lexicals[i].target_code) });
-                        link.Click += Hyperlink_Click;
+                        link.Click += HandleHyperlinkClick;
                         para.Inlines.Add(link);
 
                         paras.Add(para);
@@ -441,7 +448,7 @@ namespace 표준국어대사전.Classes
                     // 관사 번호
                     if (1 < poses.Count)
                     {
-                        para.Inlines.Add(new Run { Text = $"[{ToRoman(i + 1)}] " });
+                        para.Inlines.Add(new Run { Text = $"[{NumberConvertor.ToRoman(i + 1)}] " });
                     }
 
                     if (poses[i].pos != "품사 없음")
@@ -658,7 +665,7 @@ namespace 표준국어대사전.Classes
                                 else if (OutputList[o].StartsWith("&SUP"))
                                 {
                                     int fontsize = int.Parse(OutputList[o].Substring(4, 3));
-                                    para3.Inlines.Add(new Run { Text = ToSup(OutputList[o].Substring(7)), FontSize = fontsize * FONTMAGNIFICATION, FontFamily = new FontFamily("Arial") });
+                                    para3.Inlines.Add(new Run { Text = NumberConvertor.ToSup(OutputList[o].Substring(7)), FontSize = fontsize * FONTMAGNIFICATION, FontFamily = new FontFamily("Arial") });
                                 }
                                 else if (OutputList[o].StartsWith("&ITA"))
                                 {
@@ -672,12 +679,11 @@ namespace 표준국어대사전.Classes
                                     Hyperlink link = new Hyperlink();
                                     link.Inlines.Add(new Run { Text = OutputList[o].Substring(OutputList[o].IndexOf(">") + 1), FontSize = fontsize * FONTMAGNIFICATION });
                                     link.Inlines.Add(new Run { FontFamily = new FontFamily(OutputList[o].Substring(OutputList[o].IndexOf("<") + 1, OutputList[o].IndexOf(">") - OutputList[o].IndexOf("<") - 1)) });
-                                    link.Click += Hyperlink_Click;
+                                    link.Click += HandleHyperlinkClick;
                                     para3.Inlines.Add(link);
                                 }
                                 else if (OutputList[o].StartsWith("&IMG"))
                                 {
-                                    int fontsize = int.Parse(OutputList[o].Substring(4, 3));
                                     string source = OutputList[o].Substring(OutputList[o].IndexOf("<") + 1, OutputList[o].IndexOf(">") - OutputList[o].IndexOf("<") - 1);
 
                                     InlineUIContainer container = new InlineUIContainer();
@@ -686,7 +692,7 @@ namespace 표준국어대사전.Classes
                                     if (source.StartsWith("data:image"))
                                     {
                                         source = source.Substring(source.IndexOf("base64,") + 7);
-                                        BitmapImage bitmap = Base64StringToBitmap(source);
+                                        BitmapImage bitmap = ImageConvertor.Base64StringToBitmap(source);
                                         image.Source = bitmap;
                                         image.Width = bitmap.PixelWidth;
                                         image.Height = bitmap.PixelHeight;
@@ -713,15 +719,15 @@ namespace 표준국어대사전.Classes
 
                                         Hyperlink link = new Hyperlink();
                                         string word = lexicals[l].word, number = "";
-                                        if (SplitWordnameAndNumber(ref word, ref number))
+                                        if (NumberConvertor.SplitWord(ref word, ref number))
                                         {
                                             link.Inlines.Add(new Run { Text = word });
-                                            link.Inlines.Add(new Run { Text = ToSup(number), FontFamily = new FontFamily("Arial") });
+                                            link.Inlines.Add(new Run { Text = NumberConvertor.ToSup(number), FontFamily = new FontFamily("Arial") });
                                         }
                                         else
                                             link.Inlines.Add(new Run { Text = lexicals[l].word });
                                         link.Inlines.Add(new Run { FontFamily = new FontFamily(lexicals[l].target_code) });
-                                        link.Click += Hyperlink_Click;
+                                        link.Click += HandleHyperlinkClick;
                                         para3.Inlines.Add(link);
                                     }
                                 }
@@ -764,15 +770,15 @@ namespace 표준국어대사전.Classes
 
                                         Hyperlink link = new Hyperlink();
                                         string word = lexicals[l].word, number = "";
-                                        if (SplitWordnameAndNumber(ref word, ref number))
+                                        if (NumberConvertor.SplitWord(ref word, ref number))
                                         {
                                             link.Inlines.Add(new Run { Text = word });
-                                            link.Inlines.Add(new Run { Text = ToSup(number), FontFamily = new FontFamily("Arial") });
+                                            link.Inlines.Add(new Run { Text = NumberConvertor.ToSup(number), FontFamily = new FontFamily("Arial") });
                                         }
                                         else
                                             link.Inlines.Add(new Run { Text = lexicals[l].word });
                                         link.Inlines.Add(new Run { FontFamily = new FontFamily(lexicals[l].target_code) });
-                                        link.Click += Hyperlink_Click;
+                                        link.Click += HandleHyperlinkClick;
                                         paras[paras.Count - 1].Inlines.Add(link);
                                     }
                                     else //첫 단어
@@ -783,15 +789,15 @@ namespace 표준국어대사전.Classes
 
                                         Hyperlink link = new Hyperlink();
                                         string word = lexicals[l].word, number = "";
-                                        if (SplitWordnameAndNumber(ref word, ref number))
+                                        if (NumberConvertor.SplitWord(ref word, ref number))
                                         {
                                             link.Inlines.Add(new Run { Text = word });
-                                            link.Inlines.Add(new Run { Text = ToSup(number), FontFamily = new FontFamily("Arial") });
+                                            link.Inlines.Add(new Run { Text = NumberConvertor.ToSup(number), FontFamily = new FontFamily("Arial") });
                                         }
                                         else
                                             link.Inlines.Add(new Run { Text = lexicals[l].word });
                                         link.Inlines.Add(new Run { FontFamily = new FontFamily(lexicals[l].target_code) });
-                                        link.Click += Hyperlink_Click;
+                                        link.Click += HandleHyperlinkClick;
                                         para4.Inlines.Add(link);
 
                                         paras.Add(para4);
@@ -873,7 +879,7 @@ namespace 표준국어대사전.Classes
                         Hyperlink link = new Hyperlink();
                         link.Inlines.Add(new Run { Text = relations[i].word });
                         link.Inlines.Add(new Run { FontFamily = new FontFamily(relations[i].target_code) });
-                        link.Click += Hyperlink_Click;
+                        link.Click += HandleHyperlinkClick;
                         para.Inlines.Add(link);
                         para.Inlines.Add(new Run { Text = " " });
                         rtb.Blocks.Add(para);
@@ -901,7 +907,7 @@ namespace 표준국어대사전.Classes
                     subTitle1.Inlines.Add(new Run { Text = "   " });
                     Hyperlink linkClear = new Hyperlink();
                     linkClear.Inlines.Add(new Run { Text = "지우기", FontSize = 15 * FONTMAGNIFICATION, Foreground = new SolidColorBrush(Windows.UI.Colors.Red) });
-                    linkClear.Click += RecentWordClear_Click;
+                    linkClear.Click += RecentWordClear;
                     subTitle1.Inlines.Add(linkClear);
                     subTitle1.Inlines.Add(new Run { Text = " " });
                     rtb.Blocks.Add(subTitle1);
@@ -913,7 +919,7 @@ namespace 표준국어대사전.Classes
                     {
                         Hyperlink link = new Hyperlink();
                         link.Inlines.Add(new Run { Text = recentWords[i] });
-                        link.Click += RecentWordLink_Click;
+                        link.Click += HandleRecentWordClick;
                         recentSearch.Inlines.Add(link);
                         if (i != 0)
                             recentSearch.Inlines.Add(new Run { Text = ", " });
@@ -1014,250 +1020,10 @@ namespace 표준국어대사전.Classes
             public string target_code;
         }
 
-        // TO-DO 링크 정상작동하도록 고치기
-
-        private void Hyperlink_Click(Hyperlink sender, HyperlinkClickEventArgs args)
-        {
-            // TO-DO
-            // '태허0' 뜻풀이의 '하늘' 링크처럼 어깨번호가 명확하지 않을 때는 검색 API로 검색 후
-            // '하늘'에 해당하는 단어 중 선택할 수 있게 만들기.
-
-            Hyperlink hyperlink = sender as Hyperlink;
-            if (hyperlink.FindName("DetailGrid") != null)
-            {
-                Grid DetailGrid = hyperlink.FindName("DetailGrid") as Grid;
-
-                if (DetailGrid.FindName("HyperViewer") == null)
-                {
-                    ConWordDetail HyperViewer = new ConWordDetail();
-                    HyperViewer.Name = "HyperViewer";
-                    int sup_no;
-                    if (2 < hyperlink.Inlines.Count)
-                        int.TryParse(ToNumber((hyperlink.Inlines[1] as Run).Text), out sup_no);
-                    else
-                        int.TryParse(Regex.Replace((hyperlink.Inlines[0] as Run).Text, "[^0-9.]", ""), out sup_no);
-                    HyperViewer.Load_WordDetail(hyperlink.Inlines[hyperlink.Inlines.Count - 1].FontFamily.Source, sup_no);
-
-                    DetailGrid.Children.Add(HyperViewer);
-                }
-            }
-            else if (hyperlink.FindName("ConWordDetailGrid") != null)
-            {
-                Grid ConWordDetailGrid = hyperlink.FindName("ConWordDetailGrid") as Grid;
-                ConWordDetail HyperViewer = ConWordDetailGrid.Parent as ConWordDetail;
-                int sup_no;
-                if (2 < hyperlink.Inlines.Count)
-                    int.TryParse(ToNumber((hyperlink.Inlines[1] as Run).Text), out sup_no);
-                else
-                    int.TryParse(Regex.Replace((hyperlink.Inlines[0] as Run).Text, "[^0-9.]", ""), out sup_no);
-                HyperViewer.Load_WordDetail(hyperlink.Inlines[hyperlink.Inlines.Count - 1].FontFamily.Source, sup_no);
-            }
-        }
-
-        private void RecentWordLink_Click(Hyperlink sender, HyperlinkClickEventArgs args)
-        {
-            Hyperlink hyperlink = sender as Hyperlink;
-            if (hyperlink.FindName("SearchBox") != null)
-            {
-                AutoSuggestBox SearchBox = hyperlink.FindName("SearchBox") as AutoSuggestBox;
-                Run run = hyperlink.Inlines[0] as Run;
-                if (run != null)
-                    SearchBox.Text = run.Text;
-
-                Grid BasicGrid = hyperlink.FindName("BasicGrid") as Grid;
-                Grid DetailGrid = hyperlink.FindName("DetailGrid") as Grid;
-                AppBarButton BtnCloseDetail = hyperlink.FindName("BtnCloseDetail") as AppBarButton;
-                if (BasicGrid != null && DetailGrid != null && BtnCloseDetail != null)
-                {
-                    if (BasicGrid.ActualWidth < 686)
-                    {
-                        DetailGrid.Visibility = Visibility.Collapsed;
-                        BtnCloseDetail.Visibility = Visibility.Collapsed;
-                    }
-                }
-
-                SearchBox.Focus(FocusState.Programmatic);
-            }
-        }
-
-        private void RecentWordClear_Click(Hyperlink sender, HyperlinkClickEventArgs args)
+        private void RecentWordClear(Hyperlink sender, HyperlinkClickEventArgs args)
         {
             RecentWordManager.Clear();
             RaisePropertyChanged("homeRtb");
-        }
-
-        // 로마자 변환
-        private string ToRoman(int number)
-        {
-            if ((number < 0) || (number > 3999)) throw new ArgumentOutOfRangeException("insert value between 1 and 3999");
-            if (number < 1) return string.Empty;
-            if (number >= 1000) return "M" + ToRoman(number - 1000);
-            if (number >= 900) return "CM" + ToRoman(number - 900);
-            if (number >= 500) return "D" + ToRoman(number - 500);
-            if (number >= 400) return "CD" + ToRoman(number - 400);
-            if (number >= 100) return "C" + ToRoman(number - 100);
-            if (number >= 90) return "XC" + ToRoman(number - 90);
-            if (number >= 50) return "L" + ToRoman(number - 50);
-            if (number >= 40) return "XL" + ToRoman(number - 40);
-            if (number >= 10) return "X" + ToRoman(number - 10);
-            if (number >= 9) return "IX" + ToRoman(number - 9);
-            if (number >= 5) return "V" + ToRoman(number - 5);
-            if (number >= 4) return "IV" + ToRoman(number - 4);
-            if (number >= 1) return "I" + ToRoman(number - 1);
-            throw new ArgumentOutOfRangeException("something bad happened");
-        }
-
-        // 위 첨자로 변환
-        private string ToSup(int number)
-        {
-            return ToSup(number.ToString());
-        }
-        private string ToSup(string number)
-        {
-            StringBuilder numString = new StringBuilder(number);
-            for (int i = 0; i < numString.Length; i++)
-            {
-                switch(numString[i])
-                {
-                    case '1':
-                        numString[i] = '¹';
-                        break;
-                    case '2':
-                        numString[i] = '²';
-                        break;
-                    case '3':
-                        numString[i] = '³';
-                        break;
-                    case '4':
-                        numString[i] = '⁴';
-                        break;
-                    case '5':
-                        numString[i] = '⁵';
-                        break;
-                    case '6':
-                        numString[i] = '⁶';
-                        break;
-                    case '7':
-                        numString[i] = '⁷';
-                        break;
-                    case '8':
-                        numString[i] = '⁸';
-                        break;
-                    case '9':
-                        numString[i] = '⁹';
-                        break;
-                    case '0':
-                        numString[i] = '⁰';
-                        break;
-                    case '-':
-                    case '－':
-                        numString[i] = '⁻';
-                        break;
-                    case '(':
-                        numString[i] = '⁽';
-                        break;
-                    case ')':
-                        numString[i] = '⁾';
-                        break;
-                    case '+':
-                        numString[i] = '⁺';
-                        break;
-                    default:
-                        break;
-                }
-            }
-            return numString.ToString();
-        }
-
-        // 위 첨자를 일반 숫자로 변환
-        private string ToNumber(string sup_no)
-        {
-            StringBuilder numString = new StringBuilder(sup_no);
-            for (int i = 0; i < numString.Length; i++)
-            {
-                switch (numString[i])
-                {
-                    case '¹':
-                        numString[i] = '1';
-                        break;
-                    case '²':
-                        numString[i] = '2';
-                        break;
-                    case '³':
-                        numString[i] = '3';
-                        break;
-                    case '⁴':
-                        numString[i] = '4';
-                        break;
-                    case '⁵':
-                        numString[i] = '5';
-                        break;
-                    case '⁶':
-                        numString[i] = '6';
-                        break;
-                    case '⁷':
-                        numString[i] = '7';
-                        break;
-                    case '⁸':
-                        numString[i] = '8';
-                        break;
-                    case '⁹':
-                        numString[i] = '9';
-                        break;
-                    case '⁰':
-                        numString[i] = '0';
-                        break;
-                    case '⁻':
-                        numString[i] = '-';
-                        break;
-                    case '⁽':
-                        numString[i] = '(';
-                        break;
-                    case '⁾':
-                        numString[i] = ')';
-                        break;
-                    case '⁺':
-                        numString[i] = '+';
-                        break;
-                    default:
-                        break;
-                }
-            }
-            return numString.ToString();
-        }
-
-        // 단어 이름과 어깨번호 분리 후 위 첨자로 변환
-        private bool SplitWordnameAndNumber(ref string word, ref string number)
-        {
-            int numberStartIndex;
-            for (numberStartIndex = word.Length - 1; 0 <= numberStartIndex; numberStartIndex--)
-            {
-                if (!char.IsDigit(word[numberStartIndex]))
-                    break;
-            }
-
-            if (numberStartIndex < word.Length - 1)
-            {
-                number = word.Substring(numberStartIndex + 1).TrimStart(new char[] { '0' });
-                word = word.Substring(0, numberStartIndex + 1);
-                return true;
-            }
-            return false;
-        }
-
-        public static BitmapImage Base64StringToBitmap(string source)
-        {
-            var ims = new InMemoryRandomAccessStream();
-            var bytes = Convert.FromBase64String(source);
-            var dataWriter = new DataWriter(ims);
-            dataWriter.WriteBytes(bytes);
-#pragma warning disable CS4014 // 이 호출을 대기하지 않으므로 호출이 완료되기 전에 현재 메서드가 계속 실행됩니다.
-            dataWriter.StoreAsync();
-#pragma warning restore CS4014 // 이 호출을 대기하지 않으므로 호출이 완료되기 전에 현재 메서드가 계속 실행됩니다.
-            ims.Seek(0);
-            var img = new BitmapImage();
-            img.SetSource(ims);
-            return img;
         }
     }
 
@@ -1273,9 +1039,10 @@ namespace 표준국어대사전.Classes
 
     public class WordDetailStaticPage
     {
-        public static WordDetailItem GetHomepage()
+        public static WordDetailItem GetHomepage(TypedEventHandler<Hyperlink, HyperlinkClickEventArgs> handleHyperlinkClick,
+                                                 TypedEventHandler<Hyperlink, HyperlinkClickEventArgs> handleRecentWordClick)
         {
-            WordDetailItem item = new WordDetailItem
+            WordDetailItem item = new WordDetailItem(handleHyperlinkClick, handleRecentWordClick)
             {
                 target_code = "-200",
                 wordname = "표준국어대사전",
@@ -1313,9 +1080,9 @@ namespace 표준국어대사전.Classes
 
     public static class WordDetailItemSample
     {
-        public static WordDetailItem GetDetails()
+        public static WordDetailItem GetDetails(TypedEventHandler<Hyperlink, HyperlinkClickEventArgs> handleHyperlinkClick)
         {
-            WordDetailItem item = new WordDetailItem
+            WordDetailItem item = new WordDetailItem(handleHyperlinkClick)
             {
                 target_code = "707",
                 wordname = "단어 이름",

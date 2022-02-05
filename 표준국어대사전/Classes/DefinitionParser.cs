@@ -8,9 +8,7 @@ using System.Xml.Linq;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Documents;
-using Windows.UI.Xaml.Media;
-using Windows.UI.Popups;
-using 표준국어대사전.Controls;
+using Windows.Foundation;
 
 namespace 표준국어대사전.Classes
 {
@@ -20,11 +18,13 @@ namespace 표준국어대사전.Classes
         string API_KEY;
 
         Action<Visibility> SetProgressBar;
+        TypedEventHandler<Hyperlink, HyperlinkClickEventArgs> HandleHyperlinkClick;
 
-        public DefinitionParser(Action<Visibility> setProgressBar)
+        public DefinitionParser(Action<Visibility> setProgressBar, TypedEventHandler<Hyperlink, HyperlinkClickEventArgs> handleHyperlinkClick)
         {
             //생성자
             this.SetProgressBar = setProgressBar;
+            this.HandleHyperlinkClick = handleHyperlinkClick;
 
             //API 키 처리
             this.API_KEY = StorageManager.GetSetting<string>(StorageManager.APIKey);
@@ -44,8 +44,7 @@ namespace 표준국어대사전.Classes
                 return null;
             }
 
-            WordDetailItem wordDetail = new WordDetailItem();
-            wordDetail = ParseWordDetail(responseBody, target_code, wordname, sup_no);
+            WordDetailItem wordDetail = ParseWordDetail(responseBody, target_code, wordname, sup_no);
 
             SetProgressBar(Visibility.Collapsed);
             return wordDetail;
@@ -74,7 +73,7 @@ namespace 표준국어대사전.Classes
 
         private WordDetailItem ParseWordDetail(string responseBody, string target_code, string wordname, int sup_no)
         {
-            WordDetailItem wordDetail = new WordDetailItem();
+            WordDetailItem wordDetail = new WordDetailItem(HandleHyperlinkClick);
 
             XDocument xDoc = XDocument.Parse(responseBody);
 

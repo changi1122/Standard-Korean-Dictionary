@@ -6,18 +6,21 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
+    xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
     d:DesignHeight="300"
     d:DesignWidth="400">
 
     <UserControl.Resources>
-        <SolidColorBrush x:Key="BarColor" Color="#FFBEBEBE"/>
         <CollectionViewSource x:Name="WordSource" Source="{x:Bind wordDetail}"/>
     </UserControl.Resources>
 
-    <Grid x:Name="ConWordDetailGrid" Background="{StaticResource ApplicationPageBackgroundThemeBrush}" BorderBrush="{StaticResource BarColor}" BorderThickness="1">
-        <Rectangle Fill="{StaticResource BarColor}" Margin="-1,-1,-1,0" VerticalAlignment="Top" Height="40"/>
-        <Button x:Name="BtnClose" Content="" Background="Transparent" Foreground="Black" Width="40" Height="40" Margin="0, -1, -1, 0" HorizontalAlignment="Right" VerticalAlignment="Top" FontSize="20" FontFamily="Segoe MDL2 Assets" Click="BtnClose_Click"/>
-        <ScrollViewer x:Name="WordDetailViewer" Margin="0,40,0,0">
+    <Grid x:Name="ConWordDetailGrid" Background="{ThemeResource PageBackgroundBrush}"
+          BorderBrush="{ThemeResource BorderBrush}" BorderThickness="1" CornerRadius="8">
+        <Grid Background="{StaticResource PageBackgroundBrush}" Margin="-1,-1,-1,0" VerticalAlignment="Top"
+              Height="33" BorderBrush="{ThemeResource BorderBrush}" BorderThickness="0,0,0,1"/>
+        <Button x:Name="BtnClose" Content="" Style="{StaticResource AccentButtonStyle}" Width="48" Height="32" Margin="0, -1, -1, 0"
+                HorizontalAlignment="Right" VerticalAlignment="Top" FontSize="16" FontFamily="Segoe MDL2 Assets" Click="BtnClose_Click"/>
+        <ScrollViewer x:Name="WordDetailViewer" Margin="0,33,0,0">
             <StackPanel x:Name="WordDetailSP" Padding="20" Visibility="Collapsed" DataContext="{Binding Source={StaticResource WordSource}}">
                 <ContentPresenter Content="{Binding wordnameRtb}"/>
                 <StackPanel Margin="0,10,0,0">
@@ -36,6 +39,6 @@
                 <Button Content="" Background="Transparent" HorizontalAlignment="Stretch" Height="60" FontSize="20" FontFamily="Segoe MDL2 Assets" Click="BtnClose_Click"/>
             </StackPanel>
         </ScrollViewer>
-        <ProgressBar x:Name="DetailProgressBar" IsIndeterminate="True" ShowPaused="False" ShowError="False" VerticalAlignment="Top" Visibility="Collapsed" Margin="0,40,0,0"/>
+        <muxc:ProgressBar x:Name="DetailProgressBar" IsIndeterminate="True" ShowPaused="False" ShowError="False" VerticalAlignment="Top" Visibility="Collapsed" Margin="0,33,0,0"/>
     </Grid>
 </UserControl>
