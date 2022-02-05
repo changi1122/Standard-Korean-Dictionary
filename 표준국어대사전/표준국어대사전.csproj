@@ -119,8 +119,9 @@
     <Compile Include="Classes\StorageManager.cs" />
     <Compile Include="Classes\WordFinder.cs" />
     <Compile Include="Models\WordDetailItem.cs" />
-    <Compile Include="Controls\ConWordDetail.xaml.cs">
-      <DependentUpon>ConWordDetail.xaml</DependentUpon>
+    <Compile Include="ViewModels\HyperViewerViewModel.cs" />
+    <Compile Include="Views\HyperViewer.xaml.cs">
+      <DependentUpon>HyperViewer.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\PronunciationBlock.cs" />
     <Compile Include="Controls\WordReader.cs" />
@@ -218,7 +219,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Page Include="Controls\ConWordDetail.xaml">
+    <Page Include="Views\HyperViewer.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -13,7 +13,7 @@ using Windows.UI.Xaml.Documents;
 using Windows.ApplicationModel.Resources;
 using 표준국어대사전.Models;
 using 표준국어대사전.Classes;
-using 표준국어대사전.Controls;
+using 표준국어대사전.Views;
 using 표준국어대사전.Utils;
 
 namespace 표준국어대사전.ViewModels
@@ -318,16 +318,6 @@ namespace 표준국어대사전.ViewModels
 
         private void HandleHyperlinkClick(Hyperlink sender, HyperlinkClickEventArgs args)
         {
-            // TO-DO
-            // '태허0' 뜻풀이의 '하늘' 링크처럼 어깨번호가 명확하지 않을 때는 검색 API로 검색 후
-            // '하늘'에 해당하는 단어 중 선택할 수 있게 만들기.
-
-            // TO-DO
-            // ConWordDetail과 함수 두 개로 하는 일 분리하기
-
-            // TO-DO
-            // HyperViewer 아래 부분에 Margin 주기
-
             Hyperlink hyperlink = sender;
             if (hyperlink.FindName("DetailGrid") != null)
             {
@@ -335,29 +325,35 @@ namespace 표준국어대사전.ViewModels
 
                 if (DetailGrid.FindName("HyperViewer") == null)
                 {
-                    ConWordDetail HyperViewer = new ConWordDetail();
+                    HyperViewer HyperViewer = new HyperViewer();
                     HyperViewer.Name = "HyperViewer";
                     int sup_no;
                     if (2 < hyperlink.Inlines.Count)
                         int.TryParse(NumberConvertor.SupToNumber((hyperlink.Inlines[1] as Run).Text), out sup_no);
                     else
                         int.TryParse(Regex.Replace((hyperlink.Inlines[0] as Run).Text, "[^0-9.]", ""), out sup_no);
-                    HyperViewer.Load_WordDetail(hyperlink.Inlines[hyperlink.Inlines.Count - 1].FontFamily.Source, sup_no);
+                    if (sup_no == 0)
+                        HyperViewer.SearchWords((hyperlink.Inlines[0] as Run).Text);
+                    else
+                        HyperViewer.DisplayWordDetail(hyperlink.Inlines[hyperlink.Inlines.Count - 1].FontFamily.Source, sup_no);
 
                     DetailGrid.Children.Add(HyperViewer);
                 }
             }
-            else if (hyperlink.FindName("ConWordDetailGrid") != null)
+            else if (hyperlink.FindName("HyperViewerGrid") != null)
             {
-                // 현재 표시 중인 ConWordDetail 존재시
-                Grid ConWordDetailGrid = hyperlink.FindName("ConWordDetailGrid") as Grid;
-                ConWordDetail HyperViewer = ConWordDetailGrid.Parent as ConWordDetail;
+                // 현재 표시 중인 HyperViewer 존재시
+                Grid HyperViewerGrid = hyperlink.FindName("HyperViewerGrid") as Grid;
+                HyperViewer HyperViewer = HyperViewerGrid.Parent as HyperViewer;
                 int sup_no;
                 if (2 < hyperlink.Inlines.Count)
                     int.TryParse(NumberConvertor.SupToNumber((hyperlink.Inlines[1] as Run).Text), out sup_no);
                 else
                     int.TryParse(Regex.Replace((hyperlink.Inlines[0] as Run).Text, "[^0-9.]", ""), out sup_no);
-                HyperViewer.Load_WordDetail(hyperlink.Inlines[hyperlink.Inlines.Count - 1].FontFamily.Source, sup_no);
+                if (sup_no == 0)
+                    HyperViewer.SearchWords((hyperlink.Inlines[0] as Run).Text);
+                else
+                    HyperViewer.DisplayWordDetail(hyperlink.Inlines[hyperlink.Inlines.Count - 1].FontFamily.Source, sup_no);
             }
         }
 
