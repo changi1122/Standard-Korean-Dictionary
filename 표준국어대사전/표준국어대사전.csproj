@@ -115,10 +115,10 @@
     </Compile>
     <Compile Include="Classes\HistoryManager.cs" />
     <Compile Include="Classes\RecentWordManager.cs" />
-    <Compile Include="Classes\RecordPoint.cs" />
+    <Compile Include="Models\RecordPoint.cs" />
     <Compile Include="Classes\StorageManager.cs" />
     <Compile Include="Classes\WordFinder.cs" />
-    <Compile Include="Classes\WordDetailItem.cs" />
+    <Compile Include="Models\WordDetailItem.cs" />
     <Compile Include="Controls\ConWordDetail.xaml.cs">
       <DependentUpon>ConWordDetail.xaml</DependentUpon>
     </Compile>
@@ -131,7 +131,7 @@
       <DependentUpon>MainNavigation.xaml</DependentUpon>
     </Compile>
     <Compile Include="Classes\DefinitionParser.cs" />
-    <Compile Include="Classes\SearchResultItem.cs" />
+    <Compile Include="Models\SearchResultItem.cs" />
     <Compile Include="Pages\Adjustment.xaml.cs">
       <DependentUpon>Adjustment.xaml</DependentUpon>
     </Compile>

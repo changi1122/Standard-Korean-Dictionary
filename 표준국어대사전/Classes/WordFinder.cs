@@ -6,9 +6,9 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
-using Windows.UI.Popups;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using 표준국어대사전.Models;
 
 namespace 표준국어대사전.Classes
 {

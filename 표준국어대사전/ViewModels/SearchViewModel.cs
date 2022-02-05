@@ -11,6 +11,7 @@ using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Documents;
 using Windows.ApplicationModel.Resources;
+using 표준국어대사전.Models;
 using 표준국어대사전.Classes;
 using 표준국어대사전.Controls;
 using 표준국어대사전.Utils;

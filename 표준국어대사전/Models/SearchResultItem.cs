@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
+using 표준국어대사전.Classes;
 
-namespace 표준국어대사전.Classes
+namespace 표준국어대사전.Models
 {
     public class SearchResultItem
     {

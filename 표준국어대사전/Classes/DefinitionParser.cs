@@ -9,6 +9,7 @@ using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Documents;
 using Windows.Foundation;
+using 표준국어대사전.Models;
 
 namespace 표준국어대사전.Classes
 {

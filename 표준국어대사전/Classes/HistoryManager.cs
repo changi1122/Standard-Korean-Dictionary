@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using Windows.UI.Xaml;
+using 표준국어대사전.Models;
 
 namespace 표준국어대사전.Classes
 {

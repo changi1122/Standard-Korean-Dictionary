@@ -8,6 +8,7 @@ using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Documents;
 using 표준국어대사전.Classes;
+using 표준국어대사전.Models;
 using 표준국어대사전.Utils;
 
 // 사용자 정의 컨트롤 항목 템플릿에 대한 설명은 https://go.microsoft.com/fwlink/?LinkId=234236에 나와 있습니다.

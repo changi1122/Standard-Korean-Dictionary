@@ -2,11 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
-using System.Xml.Linq;
-using Windows.Devices.Spi;
-using Windows.Media.Audio;
-using 표준국어대사전.Classes;
 
 namespace 표준국어대사전.Classes
 {

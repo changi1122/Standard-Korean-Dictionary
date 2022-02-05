@@ -8,7 +8,7 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Popups;
 using Windows.ApplicationModel.Resources;
-using 표준국어대사전.Classes;
+using 표준국어대사전.Models;
 using 표준국어대사전.ViewModels;
 
 

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
-using System.Text.RegularExpressions;
 using Windows.UI;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -11,12 +10,12 @@ using Windows.UI.Xaml.Documents;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Imaging;
 using Windows.Foundation;
-using Windows.Storage.Streams;
+using 표준국어대사전.Classes;
 using 표준국어대사전.Controls;
 using 표준국어대사전.Utils;
 
 
-namespace 표준국어대사전.Classes
+namespace 표준국어대사전.Models
 {
     public class WordDetailItem : INotifyPropertyChanged
     {
