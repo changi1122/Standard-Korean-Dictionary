@@ -316,6 +316,8 @@ namespace 표준국어대사전.ViewModels
                 RaisePropertyChanged(names[i]);
         }
 
+
+        // TO-DO '=' 기호 등이 있음에도 바로 알 수 있는 target_code가 없는 경우 검색으로 띄우기
         private void HandleHyperlinkClick(Hyperlink sender, HyperlinkClickEventArgs args)
         {
             Hyperlink hyperlink = sender;
@@ -332,10 +334,8 @@ namespace 표준국어대사전.ViewModels
                         int.TryParse(NumberConvertor.SupToNumber((hyperlink.Inlines[1] as Run).Text), out sup_no);
                     else
                         int.TryParse(Regex.Replace((hyperlink.Inlines[0] as Run).Text, "[^0-9.]", ""), out sup_no);
-                    if (sup_no == 0)
-                        HyperViewer.SearchWords((hyperlink.Inlines[0] as Run).Text);
-                    else
-                        HyperViewer.DisplayWordDetail(hyperlink.Inlines[hyperlink.Inlines.Count - 1].FontFamily.Source, sup_no);
+
+                    HyperViewer.DisplayWordDetail(hyperlink.Inlines[hyperlink.Inlines.Count - 1].FontFamily.Source, sup_no);
 
                     DetailGrid.Children.Add(HyperViewer);
                 }
@@ -350,10 +350,8 @@ namespace 표준국어대사전.ViewModels
                     int.TryParse(NumberConvertor.SupToNumber((hyperlink.Inlines[1] as Run).Text), out sup_no);
                 else
                     int.TryParse(Regex.Replace((hyperlink.Inlines[0] as Run).Text, "[^0-9.]", ""), out sup_no);
-                if (sup_no == 0)
-                    HyperViewer.SearchWords((hyperlink.Inlines[0] as Run).Text);
-                else
-                    HyperViewer.DisplayWordDetail(hyperlink.Inlines[hyperlink.Inlines.Count - 1].FontFamily.Source, sup_no);
+
+                HyperViewer.DisplayWordDetail(hyperlink.Inlines[hyperlink.Inlines.Count - 1].FontFamily.Source, sup_no);
             }
         }
 

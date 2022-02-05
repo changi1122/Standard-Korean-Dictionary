@@ -219,10 +219,8 @@ namespace 표준국어대사전.ViewModels
                     int.TryParse(NumberConvertor.SupToNumber((hyperlink.Inlines[1] as Run).Text), out sup_no);
                 else
                     int.TryParse(Regex.Replace((hyperlink.Inlines[0] as Run).Text, "[^0-9.]", ""), out sup_no);
-                if (sup_no == 0)
-                    HyperViewer.SearchWords((hyperlink.Inlines[0] as Run).Text);
-                else
-                    HyperViewer.DisplayWordDetail(hyperlink.Inlines[hyperlink.Inlines.Count - 1].FontFamily.Source, sup_no);
+
+                HyperViewer.DisplayWordDetail(hyperlink.Inlines[hyperlink.Inlines.Count - 1].FontFamily.Source, sup_no);
             }
         }
 
