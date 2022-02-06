@@ -335,7 +335,11 @@ namespace 표준국어대사전.ViewModels
                     else
                         int.TryParse(Regex.Replace((hyperlink.Inlines[0] as Run).Text, "[^0-9.]", ""), out sup_no);
 
-                    HyperViewer.DisplayWordDetail(hyperlink.Inlines[hyperlink.Inlines.Count - 1].FontFamily.Source, sup_no);
+                    string target_code = hyperlink.Inlines[hyperlink.Inlines.Count - 1].FontFamily.Source;
+                    if (target_code == "0")
+                        HyperViewer.SearchWords((hyperlink.Inlines[0] as Run).Text);
+                    else
+                        HyperViewer.DisplayWordDetail(target_code, sup_no);
 
                     DetailGrid.Children.Add(HyperViewer);
                 }
@@ -351,7 +355,11 @@ namespace 표준국어대사전.ViewModels
                 else
                     int.TryParse(Regex.Replace((hyperlink.Inlines[0] as Run).Text, "[^0-9.]", ""), out sup_no);
 
-                HyperViewer.DisplayWordDetail(hyperlink.Inlines[hyperlink.Inlines.Count - 1].FontFamily.Source, sup_no);
+                string target_code = hyperlink.Inlines[hyperlink.Inlines.Count - 1].FontFamily.Source;
+                if (target_code == "0")
+                    HyperViewer.SearchWords((hyperlink.Inlines[0] as Run).Text);
+                else
+                    HyperViewer.DisplayWordDetail(target_code, sup_no);
             }
         }
 

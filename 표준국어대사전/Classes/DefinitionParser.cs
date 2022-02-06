@@ -283,15 +283,20 @@ namespace 표준국어대사전.Classes
                                         {
                                             string definition_original = (string)sense_infos.ElementAt(k).Element("definition_original");
 
-                                            //<word_no> 포함 시
-                                            if (definition_original.Contains("<word_no>"))
+                                            //<word_no> 또는 <sense_no> 포함 시
+                                            if (definition_original.Contains("<word_no>") || definition_original.Contains("<sense_no>"))
                                             {
+                                                List<int> link_type = new List<int>(); // word_no : 0, sense_no : 1
                                                 List<string> link_targets = new List<string>();
                                                 List<string> link_texts = new List<string>();
 
-                                                while (definition_original.Contains("<word_no>"))
+                                                while (definition_original.Contains("<word_no>") || definition_original.Contains("<sense_no>"))
                                                 {
                                                     string tag = "word_no";
+                                                    if (!definition_original.Contains("<word_no>") ||
+                                                        (definition_original.Contains("<sense_no>") &&
+                                                        definition_original.IndexOf("<word_no>") > definition_original.IndexOf("<sense_no>")))
+                                                        tag = "sense_no";
 
                                                     string link_target = definition_original.Substring(definition_original.IndexOf($"<{tag}>") + tag.Length + 2, definition_original.IndexOf($"</{tag}>") - definition_original.IndexOf($"<{tag}>") - tag.Length - 2);
                                                     string link_text = "";
@@ -309,24 +314,32 @@ namespace 표준국어대사전.Classes
 
                                                     if (link_text != "")
                                                     {
-                                                        link_targets.Add(link_target);
+                                                        if (tag != "sense_no")
+                                                        {
+                                                            link_type.Add(0);
+                                                            link_targets.Add(link_target);
+                                                        }
+                                                        else
+                                                        {
+                                                            link_type.Add(1);
+                                                            link_targets.Add("0");
+                                                        }
                                                         link_texts.Add(link_text);
                                                     }
                                                 }
 
                                                 string definition = (string)sense_infos.ElementAt(k).Element("definition_original");
-                                                definition = definition.Replace("<sense_no>", "");
-                                                definition = definition.Replace("</sense_no>", "");
 
                                                 for (int hl = 0; hl < link_targets.Count; hl++)
                                                 {
+                                                    string tag = (link_type[hl] == 0) ? "word_no" : "sense_no";
                                                     if (link_texts[hl].StartsWith('_'))
                                                     {
-                                                        definition = definition.Replace(definition.Substring(definition.IndexOf("<word_no>"), definition.IndexOf("_", definition.IndexOf("</word_no>") + 10) + 1 - definition.IndexOf("<word_no>")), $"<link target=\"{link_targets[hl]}\">{link_texts[hl].Substring(1)}</link>");
+                                                        definition = definition.Replace(definition.Substring(definition.IndexOf($"<{tag}>"), definition.IndexOf("_", definition.IndexOf($"</{tag}>") + tag.Length + 3) + 1 - definition.IndexOf($"<{tag}>")), $"<link target=\"{link_targets[hl]}\">{link_texts[hl].Substring(1)}</link>");
                                                     }
                                                     else if (link_texts[hl].StartsWith('’'))
                                                     {
-                                                        definition = definition.Replace(definition.Substring(definition.IndexOf("<word_no>"), definition.IndexOf("’", definition.IndexOf("<word_no>")) - definition.IndexOf("<word_no>")), $"<link target=\"{link_targets[hl]}\">{link_texts[hl].Substring(1)}</link>");
+                                                        definition = definition.Replace(definition.Substring(definition.IndexOf($"<{tag}>"), definition.IndexOf("’", definition.IndexOf($"<{tag}>")) - definition.IndexOf($"<{tag}>")), $"<link target=\"{link_targets[hl]}\">{link_texts[hl].Substring(1)}</link>");
                                                     }
                                                 }
 
