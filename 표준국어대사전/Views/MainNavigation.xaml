@@ -15,24 +15,24 @@
             <muxc:NavigationView.MenuItems>
                 <muxc:NavigationViewItem x:Uid="NaviItem1" Content="단어 검색" Tag="Pages.Dic">
                     <muxc:NavigationViewItem.Icon>
-                        <FontIcon FontFamily="/Fonts/iconfont.ttf#iconfont" Glyph="&#xE800;" />
+                        <FontIcon FontFamily="/Assets/Fonts/iconfont.ttf#iconfont" Glyph="&#xE800;" />
                     </muxc:NavigationViewItem.Icon>
                 </muxc:NavigationViewItem>
                 <muxc:NavigationViewItemSeparator/>
                 <muxc:NavigationViewItem x:Uid="NaviItem2" Content="한글 맞춤법" Tag="Pages.HangulSpelling" >
                     <muxc:NavigationViewItem.Icon>
-                        <FontIcon FontFamily="/Fonts/iconfont.ttf#iconfont" Glyph="&#xE803;" />
+                        <FontIcon FontFamily="/Assets/Fonts/iconfont.ttf#iconfont" Glyph="&#xE803;" />
                     </muxc:NavigationViewItem.Icon>
                 </muxc:NavigationViewItem>
                 <muxc:NavigationViewItem x:Uid="NaviItem3" Content="수정 내용" Tag="Pages.Adjustment" >
                     <muxc:NavigationViewItem.Icon>
-                        <FontIcon FontFamily="/Fonts/iconfont.ttf#iconfont" Glyph="&#xE802;" />
+                        <FontIcon FontFamily="/Assets/Fonts/iconfont.ttf#iconfont" Glyph="&#xE802;" />
                     </muxc:NavigationViewItem.Icon>
                 </muxc:NavigationViewItem>
                 <muxc:NavigationViewItemSeparator/>
                 <muxc:NavigationViewItem x:Uid="NaviItem4" Content="맞춤법/문법 검사기" Tag="Pages.SpellingChecker" >
                     <muxc:NavigationViewItem.Icon>
-                        <FontIcon FontFamily="/Fonts/iconfont.ttf#iconfont" Glyph="&#xE801;" />
+                        <FontIcon FontFamily="/Assets/Fonts/iconfont.ttf#iconfont" Glyph="&#xE801;" />
                     </muxc:NavigationViewItem.Icon>
                 </muxc:NavigationViewItem>
             </muxc:NavigationView.MenuItems>

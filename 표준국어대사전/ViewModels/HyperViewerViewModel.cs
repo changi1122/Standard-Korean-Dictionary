@@ -228,8 +228,6 @@ namespace 표준국어대사전.ViewModels
             }
         }
 
-
-        // TO-DO Util로 인터넷 확인 코드 분리
         private static bool IsInternetConnected()
         {
             Windows.Networking.Connectivity.ConnectionProfile connections = Windows.Networking.Connectivity.NetworkInformation.GetInternetConnectionProfile();

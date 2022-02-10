@@ -317,7 +317,6 @@ namespace 표준국어대사전.ViewModels
         }
 
 
-        // TO-DO '=' 기호 등이 있음에도 바로 알 수 있는 target_code가 없는 경우 검색으로 띄우기
         private void HandleHyperlinkClick(Hyperlink sender, HyperlinkClickEventArgs args)
         {
             Hyperlink hyperlink = sender;

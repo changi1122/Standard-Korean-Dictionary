@@ -19,7 +19,7 @@ namespace 표준국어대사전.Models
 {
     public class WordDetailItem : INotifyPropertyChanged
     {
-        private string FONTFAMILY = "/Fonts/NanumBarunGothic-YetHangul.ttf#NanumBarunGothic YetHangul";
+        private string FONTFAMILY = "/Assets/Fonts/NanumBarunGothic-YetHangul.ttf#NanumBarunGothic YetHangul";
         private double FONTMAGNIFICATION = 1.0;
         private bool LabWordReaderEnabled = StorageManager.GetSetting<bool>(StorageManager.LabWordReaderEnabled);
 
@@ -147,7 +147,7 @@ namespace 표준국어대사전.Models
             if (StorageManager.GetSetting<string>(StorageManager.DisplayFont) == "맑은 고딕")
                 this.FONTFAMILY = "#Malgun Gothic";
             else
-                this.FONTFAMILY = "/Fonts/NanumBarunGothic-YetHangul.ttf#NanumBarunGothic YetHangul";
+                this.FONTFAMILY = "/Assets/Fonts/NanumBarunGothic-YetHangul.ttf#NanumBarunGothic YetHangul";
             this.FONTMAGNIFICATION = StorageManager.GetSetting<double>(StorageManager.FONTMAGNIFICATION);
             this.FONTMAGNIFICATION = Math.Truncate(FONTMAGNIFICATION * 10) / 10;
 

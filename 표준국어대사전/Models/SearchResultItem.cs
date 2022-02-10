@@ -13,7 +13,7 @@ namespace 표준국어대사전.Models
             get 
             {
                 return (StorageManager.GetSetting<string>(StorageManager.DisplayFont) == "맑은 고딕") ?
-                    "#Malgun Gothic" : "/Fonts/NanumBarunGothic-YetHangul.ttf#NanumBarunGothic YetHangul";
+                    "#Malgun Gothic" : "/Assets/Fonts/NanumBarunGothic-YetHangul.ttf#NanumBarunGothic YetHangul";
             }
         }
             
