@@ -35,7 +35,7 @@ namespace 표준국어대사전.Views
             // NavigationView 최초 SelectedItem 설정
             foreach (muxc.NavigationViewItem item in NaviView.MenuItems)
             {
-                if (item is muxc.NavigationViewItem && item.Tag.ToString() == "Pages.Dic")
+                if (item is muxc.NavigationViewItem && item.Tag.ToString() == "Views.Search")
                 {
                     NaviView.SelectedItem = item;
                     break;
@@ -66,7 +66,7 @@ namespace 표준국어대사전.Views
 
                 switch (item.Tag)
                 {
-                    case "Pages.Dic":  // 검색  
+                    case "Views.Search":  // 검색  
                         ContentFrame.Navigate(typeof(Views.Search));
                         break;
 
@@ -74,8 +74,8 @@ namespace 표준국어대사전.Views
                         ContentFrame.Navigate(typeof(Pages.HangulSpelling));
                         break;
 
-                    case "Pages.Adjustment":  // 수정 내용
-                        ContentFrame.Navigate(typeof(Pages.Adjustment));
+                    case "Views.Revision":  // 수정 내용
+                        ContentFrame.Navigate(typeof(Views.Revision));
                         break;
 
                     case "Pages.SpellingChecker":  // 맞춤법/문법 검사기

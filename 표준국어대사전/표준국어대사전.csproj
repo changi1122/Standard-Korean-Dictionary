@@ -118,8 +118,12 @@
     <Compile Include="Models\RecordPoint.cs" />
     <Compile Include="Classes\StorageManager.cs" />
     <Compile Include="Classes\WordFinder.cs" />
+    <Compile Include="Models\RevisionCollection.cs" />
     <Compile Include="Models\WordDetailItem.cs" />
     <Compile Include="ViewModels\HyperViewerViewModel.cs" />
+    <Compile Include="Views\Revision.xaml.cs">
+      <DependentUpon>Revision.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\HyperViewer.xaml.cs">
       <DependentUpon>HyperViewer.xaml</DependentUpon>
     </Compile>
@@ -133,9 +137,6 @@
     </Compile>
     <Compile Include="Classes\DefinitionParser.cs" />
     <Compile Include="Models\SearchResultItem.cs" />
-    <Compile Include="Pages\Adjustment.xaml.cs">
-      <DependentUpon>Adjustment.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Views\Search.xaml.cs">
       <DependentUpon>Search.xaml</DependentUpon>
     </Compile>
@@ -218,6 +219,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Page Include="Views\Revision.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Views\HyperViewer.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -225,10 +230,6 @@
     <Page Include="Views\MainNavigation.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Pages\Adjustment.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Search.xaml">
       <SubType>Designer</SubType>
@@ -256,6 +257,9 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="HtmlAgilityPack">
+      <Version>1.11.42</Version>
+    </PackageReference>
     <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform">
       <Version>6.2.10</Version>
     </PackageReference>

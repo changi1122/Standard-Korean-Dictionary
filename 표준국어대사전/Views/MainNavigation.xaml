@@ -13,7 +13,7 @@
         <muxc:NavigationView x:Name="NaviView" Margin="0,0,0,0" Grid.Row="1" IsBackButtonVisible="Collapsed" 
                              PaneDisplayMode="LeftMinimal" SelectionChanged="NaviView_SelectionChanged" >
             <muxc:NavigationView.MenuItems>
-                <muxc:NavigationViewItem x:Uid="NaviItem1" Content="단어 검색" Tag="Pages.Dic">
+                <muxc:NavigationViewItem x:Uid="NaviItem1" Content="단어 검색" Tag="Views.Search">
                     <muxc:NavigationViewItem.Icon>
                         <FontIcon FontFamily="/Assets/Fonts/iconfont.ttf#iconfont" Glyph="&#xE800;" />
                     </muxc:NavigationViewItem.Icon>
@@ -24,7 +24,7 @@
                         <FontIcon FontFamily="/Assets/Fonts/iconfont.ttf#iconfont" Glyph="&#xE803;" />
                     </muxc:NavigationViewItem.Icon>
                 </muxc:NavigationViewItem>
-                <muxc:NavigationViewItem x:Uid="NaviItem3" Content="수정 내용" Tag="Pages.Adjustment" >
+                <muxc:NavigationViewItem x:Uid="NaviItem3" Content="수정 내용" Tag="Views.Revision" >
                     <muxc:NavigationViewItem.Icon>
                         <FontIcon FontFamily="/Assets/Fonts/iconfont.ttf#iconfont" Glyph="&#xE802;" />
                     </muxc:NavigationViewItem.Icon>
