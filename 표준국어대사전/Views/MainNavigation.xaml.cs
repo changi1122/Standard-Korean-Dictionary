@@ -70,16 +70,16 @@ namespace 표준국어대사전.Views
                         ContentFrame.Navigate(typeof(Views.Search));
                         break;
 
-                    case "Pages.HangulSpelling":  // 한글 맞춤법
-                        ContentFrame.Navigate(typeof(Pages.HangulSpelling));
+                    case "Views.HangulSpelling":  // 한글 맞춤법
+                        ContentFrame.Navigate(typeof(Views.HangulSpelling));
                         break;
 
                     case "Views.Revision":  // 수정 내용
                         ContentFrame.Navigate(typeof(Views.Revision));
                         break;
 
-                    case "Pages.SpellingChecker":  // 맞춤법/문법 검사기
-                        ContentFrame.Navigate(typeof(Pages.SpellingChecker));
+                    case "Views.SpellingChecker":  // 맞춤법/문법 검사기
+                        ContentFrame.Navigate(typeof(Views.SpellingChecker));
                         break;
                 }
             }

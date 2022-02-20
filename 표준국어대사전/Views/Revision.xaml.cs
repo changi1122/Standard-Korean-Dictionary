@@ -5,6 +5,7 @@ using Windows.UI.Popups;
 using System.Collections.ObjectModel;
 using HtmlAgilityPack;
 using 표준국어대사전.Models;
+using System.Threading.Tasks;
 
 namespace 표준국어대사전.Views
 {
@@ -33,7 +34,7 @@ namespace 표준국어대사전.Views
             RevisionProgressBar.Visibility = Visibility.Visible;
 
             const string URL = @"https://costudio1122.blogspot.com/p/standard-korean-dictionary-revisions.html";
-            
+
             HtmlWeb client = new HtmlWeb();
             HtmlDocument document = client.Load(URL);
 

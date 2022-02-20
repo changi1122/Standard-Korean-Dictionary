@@ -19,7 +19,7 @@
                     </muxc:NavigationViewItem.Icon>
                 </muxc:NavigationViewItem>
                 <muxc:NavigationViewItemSeparator/>
-                <muxc:NavigationViewItem x:Uid="NaviItem2" Content="한글 맞춤법" Tag="Pages.HangulSpelling" >
+                <muxc:NavigationViewItem x:Uid="NaviItem2" Content="한글 맞춤법" Tag="Views.HangulSpelling" >
                     <muxc:NavigationViewItem.Icon>
                         <FontIcon FontFamily="/Assets/Fonts/iconfont.ttf#iconfont" Glyph="&#xE803;" />
                     </muxc:NavigationViewItem.Icon>
@@ -30,7 +30,7 @@
                     </muxc:NavigationViewItem.Icon>
                 </muxc:NavigationViewItem>
                 <muxc:NavigationViewItemSeparator/>
-                <muxc:NavigationViewItem x:Uid="NaviItem4" Content="맞춤법/문법 검사기" Tag="Pages.SpellingChecker" >
+                <muxc:NavigationViewItem x:Uid="NaviItem4" Content="맞춤법/문법 검사기" Tag="Views.SpellingChecker" >
                     <muxc:NavigationViewItem.Icon>
                         <FontIcon FontFamily="/Assets/Fonts/iconfont.ttf#iconfont" Glyph="&#xE801;" />
                     </muxc:NavigationViewItem.Icon>

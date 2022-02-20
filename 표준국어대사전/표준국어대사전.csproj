@@ -143,10 +143,10 @@
     <Compile Include="Pages\LabFunction.xaml.cs">
       <DependentUpon>LabFunction.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Pages\SpellingChecker.xaml.cs">
+    <Compile Include="Views\SpellingChecker.xaml.cs">
       <DependentUpon>SpellingChecker.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Pages\HangulSpelling.xaml.cs">
+    <Compile Include="Views\HangulSpelling.xaml.cs">
       <DependentUpon>HangulSpelling.xaml</DependentUpon>
     </Compile>
     <Compile Include="Pages\Settings.xaml.cs">
@@ -239,11 +239,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Pages\SpellingChecker.xaml">
+    <Page Include="Views\SpellingChecker.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Pages\HangulSpelling.xaml">
+    <Page Include="Views\HangulSpelling.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -202,7 +202,7 @@
     <value>동의함</value>
   </data>
   <data name="SPC_BtnAgreement.Label" xml:space="preserve">
-    <value>동의</value>
+    <value>안내사항 동의</value>
   </data>
   <data name="SPC_DialogText" xml:space="preserve">
     <value>한국어 맞춤법/문법 검사기는 부산대학교 인공지능연구실과 (주)나라인포테크가 만들고, 운영합니다. 이 앱은 해당 웹 페이지에 연결할 뿐 어떠한 권리도 가지고 있지 않습니다. 이 검사기는 개인이나 학생만 무료로 사용할 수 있습니다.</value>

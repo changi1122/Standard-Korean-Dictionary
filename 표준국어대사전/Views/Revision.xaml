@@ -10,10 +10,10 @@
     mc:Ignorable="d">
 
 
-    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    <Grid Background="{ThemeResource NavigationViewBackground}">
 
         <Pivot x:Name="RevisionPivot" Margin="10,44,10,0"
-               Visibility="Collapsed" ItemsSource="{x:Bind collections}">
+               ItemsSource="{x:Bind collections}" Visibility="Collapsed">
             <Pivot.HeaderTemplate>
                 <DataTemplate x:DataType="model:RevisionCollection">
                     <TextBlock Text="{x:Bind Year}"></TextBlock>
