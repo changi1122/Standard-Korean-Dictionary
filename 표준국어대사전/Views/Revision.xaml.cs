@@ -18,59 +18,73 @@ namespace 표준국어대사전.Views
             collections = new ObservableCollection<RevisionCollection>();
             this.InitializeComponent();
 
-            try
-            {
-                GetRevisionData();
-            }
-            catch
-            {
-                RevisionProgressBar.Visibility = Visibility.Collapsed;
-                NetNoticeGrid.Visibility = Visibility.Visible;
-            }
+            GetRevisionData();
         }
 
-        private void GetRevisionData()
+        private async void GetRevisionData()
         {
-            RevisionProgressBar.Visibility = Visibility.Visible;
-
-            const string URL = @"https://costudio1122.blogspot.com/p/standard-korean-dictionary-revisions.html";
-
-            HtmlWeb client = new HtmlWeb();
-            HtmlDocument document = client.Load(URL);
-
-            HtmlNodeCollection revisions = document.DocumentNode.SelectNodes("//revision");
-            HtmlNode versionTarget = null;
-
-            foreach (HtmlNode revisionNode in revisions)
+            await Task.Run(async () =>
             {
-                if (revisionNode.Attributes["version"].Value == "1")
+                await Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
                 {
-                    versionTarget = revisionNode;
-                    break;
-                }
-            }
+                    RevisionProgressBar.Visibility = Visibility.Visible;
+                });
 
-            if (versionTarget == null)
-            {
-                throw new Exception("올바른 versionTarget이 없습니다.");
-            }
+                const string URL = @"https://costudio1122.blogspot.com/p/standard-korean-dictionary-revisions.html";
 
-            HtmlNodeCollection years = versionTarget.SelectNodes("./year");
-            foreach (HtmlNode yearNode in years)
-            {
-                RevisionCollection year = new RevisionCollection(yearNode.Attributes["year"].Value);
+                HtmlWeb client = new HtmlWeb();
+                HtmlDocument document = client.Load(URL);
 
-                HtmlNodeCollection articles = yearNode.SelectNodes("./a");
-                foreach (HtmlNode articleNode in articles)
+                HtmlNodeCollection revisions = document.DocumentNode.SelectNodes("//revision");
+                HtmlNode versionTarget = null;
+
+                foreach (HtmlNode revisionNode in revisions)
                 {
-                    year.Add(articleNode.InnerText, articleNode.Attributes["href"].Value);
+                    if (revisionNode.Attributes["version"].Value == "1")
+                    {
+                        versionTarget = revisionNode;
+                        break;
+                    }
                 }
 
-                collections.Add(year);
-            }
+                if (versionTarget == null)
+                {
+                    throw new Exception("올바른 versionTarget이 없습니다.");
+                }
 
-            RevisionProgressBar.Visibility = Visibility.Collapsed;
-            RevisionPivot.Visibility = Visibility.Visible;
+                HtmlNodeCollection years = versionTarget.SelectNodes("./year");
+                foreach (HtmlNode yearNode in years)
+                {
+                    RevisionCollection year = new RevisionCollection(yearNode.Attributes["year"].Value);
+
+                    HtmlNodeCollection articles = yearNode.SelectNodes("./a");
+                    foreach (HtmlNode articleNode in articles)
+                    {
+                        year.Add(articleNode.InnerText, articleNode.Attributes["href"].Value);
+                    }
+
+                    await Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
+                    {
+                        collections.Add(year);
+                    });
+                }
+
+                await Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
+                {
+                    RevisionProgressBar.Visibility = Visibility.Collapsed;
+                    RevisionPivot.Visibility = Visibility.Visible;
+                });
+            }).ContinueWith(async (t) =>
+            {
+                if (t.IsFaulted)
+                {
+                    await Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
+                    {
+                        RevisionProgressBar.Visibility = Visibility.Collapsed;
+                        NetNoticeGrid.Visibility = Visibility.Visible;
+                    });
+                }
+            });
         }
 
         private async void OpenWithDefaultBrowser(Uri uri)
@@ -88,16 +102,7 @@ namespace 표준국어대사전.Views
         private void BtnRefresh_Click(object sender, RoutedEventArgs e)
         {
             NetNoticeGrid.Visibility = Visibility.Collapsed;
-
-            try
-            {
-                GetRevisionData();
-            }
-            catch
-            {
-                RevisionProgressBar.Visibility = Visibility.Collapsed;
-                NetNoticeGrid.Visibility = Visibility.Visible;
-            }
+            GetRevisionData();
         }
     }
 }
