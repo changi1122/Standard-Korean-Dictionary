@@ -101,8 +101,18 @@ namespace 표준국어대사전.Views
             args.Handled = true;
         }
 
+        private void WebViewMain_NavigationStarting(WebView sender, WebViewNavigationStartingEventArgs args)
+        {
+            WebViewProgressBar.Visibility = Visibility.Visible;
+        }
+
+        private void WebViewMain_NavigationCompleted(WebView sender, WebViewNavigationCompletedEventArgs args)
+        {
+            WebViewProgressBar.Visibility = Visibility.Collapsed;
+        }
         private void WebViewMain_NavigationFailed(object sender, WebViewNavigationFailedEventArgs e)
         {
+            WebViewProgressBar.Visibility = Visibility.Collapsed;
             NetNoticeGrid.Visibility = Visibility.Visible;
             WebViewMain.Visibility = Visibility.Collapsed;
         }

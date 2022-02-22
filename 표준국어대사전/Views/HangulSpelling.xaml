@@ -5,6 +5,7 @@
     xmlns:local="using:표준국어대사전.Views"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
     mc:Ignorable="d">
 
     <Grid Background="{ThemeResource NavigationViewBackground}">
@@ -43,6 +44,9 @@
                           ToolTipService.ToolTip="홈" Click="BtnHome_Click"/>
         </CommandBar>
         <WebView x:Name="WebViewMain" Margin="0,50,0,0" ScrollViewer.HorizontalScrollBarVisibility="Auto"
-                 NewWindowRequested="WebViewMain_NewWindowRequested" NavigationFailed="WebViewMain_NavigationFailed"/>
+                 NewWindowRequested="WebViewMain_NewWindowRequested" NavigationFailed="WebViewMain_NavigationFailed"
+                 NavigationStarting="WebViewMain_NavigationStarting" NavigationCompleted="WebViewMain_NavigationCompleted"/>
+        <muxc:ProgressBar x:Name="WebViewProgressBar" Margin="0,48,0,0" VerticalAlignment="Top"
+                     IsIndeterminate="True" ShowPaused="False" ShowError="False" Visibility="Collapsed"/>
     </Grid>
 </Page>
