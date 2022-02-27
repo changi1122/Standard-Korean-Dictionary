@@ -33,11 +33,30 @@ namespace 표준국어대사전.Models
             {
                 StackPanel sp = new StackPanel { Orientation = Orientation.Horizontal, HorizontalAlignment = HorizontalAlignment.Right };
                 // ToolBar Buttons
-                Button BtnFontDecrease= new Button { Content = "", FontSize = 14, FontFamily= new FontFamily("Segoe MDL2 Assets"), Width = 36, Height = 36, Margin = new Thickness(5, 0, 2, 0), Background = Application.Current.Resources["ApplicationPageBackgroundThemeBrush"] as SolidColorBrush };
+                Button BtnFontDecrease= new Button {
+                    Content = "",
+                    FontSize = 18,
+                    FontFamily = new FontFamily("/Assets/Fonts/iconfont.ttf#iconfont"),
+                    Width = 36,
+                    Height = 36,
+                    Margin = new Thickness(5, 0, 2, 0),
+                    Padding = new Thickness(0, 0, 0, 0),
+                    Background = Application.Current.Resources["ApplicationPageBackgroundThemeBrush"] as SolidColorBrush
+                };
                 BtnFontDecrease.Click += BtnFontDecrease_Click;
                 sp.Children.Add(BtnFontDecrease);
 
-                Button BtnFontIncrease = new Button { Content = "", FontSize = 14, FontFamily = new FontFamily("Segoe MDL2 Assets"), Width = 36, Height = 36, Margin = new Thickness(2, 0, 2, 0), Background = Application.Current.Resources["ApplicationPageBackgroundThemeBrush"] as SolidColorBrush };
+                Button BtnFontIncrease = new Button {
+                    Content = "",
+                    FontSize = 18,
+                    FontFamily =
+                    new FontFamily("/Assets/Fonts/iconfont.ttf#iconfont"),
+                    Width = 36,
+                    Height = 36,
+                    Margin = new Thickness(2, 0, 2, 0),
+                    Padding = new Thickness(0, 0, 0, 0),
+                    Background = Application.Current.Resources["ApplicationPageBackgroundThemeBrush"] as SolidColorBrush
+                };
                 BtnFontIncrease.Click += BtnFontIncrease_Click;
                 sp.Children.Add(BtnFontIncrease);
 

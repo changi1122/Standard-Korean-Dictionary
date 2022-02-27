@@ -214,7 +214,7 @@
     <value>Reset settings</value>
   </data>
   <data name="Set_DisplayFont.Text" xml:space="preserve">
-    <value>Display Font</value>
+    <value>Font</value>
   </data>
   <data name="DA_BtnMemo.ToolTipService.ToolTip" xml:space="preserve">
     <value>Memo</value>
@@ -313,7 +313,7 @@
     <value>Custom</value>
   </data>
   <data name="ComboBoxAPIKeyItemPublic" xml:space="preserve">
-    <value>Public key</value>
+    <value>Default key</value>
   </data>
   <data name="Set_LicenseLink.Content" xml:space="preserve">
     <value>License full text</value>
@@ -354,11 +354,11 @@
   <data name="Set_ColorTheme.Text" xml:space="preserve">
     <value>App Color Theme</value>
   </data>
-  <data name="Lab_CheckWordReader.Content" xml:space="preserve">
+  <data name="Lab_CheckWordReader.Text" xml:space="preserve">
     <value>Enable word reader</value>
   </data>
   <data name="Lab_CheckWordReaderText.Text" xml:space="preserve">
-    <value>Hear the sound in the dictionary, click the button that appears next to the pronunciation. (There may not be accurate pronunciation.)</value>
+    <value>Hear the sound in the dictionary, click the button that appears next to the pronunciation.</value>
   </data>
   <data name="Lab_Sound.Text" xml:space="preserve">
     <value>Sound</value>
@@ -370,7 +370,7 @@
     <value>Lab features</value>
   </data>
   <data name="Set_DevTool.Text" xml:space="preserve">
-    <value>Developer Tools</value>
+    <value>Lab features</value>
   </data>
   <data name="DC_BtnFilter_All" xml:space="preserve">
     <value>All</value>
@@ -407,5 +407,14 @@
   </data>
   <data name="DA_BtnMore.Content" xml:space="preserve">
     <value>More</value>
+  </data>
+  <data name="Set_Help.Content" xml:space="preserve">
+    <value>Help</value>
+  </data>
+  <data name="Set_CopyrightInfo.Text" xml:space="preserve">
+    <value>Copyright Infomation</value>
+  </data>
+  <data name="Set_SoftwareInfo.Text" xml:space="preserve">
+    <value>Software Information</value>
   </data>
 </root>
