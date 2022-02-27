@@ -64,23 +64,23 @@
                 <ScrollViewer x:Name="DefinitionViewer" Visibility="{x:Bind ViewModel.IsDefinitionViewerVisible, Mode=OneWay}" IsTabStop="True">
                     <StackPanel x:Name="DefinitionSP" DataContext="{x:Bind ViewModel.Definitions, Mode=OneWay}">
                         <StackPanel Padding="20" Margin="0,0,0,0" Background="{ThemeResource PageBackgroundBrush}">
-                            <ContentPresenter Content="{Binding wordnameRtb}"/>
+                            <ContentPresenter Content="{Binding wordnameRTB}"/>
                             <StackPanel Margin="0,10,0,0">
-                                <ContentPresenter Content="{Binding pronsSp}"/>
-                                <ContentPresenter Content="{Binding conjusSp}"/>
-                                <ContentPresenter Content="{Binding pronsconjusRtb}"/>
-                                <ContentPresenter Content="{Binding lexicalsRtb}"/>
+                                <ContentPresenter Content="{Binding pronsSPWithReader}"/>
+                                <ContentPresenter Content="{Binding conjusSPWithReader}"/>
+                                <ContentPresenter Content="{Binding pronsconjusRTB}"/>
+                                <ContentPresenter Content="{Binding lexicalsRTB}"/>
                             </StackPanel>
                             <Rectangle Fill="{ThemeResource BorderBrush}" Margin="0,13,0,5" Height="1"/>
-                            <ContentPresenter Content="{Binding ToolBarSp}"/>
+                            <ContentPresenter Content="{Binding ToolBarSP}"/>
                             <StackPanel Height="10"/>
-                            <ContentPresenter Content="{Binding detailRtb}"/>
+                            <ContentPresenter Content="{Binding detailRTB}"/>
                         </StackPanel>
                         <StackPanel Padding="20" Margin="0,0,0,10" Visibility="{Binding IsOriginVisible}">
-                            <ContentPresenter Content="{Binding originRtb}"/>
+                            <ContentPresenter Content="{Binding originRTB}"/>
                         </StackPanel>
                         <StackPanel Padding="20" Margin="0,0,0,10" Visibility="{Binding IsRelationVisible}">
-                            <ContentPresenter Content="{Binding relationRtb}"/>
+                            <ContentPresenter Content="{Binding relationRTB}"/>
                         </StackPanel>
                     </StackPanel>
                 </ScrollViewer>

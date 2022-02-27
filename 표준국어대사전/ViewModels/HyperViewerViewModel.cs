@@ -20,11 +20,8 @@ namespace 표준국어대사전.ViewModels
 {
     internal class HyperViewerViewModel : INotifyPropertyChanged
     {
-        private bool IsDefinitionOnlyMode;
-
         public HyperViewerViewModel()
         {
-            this.IsDefinitionOnlyMode = false;
             this.IsMasterProgressBarVisible = Visibility.Collapsed;
             this.Query = "";
             this.IsMoreButtonVisible = Visibility.Collapsed;
@@ -64,7 +61,6 @@ namespace 표준국어대사전.ViewModels
         public void SearchWords(string q)
         {
             this.Query = q;
-            this.IsDefinitionOnlyMode = false;
 
             IsErrorMessageVisible = Visibility.Collapsed;
             RaisePropertyChanged("IsErrorMessageVisible");
@@ -120,8 +116,6 @@ namespace 표준국어대사전.ViewModels
 
         public async void DisplayWordDetail(string target_code, int sup_no)
         {
-            this.IsDefinitionOnlyMode = true;
-
             if (NetworkCheck() == false)
                 return;
 
@@ -148,8 +142,6 @@ namespace 표준국어대사전.ViewModels
 
         public async void DisplayWordDetail(SearchResultItem clickedItem)
         {
-            this.IsDefinitionOnlyMode = false;
-
             if (NetworkCheck() == false)
                 return;
 

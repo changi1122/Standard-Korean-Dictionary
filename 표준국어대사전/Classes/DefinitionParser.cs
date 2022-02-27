@@ -23,11 +23,11 @@ namespace 표준국어대사전.Classes
 
         public DefinitionParser(Action<Visibility> setProgressBar, TypedEventHandler<Hyperlink, HyperlinkClickEventArgs> handleHyperlinkClick)
         {
-            //생성자
+            // 생성자
             this.SetProgressBar = setProgressBar;
             this.HandleHyperlinkClick = handleHyperlinkClick;
 
-            //API 키 처리
+            // API 키 처리
             this.API_KEY = StorageManager.GetSetting<string>(StorageManager.APIKey);
         }
 
@@ -36,7 +36,7 @@ namespace 표준국어대사전.Classes
             SetProgressBar(Visibility.Visible);
 
             string responseBody = await DownloadWordDetailAsync(target_code);
-            if (responseBody == null) //실패 여부 확인
+            if (responseBody == null) // 실패 여부 확인
             {
                 string error_code = "404";
                 string error_message = $"error_code : {error_code}" + Environment.NewLine + "message : Network Problem";
@@ -67,7 +67,7 @@ namespace 표준국어대사전.Classes
             }
             catch
             {
-                //GetAsync 실패
+                // GetAsync 실패
                 return null;
             }
         }
@@ -78,7 +78,7 @@ namespace 표준국어대사전.Classes
 
             XDocument xDoc = XDocument.Parse(responseBody);
 
-            //에러코드
+            // 에러코드
             if (xDoc.Element("error") != null)
             {
                 string error_code = (string)xDoc.Element("error").Descendants("error_code").ElementAt(0);
@@ -90,14 +90,14 @@ namespace 표준국어대사전.Classes
                 return wordDetail;
             }
 
-            //검색 결과가 없을 때
+            // 검색 결과가 없을 때
             if ((int)xDoc.Root.Element("total") == 0)
                 return null;
 
-            //target_code 단어 명, 어깨 번호
+            // target_code 단어 명, 어깨 번호
             wordDetail.target_code = target_code;
 
-            //단어 명 예외 (ConWordDetail)
+            // 단어 명 예외 (ConWordDetail)
             if (wordname != null)
                 wordDetail.wordname = wordname;
             else
@@ -105,7 +105,7 @@ namespace 표준국어대사전.Classes
                 wordDetail.wordname = (string)xDoc.Root.Element("item").Element("word_info").Element("word");
             wordDetail.sup_no = sup_no;
 
-            //원어
+            // 원어
             wordDetail.original_language = "";
             if (xDoc.Root.Element("item").Element("word_info").Element("original_language_info") != null)
             {
@@ -114,7 +114,7 @@ namespace 표준국어대사전.Classes
                     wordDetail.original_language += (string)original_languages.ElementAt(i);
             }
 
-            //발음
+            // 발음
             if (xDoc.Root.Element("item").Element("word_info").Element("pronunciation_info") != null)
             {
                 IEnumerable<XElement> pronunciations = xDoc.Root.Element("item").Element("word_info").Element("pronunciation_info").Elements("pronunciation");
@@ -125,7 +125,7 @@ namespace 표준국어대사전.Classes
                 }
             }
 
-            //활용
+            // 활용
             if (xDoc.Root.Element("item").Element("word_info").Element("conju_info") != null)
             {
                 IEnumerable<XElement> conju_infos = xDoc.Root.Element("item").Element("word_info").Elements("conju_info");
@@ -148,7 +148,7 @@ namespace 표준국어대사전.Classes
                         }
                     }
 
-                    //준말
+                    // 준말
                     if (conju_infos.ElementAt(i).Element("abbreviation_info") != null)
                     {
                         IEnumerable<XElement> abbreviation_infos = conju_infos.ElementAt(i).Elements("abbreviation_info");
@@ -177,7 +177,7 @@ namespace 표준국어대사전.Classes
                 }
             }
 
-            //단어 관계
+            // 단어 관계
             if (xDoc.Root.Element("item").Element("word_info").Element("lexical_info") != null)
             {
                 IEnumerable<XElement> lexical_infos = xDoc.Root.Element("item").Element("word_info").Elements("lexical_info");
@@ -209,7 +209,7 @@ namespace 표준국어대사전.Classes
             }
 
 
-            //관사와 하위 항목
+            // 관사와 하위 항목
             if (xDoc.Root.Element("item").Element("word_info").Element("pos_info") != null)
             {
                 IEnumerable<XElement> pos_infos = xDoc.Root.Element("item").Element("word_info").Elements("pos_info");
@@ -217,14 +217,14 @@ namespace 표준국어대사전.Classes
                 wordDetail.poses = new List<WordDetailItem.PosItem>();
                 for (int i = 0; i < pos_infos.Count(); i++)
                 {
-                    //품사 명
+                    // 품사 명
                     if (pos_infos.ElementAt(i).Element("pos") != null)
                         wordDetail.poses.Add(new WordDetailItem.PosItem { pos = (string)pos_infos.ElementAt(i).Element("pos") });
                     else
                         wordDetail.poses.Add(new WordDetailItem.PosItem { pos = "" });
 
 
-                    //문형 정보
+                    // 문형 정보
                     if (pos_infos.ElementAt(i).Element("comm_pattern_info") != null)
                     {
                         IEnumerable<XElement> comm_pattern_infos = pos_infos.ElementAt(i).Elements("comm_pattern_info");
@@ -232,7 +232,7 @@ namespace 표준국어대사전.Classes
                         wordDetail.poses[i].patterns = new List<WordDetailItem.PatternItem>();
                         for (int j = 0; j < comm_pattern_infos.Count(); j++)
                         {
-                            //문형
+                            // 문형
                             wordDetail.poses[i].patterns.Add(new WordDetailItem.PatternItem { pattern = new List<string>() }); ;
                             if (pos_infos.ElementAt(i).Element("comm_pattern_info").Element("pattern_info") != null)
                             {
@@ -242,11 +242,11 @@ namespace 표준국어대사전.Classes
                                     wordDetail.poses[i].patterns[j].pattern.Add((string)pattern_infos.ElementAt(k).Element("pattern"));
                             }
 
-                            //문형에 적용되는 문법
+                            // 문형에 적용되는 문법
                             if (comm_pattern_infos.ElementAt(j).Element("grammar_info") != null)
                                 wordDetail.poses[i].patterns[j].grammar = (string)comm_pattern_infos.ElementAt(j).Element("grammar_info").Element("grammar");
 
-                            //정의와 예시(sense_info)
+                            // 정의와 예시(sense_info)
                             if (comm_pattern_infos.ElementAt(j).Element("sense_info") != null)
                             {
                                 IEnumerable<XElement> sense_infos = comm_pattern_infos.ElementAt(j).Elements("sense_info");
@@ -257,33 +257,33 @@ namespace 표준국어대사전.Classes
                                 {
                                     wordDetail.poses[i].patterns[j].definitions.Add(new WordDetailItem.DefinitionItem());
 
-                                    //분류(cat)
+                                    // 분류(cat)
                                     if (sense_infos.ElementAt(k).Element("cat_info") != null)
                                         wordDetail.poses[i].patterns[j].definitions[k].cat = (string)sense_infos.ElementAt(k).Element("cat_info").Element("cat");
 
-                                    //학명
+                                    // 학명
                                     if (sense_infos.ElementAt(k).Element("scientific_name") != null)
                                         wordDetail.poses[i].patterns[j].definitions[k].scientific_name = (string)sense_infos.ElementAt(k).Element("scientific_name");
 
-                                    //sense_pattern_info 정의 문형
+                                    // sense_pattern_info 정의 문형
                                     if (sense_infos.ElementAt(k).Element("sense_pattern_info") != null)
                                         wordDetail.poses[i].patterns[j].definitions[k].sense_pattern_info = (string)sense_infos.ElementAt(k).Element("sense_pattern_info").Element("pattern");
 
-                                    //sense_grammar 정의에 참고하는 말
+                                    // sense_grammar 정의에 참고하는 말
                                     if (sense_infos.ElementAt(k).Element("sense_grammar_info") != null)
                                         wordDetail.poses[i].patterns[j].definitions[k].sense_grammar = (string)sense_infos.ElementAt(k).Element("sense_grammar_info").Element("grammar");
 
-                                    //정의
+                                    // 정의
                                     if (sense_infos.ElementAt(k).Element("definition") != null)
                                     {
                                         wordDetail.poses[i].patterns[j].definitions[k].definition = (string)sense_infos.ElementAt(k).Element("definition");
 
-                                        //하이퍼링크
+                                        // 하이퍼링크
                                         if (sense_infos.ElementAt(k).Element("definition_original") != null)
                                         {
                                             string definition_original = (string)sense_infos.ElementAt(k).Element("definition_original");
 
-                                            //<word_no> 또는 <sense_no> 포함 시
+                                            // <word_no> 또는 <sense_no> 포함 시
                                             if (definition_original.Contains("<word_no>") || definition_original.Contains("<sense_no>"))
                                             {
                                                 List<int> link_type = new List<int>(); // word_no : 0, sense_no : 1
@@ -348,7 +348,7 @@ namespace 표준국어대사전.Classes
                                         }
                                     }
 
-                                    //예시
+                                    // 예시
                                     if (sense_infos.ElementAt(k).Element("example_info") != null)
                                     {
                                         IEnumerable<XElement> example_info = sense_infos.ElementAt(k).Elements("example_info");
@@ -363,7 +363,7 @@ namespace 표준국어대사전.Classes
                                         }
                                     }
 
-                                    //단어 관계
+                                    // 단어 관계
                                     if (sense_infos.ElementAt(k).Element("lexical_info") != null)
                                     {
                                         IEnumerable<XElement> lexical_infos = sense_infos.ElementAt(k).Elements("lexical_info");
@@ -389,7 +389,7 @@ namespace 표준국어대사전.Classes
                                             }
                                             wordDetail.poses[i].patterns[j].definitions[k].lexicals.Add(lexical);
                                         }
-                                        //type에 따라 분류
+                                        // type에 따라 분류
                                         wordDetail.poses[i].patterns[j].definitions[k].lexicals.Sort((a, b) =>
                                         {
                                             return String.Compare(a.type, b.type);
@@ -401,7 +401,7 @@ namespace 표준국어대사전.Classes
                     }
                 }
 
-                //규범 정보 norm
+                // 규범 정보 norm
                 if (xDoc.Root.Element("item").Element("word_info").Element("norm_info") != null)
                 {
                     IEnumerable<XElement> norms = xDoc.Root.Element("item").Element("word_info").Elements("norm_info");
@@ -413,7 +413,7 @@ namespace 표준국어대사전.Classes
                     }
                 }
 
-                //어원
+                // 어원
                 if (xDoc.Root.Element("item").Element("word_info").Element("origin") != null)
                 {
                     string origin = (string)xDoc.Root.Element("item").Element("word_info").Element("origin");
@@ -426,7 +426,7 @@ namespace 표준국어대사전.Classes
                     wordDetail.IsOriginExist = true;
                 }
 
-                //관용구 속담
+                // 관용구 속담
                 if (xDoc.Root.Element("item").Element("word_info").Element("relation_info") != null)
                 {
                     IEnumerable<XElement> relations = xDoc.Root.Element("item").Element("word_info").Elements("relation_info");
@@ -473,7 +473,7 @@ namespace 표준국어대사전.Classes
 
             ContentDialogResult result = await contentDialog.ShowAsync();
 
-            //도움말 클릭시 웹페이지 열기
+            // 도움말 클릭시 웹페이지 열기
             if (PrimaryButtonText != null && result == ContentDialogResult.Primary)
             {
                 if (error_code == "020")
