@@ -4,10 +4,9 @@ using System.IO;
 using System.Linq;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Media;
 using 표준국어대사전.Classes;
 
-namespace 표준국어대사전.Pages
+namespace 표준국어대사전.Views
 {
     public sealed partial class Settings : Page
     {
