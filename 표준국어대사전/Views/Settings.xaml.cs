@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using Windows.UI.Xaml;
@@ -8,7 +9,7 @@ using 표준국어대사전.Classes;
 
 namespace 표준국어대사전.Views
 {
-    public sealed partial class Settings : Page
+    public sealed partial class Settings : Page, INotifyPropertyChanged
     {
         public int ComboBoxLangIndex
         {
@@ -118,9 +119,15 @@ namespace 표준국어대사전.Views
             }
         }
 
+        public bool IsAPIKeyInputEnabled
+        {
+            get; set;
+        }
+
         public Settings()
         {
             this.InitializeComponent();
+            this.IsAPIKeyInputEnabled = false;
 
             var res = Windows.ApplicationModel.Resources.ResourceLoader.GetForCurrentView();
             ComboBoxAPIKey.Items.Add(res.GetString("ComboBoxAPIKeyItemPublic"));
@@ -179,11 +186,13 @@ namespace 표준국어대사전.Views
             if (ComboBoxAPIKey.SelectedIndex == 0)
             {
                 TextBoxAPIKey.Text = "";
-                TextBoxAPIKey.IsEnabled = false;
+                IsAPIKeyInputEnabled = false;
+                RaisePropertyChanged("IsAPIKeyInputEnabled");
             }
             if (ComboBoxAPIKey.SelectedIndex == 1)
             {
-                TextBoxAPIKey.IsEnabled = true;
+                IsAPIKeyInputEnabled = true;
+                RaisePropertyChanged("IsAPIKeyInputEnabled");
             }
         }
 
@@ -196,6 +205,15 @@ namespace 표준국어대사전.Views
         public async void OpenWithDefaultBrowser(Uri uri)
         {
             await Windows.System.Launcher.LaunchUriAsync(uri);
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+        protected void RaisePropertyChanged(string name)
+        {
+            if (PropertyChanged != null)
+            {
+                PropertyChanged(this, new PropertyChangedEventArgs(name));
+            }
         }
     }
 }

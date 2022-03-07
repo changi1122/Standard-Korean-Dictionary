@@ -56,8 +56,8 @@
 
         <Grid x:Name="MasterGrid" Margin="10,50,0,10" HorizontalAlignment="Left" Width="310" Background="{ThemeResource PageBackgroundBrush}"
               CornerRadius="8" BorderBrush="{ThemeResource BorderBrush}" BorderThickness="1">
-            <AutoSuggestBox x:Name="SearchBox" Style="{StaticResource SearchBoxStyle}" x:Uid="DA_SearchBox" VerticalAlignment="Top" Margin="10,22,10,0"
-                            HorizontalAlignment="Stretch" PlaceholderText="검색할 단어를 입력하세요" QueryIcon="Find"
+            <AutoSuggestBox x:Name="SearchBox" x:Uid="DA_SearchBox" VerticalAlignment="Top" Margin="10,22,10,0"
+                            HorizontalAlignment="Stretch" PlaceholderText="검색할 단어를 입력하세요" FontSize="18" QueryIcon="Find"
                             Text="{x:Bind ViewModel.Query, Mode=TwoWay}" IsEnabled="{x:Bind ViewModel.IsSearchBoxEnabled, Mode=OneWay}"
                             QuerySubmitted="SearchBox_QuerySubmitted" KeyDown="SearchBox_KeyDown"/>
             <ScrollViewer x:Name="SearchResultScrollView" HorizontalAlignment="Stretch" Margin="0,80,0,0">

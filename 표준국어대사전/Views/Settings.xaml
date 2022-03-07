@@ -163,9 +163,11 @@
                                     <ComboBox x:Name="ComboBoxAPIKey" Width="124" SelectionChanged="ComboBoxAPIKey_SelectionChanged"
                                               SelectedIndex="{x:Bind ComboBoxAPIKeyIndex, Mode=TwoWay}">
                                     </ComboBox>
-                                    <TextBox x:Name="TextBoxAPIKey" Margin="10,0,0,0" Height="32" Width="220" IsEnabled="False"/>
-                                    <Button x:Name="BtnSave" Content="&#xE105;" FontFamily="Segoe MDL2 Assets"
-                                            Margin="10,0,0,0" VerticalAlignment="Top" Click="BtnSave_Click" Height="32"/>
+                                    <TextBox x:Name="TextBoxAPIKey" Margin="10,0,0,0" Height="32" Width="220"
+                                             IsEnabled="{x:Bind IsAPIKeyInputEnabled, Mode=OneWay}"/>
+                                    <Button x:Name="BtnSave" Content="&#xE105;" FontFamily="Segoe MDL2 Assets" Margin="10,0,0,0"
+                                            VerticalAlignment="Top" Click="BtnSave_Click" Height="32"
+                                            IsEnabled="{x:Bind IsAPIKeyInputEnabled, Mode=OneWay}"/>
                                 </StackPanel>
                             </Grid>
                         </StackPanel>
