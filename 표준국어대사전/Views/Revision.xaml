@@ -1,0 +1,76 @@
+﻿<Page
+    x:Class="표준국어대사전.Views.Revision"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:표준국어대사전.Views"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:model="using:표준국어대사전.Models"
+    xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
+    mc:Ignorable="d">
+
+
+    <Grid Background="{ThemeResource NavigationViewBackground}">
+
+        <Pivot x:Name="RevisionPivot" Margin="10,44,10,0"
+               ItemsSource="{x:Bind collections}" Visibility="Collapsed">
+            <Pivot.HeaderTemplate>
+                <DataTemplate x:DataType="model:RevisionCollection">
+                    <TextBlock Text="{x:Bind Year}"></TextBlock>
+                </DataTemplate>
+            </Pivot.HeaderTemplate>
+            <Pivot.ItemTemplate>
+                <DataTemplate x:DataType="model:RevisionCollection">
+                    <ListView SelectionMode="None" ItemsSource="{x:Bind articles}">
+                        <ListView.ItemContainerStyle>
+                            <Style TargetType="ListViewItem">
+                                <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                                <Setter Property="Margin" Value="0,4,0,0"/>
+                            </Style>
+                        </ListView.ItemContainerStyle>
+                        <ListView.ItemTemplate>
+                            <DataTemplate x:DataType="model:RevisionArticle">
+                                <StackPanel Background="{ThemeResource PageBackgroundBrush}" CornerRadius="8"
+                                      BorderBrush="{ThemeResource BorderBrush}" BorderThickness="1">
+                                    <TextBlock Text="{x:Bind Title}" TextWrapping="Wrap" Margin="20,10,0,0"/>
+                                    <StackPanel Margin="20,10,0,10" Orientation="Horizontal">
+                                        <Button x:Uid="ADJ_BtnDefaultbrowser" Content="기본 브라우저에서 보기"
+                                                Tag="{x:Bind Herf}" Click="Href_Click"/>
+                                    </StackPanel>
+                                </StackPanel>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                </DataTemplate>
+            </Pivot.ItemTemplate>
+            <Pivot.ItemContainerStyle>
+                <Style TargetType="PivotItem">
+                    <Setter Property="Margin" Value="0,0,0,0"/>
+                </Style>
+            </Pivot.ItemContainerStyle>
+        </Pivot>
+        <Grid x:Name="NetNoticeGrid" VerticalAlignment="Center" HorizontalAlignment="Center"
+              Width="463" Height="295" Visibility="Collapsed">
+            <TextBlock x:Uid="NNG_Title" TextWrapping="Wrap" Text="연결되어 있지 않음" FontSize="24"
+                       HorizontalAlignment="Left" VerticalAlignment="Top" Height="33" Margin="90,0,0,0"/>
+            <TextBlock x:Uid="NNG_Wait" HorizontalAlignment="Left" TextWrapping="Wrap" Text="잠시만 기다려 주세요."
+                       VerticalAlignment="Top" Margin="90,44,0,0"/>
+            <TextBlock x:Uid="NNG_Todo" HorizontalAlignment="Left" Margin="90,73,0,0" TextWrapping="Wrap"
+                       Text="다시 온라인 상태가 되도록 합니다." VerticalAlignment="Top"/>
+            <TextBlock x:Uid="NNG_c1" HorizontalAlignment="Left" Margin="90,109,0,0" TextWrapping="Wrap"
+                       Text="  •  네트워크 케이블이 연결되어 있는지 확인합니다." VerticalAlignment="Top"/>
+            <TextBlock x:Uid="NNG_c2" HorizontalAlignment="Left" Margin="90,142,0,0" TextWrapping="Wrap"
+                       Text="  •  비행기 모드가 아닌지 확인하세요." VerticalAlignment="Top"/>
+            <TextBlock x:Uid="NNG_c3" HorizontalAlignment="Left" Margin="90,212,0,0" TextWrapping="Wrap"
+                       Text="  •  라우터를 다시 시작하세요." VerticalAlignment="Top"/>
+            <TextBlock x:Uid="NNG_c4" HorizontalAlignment="Left" Margin="90,177,0,0" TextWrapping="Wrap"
+                       Text="  •  무선 스위치가 켜져 있는지 확인하세요." VerticalAlignment="Top"/>
+            <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="&#xE704;" VerticalAlignment="Top"
+                       FontSize="80" FontFamily="Segoe MDL2 Assets"/>
+            <Button x:Uid="NNG_NoticeRefresh" Content="다시 시도" HorizontalAlignment="Left" Margin="90,247,0,0"
+                    VerticalAlignment="Top" Height="34" Width="94" Click="BtnRefresh_Click"/>
+        </Grid>
+        <muxc:ProgressBar x:Name="RevisionProgressBar" Margin="10,44,10,0" VerticalAlignment="Top"
+                     IsIndeterminate="True" ShowPaused="False" ShowError="False" Visibility="Collapsed"/>
+    </Grid>
+</Page>

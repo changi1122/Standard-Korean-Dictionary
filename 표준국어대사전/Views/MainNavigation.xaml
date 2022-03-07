@@ -1,0 +1,42 @@
+﻿<Page
+    x:Class="표준국어대사전.Views.MainNavigation"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:표준국어대사전"
+    xmlns:Controls="using:표준국어대사전.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
+    mc:Ignorable="d">
+
+    <Grid x:Name="FirstGrid" Background="{ThemeResource NavigationViewBackground}">
+        <muxc:NavigationView x:Name="NaviView" Margin="0,0,0,0" Grid.Row="1" IsBackButtonVisible="Collapsed" 
+                             PaneDisplayMode="LeftMinimal" SelectionChanged="NaviView_SelectionChanged" >
+            <muxc:NavigationView.MenuItems>
+                <muxc:NavigationViewItem x:Uid="NaviItem1" Content="단어 검색" Tag="Views.Search">
+                    <muxc:NavigationViewItem.Icon>
+                        <FontIcon FontFamily="/Assets/Fonts/iconfont.ttf#iconfont" Glyph="&#xE800;" />
+                    </muxc:NavigationViewItem.Icon>
+                </muxc:NavigationViewItem>
+                <muxc:NavigationViewItemSeparator/>
+                <muxc:NavigationViewItem x:Uid="NaviItem2" Content="한글 맞춤법" Tag="Views.HangulSpelling" >
+                    <muxc:NavigationViewItem.Icon>
+                        <FontIcon FontFamily="/Assets/Fonts/iconfont.ttf#iconfont" Glyph="&#xE803;" />
+                    </muxc:NavigationViewItem.Icon>
+                </muxc:NavigationViewItem>
+                <muxc:NavigationViewItem x:Uid="NaviItem3" Content="수정 내용" Tag="Views.Revision" >
+                    <muxc:NavigationViewItem.Icon>
+                        <FontIcon FontFamily="/Assets/Fonts/iconfont.ttf#iconfont" Glyph="&#xE802;" />
+                    </muxc:NavigationViewItem.Icon>
+                </muxc:NavigationViewItem>
+                <muxc:NavigationViewItemSeparator/>
+                <muxc:NavigationViewItem x:Uid="NaviItem4" Content="맞춤법/문법 검사기" Tag="Views.SpellingChecker" >
+                    <muxc:NavigationViewItem.Icon>
+                        <FontIcon FontFamily="/Assets/Fonts/iconfont.ttf#iconfont" Glyph="&#xE801;" />
+                    </muxc:NavigationViewItem.Icon>
+                </muxc:NavigationViewItem>
+            </muxc:NavigationView.MenuItems>
+            <Frame x:Name="ContentFrame"/>
+        </muxc:NavigationView>
+    </Grid>
+</Page>

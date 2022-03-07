@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using Windows.UI.Xaml;
 
-namespace 표준국어대사전.Classes
+namespace 표준국어대사전.Models
 {
     public enum RecordType
     {

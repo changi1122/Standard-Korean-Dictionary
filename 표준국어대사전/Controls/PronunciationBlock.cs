@@ -88,8 +88,5 @@ namespace 표준국어대사전.Controls
             if (_itemstack == null) return;
             UpdateControls();
         }
-
-
-
     }
 }

@@ -2,26 +2,13 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
-using Windows.ApplicationModel.DataTransfer;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
 using Windows.Networking.Connectivity;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
-using Windows.UI.Xaml.Navigation;
 
-// 빈 페이지 항목 템플릿에 대한 설명은 https://go.microsoft.com/fwlink/?LinkId=234238에 나와 있습니다.
 
-namespace 표준국어대사전.Pages
+namespace 표준국어대사전.Views
 {
-    /// <summary>
-    /// 자체적으로 사용하거나 프레임 내에서 탐색할 수 있는 빈 페이지입니다.
-    /// </summary>
     public sealed partial class HangulSpelling : Page
     {
         public HangulSpelling()
@@ -60,8 +47,18 @@ namespace 표준국어대사전.Pages
             args.Handled = true;
         }
 
+        private void WebViewMain_NavigationStarting(WebView sender, WebViewNavigationStartingEventArgs args)
+        {
+            WebViewProgressBar.Visibility = Visibility.Visible;
+        }
+
+        private void WebViewMain_NavigationCompleted(WebView sender, WebViewNavigationCompletedEventArgs args)
+        {
+            WebViewProgressBar.Visibility = Visibility.Collapsed;
+        }
         private void WebViewMain_NavigationFailed(object sender, WebViewNavigationFailedEventArgs e)
         {
+            WebViewProgressBar.Visibility = Visibility.Collapsed;
             NetNoticeGrid.Visibility = Visibility.Visible;
             WebViewMain.Visibility = Visibility.Collapsed;
         }

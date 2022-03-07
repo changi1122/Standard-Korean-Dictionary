@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
+using 표준국어대사전.Classes;
 
-namespace 표준국어대사전.Classes
+namespace 표준국어대사전.Models
 {
     public class SearchResultItem
     {
@@ -13,7 +13,7 @@ namespace 표준국어대사전.Classes
             get 
             {
                 return (StorageManager.GetSetting<string>(StorageManager.DisplayFont) == "맑은 고딕") ?
-                    "#Malgun Gothic" : "/Fonts/NanumBarunGothic-YetHangul.ttf#NanumBarunGothic YetHangul";
+                    "#Malgun Gothic" : "/Assets/Fonts/NanumBarunGothic-YetHangul.ttf#NanumBarunGothic YetHangul";
             }
         }
             

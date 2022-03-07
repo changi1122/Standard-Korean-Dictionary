@@ -1,0 +1,52 @@
+﻿<Page
+    x:Class="표준국어대사전.Views.HangulSpelling"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:표준국어대사전.Views"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
+    mc:Ignorable="d">
+
+    <Grid Background="{ThemeResource NavigationViewBackground}">
+
+        <Grid x:Name="NetNoticeGrid" Height="295" Width="463" Visibility="Collapsed"
+                VerticalAlignment="Center" HorizontalAlignment="Center">
+            <TextBlock x:Uid="NNG_Title" TextWrapping="Wrap" Text="연결되어 있지 않음" FontSize="24"
+                        HorizontalAlignment="Left" VerticalAlignment="Top" Height="33" Margin="90,0,0,0"/>
+            <TextBlock x:Uid="NNG_Wait" HorizontalAlignment="Left" TextWrapping="Wrap" Text="잠시만 기다려 주세요."
+                        VerticalAlignment="Top" Margin="90,44,0,0"/>
+            <TextBlock x:Uid="NNG_Todo" HorizontalAlignment="Left" Margin="90,73,0,0" TextWrapping="Wrap"
+                        Text="다시 온라인 상태가 되도록 합니다." VerticalAlignment="Top"/>
+            <TextBlock x:Uid="NNG_c1" HorizontalAlignment="Left" Margin="90,109,0,0" TextWrapping="Wrap"
+                        Text="  •  네트워크 케이블이 연결되어 있는지 확인합니다." VerticalAlignment="Top"/>
+            <TextBlock x:Uid="NNG_c2" HorizontalAlignment="Left" Margin="90,142,0,0" TextWrapping="Wrap"
+                        Text="  •  비행기 모드가 아닌지 확인하세요." VerticalAlignment="Top"/>
+            <TextBlock x:Uid="NNG_c3" HorizontalAlignment="Left" Margin="90,212,0,0" TextWrapping="Wrap"
+                        Text="  •  라우터를 다시 시작하세요." VerticalAlignment="Top"/>
+            <TextBlock x:Uid="NNG_c4" HorizontalAlignment="Left" Margin="90,177,0,0" TextWrapping="Wrap"
+                        Text="  •  무선 스위치가 켜져 있는지 확인하세요." VerticalAlignment="Top"/>
+            <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="&#xE704;" VerticalAlignment="Top"
+                        FontSize="80" FontFamily="Segoe MDL2 Assets"/>
+            <Button x:Uid="NNG_NoticeRefresh" Content="다시 시도" HorizontalAlignment="Left" Margin="90,247,0,0"
+                    VerticalAlignment="Top" Height="34" Width="94" Click="BtnRefresh_Click"/>
+        </Grid>
+
+        <CommandBar DefaultLabelPosition="Right" Background="{ThemeResource NavigationViewBackground}">
+            <CommandBar.SecondaryCommands>
+                <AppBarButton x:Uid="HS_BtnOtherApp" Icon="Globe" Label="다른 브라우저에서 열기" Click="BtnOtherApp_Click"/>
+            </CommandBar.SecondaryCommands>
+            <AppBarButton x:Name="BtnBack" x:Uid="HS_BtnBack" Icon="Back" Label="뒤로"
+                          ToolTipService.ToolTip="뒤로" Click="BtnBack_Click"/>
+            <AppBarButton x:Name="BtnRefresh" x:Uid="HS_BtnRefresh" Icon="Refresh" Label="새로 고침"
+                          ToolTipService.ToolTip="새로 고침" Click="BtnRefresh_Click"/>
+            <AppBarButton x:Name="BtnHome" x:Uid="HS_BtnHome" Icon="Home" Label="홈"
+                          ToolTipService.ToolTip="홈" Click="BtnHome_Click"/>
+        </CommandBar>
+        <WebView x:Name="WebViewMain" Margin="0,50,0,0" ScrollViewer.HorizontalScrollBarVisibility="Auto"
+                 NewWindowRequested="WebViewMain_NewWindowRequested" NavigationFailed="WebViewMain_NavigationFailed"
+                 NavigationStarting="WebViewMain_NavigationStarting" NavigationCompleted="WebViewMain_NavigationCompleted"/>
+        <muxc:ProgressBar x:Name="WebViewProgressBar" Margin="0,48,0,0" VerticalAlignment="Top"
+                     IsIndeterminate="True" ShowPaused="False" ShowError="False" Visibility="Collapsed"/>
+    </Grid>
+</Page>

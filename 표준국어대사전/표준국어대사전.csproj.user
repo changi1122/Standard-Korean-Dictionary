@@ -1,0 +1,35 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Source>C:\Users\이우창\Desktop\icon\표준국어대사전\새 로고2\1800_icon_표준국어대사전_2.png</Source>
+    <SmallTileSource>C:\Users\이우창\Desktop\icon\표준국어대사전\새 로고2\1800_icon_표준국어대사전_2.png</SmallTileSource>
+    <MediumTileSource>C:\Users\이우창\Desktop\icon\표준국어대사전\새 로고2\1800_icon_표준국어대사전_2.png</MediumTileSource>
+    <WideTileSource>C:\Users\이우창\Desktop\icon\표준국어대사전\새 로고2\1800_icon_표준국어대사전_2.png</WideTileSource>
+    <LargeTileSource>C:\Users\이우창\Desktop\icon\표준국어대사전\새 로고2\1800_icon_표준국어대사전_2.png</LargeTileSource>
+    <AppIconSource>C:\Users\이우창\Desktop\icon\표준국어대사전\새 로고2\1800_icon_표준국어대사전_2.png</AppIconSource>
+    <SplashScreenSource>C:\Users\이우창\Desktop\icon\표준국어대사전\새 로고2\1800_icon_표준국어대사전_2.png</SplashScreenSource>
+    <BadgeLogoSource>D:\Users\chang\Desktop\icon\표준국어대사전\Logo 2480.png</BadgeLogoSource>
+    <PackageLogoSource>C:\Users\이우창\Desktop\icon\표준국어대사전\새 로고2\1800_icon_표준국어대사전_2.png</PackageLogoSource>
+    <AppxPackageIsForStore>True</AppxPackageIsForStore>
+    <AppxShowAllApps>False</AppxShowAllApps>
+    <AppxBuildConfigurationSelection>x86|x64|arm</AppxBuildConfigurationSelection>
+    <PackageOptionalProjectsInIdeBuilds>False</PackageOptionalProjectsInIdeBuilds>
+    <UapAppxPackageBuildMode>StoreAndSideload</UapAppxPackageBuildMode>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|ARM'">
+    <DeviceId>30F105C9-681E-420b-A277-7C086EAD8A4E</DeviceId>
+    <DeployOptionalPackages>false</DeployOptionalPackages>
+    <UseEmulator>true</UseEmulator>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|ARM'">
+    <DeviceId>30F105C9-681E-420b-A277-7C086EAD8A4E</DeviceId>
+    <UseEmulator>true</UseEmulator>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
+    <DebugEngines>
+    </DebugEngines>
+    <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
+    <BackgroundTaskDebugEngines>
+    </BackgroundTaskDebugEngines>
+  </PropertyGroup>
+</Project>
