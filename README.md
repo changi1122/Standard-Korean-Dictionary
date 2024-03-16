@@ -1,5 +1,5 @@
 # Standard-Korean-Dictionary
-<a href="https://www.microsoft.com/store/apps/9pps9l58110j?ocid=badge">Get it from Microsoft Store</a>
+[Get it from Microsoft Store](https://www.microsoft.com/store/productId/9PPS9L58110J?ocid=pdpshare)
 
 This repo contains Universal Windows Platform (UWP) App that can connect to the Standard Korean Language Dictionary and search and show the results. These codes were created with the Universal Windows Platform App available in Visual Studio, and are designed to run on Windows 10(Build 16299 or later) desktop, that support the Universal Windows Platform.
 
