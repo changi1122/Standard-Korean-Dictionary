@@ -15,7 +15,7 @@ namespace 표준국어대사전.Views
         {
             this.InitializeComponent();
 
-            WebViewMain.Navigate(new Uri("http://kornorms.korean.go.kr/regltn/regltnView.do"));
+            WebViewMain.Navigate(new Uri("https://korean.go.kr/kornorms/main/main.do"));
             NetworkCheck();
         }
 

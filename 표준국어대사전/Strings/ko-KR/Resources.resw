@@ -157,7 +157,7 @@
     <value>단어 검색</value>
   </data>
   <data name="NaviItem2.Content" xml:space="preserve">
-    <value>한글 맞춤법</value>
+    <value>한국어 어문 규범</value>
   </data>
   <data name="NaviItem3.Content" xml:space="preserve">
     <value>수정 내용</value>
