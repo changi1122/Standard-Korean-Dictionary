@@ -14,7 +14,7 @@ namespace 표준국어대사전.Views
 {
     public sealed partial class SpellingChecker : Page
     {
-        private const string SPELLCHECKURL = "http://speller.cs.pusan.ac.kr/";
+        private const string SPELLCHECKURL = "https://nara-speller.co.kr/";
 
         public SpellingChecker()
         {
