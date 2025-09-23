@@ -7,6 +7,8 @@ using Windows.Networking.Connectivity;
 using Windows.UI.Popups;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Microsoft.UI.Xaml.Controls;
+using Microsoft.Web.WebView2.Core;
 using 표준국어대사전.Classes;
 
 
@@ -14,11 +16,15 @@ namespace 표준국어대사전.Views
 {
     public sealed partial class SpellingChecker : Page
     {
-        private const string SPELLCHECKURL = "https://nara-speller.co.kr/";
+        private const string SPELLCHECKURL = "https://nara-speller.co.kr/speller";
 
         public SpellingChecker()
         {
             this.InitializeComponent();
+
+            // WebView2 이벤트 등록
+            WebViewMain.NavigationStarting += WebViewMain_NavigationStarting;
+            WebViewMain.NavigationCompleted += WebViewMain_NavigationCompleted;
         }
 
         private static bool IsInternetConnected()
@@ -49,8 +55,10 @@ namespace 표준국어대사전.Views
 
             if (value == true)
             {
-                WebViewMain.Navigate(new Uri(SPELLCHECKURL));
-                NetworkCheck();
+                if (NetworkCheck())
+                {
+                    WebViewMain.Source = new Uri(SPELLCHECKURL);
+                }
             }
             else
             {
@@ -73,7 +81,7 @@ namespace 표준국어대사전.Views
             if (command.Label == res.GetString("SPC_Agree"))
             {
                 StorageManager.SetSetting<bool>(StorageManager.SpellingCheckerAgreement, true);
-                WebViewMain.Navigate(new Uri(SPELLCHECKURL));
+                WebViewMain.Source = new Uri(SPELLCHECKURL);
                 BtnAgree.Visibility = Visibility.Collapsed;
             }
             else if(command.Label == res.GetString("SPC_Disagree"))
@@ -95,33 +103,32 @@ namespace 표준국어대사전.Views
             await messageDialog.ShowAsync();
         }
 
-        private void WebViewMain_NewWindowRequested(WebView sender, WebViewNewWindowRequestedEventArgs args)
-        {
-            WebViewMain.Navigate(args.Uri);
-            args.Handled = true;
-        }
-
-        private void WebViewMain_NavigationStarting(WebView sender, WebViewNavigationStartingEventArgs args)
+        private void WebViewMain_NavigationStarting(WebView2 sender, CoreWebView2NavigationStartingEventArgs args)
         {
             WebViewProgressBar.Visibility = Visibility.Visible;
         }
 
-        private void WebViewMain_NavigationCompleted(WebView sender, WebViewNavigationCompletedEventArgs args)
+        private void WebViewMain_NavigationCompleted(WebView2 sender, CoreWebView2NavigationCompletedEventArgs args)
         {
             WebViewProgressBar.Visibility = Visibility.Collapsed;
-        }
-        private void WebViewMain_NavigationFailed(object sender, WebViewNavigationFailedEventArgs e)
-        {
-            WebViewProgressBar.Visibility = Visibility.Collapsed;
-            NetNoticeGrid.Visibility = Visibility.Visible;
-            WebViewMain.Visibility = Visibility.Collapsed;
+
+            if (!args.IsSuccess)
+            {
+                NetNoticeGrid.Visibility = Visibility.Visible;
+                WebViewMain.Visibility = Visibility.Collapsed;
+            }
+            else
+            {
+                NetNoticeGrid.Visibility = Visibility.Collapsed;
+                WebViewMain.Visibility = Visibility.Visible;
+            }
         }
 
         private void BtnRefresh_Click(object sender, RoutedEventArgs e)
         {
             if (NetworkCheck() == true)
             {
-                WebViewMain.Refresh();
+                WebViewMain.Reload();
                 WebViewMain.Visibility = Visibility.Visible;
                 NetNoticeGrid.Visibility = Visibility.Collapsed;
             }
