@@ -1,14 +1,15 @@
-﻿using System;
+﻿using Microsoft.UI.Xaml.Controls;
+using Microsoft.Web.WebView2.Core;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Windows.ApplicationModel.Resources;
+using Windows.Foundation;
 using Windows.Networking.Connectivity;
 using Windows.UI.Popups;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Microsoft.UI.Xaml.Controls;
-using Microsoft.Web.WebView2.Core;
 using 표준국어대사전.Classes;
 
 
@@ -124,11 +125,28 @@ namespace 표준국어대사전.Views
             }
         }
 
-        private void BtnRefresh_Click(object sender, RoutedEventArgs e)
+        private async void BtnRefresh_Click(object sender, RoutedEventArgs e)
         {
             if (NetworkCheck() == true)
             {
-                WebViewMain.Reload();
+                if (WebViewMain.CoreWebView2 != null)
+                {
+                    WebViewMain.Reload();
+                }
+                else
+                {
+                    // CoreWebView2가 초기화 되지 않았을 경우 예외 처리
+                    // 이벤트 등록 후 한 번만 실행
+                    TypedEventHandler<WebView2, CoreWebView2InitializedEventArgs> handler = null;
+                    handler = (s, args) =>
+                    {
+                        WebViewMain.CoreWebView2Initialized -= handler; // 이벤트 제거
+                        WebViewMain.Source = new Uri(SPELLCHECKURL);
+                    };
+
+                    WebViewMain.CoreWebView2Initialized += handler;
+                    await WebViewMain.EnsureCoreWebView2Async();
+                }
                 WebViewMain.Visibility = Visibility.Visible;
                 NetNoticeGrid.Visibility = Visibility.Collapsed;
             }

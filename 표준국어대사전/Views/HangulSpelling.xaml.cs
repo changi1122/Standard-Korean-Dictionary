@@ -1,22 +1,29 @@
-﻿using System;
+﻿using Microsoft.UI.Xaml.Controls;
+using Microsoft.Web.WebView2.Core;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using Windows.Foundation;
 using Windows.Networking.Connectivity;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using 표준국어대사전.Classes;
 
 
 namespace 표준국어대사전.Views
 {
     public sealed partial class HangulSpelling : Page
     {
+        private const string KORNORMSURL = "https://korean.go.kr/kornorms/main/main.do";
+
         public HangulSpelling()
         {
             this.InitializeComponent();
 
-            WebViewMain.Navigate(new Uri("https://korean.go.kr/kornorms/main/main.do"));
-            NetworkCheck();
+            // WebView2 이벤트 등록
+            WebViewMain.NavigationStarting += WebViewMain_NavigationStarting;
+            WebViewMain.NavigationCompleted += WebViewMain_NavigationCompleted;
         }
 
         private static bool IsInternetConnected()
@@ -41,33 +48,57 @@ namespace 표준국어대사전.Views
             }
         }
 
-        private void WebViewMain_NewWindowRequested(WebView sender, WebViewNewWindowRequestedEventArgs args)
+        private void WebViewMain_Loaded(object sender, RoutedEventArgs e)
         {
-            WebViewMain.Navigate(args.Uri);
-            args.Handled = true;
+            if (NetworkCheck())
+            {
+                WebViewMain.Source = new Uri(KORNORMSURL);
+            }
         }
 
-        private void WebViewMain_NavigationStarting(WebView sender, WebViewNavigationStartingEventArgs args)
+        private void WebViewMain_NavigationStarting(WebView2 sender, CoreWebView2NavigationStartingEventArgs args)
         {
             WebViewProgressBar.Visibility = Visibility.Visible;
         }
 
-        private void WebViewMain_NavigationCompleted(WebView sender, WebViewNavigationCompletedEventArgs args)
+        private void WebViewMain_NavigationCompleted(WebView2 sender, CoreWebView2NavigationCompletedEventArgs args)
         {
             WebViewProgressBar.Visibility = Visibility.Collapsed;
-        }
-        private void WebViewMain_NavigationFailed(object sender, WebViewNavigationFailedEventArgs e)
-        {
-            WebViewProgressBar.Visibility = Visibility.Collapsed;
-            NetNoticeGrid.Visibility = Visibility.Visible;
-            WebViewMain.Visibility = Visibility.Collapsed;
+
+            if (!args.IsSuccess)
+            {
+                NetNoticeGrid.Visibility = Visibility.Visible;
+                WebViewMain.Visibility = Visibility.Collapsed;
+            }
+            else
+            {
+                NetNoticeGrid.Visibility = Visibility.Collapsed;
+                WebViewMain.Visibility = Visibility.Visible;
+            }
         }
 
-        private void BtnRefresh_Click(object sender, RoutedEventArgs e)
+        private async void BtnRefresh_Click(object sender, RoutedEventArgs e)
         {
             if (NetworkCheck() == true)
             {
-                WebViewMain.Refresh();
+                if (WebViewMain.CoreWebView2 != null)
+                {
+                    WebViewMain.Reload();
+                }
+                else
+                {
+                    // CoreWebView2가 초기화 되지 않았을 경우 예외 처리
+                    // 이벤트 등록 후 한 번만 실행
+                    TypedEventHandler<WebView2, CoreWebView2InitializedEventArgs> handler = null;
+                    handler = (s, args) =>
+                    {
+                        WebViewMain.CoreWebView2Initialized -= handler; // 이벤트 제거
+                        WebViewMain.Source = new Uri(KORNORMSURL);
+                    };
+
+                    WebViewMain.CoreWebView2Initialized += handler;
+                    await WebViewMain.EnsureCoreWebView2Async();
+                }
                 WebViewMain.Visibility = Visibility.Visible;
                 NetNoticeGrid.Visibility = Visibility.Collapsed;
             }
@@ -83,7 +114,7 @@ namespace 표준국어대사전.Views
         {
             if (NetworkCheck() == true)
             {
-                WebViewMain.Navigate(new Uri("http://kornorms.korean.go.kr/regltn/regltnView.do"));
+                WebViewMain.Source = new Uri(KORNORMSURL);
                 WebViewMain.Visibility = Visibility.Visible;
                 NetNoticeGrid.Visibility = Visibility.Collapsed;
             }

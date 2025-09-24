@@ -8,6 +8,7 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Popups;
 using Windows.ApplicationModel.Resources;
+using Microsoft.UI.Xaml.Controls;
 using 표준국어대사전.Models;
 using 표준국어대사전.ViewModels;
 
@@ -134,8 +135,11 @@ namespace 표준국어대사전.Views
             if (IsWebViewOpen == true)
             {
                 Grid g = (Grid)BasicGrid.FindName("SubGrid");
-                WebView w = (WebView)g.FindName("SubWebView");
-                w.Navigate(uri);
+                WebView2 w = (WebView2)g.FindName("SubWebView");
+                if (w != null)
+                {
+                    w.Source = uri;
+                }
             }
             else
             {
@@ -178,7 +182,7 @@ namespace 표준국어대사전.Views
                 CloseBtn.Click += BtnWebViewClose_Click;
                 SubGrid.Children.Add(CloseBtn);
 
-                var SubWebView = new WebView
+                var SubWebView = new WebView2
                 {
                     Name = "SubWebView",
                     Margin = new Thickness(1, 33, 1, 1),
