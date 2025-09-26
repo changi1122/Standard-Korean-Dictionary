@@ -37,10 +37,7 @@
                           Click="BtnAgree_Click" Visibility="Collapsed"/>
         </CommandBar>
 
-        <WebView x:Name="WebViewMain" Margin="0,50,0,0" ScrollViewer.HorizontalScrollBarVisibility="Auto"
-                 NewWindowRequested="WebViewMain_NewWindowRequested" NavigationFailed="WebViewMain_NavigationFailed"
-                 Loaded="WebViewMain_Loaded" NavigationStarting="WebViewMain_NavigationStarting"
-                 NavigationCompleted="WebViewMain_NavigationCompleted"/>
+        <muxc:WebView2 x:Name="WebViewMain" Margin="0,50,0,0" Loaded="WebViewMain_Loaded"/>
         <muxc:ProgressBar x:Name="WebViewProgressBar" Margin="0,48,0,0" VerticalAlignment="Top"
                      IsIndeterminate="True" ShowPaused="False" ShowError="False" Visibility="Collapsed"/>
     </Grid>
