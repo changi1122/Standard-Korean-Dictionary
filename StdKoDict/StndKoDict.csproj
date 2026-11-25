@@ -22,6 +22,7 @@
 		<GenerateTestArtifacts>False</GenerateTestArtifacts>
 		<AppxBundle>Always</AppxBundle>
 		<AppxBundlePlatforms>x86|x64|arm64</AppxBundlePlatforms>
+		<MicrosoftWindowsSDKBuildToolsMSIXPackageVersion>1.7.261119100</MicrosoftWindowsSDKBuildToolsMSIXPackageVersion>
 		<GenerateTemporaryStoreCertificate>True</GenerateTemporaryStoreCertificate>
 		<HoursBetweenUpdateChecks>0</HoursBetweenUpdateChecks>
 	</PropertyGroup>
