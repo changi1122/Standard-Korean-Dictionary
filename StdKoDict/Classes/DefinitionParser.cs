@@ -141,7 +141,8 @@ namespace 표준국어대사전.Classes
             // 발음
             if (xDoc.Root.Element("item").Element("word_info").Element("pronunciation_info") != null)
             {
-                IEnumerable<XElement> pronunciations = xDoc.Root.Element("item").Element("word_info").Element("pronunciation_info").Elements("pronunciation");
+                // 발음이 여러 개면 pronunciation_info가 발음마다 따로 온다 (예: 되다 [되다/뒈다])
+                IEnumerable<XElement> pronunciations = xDoc.Root.Element("item").Element("word_info").Elements("pronunciation_info").Elements("pronunciation");
                 wordDetail.prons = new List<string>();
                 for (int i = 0; i < pronunciations.Count(); i++)
                 {
@@ -183,18 +184,12 @@ namespace 표준국어대사전.Classes
                             string abbreviationTemp = (string)abbreviation_infos.ElementAt(j).Element("abbreviation");
                             wordDetail.conjus[i].abbreviations.Add(new WordDetailItem.AbbreviationItem { abbreviations = abbreviationTemp });
 
+                            // 준말 발음: j번째 준말의 발음을 하나씩 담는다 (화면에서 '/'로 이어 표시)
                             if (abbreviation_infos.ElementAt(j).Element("pronunciation_info") != null)
                             {
-                                wordDetail.conjus[i].abbreviations[j].abbreviation_prons = new List<string>();
-
-                                wordDetail.conjus[i].abbreviations[j].abbreviation_prons.Add("");
-                                IEnumerable<XElement> _abbreviation_prons = conju_infos.ElementAt(i).Element("abbreviation_info").Elements("pronunciation_info").Elements("pronunciation");
-                                for (int k = 0; k < _abbreviation_prons.Count(); k++)
-                                {
-                                    wordDetail.conjus[i].abbreviations[j].abbreviation_prons[j] += (string)_abbreviation_prons.ElementAt(k);
-                                    if (_abbreviation_prons.Count() - k != 1)
-                                        wordDetail.conjus[i].abbreviations[j].abbreviation_prons[j] += " / ";
-                                }
+                                wordDetail.conjus[i].abbreviations[j].abbreviation_prons = abbreviation_infos.ElementAt(j)
+                                    .Elements("pronunciation_info").Elements("pronunciation")
+                                    .Select(p => (string)p).ToList();
                             }
                         }
                     }
@@ -253,7 +248,7 @@ namespace 표준국어대사전.Classes
                         {
                             // 문형
                             wordDetail.poses[i].patterns.Add(new WordDetailItem.PatternItem { pattern = new List<string>() }); ;
-                            if (pos_infos.ElementAt(i).Element("comm_pattern_info").Element("pattern_info") != null)
+                            if (comm_pattern_infos.ElementAt(j).Element("pattern_info") != null)
                             {
                                 IEnumerable<XElement> pattern_infos = comm_pattern_infos.ElementAt(j).Elements("pattern_info");
 
@@ -286,11 +281,13 @@ namespace 표준국어대사전.Classes
 
                                     // sense_pattern_info 정의 문형
                                     if (sense_infos.ElementAt(k).Element("sense_pattern_info") != null)
-                                        wordDetail.poses[i].patterns[j].definitions[k].sense_pattern_info = (string)sense_infos.ElementAt(k).Element("sense_pattern_info").Element("pattern");
+                                        wordDetail.poses[i].patterns[j].definitions[k].sense_patterns = sense_infos.ElementAt(k)
+                                            .Elements("sense_pattern_info").Elements("pattern").Select(p => (string)p).ToList();
 
                                     // sense_grammar 정의에 참고하는 말
                                     if (sense_infos.ElementAt(k).Element("sense_grammar_info") != null)
-                                        wordDetail.poses[i].patterns[j].definitions[k].sense_grammar = (string)sense_infos.ElementAt(k).Element("sense_grammar_info").Element("grammar");
+                                        wordDetail.poses[i].patterns[j].definitions[k].sense_grammars = sense_infos.ElementAt(k)
+                                            .Elements("sense_grammar_info").Elements("grammar").Select(g => (string)g).ToList();
 
                                     // 정의
                                     if (sense_infos.ElementAt(k).Element("definition") != null)

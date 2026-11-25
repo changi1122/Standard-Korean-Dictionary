@@ -540,12 +540,14 @@ namespace 표준국어대사전.Models
                                 OutputList.Add("&FOS015" + $"『{patterns[j].definitions[k].cat}』 ");
 
                             // sense_pattern_info 정의 문형
-                            if (patterns[j].definitions[k].sense_pattern_info != null)
-                                OutputList.Add("&FOS015" + $"【{patterns[j].definitions[k].sense_pattern_info}】 ");
+                            if (patterns[j].definitions[k].sense_patterns != null)
+                                foreach (string sensePattern in patterns[j].definitions[k].sense_patterns)
+                                    OutputList.Add("&FOS015" + $"【{sensePattern}】 ");
 
                             // sense_grammar 정의에 참고하는 말
-                            if (patterns[j].definitions[k].sense_grammar != null)
-                                OutputList.Add("&FOS015" + $"(({patterns[j].definitions[k].sense_grammar})) ");
+                            if (patterns[j].definitions[k].sense_grammars != null)
+                                foreach (string senseGrammar in patterns[j].definitions[k].sense_grammars)
+                                    OutputList.Add("&FOS015" + $"(({senseGrammar})) ");
 
                             // 글꼴 크기가 다른 경우
                             string cloneDefinition = definitions[k].definition;
@@ -1063,8 +1065,8 @@ namespace 표준국어대사전.Models
         public class DefinitionItem
         {
             public string cat;
-            public string sense_pattern_info;
-            public string sense_grammar;
+            public List<string> sense_patterns;  // 뜻별 문형 (여러 개 가능)
+            public List<string> sense_grammars;  // 뜻별 문법·참고 (여러 개 가능)
             public string definition;
             public string scientific_name;
             public List<string> examples;
@@ -1191,7 +1193,7 @@ namespace 표준국어대사전.Models
                                 new WordDetailItem.DefinitionItem
                                 {
                                     definition = "이 단어는 샘플 단어입니다.",
-                                    sense_grammar = "정의 참고하는 말",
+                                    sense_grammars = new List<string> { "정의 참고하는 말" },
                                     examples = new List<string>
                                     {
                                         "이런 예시도 있어요.", "저런 예시도 있어요."
