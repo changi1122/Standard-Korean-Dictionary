@@ -1,0 +1,303 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="NaviItem1.Content" xml:space="preserve">
+    <value>Word search</value>
+  </data>
+  <data name="DA_BtnInform.Label" xml:space="preserve">
+    <value>Preface</value>
+  </data>
+  <data name="DA_BtnMultiSearch.Label" xml:space="preserve">
+    <value>Multi Search</value>
+  </data>
+  <data name="NaviItem2.Content" xml:space="preserve">
+    <value>Hangul orthography</value>
+  </data>
+  <data name="NaviItem3.Content" xml:space="preserve">
+    <value>Modifications</value>
+  </data>
+  <data name="NaviItem4.Content" xml:space="preserve">
+    <value>Spelling/grammar inspector</value>
+  </data>
+  <data name="DA_PageTitle.Text" xml:space="preserve">
+    <value>Word search</value>
+  </data>
+  <data name="DA_BtnMemo.Label" xml:space="preserve">
+    <value>Memo</value>
+  </data>
+  <data name="DA_BtnNetStatusRefresh.Content" xml:space="preserve">
+    <value>Refresh</value>
+  </data>
+  <data name="DA_SearchBox.PlaceholderText" xml:space="preserve">
+    <value>Enter words to search</value>
+  </data>
+  <data name="ADJ_BtnDefaultbrowser.Content" xml:space="preserve">
+    <value>View on Default browser</value>
+  </data>
+  <data name="ADJ_Pivotitem2014.Header" xml:space="preserve">
+    <value>2014</value>
+  </data>
+  <data name="ADJ_Pivotitem2015.Header" xml:space="preserve">
+    <value>2015</value>
+  </data>
+  <data name="ADJ_Pivotitem2016.Header" xml:space="preserve">
+    <value>2016</value>
+  </data>
+  <data name="ADJ_Pivotitem2017.Header" xml:space="preserve">
+    <value>2017</value>
+  </data>
+  <data name="ADJ_Pivotitem2018.Header" xml:space="preserve">
+    <value>2018</value>
+  </data>
+  <data name="Set_AboutText.Text" xml:space="preserve">
+    <value>This app searches words in Standard Korean Language Dictionary created by National Institute of the Korean Language and shows meaning.</value>
+  </data>
+  <data name="Set_BtnMail.Content" xml:space="preserve">
+    <value>Mail</value>
+  </data>
+  <data name="Set_BtnReview.Content" xml:space="preserve">
+    <value>Ratings and Reviews</value>
+  </data>
+  <data name="Set_Contact.Text" xml:space="preserve">
+    <value>Contact</value>
+  </data>
+  <data name="Set_Homepage.Text" xml:space="preserve">
+    <value>Home page</value>
+  </data>
+  <data name="Set_Include.Text" xml:space="preserve">
+    <value>This app includes:</value>
+  </data>
+  <data name="Set_Option.Text" xml:space="preserve">
+    <value>Option</value>
+  </data>
+  <data name="Set_OptionReset.Text" xml:space="preserve">
+    <value>App initialization</value>
+  </data>
+  <data name="Set_Pivotitem1.Header" xml:space="preserve">
+    <value>General</value>
+  </data>
+  <data name="Set_Pivotitem2.Header" xml:space="preserve">
+    <value>License</value>
+  </data>
+  <data name="Set_Pivotitem3.Header" xml:space="preserve">
+    <value>About</value>
+  </data>
+  <data name="SPC_Agree" xml:space="preserve">
+    <value>Agree</value>
+  </data>
+  <data name="SPC_BtnAgreement.Label" xml:space="preserve">
+    <value>Agree</value>
+  </data>
+  <data name="SPC_DialogText" xml:space="preserve">
+    <value>Korean spelling/grammar inspector is created and operated by Pusan National University Artificial Intelligence Laboratory and Nara Infotech Co., Ltd. This app only connects to the webpage and does not have any rights. This inspector is free for individuals or students only.</value>
+  </data>
+  <data name="SPC_Disagree" xml:space="preserve">
+    <value>Disagree</value>
+  </data>
+  <data name="Set_BtnResetSetting.Content" xml:space="preserve">
+    <value>Reset settings</value>
+  </data>
+  <data name="Set_DisplayFont.Text" xml:space="preserve">
+    <value>Display Font</value>
+  </data>
+  <data name="DA_BtnMemo.ToolTipService.ToolTip" xml:space="preserve">
+    <value>Memo</value>
+  </data>
+  <data name="DA_BtnMultiSearch.ToolTipService.ToolTip" xml:space="preserve">
+    <value>Multi search</value>
+  </data>
+  <data name="Dic_BtnBack.Label" xml:space="preserve">
+    <value>Back</value>
+  </data>
+  <data name="Dic_BtnBack.ToolTipService.ToolTip" xml:space="preserve">
+    <value>Back</value>
+  </data>
+  <data name="Dic_BtnHome.Label" xml:space="preserve">
+    <value>Home</value>
+  </data>
+  <data name="Dic_BtnHome.ToolTipService.ToolTip" xml:space="preserve">
+    <value>Home</value>
+  </data>
+  <data name="Dic_BtnMemo.Label" xml:space="preserve">
+    <value>Memo</value>
+  </data>
+  <data name="Dic_BtnMemo.ToolTipService.ToolTip" xml:space="preserve">
+    <value>Memo</value>
+  </data>
+  <data name="Dic_BtnMultiSearch.Label" xml:space="preserve">
+    <value>Multi search</value>
+  </data>
+  <data name="Dic_BtnOtherApp.Label" xml:space="preserve">
+    <value>Open in another browser</value>
+  </data>
+  <data name="Dic_BtnReadingMode.Label" xml:space="preserve">
+    <value>View HTML</value>
+  </data>
+  <data name="Dic_BtnRefresh.Label" xml:space="preserve">
+    <value>Refresh</value>
+  </data>
+  <data name="Dic_BtnRefresh.ToolTipService.ToolTip" xml:space="preserve">
+    <value>Refresh</value>
+  </data>
+  <data name="HS_BtnOtherApp.Label" xml:space="preserve">
+    <value>Open in another browser</value>
+  </data>
+  <data name="NNG_c1.Text" xml:space="preserve">
+    <value>  •  Make sure the network cable is connected.</value>
+  </data>
+  <data name="NNG_c2.Text" xml:space="preserve">
+    <value>  •  Make sure it is not in airplane mode.</value>
+  </data>
+  <data name="NNG_c3.Text" xml:space="preserve">
+    <value>  •  Restart your router.</value>
+  </data>
+  <data name="NNG_c4.Text" xml:space="preserve">
+    <value>  •  Make sure the wireless switch is turned on.</value>
+  </data>
+  <data name="NNG_NoticeRefresh.Content" xml:space="preserve">
+    <value>Retry</value>
+  </data>
+  <data name="NNG_Title.Text" xml:space="preserve">
+    <value>Not connected</value>
+  </data>
+  <data name="NNG_Todo.Text" xml:space="preserve">
+    <value>Bring it back online.</value>
+  </data>
+  <data name="NNG_Wait.Text" xml:space="preserve">
+    <value>Please wait.</value>
+  </data>
+  <data name="ErrorMessageNoInternet" xml:space="preserve">
+    <value>No internet connection.</value>
+  </data>
+  <data name="ErrorMessageNoResult" xml:space="preserve">
+    <value>No search results.</value>
+  </data>
+  <data name="HS_BtnBack.Label" xml:space="preserve">
+    <value>Back</value>
+  </data>
+  <data name="HS_BtnBack.ToolTipService.ToolTip" xml:space="preserve">
+    <value>Back</value>
+  </data>
+  <data name="HS_BtnHome.Label" xml:space="preserve">
+    <value>Home</value>
+  </data>
+  <data name="HS_BtnHome.ToolTipService.ToolTip" xml:space="preserve">
+    <value>Home</value>
+  </data>
+  <data name="HS_BtnRefresh.Label" xml:space="preserve">
+    <value>Refresh</value>
+  </data>
+  <data name="HS_BtnRefresh.ToolTipService.ToolTip" xml:space="preserve">
+    <value>Refresh</value>
+  </data>
+  <data name="Set_APIKey.Text" xml:space="preserve">
+    <value>Open API authentication key</value>
+  </data>
+  <data name="ComboBoxAPIKeyItemCustom" xml:space="preserve">
+    <value>Custom</value>
+  </data>
+  <data name="ComboBoxAPIKeyItemPublic" xml:space="preserve">
+    <value>Public key</value>
+  </data>
+  <data name="Set_LicenseLink.Content" xml:space="preserve">
+    <value>License full text</value>
+  </data>
+  <data name="ContentDialogText1" xml:space="preserve">
+    <value>Help</value>
+  </data>
+  <data name="ContentDialogText2" xml:space="preserve">
+    <value>Close</value>
+  </data>
+  <data name="DA_BtnHelp.Label" xml:space="preserve">
+    <value>Help</value>
+  </data>
+  <data name="Dic_BtnHelp.Label" xml:space="preserve">
+    <value>Help</value>
+  </data>
+  <data name="Set_Language.Text" xml:space="preserve">
+    <value>Language (언어)</value>
+  </data>
+  <data name="Set_TextRestartNotice.Text" xml:space="preserve">
+    <value>You must restart the app for the change to take effect.</value>
+  </data>
+  <data name="DA_NoSearchText" xml:space="preserve">
+    <value>Enter a word to find.</value>
+  </data>
+  <data name="ADJ_Pivotitem2019.Header" xml:space="preserve">
+    <value>2019</value>
+  </data>
+  <data name="ComboBoxThemeDark" xml:space="preserve">
+    <value>Dark</value>
+  </data>
+  <data name="ComboBoxThemeLight" xml:space="preserve">
+    <value>Light</value>
+  </data>
+  <data name="ComboBoxThemeSystem" xml:space="preserve">
+    <value>System</value>
+  </data>
+  <data name="Set_ColorTheme.Text" xml:space="preserve">
+    <value>App Color Theme</value>
+  </data>
+  <data name="Lab_CheckWordReaderText.Text" xml:space="preserve">
+    <value>Hear the sound in the dictionary, click the button that appears next to the pronunciation. (There may not be accurate pronunciation.)</value>
+  </data>
+  <data name="Lab_Sound.Text" xml:space="preserve">
+    <value>Sound</value>
+  </data>
+  <data name="Lab_Title.Text" xml:space="preserve">
+    <value>Lab features</value>
+  </data>
+  <data name="Set_BtnLabFunction.Content" xml:space="preserve">
+    <value>Lab features</value>
+  </data>
+  <data name="Set_DevTool.Text" xml:space="preserve">
+    <value>Developer Tools</value>
+  </data>
+  <data name="DC_BtnFilter_All" xml:space="preserve">
+    <value>All</value>
+  </data>
+  <data name="DC_BtnFilter_Meaning" xml:space="preserve">
+    <value>Meaning</value>
+  </data>
+  <data name="DA_BtnBack.Label" xml:space="preserve">
+    <value>Back</value>
+  </data>
+  <data name="DA_BtnBack.ToolTipService.ToolTip" xml:space="preserve">
+    <value>Back</value>
+  </data>
+  <data name="DA_BtnForward.Label" xml:space="preserve">
+    <value>Forward</value>
+  </data>
+  <data name="DA_BtnForward.ToolTipService.ToolTip" xml:space="preserve">
+    <value>Forward</value>
+  </data>
+  <data name="DA_BtnHome.Label" xml:space="preserve">
+    <value>Welcome</value>
+  </data>
+  <data name="DA_BtnHome.ToolTipService.ToolTip" xml:space="preserve">
+    <value>Welcome</value>
+  </data>
+  <data name="ADJ_Pivotitem2020.Header" xml:space="preserve">
+    <value>2020</value>
+  </data>
+  <data name="ADJ_Pivotitem2021.Header" xml:space="preserve">
+    <value>2021</value>
+  </data>
+  <data name="Set_FontSize.Text" xml:space="preserve">
+    <value>Font Size</value>
+  </data>
+  <data name="DA_BtnMore.Content" xml:space="preserve">
+    <value>More</value>
+  </data>
+</root>
