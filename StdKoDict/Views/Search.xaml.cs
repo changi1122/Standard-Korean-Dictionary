@@ -122,7 +122,7 @@ namespace 표준국어대사전.Views
 
         private void BtnInform_Click(object sender, RoutedEventArgs e)
         {
-            WebViewOpen(new Uri("https://stdict.korean.go.kr/help/popup/entry.do"));
+            WebViewOpen(new Uri("https://kdict.korean.go.kr/standard/help/popup/entry.do"));
         }
 
         private async void BtnHelp_Click(object sender, RoutedEventArgs e)

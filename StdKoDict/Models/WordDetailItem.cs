@@ -754,10 +754,12 @@ namespace 표준국어대사전.Models
                             if (IsExampleVisible && definitions[k].lexicals != null)
                             {
                                 List<LexicalItem> lexicals = definitions[k].lexicals;
+                                bool hasSynonym = false;
                                 for (int l = 0; l < lexicals.Count; l++)
                                 {
                                     if(lexicals[l].type == "동의어")
                                     {
+                                        hasSynonym = true;
                                         if(l != 0 && lexicals[l - 1].type == "동의어")
                                             para3.Inlines.Add(new Run { Text = ", " });
                                         else // 첫 단어
@@ -777,7 +779,9 @@ namespace 표준국어대사전.Models
                                         para3.Inlines.Add(link);
                                     }
                                 }
-                                para3.Inlines.Add(new Run { Text = "." });
+                                // 뜻풀이 뒤에 동의어를 붙였을 때만 마침표로 닫음 (뜻풀이는 이미 마침표로 끝남)
+                                if (hasSynonym)
+                                    para3.Inlines.Add(new Run { Text = "." });
                             }
 
                             // 학명
@@ -999,7 +1003,7 @@ namespace 표준국어대사전.Models
                     // 웹 브라우저에서 열기
                     Paragraph pOpenWeb = new Paragraph { Margin = new Thickness(5, 15, 0, 15), FontSize = 15 * FONTMAGNIFICATION,
                                                          FontFamily = new FontFamily(FONTFAMILY) };
-                    Hyperlink hOpenWeb = new Hyperlink { NavigateUri = new Uri("https://stdict.korean.go.kr/") };
+                    Hyperlink hOpenWeb = new Hyperlink { NavigateUri = new Uri("https://kdict.korean.go.kr/standard/") };
                     hOpenWeb.Inlines.Add(new Run { Text = "웹 브라우저에서 열기" });
                     pOpenWeb.Inlines.Add(hOpenWeb);
                     pOpenWeb.Inlines.Add(new Run { Text = " " });
@@ -1008,7 +1012,7 @@ namespace 표준국어대사전.Models
                     // 일러두기
                     Paragraph pInform = new Paragraph { Margin = new Thickness(5, 15, 0, 15), FontSize = 15 * FONTMAGNIFICATION,
                                                         FontFamily = new FontFamily(FONTFAMILY) };
-                    Hyperlink hInform = new Hyperlink { NavigateUri = new Uri("https://stdict.korean.go.kr/help/popup/entry.do") };
+                    Hyperlink hInform = new Hyperlink { NavigateUri = new Uri("https://kdict.korean.go.kr/standard/help/popup/entry.do") };
                     hInform.Inlines.Add(new Run { Text = "일러두기" });
                     pInform.Inlines.Add(hInform);
                     pInform.Inlines.Add(new Run { Text = " " });

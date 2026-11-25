@@ -15,7 +15,31 @@ namespace 표준국어대사전.Classes
 {
     public class DefinitionParser
     {
-        const string WORD_DETAIL_URL = "https://stdict.korean.go.kr/api/view.do?&key={0}&method=TARGET_CODE&q={1}";
+        // 관련 어휘 링크에서 단어 코드 추출
+        // 예전 형식: ...?word_no=12345&...  /  현재 형식: .../searchView.do?wordNo=12345&...
+        // (lexical_info의 link_target_code는 단어 코드가 아니라 상대 뜻 코드이므로 쓰지 않음)
+        private static string ParseWordNo(string link)
+        {
+            if (string.IsNullOrEmpty(link))
+                return null;
+            var match = System.Text.RegularExpressions.Regex.Match(link, @"(?:wordNo|word_no)=(\d+)");
+            return match.Success ? match.Groups[1].Value : null;
+        }
+
+        // 관련 어휘 종류 정리
+        // 현재 API는 lexical_info의 type을 빈 값으로 보내므로(동의어·반대말 등 구분 불가)
+        // 종류가 없으면 웹 사전과 같은 묶음 이름으로 표시한다.
+        //   단어 전체(word_info, unit=어휘) → 「참고 어휘」
+        //   뜻별(sense_info, unit=의미)      → 「관련 어휘」
+        private const string WORD_LEXICAL_TYPE = "참고 어휘";
+        private const string SENSE_LEXICAL_TYPE = "관련 어휘";
+        private static string NormalizeLexicalType(string type, string defaultType)
+        {
+            type = type?.Trim();
+            return string.IsNullOrEmpty(type) ? defaultType : type;
+        }
+
+        const string WORD_DETAIL_URL = "https://kdict.korean.go.kr/standard/api/view.do?&key={0}&method=TARGET_CODE&q={1}";
         string API_KEY;
 
         Action<Visibility> SetProgressBar;
@@ -193,14 +217,9 @@ namespace 표준국어대사전.Classes
                     if (lexical_infos.ElementAt(i).Element("link") != null)
                     {
                         string link = (string)lexical_infos.ElementAt(i).Element("link");
-                        if (link.Contains("word_no="))
-                        {
-                            if (link.IndexOf("&", link.IndexOf("word_no=") + 8) != -1)
-                                lexical.target_code = link.Substring(link.IndexOf("word_no=") + 8, link.IndexOf("&", link.IndexOf("word_no=") + 8) - link.IndexOf("word_no=") - 8);
-                            else
-                                lexical.target_code = link.Substring(link.IndexOf("word_no=") + 8);
-                        }
+                        lexical.target_code = ParseWordNo(link);
                     }
+                    lexical.type = NormalizeLexicalType(lexical.type, WORD_LEXICAL_TYPE);
                     wordDetail.lexicals.Add(lexical);
                 }
                 wordDetail.lexicals.Sort((a, b) => {
@@ -379,14 +398,9 @@ namespace 표준국어대사전.Classes
                                             if (lexical_infos.ElementAt(l).Element("link") != null)
                                             {
                                                 string link = (string)lexical_infos.ElementAt(l).Element("link");
-                                                if (link.Contains("word_no="))
-                                                {
-                                                    if (link.IndexOf("&", link.IndexOf("word_no=") + 8) != -1)
-                                                        lexical.target_code = link.Substring(link.IndexOf("word_no=") + 8, link.IndexOf("&", link.IndexOf("word_no=") + 8) - link.IndexOf("word_no=") - 8);
-                                                    else
-                                                        lexical.target_code = link.Substring(link.IndexOf("word_no=") + 8);
-                                                }
+                                                lexical.target_code = ParseWordNo(link);
                                             }
+                                            lexical.type = NormalizeLexicalType(lexical.type, SENSE_LEXICAL_TYPE);
                                             wordDetail.poses[i].patterns[j].definitions[k].lexicals.Add(lexical);
                                         }
                                         // type에 따라 분류

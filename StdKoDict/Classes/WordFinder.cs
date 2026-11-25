@@ -15,7 +15,7 @@ namespace 표준국어대사전.Classes
     class WordFinder
     {
         string API_KEY;
-        const string WORD_SEARCH_URL = "https://stdict.korean.go.kr/api/search.do?&key={0}&type_search=search&method={1}&part=all&start={2}&num={3}&q={4}";
+        const string WORD_SEARCH_URL = "https://kdict.korean.go.kr/standard/api/search.do?&key={0}&type_search=search&method={1}&part=all&start={2}&num={3}&q={4}";
 
         ObservableCollection<SearchResultItem> SearchResults;
         Action<Visibility> SetProgressBar;
