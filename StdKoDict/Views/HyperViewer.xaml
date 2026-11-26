@@ -79,6 +79,9 @@
                         <StackPanel Padding="20" Margin="0,0,0,10" Visibility="{Binding IsOriginVisible}">
                             <ContentPresenter Content="{Binding originRTB}"/>
                         </StackPanel>
+                        <StackPanel Padding="20" Margin="0,0,0,10" Visibility="{Binding IsNormVisible}">
+                            <ContentPresenter Content="{Binding normRTB}"/>
+                        </StackPanel>
                         <StackPanel Padding="20" Margin="0,0,0,10" Visibility="{Binding IsRelationVisible}">
                             <ContentPresenter Content="{Binding relationRTB}"/>
                         </StackPanel>

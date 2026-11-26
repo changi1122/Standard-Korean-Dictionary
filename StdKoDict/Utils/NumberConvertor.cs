@@ -80,28 +80,40 @@ namespace 표준국어대사전.Utils
             return numString.ToString();
         }
 
+        // 유니코드 로마 숫자 Ⅰ~Ⅻ (U+2160~U+216B). 한 글자로 묶여 웹 사전과 같은 모양으로 표시된다.
+        private static readonly string[] UnicodeRoman = { "Ⅰ", "Ⅱ", "Ⅲ", "Ⅳ", "Ⅴ", "Ⅵ", "Ⅶ", "Ⅷ", "Ⅸ", "Ⅹ", "Ⅺ", "Ⅻ" };
+
         /// <summary>
-        /// 숫자를 그리스 숫자 문자열로 변환합니다.
+        /// 숫자를 로마 숫자 문자열로 변환합니다. 1~12는 유니코드 로마 숫자 한 글자, 13 이상은 알파벳 조합입니다.
         /// </summary>
         /// <param name="number">정수</param>
-        /// <returns>그리스 숫자 문자열</returns>
+        /// <returns>로마 숫자 문자열</returns>
         public static string ToRoman(int number)
+        {
+            if (1 <= number && number <= UnicodeRoman.Length)
+                return UnicodeRoman[number - 1];
+
+            // 13 이상은 전용 문자가 없으므로 알파벳 조합으로 표시
+            return ToAsciiRoman(number);
+        }
+
+        private static string ToAsciiRoman(int number)
         {
             if ((number < 0) || (number > 3999)) throw new ArgumentOutOfRangeException("insert value between 1 and 3999");
             if (number < 1) return string.Empty;
-            if (number >= 1000) return "M" + ToRoman(number - 1000);
-            if (number >= 900) return "CM" + ToRoman(number - 900);
-            if (number >= 500) return "D" + ToRoman(number - 500);
-            if (number >= 400) return "CD" + ToRoman(number - 400);
-            if (number >= 100) return "C" + ToRoman(number - 100);
-            if (number >= 90) return "XC" + ToRoman(number - 90);
-            if (number >= 50) return "L" + ToRoman(number - 50);
-            if (number >= 40) return "XL" + ToRoman(number - 40);
-            if (number >= 10) return "X" + ToRoman(number - 10);
-            if (number >= 9) return "IX" + ToRoman(number - 9);
-            if (number >= 5) return "V" + ToRoman(number - 5);
-            if (number >= 4) return "IV" + ToRoman(number - 4);
-            if (number >= 1) return "I" + ToRoman(number - 1);
+            if (number >= 1000) return "M" + ToAsciiRoman(number - 1000);
+            if (number >= 900) return "CM" + ToAsciiRoman(number - 900);
+            if (number >= 500) return "D" + ToAsciiRoman(number - 500);
+            if (number >= 400) return "CD" + ToAsciiRoman(number - 400);
+            if (number >= 100) return "C" + ToAsciiRoman(number - 100);
+            if (number >= 90) return "XC" + ToAsciiRoman(number - 90);
+            if (number >= 50) return "L" + ToAsciiRoman(number - 50);
+            if (number >= 40) return "XL" + ToAsciiRoman(number - 40);
+            if (number >= 10) return "X" + ToAsciiRoman(number - 10);
+            if (number >= 9) return "IX" + ToAsciiRoman(number - 9);
+            if (number >= 5) return "V" + ToAsciiRoman(number - 5);
+            if (number >= 4) return "IV" + ToAsciiRoman(number - 4);
+            if (number >= 1) return "I" + ToAsciiRoman(number - 1);
             throw new ArgumentOutOfRangeException("something bad happened");
         }
 

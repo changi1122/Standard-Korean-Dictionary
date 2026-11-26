@@ -426,7 +426,9 @@ namespace 표준국어대사전.Classes
                     wordDetail.norms = new List<string>();
                     for (int i = 0; i < norms.Count(); i++)
                     {
-                        wordDetail.norms.Add((string)norms.ElementAt(i).Element("desc"));
+                        string desc = ((string)norms.ElementAt(i).Element("desc"))?.Trim();
+                        if (!string.IsNullOrEmpty(desc))
+                            wordDetail.norms.Add(desc);
                     }
                 }
 
