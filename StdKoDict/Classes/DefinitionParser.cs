@@ -129,6 +129,9 @@ namespace 표준국어대사전.Classes
                 wordDetail.wordname = (string)xDoc.Root.Element("item").Element("word_info").Element("word");
             wordDetail.sup_no = sup_no;
 
+            // 단어 단위 (단어, 관용구, 속담 등)
+            wordDetail.word_unit = ((string)xDoc.Root.Element("item").Element("word_info").Element("word_unit"))?.Trim();
+
             // 원어
             wordDetail.original_language = "";
             if (xDoc.Root.Element("item").Element("word_info").Element("original_language_info") != null)

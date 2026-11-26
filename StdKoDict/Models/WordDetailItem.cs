@@ -192,6 +192,7 @@ namespace 표준국어대사전.Models
         public int sup_no;
         // 원어
         public string original_language;
+        public string word_unit; // 단어, 관용구, 속담 등
 
         // 발음
         public List<string> prons;
@@ -492,7 +493,13 @@ namespace 표준국어대사전.Models
                         para.Inlines.Add(new Run { Text = $"[{NumberConvertor.ToRoman(i + 1)}] " });
                     }
 
-                    if (poses[i].pos != "품사 없음")
+                    // 관용구·속담은 품사가 '구'로 오므로 웹 사전처럼 [관용구], [속담]으로 표시
+                    if (word_unit == "관용구" || word_unit == "속담")
+                    {
+                        para.Inlines.Add(new Run { Text = $"[{word_unit}]" });
+                        rtb.Blocks.Add(para);
+                    }
+                    else if (poses[i].pos != "품사 없음")
                     {
                         para.Inlines.Add(new Run { Text = $"「{poses[i].pos}」" });
                         rtb.Blocks.Add(para);

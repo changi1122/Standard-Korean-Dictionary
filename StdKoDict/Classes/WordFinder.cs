@@ -75,7 +75,13 @@ namespace 표준국어대사전.Classes
             int letter_e = 1;*/
             #endregion
 
-            string url = string.Format(WORD_SEARCH_URL, API_KEY, method, start, num, searchText);
+            // 사전 표기대로 어미·접사를 붙임표와 함께 입력해도(예: -ㅂ니다, 제-) 검색되도록
+            // API는 붙임표 없는 검색어만 찾으므로 앞뒤 붙임표를 제거한다.
+            string query = searchText?.Trim().Trim('-').Trim() ?? "";
+            if (query.Length == 0)
+                query = searchText;
+
+            string url = string.Format(WORD_SEARCH_URL, API_KEY, method, start, num, query);
 
             HttpClient client = new HttpClient();
 
