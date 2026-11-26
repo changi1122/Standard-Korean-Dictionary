@@ -136,7 +136,8 @@ namespace 표준국어대사전.Classes
                             sup_no = (int)SearchResultItem.Element("sup_no"),
                             display_sup_no = ((int)SearchResultItem.Element("sup_no")).ToString(),
                             definition = (string)SearchResultItem.Element("sense").Element("definition"),
-                            origin = ((string)SearchResultItem.Element("origin"))?.Trim()
+                            origin = ((string)SearchResultItem.Element("origin"))?.Trim(),
+                            pos = ((string)SearchResultItem.Element("pos"))?.Trim()
                         };
 
             List<SearchResultItem> wordlist = words.ToList();
