@@ -24,13 +24,16 @@ namespace 표준국어대사전.Views
             }
             set
             {
+                // 화면을 다시 그릴 때 같은 값이 다시 들어오므로, 실제로 바뀔 때만 저장하고 재시작 안내를 띄운다
+                if (value == ComboBoxLangIndex || value < 0)
+                    return;
                 switch (value)
                 {
                     case 0: StorageManager.SetSetting<string>(StorageManager.Language, "system"); break;
                     case 1: StorageManager.SetSetting<string>(StorageManager.Language, "ko"); break;
                     case 2: StorageManager.SetSetting<string>(StorageManager.Language, "en"); break;
                 }
-                TextRestartNotice.Visibility = Visibility.Visible;
+                RestartNoticePanel.Visibility = Visibility.Visible;
             }
         }
         public int ComboBoxThemeIndex
@@ -46,13 +49,16 @@ namespace 표준국어대사전.Views
             }
             set
             {
+                if (value == ComboBoxThemeIndex || value < 0)
+                    return;
                 switch (value)
                 {
                     case 0: StorageManager.SetSetting<string>(StorageManager.ColorTheme, "system"); break;
                     case 1: StorageManager.SetSetting<string>(StorageManager.ColorTheme, "Light"); break;
                     case 2: StorageManager.SetSetting<string>(StorageManager.ColorTheme, "Dark"); break;
                 }
-                TextRestartNotice2.Visibility = Visibility.Visible;
+                // 재시작 없이 바로 적용
+                ThemeHelper.Apply();
             }
         }
         public int ComboBoxFontSelectedIndex
@@ -71,7 +77,8 @@ namespace 표준국어대사전.Views
         {
             get
             {
-                switch (Math.Truncate(StorageManager.GetSetting<double>(StorageManager.FONTMAGNIFICATION) * 10) / 10)
+                // 뜻풀이 화면의 +/- 버튼으로 생긴 부동소수점 오차를 반올림으로 흡수
+                switch (Math.Round(StorageManager.GetSetting<double>(StorageManager.FONTMAGNIFICATION), 1))
                 {
                     case 1.1: return 1;
                     case 1.2: return 2;
@@ -114,7 +121,7 @@ namespace 표준국어대사전.Views
                 if (value == 0)
                 {
                     StorageManager.SetSetting<bool>(StorageManager.UseCustomAPIKey, false);
-                    StorageManager.SetSetting<string>(StorageManager.APIKey, "C58534E2D39CF7CA69BCA193541C1688");
+                    StorageManager.SetSetting<string>(StorageManager.APIKey, StorageManager.PublicAPIKey);
                 }
             }
         }
@@ -170,19 +177,45 @@ namespace 표준국어대사전.Views
             await Windows.System.Launcher.LaunchUriAsync(new Uri(@"mailto:changi112242@gmail.com"));
         }
 
-        private void BtnResetSetting_Click(object sender, RoutedEventArgs e)
+        private async void BtnResetSetting_Click(object sender, RoutedEventArgs e)
         {
+            // 최근 검색어 등도 함께 지워지고 되돌릴 수 없으므로 먼저 확인
+            var res = Windows.ApplicationModel.Resources.ResourceLoader.GetForCurrentView();
+            var dialog = new ContentDialog
+            {
+                Title = res.GetString("Set_ResetConfirmTitle"),
+                Content = res.GetString("Set_ResetConfirmContent"),
+                PrimaryButtonText = res.GetString("Set_ResetConfirmPrimary"),
+                CloseButtonText = res.GetString("Set_ResetConfirmCancel"),
+                DefaultButton = ContentDialogButton.Close
+            };
+            if (await dialog.ShowAsync() != ContentDialogResult.Primary)
+                return;
+
+            string languageBefore = StorageManager.GetSetting<string>(StorageManager.Language);
+
             StorageManager.Clear();
             StorageManager.StartUpSetup();
-            ComboBoxFontSize.SelectedIndex = 0; ;
-            ComboBoxFont.SelectedIndex = 0; ;
-            ComboBoxAPIKey.SelectedIndex = 0;
-            ComboBoxLang.SelectedIndex = 0;
-            ComboBoxTheme.SelectedIndex = 0;
+
+            // 저장된 기본값으로 화면 전체(콤보 상자, 토글, API 키 입력칸)를 다시 그린다
+            TextBoxAPIKey.Text = "";
+            TextAPIKeyStatus.Visibility = Visibility.Collapsed;
+            Bindings.Update();
+            ThemeHelper.Apply();
+
+            // 언어가 실제로 바뀐 경우에만 재시작 안내
+            RestartNoticePanel.Visibility = (languageBefore != StorageManager.GetSetting<string>(StorageManager.Language))
+                ? Visibility.Visible : Visibility.Collapsed;
+        }
+
+        private async void BtnRestart_Click(Windows.UI.Xaml.Documents.Hyperlink sender, Windows.UI.Xaml.Documents.HyperlinkClickEventArgs args)
+        {
+            await Windows.ApplicationModel.Core.CoreApplication.RequestRestartAsync("");
         }
 
         private void ComboBoxAPIKey_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            TextAPIKeyStatus.Visibility = Visibility.Collapsed;
             if (ComboBoxAPIKey.SelectedIndex == 0)
             {
                 TextBoxAPIKey.Text = "";
@@ -198,8 +231,22 @@ namespace 표준국어대사전.Views
 
         private void BtnSave_Click(object sender, RoutedEventArgs e)
         {
-            StorageManager.SetSetting<string>(StorageManager.APIKey, TextBoxAPIKey.Text);
+            var res = Windows.ApplicationModel.Resources.ResourceLoader.GetForCurrentView();
+            string key = TextBoxAPIKey.Text.Trim();
+
+            // 인증키는 16진수 32자리 (오픈 API 안내 기준)
+            if (!System.Text.RegularExpressions.Regex.IsMatch(key, "^[0-9A-Fa-f]{32}$"))
+            {
+                TextAPIKeyStatus.Text = res.GetString("Set_APIKeyInvalid");
+                TextAPIKeyStatus.Visibility = Visibility.Visible;
+                return;
+            }
+
+            TextBoxAPIKey.Text = key;
+            StorageManager.SetSetting<string>(StorageManager.APIKey, key);
             StorageManager.SetSetting<bool>(StorageManager.UseCustomAPIKey, true);
+            TextAPIKeyStatus.Text = res.GetString("Set_APIKeySaved");
+            TextAPIKeyStatus.Visibility = Visibility.Visible;
         }
 
         public async void OpenWithDefaultBrowser(Uri uri)

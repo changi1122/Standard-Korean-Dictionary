@@ -234,10 +234,10 @@ namespace 표준국어대사전.Views
                     Margin = new Thickness(10, 50, 10, 10),
                     VerticalAlignment = VerticalAlignment.Stretch,
                     HorizontalAlignment = HorizontalAlignment.Stretch,
-                    Background = Application.Current.Resources["PageBackgroundBrush"] as SolidColorBrush,
+                    Background = 표준국어대사전.Classes.ThemeHelper.GetBrush("PageBackgroundBrush"),
                     CornerRadius = new CornerRadius(8),
                     BorderThickness = new Thickness(1),
-                    BorderBrush = Application.Current.Resources["BorderBrush"] as SolidColorBrush
+                    BorderBrush = 표준국어대사전.Classes.ThemeHelper.GetBrush("BorderBrush")
                 };
 
                 var ColorBar = new Grid
@@ -246,8 +246,8 @@ namespace 표준국어대사전.Views
                     VerticalAlignment = VerticalAlignment.Top,
                     HorizontalAlignment = HorizontalAlignment.Stretch,
                     Height = 33,
-                    Background = Application.Current.Resources["PageBackgroundBrush"] as SolidColorBrush,
-                    BorderBrush = Application.Current.Resources["BorderBrush"] as SolidColorBrush,
+                    Background = 표준국어대사전.Classes.ThemeHelper.GetBrush("PageBackgroundBrush"),
+                    BorderBrush = 표준국어대사전.Classes.ThemeHelper.GetBrush("BorderBrush"),
                     BorderThickness = new Thickness(0, 0, 0, 1)
                 };
                 SubGrid.Children.Add(ColorBar);

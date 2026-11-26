@@ -23,6 +23,9 @@ namespace 표준국어대사전.Classes
         //Lab Function
         public const string LabWordReaderEnabled = "#LabWordReaderEnabled";             //bool
 
+        // 앱에 내장된 공용 오픈 API 인증키
+        public const string PublicAPIKey = "C58534E2D39CF7CA69BCA193541C1688";
+
         public static void StartUpSetup()
         {
             ApplicationDataContainer localSettings = ApplicationData.Current.LocalSettings;
@@ -85,7 +88,7 @@ namespace 표준국어대사전.Classes
             localSettings.Values[FirstSetup] = 0;
             localSettings.Values[DisplayFont] = "나눔바른고딕 옛한글";
             localSettings.Values[UseCustomAPIKey] = false;
-            localSettings.Values[APIKey] = "C58534E2D39CF7CA69BCA193541C1688";
+            localSettings.Values[APIKey] = PublicAPIKey;
             localSettings.Values[SpellingCheckerAgreement] = false;
             localSettings.Values[Language] = "system";
             localSettings.Values[ColorTheme] = "system";

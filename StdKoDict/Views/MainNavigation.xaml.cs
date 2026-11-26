@@ -15,7 +15,7 @@ namespace 표준국어대사전.Views
         public MainNavigation()
         {
             InitializeComponent();
-            SetTitleBarColor();
+            표준국어대사전.Classes.ThemeHelper.UpdateTitleBar();
 
             // NavigationView 최초 SelectedItem 설정
             foreach (MUXC.NavigationViewItem item in NaviView.MenuItems)
@@ -26,16 +26,6 @@ namespace 표준국어대사전.Views
                     break;
                 }
             }
-        }
-
-        private void SetTitleBarColor()
-        {
-            // 제목 표시줄 색상 설정
-            ApplicationViewTitleBar titleBar = ApplicationView.GetForCurrentView().TitleBar;
-            titleBar.BackgroundColor = (Application.Current.Resources["NavigationViewBackground"] as SolidColorBrush).Color;
-            titleBar.ButtonBackgroundColor = (Application.Current.Resources["NavigationViewBackground"] as SolidColorBrush).Color;
-            titleBar.InactiveBackgroundColor = (Application.Current.Resources["NavigationViewBackground"] as SolidColorBrush).Color;
-            titleBar.ButtonInactiveBackgroundColor = (Application.Current.Resources["NavigationViewBackground"] as SolidColorBrush).Color;
         }
 
         private void NaviView_SelectionChanged(MUXC.NavigationView sender, MUXC.NavigationViewSelectionChangedEventArgs args)

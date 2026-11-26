@@ -9,23 +9,33 @@
 
     <Page.Resources>
         <SolidColorBrush x:Key="BarColor" Color="#FFBEBEBE"/>
-        <Style x:Key="ListViewItemStyle" TargetType="ListViewItem">
-            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
-            <Setter Property="Margin" Value="0,4,0,0"/>
-        </Style>
+        <!-- 설정 카드 -->
         <Style x:Key="BoxContainer" TargetType="StackPanel">
             <Setter Property="Background" Value="{ThemeResource PageBackgroundBrush}"/>
             <Setter Property="BorderBrush" Value="{ThemeResource BorderBrush}"/>
             <Setter Property="CornerRadius" Value="8"/>
             <Setter Property="BorderThickness" Value="1"/>
         </Style>
+        <!-- 카드 안의 한 줄: 높이를 고정하지 않아 긴 문구·큰 글씨에서도 잘리지 않음 -->
+        <Style x:Key="OptionRow" TargetType="Grid">
+            <Setter Property="MinHeight" Value="64"/>
+            <Setter Property="Padding" Value="14,10,14,10"/>
+            <Setter Property="ColumnSpacing" Value="12"/>
+        </Style>
+        <Style x:Key="OptionRowDivided" TargetType="Grid" BasedOn="{StaticResource OptionRow}">
+            <Setter Property="BorderThickness" Value="0,1,0,0"/>
+            <Setter Property="BorderBrush" Value="{ThemeResource BorderBrush}"/>
+        </Style>
+        <Style x:Key="OptionIconStyle" TargetType="FontIcon">
+            <Setter Property="FontSize" Value="24"/>
+            <Setter Property="FontFamily" Value="/Assets/Fonts/iconfont.ttf#iconfont"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="Margin" Value="0,5,0,0"/>
+        </Style>
         <Style x:Key="OptionTitleStyle" TargetType="TextBlock">
             <Setter Property="TextWrapping" Value="Wrap"/>
             <Setter Property="VerticalAlignment" Value="Center"/>
             <Setter Property="HorizontalAlignment" Value="Left"/>
-        </Style>
-        <Style x:Key="GridHorizontalPadding" TargetType="Grid">
-            <Setter Property="Padding" Value="14,0,14,0"/>
         </Style>
         <Style x:Key="OptionSubTextStyle" TargetType="TextBlock">
             <Setter Property="Foreground" Value="Gray"/>
@@ -41,6 +51,16 @@
             <Setter Property="VerticalAlignment" Value="Center"/>
             <Setter Property="HorizontalAlignment" Value="Left"/>
         </Style>
+        <Style x:Key="LicenseNameStyle" TargetType="TextBlock">
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="TextWrapping" Value="Wrap"/>
+            <Setter Property="Margin" Value="0,16,0,0"/>
+        </Style>
+        <!-- 라이선스 링크: 이름과 왼쪽 끝을 맞추고 이름과 약간 띄움 -->
+        <Style x:Key="LicenseLinkStyle" TargetType="HyperlinkButton">
+            <Setter Property="Padding" Value="0,2,0,2"/>
+            <Setter Property="Margin" Value="0,4,0,0"/>
+        </Style>
     </Page.Resources>
 
     <Grid x:Name="BasicGrid" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
@@ -50,19 +70,36 @@
                     <Setter Property="Margin" Value="0,0,0,0"/>
                 </Style>
             </Pivot.ItemContainerStyle>
+
+            <!-- 일반 -->
             <PivotItem x:Uid="Set_Pivotitem1" Header="일반">
-                <ListView SelectionMode="None">
-                    <ListViewItem Style="{StaticResource ListViewItemStyle}">
+                <!-- ListView 대신 StackPanel: 기능 없는 카드에 Tab 포커스가 멈추지 않도록 -->
+                <ScrollViewer VerticalScrollBarVisibility="Auto">
+                    <StackPanel Spacing="4" Margin="0,4,0,20">
+
+                        <!-- 언어 -->
                         <StackPanel Style="{StaticResource BoxContainer}">
-                            <Grid Height="64" Style="{StaticResource GridHorizontalPadding}">
-                                <FontIcon FontSize="24" Glyph="&#xE808;" FontFamily="/Assets/Fonts/iconfont.ttf#iconfont"
-                                          HorizontalAlignment="Left" Margin="0,5,0,0"/>
-                                <StackPanel VerticalAlignment="Center" HorizontalAlignment="Left" Margin="36,0,0,0">
-                                    <TextBlock x:Uid="Set_Language" Text="언어 (Language)" Style="{StaticResource OptionTitleStyle}"/>
-                                    <TextBlock x:Name="TextRestartNotice" x:Uid="Set_TextRestartNotice" Style="{StaticResource OptionSubTextStyle}"
-                                               Text="변경내용을 적용하려면 앱을 다시 시작해야 합니다." Visibility="Collapsed"/>
+                            <Grid Style="{StaticResource OptionRow}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="24"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <FontIcon Glyph="&#xE808;" Style="{StaticResource OptionIconStyle}"/>
+                                <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                                    <TextBlock x:Name="TitleLanguage" x:Uid="Set_Language" Text="언어 (Language)" Style="{StaticResource OptionTitleStyle}"/>
+                                    <!-- 안내 문구 바로 오른쪽에 '지금 다시 시작' 링크 (좁으면 자연스럽게 줄바꿈) -->
+                                    <RichTextBlock x:Name="RestartNoticePanel" Visibility="Collapsed" FontSize="12" Foreground="Gray"
+                                                   TextWrapping="Wrap" IsTextSelectionEnabled="False">
+                                        <Paragraph>
+                                            <Run x:Uid="Set_TextRestartNotice" Text="변경내용을 적용하려면 앱을 다시 시작해야 합니다."/>
+                                            <Run Text=" "/>
+                                            <Hyperlink Click="BtnRestart_Click"><Run x:Uid="Set_BtnRestart" Text="지금 다시 시작"/></Hyperlink>
+                                        </Paragraph>
+                                    </RichTextBlock>
                                 </StackPanel>
-                                <ComboBox x:Name="ComboBoxLang" Width="180" VerticalAlignment="Center" HorizontalAlignment="Right"
+                                <ComboBox x:Name="ComboBoxLang" Grid.Column="2" Width="180" VerticalAlignment="Center"
+                                          AutomationProperties.LabeledBy="{x:Bind TitleLanguage}"
                                           SelectedIndex="{x:Bind ComboBoxLangIndex, Mode=TwoWay}">
                                     <x:String>시스템(system)</x:String>
                                     <x:String>한국어</x:String>
@@ -70,45 +107,55 @@
                                 </ComboBox>
                             </Grid>
                         </StackPanel>
-                    </ListViewItem>
-                    <ListViewItem Style="{StaticResource ListViewItemStyle}">
+
+                        <!-- 앱 색상 모드 (바로 적용) -->
                         <StackPanel Style="{StaticResource BoxContainer}">
-                            <Grid Height="64" Style="{StaticResource GridHorizontalPadding}">
-                                <FontIcon FontSize="24" Glyph="&#xE807;" FontFamily="/Assets/Fonts/iconfont.ttf#iconfont"
-                                          HorizontalAlignment="Left" Margin="0,5,0,0"/>
-                                <StackPanel VerticalAlignment="Center" HorizontalAlignment="Left" Margin="36,0,0,0">
-                                    <TextBlock x:Uid="Set_ColorTheme" Text="앱 색상 모드" Style="{StaticResource OptionTitleStyle}"/>
-                                    <TextBlock x:Name="TextRestartNotice2" x:Uid="Set_TextRestartNotice" Style="{StaticResource OptionSubTextStyle}"
-                                           Text="변경내용을 적용하려면 앱을 다시 시작해야 합니다." Visibility="Collapsed"/>
-                                </StackPanel>
-                                <ComboBox x:Name="ComboBoxTheme" Width="180" VerticalAlignment="Center" HorizontalAlignment="Right"
-                                          SelectedIndex="{x:Bind ComboBoxThemeIndex, Mode=TwoWay}">
-                                </ComboBox>
+                            <Grid Style="{StaticResource OptionRow}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="24"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <FontIcon Glyph="&#xE807;" Style="{StaticResource OptionIconStyle}"/>
+                                <TextBlock x:Name="TitleTheme" x:Uid="Set_ColorTheme" Grid.Column="1" Text="앱 색상 모드" Style="{StaticResource OptionTitleStyle}"/>
+                                <ComboBox x:Name="ComboBoxTheme" Grid.Column="2" Width="180" VerticalAlignment="Center"
+                                          AutomationProperties.LabeledBy="{x:Bind TitleTheme}"
+                                          SelectedIndex="{x:Bind ComboBoxThemeIndex, Mode=TwoWay}"/>
                             </Grid>
                         </StackPanel>
-                    </ListViewItem>
-                    <ListViewItem Style="{StaticResource ListViewItemStyle}">
+
+                        <!-- 글꼴 -->
                         <StackPanel Style="{StaticResource BoxContainer}">
-                            <Grid Height="64" Style="{StaticResource GridHorizontalPadding}">
-                                <FontIcon FontSize="24" Glyph="&#xE80D;" FontFamily="/Assets/Fonts/iconfont.ttf#iconfont"
-                                          HorizontalAlignment="Left" Margin="0,5,0,0"/>
-                                <TextBlock x:Uid="Set_DisplayFont" Text="글꼴" Style="{StaticResource OptionTitleStyle}" Margin="36,0,0,0"/>
-                                <ComboBox x:Name="ComboBoxFont" Width="180" VerticalAlignment="Center" HorizontalAlignment="Right"
+                            <Grid Style="{StaticResource OptionRow}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="24"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <FontIcon Glyph="&#xE80D;" Style="{StaticResource OptionIconStyle}"/>
+                                <TextBlock x:Name="TitleFont" x:Uid="Set_DisplayFont" Grid.Column="1" Text="글꼴" Style="{StaticResource OptionTitleStyle}"/>
+                                <ComboBox x:Name="ComboBoxFont" Grid.Column="2" Width="180" VerticalAlignment="Center"
+                                          AutomationProperties.LabeledBy="{x:Bind TitleFont}"
                                           SelectedIndex="{x:Bind ComboBoxFontSelectedIndex, Mode=TwoWay}">
                                     <x:String>나눔바른고딕 옛한글</x:String>
                                     <x:String>맑은 고딕</x:String>
                                 </ComboBox>
                             </Grid>
                         </StackPanel>
-                    </ListViewItem>
-                    <ListViewItem Style="{StaticResource ListViewItemStyle}">
+
+                        <!-- 글꼴 크기 -->
                         <StackPanel Style="{StaticResource BoxContainer}">
-                            <Grid Height="64" Style="{StaticResource GridHorizontalPadding}">
-                                <FontIcon FontSize="24" Glyph="&#xE80E;" FontFamily="/Assets/Fonts/iconfont.ttf#iconfont"
-                                          HorizontalAlignment="Left" Margin="0,5,0,0"/>
-                                <TextBlock x:Uid="Set_FontSize" Text="글꼴 크기" Style="{StaticResource OptionTitleStyle}" Margin="36,0,0,0"/>
-                                <ComboBox x:Name="ComboBoxFontSize" Width="180" VerticalAlignment="Center" HorizontalAlignment="Right"
-                                              SelectedIndex="{x:Bind ComboBoxFontSizeIndex, Mode=TwoWay}">
+                            <Grid Style="{StaticResource OptionRow}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="24"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <FontIcon Glyph="&#xE80E;" Style="{StaticResource OptionIconStyle}"/>
+                                <TextBlock x:Name="TitleFontSize" x:Uid="Set_FontSize" Grid.Column="1" Text="글꼴 크기" Style="{StaticResource OptionTitleStyle}"/>
+                                <ComboBox x:Name="ComboBoxFontSize" Grid.Column="2" Width="180" VerticalAlignment="Center"
+                                          AutomationProperties.LabeledBy="{x:Bind TitleFontSize}"
+                                          SelectedIndex="{x:Bind ComboBoxFontSizeIndex, Mode=TwoWay}">
                                     <x:String>X1.0 (15pt)</x:String>
                                     <x:String>X1.1 (16.5pt)</x:String>
                                     <x:String>X1.2 (18pt)</x:String>
@@ -119,22 +166,29 @@
                                 </ComboBox>
                             </Grid>
                         </StackPanel>
-                    </ListViewItem>
-                    <ListViewItem Style="{StaticResource ListViewItemStyle}">
+
+                        <!-- 실험실 기능 -->
                         <StackPanel Style="{StaticResource BoxContainer}">
-                            <Grid Height="64" Style="{StaticResource GridHorizontalPadding}">
-                                <FontIcon FontSize="24" Glyph="&#xE805;" FontFamily="/Assets/Fonts/iconfont.ttf#iconfont"
-                                          HorizontalAlignment="Left" Margin="0,5,0,0"/>
-                                <TextBlock x:Uid="Set_DevTool" Text="실험실 기능" Style="{StaticResource OptionTitleStyle}" Margin="36,0,0,0"/>
+                            <Grid Style="{StaticResource OptionRow}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="24"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <FontIcon Glyph="&#xE805;" Style="{StaticResource OptionIconStyle}"/>
+                                <TextBlock x:Uid="Set_DevTool" Grid.Column="1" Text="실험실 기능" Style="{StaticResource OptionTitleStyle}"/>
                             </Grid>
-                            <Grid Height="65" BorderThickness="0,1,0,0" BorderBrush="{ThemeResource BorderBrush}"
-                                  Style="{StaticResource GridHorizontalPadding}">
-                                <StackPanel Margin="0,0,52,0" VerticalAlignment="Center" HorizontalAlignment="Left">
-                                    <TextBlock x:Uid="Lab_CheckWordReader" Text="단어 발음 듣기 활성화" Style="{StaticResource OptionTitleStyle}"/>
+                            <Grid Style="{StaticResource OptionRowDivided}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <StackPanel VerticalAlignment="Center">
+                                    <TextBlock x:Name="TitleWordReader" x:Uid="Lab_CheckWordReader" Text="단어 발음 듣기 활성화" Style="{StaticResource OptionTitleStyle}"/>
                                     <TextBlock x:Uid="Lab_CheckWordReaderText" Style="{StaticResource OptionSubTextStyle}"
-                                           Text="단어 검색 화면에서 발음 옆에 표시되는 버튼을 클릭해 소리를 들을 수 있습니다."/>
+                                               Text="단어 검색 화면에서 발음 옆에 표시되는 버튼을 클릭해 소리를 들을 수 있습니다."/>
                                 </StackPanel>
-                                <ToggleSwitch IsOn="{x:Bind LabWordReaderEnabled, Mode=TwoWay}" HorizontalAlignment="Right">
+                                <ToggleSwitch Grid.Column="1" IsOn="{x:Bind LabWordReaderEnabled, Mode=TwoWay}" VerticalAlignment="Center"
+                                              AutomationProperties.LabeledBy="{x:Bind TitleWordReader}">
                                     <ToggleSwitch.Style>
                                         <Style TargetType="ToggleSwitch">
                                             <Setter Property="OffContent" Value="" />
@@ -145,81 +199,126 @@
                                 </ToggleSwitch>
                             </Grid>
                         </StackPanel>
-                    </ListViewItem>
-                    <ListViewItem Style="{StaticResource ListViewItemStyle}">
+
+                        <!-- 오픈 API 인증키 -->
                         <StackPanel Style="{StaticResource BoxContainer}">
-                            <Grid Height="64" Style="{StaticResource GridHorizontalPadding}">
-                                <FontIcon FontSize="24" Glyph="&#xE80C;" FontFamily="/Assets/Fonts/iconfont.ttf#iconfont"
-                                          HorizontalAlignment="Left" Margin="0,5,0,0"/>
-                                <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="36,0,0,0">
-                                    <TextBlock x:Uid="Set_APIKey" Text="오픈 API 인증키" Style="{StaticResource OptionTitleStyle}" Margin="0,0,0,3"/>
+                            <Grid Style="{StaticResource OptionRow}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="24"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <FontIcon Glyph="&#xE80C;" Style="{StaticResource OptionIconStyle}"/>
+                                <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
+                                    <TextBlock x:Name="TitleAPIKey" x:Uid="Set_APIKey" Text="오픈 API 인증키" Style="{StaticResource OptionTitleStyle}" Margin="0,0,0,3"/>
                                     <HyperlinkButton x:Uid="Set_Help" Content="도움말" Style="{StaticResource OptionSubHyperLinkStyle}"
                                                      Margin="10,0,0,0" NavigateUri="https://costudio1122.blogspot.com/p/blog-page_11.html"/>
                                 </StackPanel>
                             </Grid>
-                            <Grid Height="65" BorderThickness="0,1,0,0" BorderBrush="{ThemeResource BorderBrush}"
-                                  Style="{StaticResource GridHorizontalPadding}">
-                                <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Right">
-                                    <ComboBox x:Name="ComboBoxAPIKey" Width="124" SelectionChanged="ComboBoxAPIKey_SelectionChanged"
-                                              SelectedIndex="{x:Bind ComboBoxAPIKeyIndex, Mode=TwoWay}">
-                                    </ComboBox>
-                                    <TextBox x:Name="TextBoxAPIKey" Margin="10,0,0,0" Height="32" Width="220"
-                                             IsEnabled="{x:Bind IsAPIKeyInputEnabled, Mode=OneWay}"/>
-                                    <Button x:Name="BtnSave" Content="&#xE105;" FontFamily="Segoe MDL2 Assets" Margin="10,0,0,0"
-                                            VerticalAlignment="Top" Click="BtnSave_Click" Height="32"
-                                            IsEnabled="{x:Bind IsAPIKeyInputEnabled, Mode=OneWay}"/>
-                                </StackPanel>
+                            <!-- 입력칸이 남은 폭에 맞춰 줄어들어 좁은 창에서도 잘리지 않음 -->
+                            <Grid Style="{StaticResource OptionRowDivided}" ColumnSpacing="10" RowSpacing="4">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
+                                <ComboBox x:Name="ComboBoxAPIKey" Width="124" VerticalAlignment="Center"
+                                          AutomationProperties.LabeledBy="{x:Bind TitleAPIKey}"
+                                          SelectionChanged="ComboBoxAPIKey_SelectionChanged"
+                                          SelectedIndex="{x:Bind ComboBoxAPIKeyIndex, Mode=TwoWay}"/>
+                                <TextBox x:Name="TextBoxAPIKey" Grid.Column="1" Height="32" MinWidth="100" MaxWidth="300"
+                                         HorizontalAlignment="Right" VerticalAlignment="Center"
+                                         AutomationProperties.LabeledBy="{x:Bind TitleAPIKey}"
+                                         IsEnabled="{x:Bind IsAPIKeyInputEnabled, Mode=OneWay}"/>
+                                <Button x:Name="BtnSave" x:Uid="Set_BtnSave" Grid.Column="2" Content="&#xE105;" FontFamily="Segoe MDL2 Assets"
+                                        VerticalAlignment="Center" Click="BtnSave_Click" Height="32"
+                                        AutomationProperties.Name="저장" ToolTipService.ToolTip="저장"
+                                        IsEnabled="{x:Bind IsAPIKeyInputEnabled, Mode=OneWay}"/>
+                                <TextBlock x:Name="TextAPIKeyStatus" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2"
+                                           Style="{StaticResource OptionSubTextStyle}" HorizontalAlignment="Right" Visibility="Collapsed"/>
                             </Grid>
                         </StackPanel>
-                    </ListViewItem>
-                    <ListViewItem Style="{StaticResource ListViewItemStyle}">
+
+                        <!-- 앱 초기화 -->
                         <StackPanel Style="{StaticResource BoxContainer}">
-                            <Grid Height="64" Style="{StaticResource GridHorizontalPadding}">
-                                <FontIcon FontSize="24" Glyph="&#xE80F;" FontFamily="/Assets/Fonts/iconfont.ttf#iconfont"
-                                          HorizontalAlignment="Left" Margin="0,5,0,0"/>
-                                <TextBlock x:Uid="Set_OptionReset" Text="앱 초기화" Style="{StaticResource OptionTitleStyle}" Margin="36,0,0,0"/>
-                                <Button x:Name="BtnResetSetting" x:Uid="Set_BtnResetSetting" Content="설정 초기화"
-                                        VerticalAlignment="Center" HorizontalAlignment="Right" Click="BtnResetSetting_Click"/>
+                            <Grid Style="{StaticResource OptionRow}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="24"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <FontIcon Glyph="&#xE80F;" Style="{StaticResource OptionIconStyle}"/>
+                                <TextBlock x:Uid="Set_OptionReset" Grid.Column="1" Text="앱 초기화" Style="{StaticResource OptionTitleStyle}"/>
+                                <Button x:Name="BtnResetSetting" x:Uid="Set_BtnResetSetting" Grid.Column="2" Content="설정 초기화"
+                                        VerticalAlignment="Center" Click="BtnResetSetting_Click"/>
                             </Grid>
                         </StackPanel>
-                    </ListViewItem>
-                </ListView>
+                    </StackPanel>
+                </ScrollViewer>
             </PivotItem>
+
+            <!-- 라이선스 -->
             <PivotItem x:Uid="Set_Pivotitem2" Header="라이선스">
-                <ListView SelectionMode="None">
-                    <ListViewItem Style="{StaticResource ListViewItemStyle}">
+                <ScrollViewer VerticalScrollBarVisibility="Auto">
+                    <StackPanel Spacing="4" Margin="0,4,0,20">
                         <StackPanel Style="{StaticResource BoxContainer}">
-                            <Grid Height="64" Style="{StaticResource GridHorizontalPadding}">
-                                <FontIcon FontSize="24" Glyph="&#xE80B;" FontFamily="/Assets/Fonts/iconfont.ttf#iconfont"
-                                          HorizontalAlignment="Left" Margin="0,5,0,0"/>
-                                <TextBlock x:Uid="Set_CopyrightInfo" Text="저작권 정보" Style="{StaticResource OptionTitleStyle}" Margin="36,0,0,0"/>
+                            <Grid Style="{StaticResource OptionRow}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="24"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <FontIcon Glyph="&#xE80B;" Style="{StaticResource OptionIconStyle}"/>
+                                <TextBlock x:Uid="Set_CopyrightInfo" Grid.Column="1" Text="라이선스 정보" Style="{StaticResource OptionTitleStyle}"/>
                             </Grid>
-                            <Grid BorderThickness="0,1,0,0" BorderBrush="{ThemeResource BorderBrush}"
-                                  Style="{StaticResource GridHorizontalPadding}">
-                                <StackPanel HorizontalAlignment="Left" Margin="0,20,0,20">
-                                    <TextBlock x:Uid="Set_Include" Style="{StaticResource OptionTitleStyle}" Margin="0,0,0,10"
-                                           Text="이 앱은 아래 항목을 포함하고 있습니다."/>
-                                    <TextBlock Text="'나눔바른고딕 옛한글' 글꼴 (OFL-1.1)" FontWeight="Bold" Margin="0,0,0,4"/>
-                                    <HyperlinkButton x:Uid="Set_LicenseLink" Content="라이선스 전문"
-                                                 NavigateUri="https://costudio1122.blogspot.com/p/blog-page_42.html"/>
+                            <Grid Style="{StaticResource OptionRowDivided}">
+                                <StackPanel HorizontalAlignment="Left" Margin="0,10,0,10">
+                                    <TextBlock x:Uid="Set_Include" Style="{StaticResource OptionTitleStyle}"
+                                               Text="이 앱은 아래 항목을 포함하고 있습니다."/>
+
+                                    <TextBlock Text="'나눔바른고딕 옛한글' 글꼴 (OFL-1.1)" Style="{StaticResource LicenseNameStyle}"/>
+                                    <HyperlinkButton x:Uid="Set_LicenseLink" Content="라이선스 전문" Style="{StaticResource LicenseLinkStyle}"
+                                                     NavigateUri="https://costudio1122.blogspot.com/p/blog-page_42.html"/>
+
+                                    <TextBlock Text="Html Agility Pack (MIT)" Style="{StaticResource LicenseNameStyle}"/>
+                                    <HyperlinkButton x:Uid="Set_LicenseLink" Content="라이선스 전문" Style="{StaticResource LicenseLinkStyle}"
+                                                     NavigateUri="https://github.com/zzzprojects/html-agility-pack/blob/master/LICENSE"/>
+
+                                    <TextBlock Text="Windows UI Library 2 - Microsoft.UI.Xaml (MIT)" Style="{StaticResource LicenseNameStyle}"/>
+                                    <HyperlinkButton x:Uid="Set_LicenseLink" Content="라이선스 전문" Style="{StaticResource LicenseLinkStyle}"
+                                                     NavigateUri="https://github.com/microsoft/microsoft-ui-xaml/blob/main/LICENSE"/>
+
+                                    <TextBlock Text="Microsoft Edge WebView2 SDK" Style="{StaticResource LicenseNameStyle}"/>
+                                    <HyperlinkButton x:Uid="Set_LicenseLink" Content="라이선스 전문" Style="{StaticResource LicenseLinkStyle}"
+                                                     NavigateUri="https://www.nuget.org/packages/Microsoft.Web.WebView2/1.0.2849.39/License"/>
+
+                                    <TextBlock Text=".NET Runtime (MIT)" Style="{StaticResource LicenseNameStyle}"/>
+                                    <HyperlinkButton x:Uid="Set_LicenseLink" Content="라이선스 전문" Style="{StaticResource LicenseLinkStyle}"
+                                                     NavigateUri="https://github.com/dotnet/runtime/blob/main/LICENSE.TXT"/>
                                 </StackPanel>
                             </Grid>
                         </StackPanel>
-                    </ListViewItem>
-                </ListView>
+                    </StackPanel>
+                </ScrollViewer>
             </PivotItem>
+
+            <!-- 정보 -->
             <PivotItem x:Uid="Set_Pivotitem3" Header="정보">
-                <ListView SelectionMode="None">
-                    <ListViewItem Style="{StaticResource ListViewItemStyle}">
+                <ScrollViewer VerticalScrollBarVisibility="Auto">
+                    <StackPanel Spacing="4" Margin="0,4,0,20">
                         <StackPanel Style="{StaticResource BoxContainer}">
-                            <Grid Height="64" Style="{StaticResource GridHorizontalPadding}">
-                                <FontIcon FontSize="24" Glyph="&#xE804;" FontFamily="/Assets/Fonts/iconfont.ttf#iconfont"
-                                          HorizontalAlignment="Left" Margin="0,5,0,0"/>
-                                <TextBlock x:Uid="Set_SoftwareInfo" Text="소프트웨어 정보" Style="{StaticResource OptionTitleStyle}" Margin="36,0,0,0"/>
+                            <Grid Style="{StaticResource OptionRow}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="24"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <FontIcon Glyph="&#xE804;" Style="{StaticResource OptionIconStyle}"/>
+                                <TextBlock x:Uid="Set_SoftwareInfo" Grid.Column="1" Text="소프트웨어 정보" Style="{StaticResource OptionTitleStyle}"/>
                             </Grid>
-                            <Grid BorderThickness="0,1,0,0" BorderBrush="{ThemeResource BorderBrush}"
-                                  Style="{StaticResource GridHorizontalPadding}">
-                                <StackPanel HorizontalAlignment="Left" Margin="0,20,0,20">
+                            <Grid Style="{StaticResource OptionRowDivided}">
+                                <StackPanel HorizontalAlignment="Left" Margin="0,10,0,10">
                                     <TextBlock Text="국립국어원 표준국어대사전"
                                                TextWrapping="Wrap" FontSize="24"/>
                                     <TextBlock Text="Studio1122"
@@ -228,25 +327,25 @@
                                                TextWrapping="Wrap" FontSize="12" Foreground="Gray"/>
                                     <TextBlock x:Uid="Set_AboutText" Margin="0,10,0,0"
                                                TextWrapping="Wrap" Text="국립국어원이 만든 표준국어대사전에서 단어를 검색하고, 의미를 보여줍니다."/>
-                                    <Button x:Name="BtnReview" x:Uid="Set_BtnReview" Content="평점 및 리뷰" Width="150"
+                                    <Button x:Name="BtnReview" x:Uid="Set_BtnReview" Content="평점 및 리뷰" MinWidth="150"
                                             Margin="0,16,0,0" Click="BtnReview_Click"/>
                                 </StackPanel>
                             </Grid>
                         </StackPanel>
-                    </ListViewItem>
-                    <ListViewItem Style="{StaticResource ListViewItemStyle}">
                         <StackPanel Style="{StaticResource BoxContainer}">
-                            <Grid Height="64" Style="{StaticResource GridHorizontalPadding}">
-                                <FontIcon FontSize="24" Glyph="&#xE806;" FontFamily="/Assets/Fonts/iconfont.ttf#iconfont"
-                                          HorizontalAlignment="Left" Margin="0,5,0,0"/>
-                                <TextBlock Text="Studio1122" Style="{StaticResource OptionTitleStyle}" Margin="36,0,0,0"/>
+                            <Grid Style="{StaticResource OptionRow}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="24"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <FontIcon Glyph="&#xE806;" Style="{StaticResource OptionIconStyle}"/>
+                                <TextBlock Text="Studio1122" Grid.Column="1" Style="{StaticResource OptionTitleStyle}"/>
                             </Grid>
-                            <Grid BorderThickness="0,1,0,0" BorderBrush="{ThemeResource BorderBrush}"
-                                  Style="{StaticResource GridHorizontalPadding}">
-                                <StackPanel HorizontalAlignment="Left" Margin="0,20,0,20">
+                            <Grid Style="{StaticResource OptionRowDivided}">
+                                <StackPanel HorizontalAlignment="Left" Margin="0,10,0,10">
                                     <StackPanel Orientation="Horizontal">
                                         <TextBlock x:Uid="Set_Contact" HorizontalAlignment="Left" VerticalAlignment="Top"
-                                               TextWrapping="Wrap" Text="프로그램 문의" Margin="0,7,0,0"/>
+                                                   TextWrapping="Wrap" Text="프로그램 문의" Margin="0,7,0,0"/>
                                         <HyperlinkButton x:Name="Mail" Content="changi112242@gmail.com" Click="Mail_Click"/>
                                     </StackPanel>
                                     <StackPanel Orientation="Horizontal">
@@ -254,13 +353,13 @@
                                         <HyperlinkButton x:Name="HomePage" Content="http://studio1122.net/"
                                                          NavigateUri="http://studio1122.net/"/>
                                     </StackPanel>
-                                    <Button x:Name="BtnMail" x:Uid="Set_BtnMail" Content="메일" Width="60" Margin="0,16,0,0"
+                                    <Button x:Name="BtnMail" x:Uid="Set_BtnMail" Content="메일" MinWidth="60" Margin="0,16,0,0"
                                             Click="BtnMail_Click"/>
                                 </StackPanel>
                             </Grid>
                         </StackPanel>
-                    </ListViewItem>
-                </ListView>
+                    </StackPanel>
+                </ScrollViewer>
             </PivotItem>
         </Pivot>
     </Grid>

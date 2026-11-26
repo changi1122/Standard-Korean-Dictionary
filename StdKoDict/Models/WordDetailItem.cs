@@ -42,7 +42,7 @@ namespace 표준국어대사전.Models
                     Height = 36,
                     Margin = new Thickness(5, 0, 2, 0),
                     Padding = new Thickness(0, 0, 0, 0),
-                    Background = Application.Current.Resources["ApplicationPageBackgroundThemeBrush"] as SolidColorBrush
+                    Background = new SolidColorBrush(Colors.Transparent)  // 테마를 바꿔도 뒤 배경색을 그대로 따르도록
                 };
                 BtnFontDecrease.Click += BtnFontDecrease_Click;
                 sp.Children.Add(BtnFontDecrease);
@@ -56,13 +56,13 @@ namespace 표준국어대사전.Models
                     Height = 36,
                     Margin = new Thickness(2, 0, 2, 0),
                     Padding = new Thickness(0, 0, 0, 0),
-                    Background = Application.Current.Resources["ApplicationPageBackgroundThemeBrush"] as SolidColorBrush
+                    Background = new SolidColorBrush(Colors.Transparent)  // 테마를 바꿔도 뒤 배경색을 그대로 따르도록
                 };
                 BtnFontIncrease.Click += BtnFontIncrease_Click;
                 sp.Children.Add(BtnFontIncrease);
 
                 Button BtnFilter = new Button { Width = 80, Height = 36, Margin = new Thickness(5, 0, 5, 0),
-                                                Background = Application.Current.Resources["ApplicationPageBackgroundThemeBrush"] as SolidColorBrush };
+                                                Background = new SolidColorBrush(Colors.Transparent) };  // 테마를 바꿔도 뒤 배경색을 그대로 따르도록
                 var res = Windows.ApplicationModel.Resources.ResourceLoader.GetForCurrentView();
                 if (IsExampleVisible)
                     BtnFilter.Content = res.GetString("DC_BtnFilter_All");
@@ -79,8 +79,9 @@ namespace 표준국어대사전.Models
 
         public void BtnFontDecrease_Click(object sender, RoutedEventArgs e)
         {
-            if (1.0 < FONTMAGNIFICATION)
-                FONTMAGNIFICATION -= 0.1;
+            // 0.1씩 더하고 빼면 부동소수점 오차가 쌓이므로(1.1 - 0.1 = 1.0000000000000002) 소수 첫째 자리로 반올림
+            if (Math.Round(FONTMAGNIFICATION, 1) > 1.0)
+                FONTMAGNIFICATION = Math.Round(FONTMAGNIFICATION - 0.1, 1);
             StorageManager.SetSetting<double>(StorageManager.FONTMAGNIFICATION, FONTMAGNIFICATION);
             RaisePropertyChanged("wordnameRTB");
             RaisePropertyChanged("pronsconjusRTB");
@@ -96,8 +97,8 @@ namespace 표준국어대사전.Models
 
         public void BtnFontIncrease_Click(object sender, RoutedEventArgs e)
         {
-            if (FONTMAGNIFICATION < 1.6)
-                FONTMAGNIFICATION += 0.1;
+            if (Math.Round(FONTMAGNIFICATION, 1) < 1.6)
+                FONTMAGNIFICATION = Math.Round(FONTMAGNIFICATION + 0.1, 1);
             StorageManager.SetSetting<double>(StorageManager.FONTMAGNIFICATION, FONTMAGNIFICATION);
             RaisePropertyChanged("wordnameRTB");
             RaisePropertyChanged("pronsconjusRTB");
