@@ -52,7 +52,7 @@
             <Button Content="" Style="{StaticResource AccentButtonStyle}" Width="48" Height="32" Margin="0, 0, 0, 0"
                     HorizontalAlignment="Right" VerticalAlignment="Top" FontSize="16" FontFamily="Segoe MDL2 Assets" Click="BtnClose_Click"/>
             <Grid x:Name="MasterGrid" Margin="0,33,0,0" HorizontalAlignment="Stretch">
-                <ScrollViewer x:Name="SearchResultScrollView" HorizontalAlignment="Stretch" Margin="0,0,0,0">
+                <ScrollViewer x:Name="SearchResultScrollView" HorizontalAlignment="Stretch" Margin="0,0,0,0" ViewChanged="SearchResultScrollView_ViewChanged">
                     <StackPanel>
                         <ListView x:Name="ListviewSearchResult" ItemClick="ListviewSearchResult_ItemClick" IsItemClickEnabled="True" Margin="0,0,0,20"
                                   UseLayoutRounding="False" IsTabStop="True" SelectedIndex="{x:Bind ViewModel.SearchResultSelectedIndex, Mode=TwoWay}"

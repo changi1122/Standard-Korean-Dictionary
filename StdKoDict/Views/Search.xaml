@@ -72,9 +72,10 @@
                             HorizontalAlignment="Stretch" PlaceholderText="검색할 단어를 입력하세요" FontSize="18" QueryIcon="Find"
                             Text="{x:Bind ViewModel.Query, Mode=TwoWay}" IsEnabled="{x:Bind ViewModel.IsSearchBoxEnabled, Mode=OneWay}"
                             QuerySubmitted="SearchBox_QuerySubmitted" KeyDown="SearchBox_KeyDown"/>
-            <ScrollViewer x:Name="SearchResultScrollView" HorizontalAlignment="Stretch" Margin="0,80,0,0">
+            <ScrollViewer x:Name="SearchResultScrollView" HorizontalAlignment="Stretch" Margin="0,80,0,0" ViewChanged="SearchResultScrollView_ViewChanged">
                 <StackPanel>
                     <ListView x:Name="ListviewSearchResult" ItemClick="ListviewSearchResult_ItemClick" IsItemClickEnabled="True" Margin="0,0,0,20"
+                              PreviewKeyDown="ListviewSearchResult_PreviewKeyDown" SelectionChanged="ListviewSearchResult_SelectionChanged"
                               UseLayoutRounding="False" IsTabStop="True" SelectedIndex="{x:Bind ViewModel.SearchResultSelectedIndex, Mode=TwoWay}"
                               ItemsSource="{x:Bind ViewModel.SearchResultsSource}" ItemTemplate="{StaticResource WordListDataTemplate}">
                         <!-- 항목 내용이 항목 전체 폭·높이를 채우도록 (툴팁이 항목 어디서든 뜨게) -->

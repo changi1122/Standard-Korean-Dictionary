@@ -123,6 +123,8 @@ namespace 표준국어대사전.ViewModels
 
             lastSearchedQuery = query;
             WordFinder wordFinder = new WordFinder(SearchResults, (Visibility visibility) => {
+                if (visibility == Visibility.Collapsed)
+                    LastLoadAddedItems = SearchResults.Count > countBeforeLoad;
                 IsMasterProgressBarVisible = visibility;
                 RaisePropertyChanged("IsMasterProgressBarVisible");
             }, (string text) =>
@@ -131,6 +133,7 @@ namespace 표준국어대사전.ViewModels
                 IsErrorMessageVisible = Visibility.Visible;
                 RaisePropertyChanged("ErrorMessageText", "IsErrorMessageVisible");
             });
+            countBeforeLoad = 0;
             wordFinder.GetSearchResults(1, 10, query, IsMoreButtonVisible, (visibility) => {
                 IsMoreButtonVisible = visibility;
                 RaisePropertyChanged("IsMoreButtonVisible");
@@ -141,11 +144,25 @@ namespace 표준국어대사전.ViewModels
             RecentWordManager.Append(Query);
         }
 
+        // 스크롤 자동 추가 로딩
+        private int countBeforeLoad;
+        // 직전 검색·추가 로딩으로 항목이 늘었는지 (실패한 로딩을 자동으로 반복하지 않기 위해 사용)
+        public bool LastLoadAddedItems { get; private set; }
+
+        // 남은 결과가 있고 불러오는 중이 아닐 때만 다음 페이지를 불러온다
+        public void TryLoadMore()
+        {
+            if (IsMoreButtonVisible == Visibility.Visible && IsMasterProgressBarVisible != Visibility.Visible && SearchResults.Count > 0)
+                SearchMore();
+        }
+
         public void SearchMore()
         {
             int start = SearchResults.Last().sup_no / 10 + 1;
 
             WordFinder wordFinder = new WordFinder(SearchResults, (Visibility visibility) => {
+                if (visibility == Visibility.Collapsed)
+                    LastLoadAddedItems = SearchResults.Count > countBeforeLoad;
                 IsMasterProgressBarVisible = visibility;
                 RaisePropertyChanged("IsMasterProgressBarVisible");
             }, (string text) =>
@@ -154,14 +171,22 @@ namespace 표준국어대사전.ViewModels
                 IsErrorMessageVisible = Visibility.Visible;
                 RaisePropertyChanged("ErrorMessageText", "IsErrorMessageVisible");
             });
+            countBeforeLoad = SearchResults.Count;
             wordFinder.GetSearchResults(start, 10, lastSearchedQuery, IsMoreButtonVisible, (visibility) => {
                 IsMoreButtonVisible = visibility;
                 RaisePropertyChanged("IsMoreButtonVisible");
             });
         }
 
-        public async void DisplayWordDetail(SearchResultItem clickedItem)
+        // 뜻풀이 요청 순번: 빠르게 여러 단어를 고를 때 늦게 도착한 이전 응답이 최신 뜻풀이를 덮어쓰지 않도록 한다
+        private int detailRequestId = 0;
+
+        /// <param name="historySelectedIndex">뒤로 가기 기록에 남길 이전 선택 위치. 키보드로 이동할 때는
+        /// 선택이 이미 바뀐 뒤라 이동 전 위치를 따로 넘긴다. 생략하면 현재 선택 위치를 쓴다.</param>
+        public async void DisplayWordDetail(SearchResultItem clickedItem, int? historySelectedIndex = null)
         {
+            int requestId = ++detailRequestId;
+
             if (NetworkCheck() == false)
                 return;
 
@@ -179,7 +204,7 @@ namespace 표준국어대사전.ViewModels
             //일반 단어 클릭시 동작
 
             //되돌리기 위한 기록
-            History.RecordDefinition(Query, lastSearchedQuery, Definitions, SearchResultSelectedIndex, false, IsMoreButtonVisible);
+            History.RecordDefinition(Query, lastSearchedQuery, Definitions, historySelectedIndex ?? SearchResultSelectedIndex, false, IsMoreButtonVisible);
             //뜻풀이 감추기
             IsDefinitionViewerVisible = Visibility.Collapsed;
 
@@ -189,10 +214,15 @@ namespace 표준국어대사전.ViewModels
             RaisePropertyChanged("IsDefinitionViewerVisible", "IsDetailGridVisible", "IsTitleBarBackButtonEnabled");
 
             DefinitionParser definitionParser = new DefinitionParser((Visibility visibility) => {
+                if (requestId != detailRequestId)
+                    return;
                 IsDetailProgressBarVisible = visibility;
                 RaisePropertyChanged("IsDetailProgressBarVisible");
             }, HandleHyperlinkClick);
             WordDetailItem definitionItem = await definitionParser.GetWordDetail(clickedItem.target_code.ToString(), clickedItem.word, clickedItem.sup_no);
+            if (requestId != detailRequestId)
+                return; // 그사이 다른 단어를 골랐으면 이 응답은 버린다
+
             if (definitionItem != null)
             {
                 Definitions = definitionItem;

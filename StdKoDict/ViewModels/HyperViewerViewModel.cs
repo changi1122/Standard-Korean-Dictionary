@@ -93,6 +93,8 @@ namespace 표준국어대사전.ViewModels
             RaisePropertyChanged("IsTitleBarBackButtonVisible", "SearchResultSelectedIndex", "IsDefinitionViewerVisible", "IsDetailGridVisible");
 
             WordFinder wordFinder = new WordFinder(SearchResults, (Visibility visibility) => {
+                if (visibility == Visibility.Collapsed)
+                    LastLoadAddedItems = SearchResults.Count > countBeforeLoad;
                 IsMasterProgressBarVisible = visibility;
                 RaisePropertyChanged("IsMasterProgressBarVisible");
             }, (string text) =>
@@ -101,10 +103,23 @@ namespace 표준국어대사전.ViewModels
                 IsErrorMessageVisible = Visibility.Visible;
                 RaisePropertyChanged("ErrorMessageText", "IsErrorMessageVisible");
             });
+            countBeforeLoad = 0;
             wordFinder.GetSearchResults(1, 10, query, IsMoreButtonVisible, (visibility) => {
                 IsMoreButtonVisible = visibility;
                 RaisePropertyChanged("IsMoreButtonVisible");
             });
+        }
+
+        // 스크롤 자동 추가 로딩
+        private int countBeforeLoad;
+        // 직전 검색·추가 로딩으로 항목이 늘었는지 (실패한 로딩을 자동으로 반복하지 않기 위해 사용)
+        public bool LastLoadAddedItems { get; private set; }
+
+        // 남은 결과가 있고 불러오는 중이 아닐 때만 다음 페이지를 불러온다
+        public void TryLoadMore()
+        {
+            if (IsMoreButtonVisible == Visibility.Visible && IsMasterProgressBarVisible != Visibility.Visible && SearchResults.Count > 0)
+                SearchMore();
         }
 
         public void SearchMore()
@@ -112,6 +127,8 @@ namespace 표준국어대사전.ViewModels
             int start = SearchResults.Last().sup_no / 10 + 1;
 
             WordFinder wordFinder = new WordFinder(SearchResults, (Visibility visibility) => {
+                if (visibility == Visibility.Collapsed)
+                    LastLoadAddedItems = SearchResults.Count > countBeforeLoad;
                 IsMasterProgressBarVisible = visibility;
                 RaisePropertyChanged("IsMasterProgressBarVisible");
             }, (string text) =>
@@ -120,6 +137,7 @@ namespace 표준국어대사전.ViewModels
                 IsErrorMessageVisible = Visibility.Visible;
                 RaisePropertyChanged("ErrorMessageText", "IsErrorMessageVisible");
             });
+            countBeforeLoad = SearchResults.Count;
             wordFinder.GetSearchResults(start, 10, Query, IsMoreButtonVisible, (visibility) => {
                 IsMoreButtonVisible = visibility;
                 RaisePropertyChanged("IsMoreButtonVisible");
