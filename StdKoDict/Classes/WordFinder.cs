@@ -83,6 +83,10 @@ namespace 표준국어대사전.Classes
 
             string url = string.Format(WORD_SEARCH_URL, API_KEY, method, start, num, query);
 
+            // 최근 10분 안에 같은 요청을 했으면 저장된 응답을 그대로 쓴다
+            if (ResponseCache.TryGet(url, out string cachedBody))
+                return cachedBody;
+
             HttpClient client = new HttpClient();
 
             try
@@ -91,6 +95,7 @@ namespace 표준국어대사전.Classes
                 response.EnsureSuccessStatusCode();
 
                 string responseBody = await response.Content.ReadAsStringAsync();
+                ResponseCache.Add(url, responseBody);
                 return responseBody;
             }
             catch
