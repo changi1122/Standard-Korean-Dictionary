@@ -16,15 +16,15 @@
             <Setter Property="HorizontalContentAlignment" Value="Stretch" />
         </Style>
         <DataTemplate x:Key="WordListDataTemplate" x:DataType="data:SearchResultItem">
-            <StackPanel Height="68" Orientation="Horizontal" HorizontalAlignment="Stretch" Margin="0,0,0,0">
-                <Grid Margin="0,0,0,0">
-                    <RichTextBlock HorizontalAlignment="Left" Margin="10,24,0,0" IsTextSelectionEnabled="False">
-                        <Paragraph FontSize="20">
-                            <Run Text="{x:Bind word}" FontFamily="{x:Bind FONTFAMILY}"/><Run Text="{x:Bind display_sup_no}" FontFamily="Arial"/>
-                        </Paragraph>
-                    </RichTextBlock>
-                </Grid>
-            </StackPanel>
+            <!-- 원어가 길면 줄 끝을 …로 줄이도록 폭이 제한되는 Grid 사용 -->
+            <Grid Height="68" HorizontalAlignment="Stretch" Margin="0,0,0,0">
+                <RichTextBlock HorizontalAlignment="Left" Margin="10,24,0,0" IsTextSelectionEnabled="False"
+                               TextWrapping="NoWrap" TextTrimming="CharacterEllipsis" MaxLines="1">
+                    <Paragraph FontSize="20">
+                        <Run Text="{x:Bind word}" FontFamily="{x:Bind FONTFAMILY}"/><Run Text="{x:Bind display_sup_no}" FontFamily="Arial"/><Run Text="{x:Bind display_origin}" FontFamily="{x:Bind FONTFAMILY}" FontSize="14" Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}"/>
+                    </Paragraph>
+                </RichTextBlock>
+            </Grid>
         </DataTemplate>
     </UserControl.Resources>
 

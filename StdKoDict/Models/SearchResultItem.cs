@@ -28,6 +28,13 @@ namespace 표준국어대사전.Models
         public string display_sup_no { get; set; }
         //간단 뜻풀이
         public string definition { get; set; }
+        //원어 (예: 謝過, ←gata[肩]), 없으면 null
+        public string origin { get; set; }
+        //표시 원어: 원어가 있으면 " (원어)", 없으면 빈 문자열
+        public string display_origin
+        {
+            get { return string.IsNullOrEmpty(origin) ? "" : $" ({origin})"; }
+        }
     }
 
     public class SearchResultStaticPage
