@@ -300,4 +300,10 @@
   <data name="DA_BtnMore.Content" xml:space="preserve">
     <value>More</value>
   </data>
+  <data name="OriginalLanguageTitle" xml:space="preserve">
+    <value>Original language</value>
+  </data>
+  <data name="OriginalLanguageOr" xml:space="preserve">
+    <value>or</value>
+  </data>
 </root>

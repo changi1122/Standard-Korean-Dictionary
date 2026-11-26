@@ -191,7 +191,8 @@ namespace 표준국어대사전.Models
         // 어깨번호
         public int sup_no;
         // 원어
-        public string original_language;
+        public string original_language;               // 원어 전체 (조각을 이어 붙인 표시용 문자열)
+        public List<OriginalLanguagePart> original_language_parts; // 원어 조각별 글자와 언어 (예: 沙果/한자, 나무/고유어)
         public string word_unit; // 단어, 관용구, 속담 등
 
         // 발음
@@ -225,12 +226,128 @@ namespace 표준국어대사전.Models
                 if (sup_no != 0)
                     para.Inlines.Add(new Run { Text = NumberConvertor.ToSup(sup_no), FontSize = 32 * FONTMAGNIFICATION,
                                                FontFamily = new FontFamily("Arial") });
-                if (original_language != "")
-                    para.Inlines.Add(new Run { Text = $" ({original_language})", FontSize = 18 * FONTMAGNIFICATION });
+                if (!string.IsNullOrEmpty(original_language))
+                {
+                    if (original_language_parts != null && original_language_parts.Count > 0)
+                    {
+                        para.Inlines.Add(new Run { Text = " " });
+                        para.Inlines.Add(new InlineUIContainer { Child = CreateOriginalLanguageButton() });
+                    }
+                    else
+                        para.Inlines.Add(new Run { Text = $" ({original_language})", FontSize = 18 * FONTMAGNIFICATION });
+                }
                 rtb.Blocks.Add(para);
 
                 return rtb;
             }
+        }
+
+        // 원어 버튼: 마우스를 올리면 툴팁, 클릭·탭·Enter로 플라이아웃을 열어 원어 조각별 언어를 보여 준다.
+        private HyperlinkButton CreateOriginalLanguageButton()
+        {
+            HyperlinkButton button = new HyperlinkButton
+            {
+                Content = $"({original_language})",
+                FontSize = 18 * FONTMAGNIFICATION,
+                FontFamily = new FontFamily(FONTFAMILY),
+                Padding = new Thickness(0),
+                Margin = new Thickness(0, 0, 0, -4),  // 표제어 기준선에 맞춤
+                IsTabStop = true
+            };
+            Windows.UI.Xaml.Automation.AutomationProperties.SetName(button, $"{GetOriginalLanguageTitle()} {original_language}");
+
+            // 툴팁과 플라이아웃은 같은 요소를 공유할 수 없어 각각 만든다
+            ToolTipService.SetToolTip(button, new ToolTip { Content = CreateOriginalLanguagePanel() });
+
+            Flyout flyout = new Flyout { Content = CreateOriginalLanguagePanel() };
+            Windows.UI.Xaml.Controls.Primitives.FlyoutBase.SetAttachedFlyout(button, flyout);
+            button.Click += (sender, e) => Windows.UI.Xaml.Controls.Primitives.FlyoutBase.ShowAttachedFlyout((FrameworkElement)sender);
+
+            return button;
+        }
+
+        // 원어 세부 정보: 제목 아래에 '원어 글자 | 언어' 줄을 조각 수만큼 쌓는다
+        private Grid CreateOriginalLanguagePanel()
+        {
+            Grid grid = new Grid();
+            grid.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Auto });
+            grid.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Auto });
+
+            grid.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
+            // 원어 글자와 언어 이름의 기준선이 맞도록 패널 전체에 같은 글꼴을 쓴다
+            FontFamily fontFamily = new FontFamily(FONTFAMILY);
+
+            TextBlock title = new TextBlock { Text = GetOriginalLanguageTitle(), FontWeight = Windows.UI.Text.FontWeights.Bold,
+                                              FontFamily = fontFamily, Margin = new Thickness(0, 0, 0, 6) };
+            Grid.SetColumnSpan(title, 2);
+            grid.Children.Add(title);
+
+            int row = 1;
+            foreach (OriginalLanguagePart part in original_language_parts)
+            {
+                grid.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
+
+                // 병기 구분 기호(예: 沙果 / 砂果의 '/')는 원어가 아니므로 '또는' 구분선으로 그린다
+                if (part.IsAlternativeSeparator)
+                {
+                    FrameworkElement separator = CreateOriginalLanguageSeparator(fontFamily);
+                    Grid.SetRow(separator, row++);
+                    Grid.SetColumnSpan(separator, 2);
+                    grid.Children.Add(separator);
+                    continue;
+                }
+
+                TextBlock text = new TextBlock { Text = part.text, FontFamily = fontFamily,
+                                                 VerticalAlignment = VerticalAlignment.Bottom, Margin = new Thickness(0, 0, 16, 2) };
+                Grid.SetRow(text, row);
+                grid.Children.Add(text);
+
+                TextBlock type = new TextBlock { Text = part.language_type, Opacity = 0.7, FontFamily = fontFamily,
+                                                 VerticalAlignment = VerticalAlignment.Bottom, Margin = new Thickness(0, 0, 0, 2) };
+                Grid.SetRow(type, row++);
+                Grid.SetColumn(type, 1);
+                grid.Children.Add(type);
+            }
+
+            return grid;
+        }
+
+        // ── 또는 ── 형태의 구분선
+        private static FrameworkElement CreateOriginalLanguageSeparator(FontFamily fontFamily)
+        {
+            Grid separator = new Grid { Margin = new Thickness(0, 2, 0, 4) };
+            separator.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
+            separator.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Auto });
+            separator.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
+
+            Windows.UI.Xaml.Shapes.Rectangle left = new Windows.UI.Xaml.Shapes.Rectangle
+            {
+                Height = 1, MinWidth = 12, Fill = new SolidColorBrush(Colors.Gray), Opacity = 0.5, VerticalAlignment = VerticalAlignment.Center
+            };
+            Windows.UI.Xaml.Shapes.Rectangle right = new Windows.UI.Xaml.Shapes.Rectangle
+            {
+                Height = 1, MinWidth = 12, Fill = new SolidColorBrush(Colors.Gray), Opacity = 0.5, VerticalAlignment = VerticalAlignment.Center
+            };
+            Grid.SetColumn(right, 2);
+
+            string orText = Windows.ApplicationModel.Resources.ResourceLoader.GetForCurrentView().GetString("OriginalLanguageOr");
+            TextBlock label = new TextBlock
+            {
+                Text = string.IsNullOrEmpty(orText) ? "또는" : orText,
+                FontFamily = fontFamily, FontSize = 12, Opacity = 0.7, Margin = new Thickness(6, 0, 6, 0)
+            };
+            Grid.SetColumn(label, 1);
+
+            separator.Children.Add(left);
+            separator.Children.Add(label);
+            separator.Children.Add(right);
+            return separator;
+        }
+
+        private static string GetOriginalLanguageTitle()
+        {
+            string title = Windows.ApplicationModel.Resources.ResourceLoader.GetForCurrentView().GetString("OriginalLanguageTitle");
+            return string.IsNullOrEmpty(title) ? "원어" : title;
         }
 
         // 발음 및 활용 RTB (단어 읽기 기능 비활성화시 사용)
@@ -1087,6 +1204,15 @@ namespace 표준국어대사전.Models
             public string target_code;
         }
         // 어휘 관계 클래스
+        public class OriginalLanguagePart
+        {
+            public string text;           // 원어 글자 (예: 沙果, Arbeit)
+            public string language_type;  // 언어 (예: 한자, 독일어, 고유어)
+
+            // 두 표기를 나란히 적을 때의 구분 기호 (API에서 language_type이 '/(병기)'로 옴)
+            public bool IsAlternativeSeparator => language_type != null && language_type.Contains("병기");
+        }
+
         public class LexicalItem
         {
             public string word;

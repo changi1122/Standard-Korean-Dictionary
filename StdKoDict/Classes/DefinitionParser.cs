@@ -134,11 +134,14 @@ namespace 표준국어대사전.Classes
 
             // 원어
             wordDetail.original_language = "";
-            if (xDoc.Root.Element("item").Element("word_info").Element("original_language_info") != null)
+            wordDetail.original_language_parts = new List<WordDetailItem.OriginalLanguagePart>();
+            foreach (XElement info in xDoc.Root.Element("item").Element("word_info").Elements("original_language_info"))
             {
-                IEnumerable<XElement> original_languages = xDoc.Root.Element("item").Element("word_info").Elements("original_language_info").Elements("original_language");
-                for (int i = 0; i < original_languages.Count(); i++)
-                    wordDetail.original_language += (string)original_languages.ElementAt(i);
+                string text = (string)info.Element("original_language") ?? "";
+                string languageType = ((string)info.Element("language_type"))?.Trim() ?? "";
+
+                wordDetail.original_language += text;
+                wordDetail.original_language_parts.Add(new WordDetailItem.OriginalLanguagePart { text = text, language_type = languageType });
             }
 
             // 발음

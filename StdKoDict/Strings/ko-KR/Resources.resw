@@ -417,4 +417,10 @@
   <data name="Set_SoftwareInfo.Text" xml:space="preserve">
     <value>소프트웨어 정보</value>
   </data>
+  <data name="OriginalLanguageTitle" xml:space="preserve">
+    <value>원어</value>
+  </data>
+  <data name="OriginalLanguageOr" xml:space="preserve">
+    <value>또는</value>
+  </data>
 </root>

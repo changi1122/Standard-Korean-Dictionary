@@ -412,6 +412,14 @@
           <source>소프트웨어 정보</source>
           <target state="new">소프트웨어 정보</target>
         </trans-unit>
+        <trans-unit id="OriginalLanguageTitle" translate="yes" xml:space="preserve">
+          <source>원어</source>
+          <target state="translated">Original language</target>
+        </trans-unit>
+        <trans-unit id="OriginalLanguageOr" translate="yes" xml:space="preserve">
+          <source>또는</source>
+          <target state="translated">or</target>
+        </trans-unit>
       </group>
     </body>
   </file>
