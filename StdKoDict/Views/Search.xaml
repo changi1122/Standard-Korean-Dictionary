@@ -16,15 +16,27 @@
             <Setter Property="HorizontalContentAlignment" Value="Stretch" />
         </Style>
         <DataTemplate x:Key="WordListDataTemplate" x:DataType="data:SearchResultItem">
-            <StackPanel Height="68" Orientation="Horizontal" HorizontalAlignment="Stretch" Margin="0,0,0,0">
-                <Grid Margin="0,0,0,0">
-                    <RichTextBlock HorizontalAlignment="Left" Margin="10,24,0,0" IsTextSelectionEnabled="False">
-                        <Paragraph FontSize="20">
-                            <Run Text="{x:Bind word}" FontFamily="{x:Bind FONTFAMILY}"/><Run Text="{x:Bind display_sup_no}" FontFamily="Arial"/>
-                        </Paragraph>
-                    </RichTextBlock>
-                </Grid>
-            </StackPanel>
+            <!-- 원어가 길면 줄 끝을 …로 줄이도록 폭이 제한되는 Grid 사용 -->
+            <!-- Background를 지정해야 글자가 없는 빈 곳에서도 마우스를 인식해 툴팁이 뜬다 -->
+            <Grid Height="68" HorizontalAlignment="Stretch" Margin="0,0,0,0" Background="Transparent">
+                <!-- 마우스를 올리면 품사와 대표 뜻풀이를 툴팁으로 표시 -->
+                <ToolTipService.ToolTip>
+                    <ToolTip Visibility="{x:Bind tooltip_visibility}" MaxWidth="320">
+                        <StackPanel>
+                            <TextBlock FontWeight="Bold" Foreground="{ThemeResource SystemControlForegroundAccentBrush}" FontFamily="{x:Bind FONTFAMILY}">
+                                <Run Text="{x:Bind word}"/><Run Text="{x:Bind display_sup_no}" FontFamily="Arial"/><Run Text="{x:Bind display_pos}" FontWeight="Normal"/>
+                            </TextBlock>
+                            <TextBlock Text="{x:Bind definition}" TextWrapping="Wrap" Margin="0,6,0,0" FontFamily="{x:Bind FONTFAMILY}"/>
+                        </StackPanel>
+                    </ToolTip>
+                </ToolTipService.ToolTip>
+                <RichTextBlock HorizontalAlignment="Left" Margin="22,24,0,0" IsTextSelectionEnabled="False"
+                               TextWrapping="NoWrap" TextTrimming="CharacterEllipsis" MaxLines="1">
+                    <Paragraph FontSize="20">
+                        <Run Text="{x:Bind word}" FontFamily="{x:Bind FONTFAMILY}"/><Run Text="{x:Bind display_sup_no}" FontFamily="Arial"/><Run Text="{x:Bind display_origin}" FontFamily="{x:Bind FONTFAMILY}" FontSize="14" Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}"/>
+                    </Paragraph>
+                </RichTextBlock>
+            </Grid>
         </DataTemplate>
     </Page.Resources>
 
@@ -60,11 +72,20 @@
                             HorizontalAlignment="Stretch" PlaceholderText="검색할 단어를 입력하세요" FontSize="18" QueryIcon="Find"
                             Text="{x:Bind ViewModel.Query, Mode=TwoWay}" IsEnabled="{x:Bind ViewModel.IsSearchBoxEnabled, Mode=OneWay}"
                             QuerySubmitted="SearchBox_QuerySubmitted" KeyDown="SearchBox_KeyDown"/>
-            <ScrollViewer x:Name="SearchResultScrollView" HorizontalAlignment="Stretch" Margin="0,80,0,0">
+            <ScrollViewer x:Name="SearchResultScrollView" HorizontalAlignment="Stretch" Margin="0,80,0,0" ViewChanged="SearchResultScrollView_ViewChanged">
                 <StackPanel>
                     <ListView x:Name="ListviewSearchResult" ItemClick="ListviewSearchResult_ItemClick" IsItemClickEnabled="True" Margin="0,0,0,20"
+                              PreviewKeyDown="ListviewSearchResult_PreviewKeyDown" SelectionChanged="ListviewSearchResult_SelectionChanged"
                               UseLayoutRounding="False" IsTabStop="True" SelectedIndex="{x:Bind ViewModel.SearchResultSelectedIndex, Mode=TwoWay}"
-                              ItemsSource="{x:Bind ViewModel.SearchResultsSource}" ItemTemplate="{StaticResource WordListDataTemplate}" />
+                              ItemsSource="{x:Bind ViewModel.SearchResultsSource}" ItemTemplate="{StaticResource WordListDataTemplate}">
+                        <!-- 항목 내용이 항목 전체 폭·높이를 채우도록 (툴팁이 항목 어디서든 뜨게) -->
+                        <ListView.ItemContainerStyle>
+                            <Style TargetType="ListViewItem" BasedOn="{StaticResource DefaultListViewItemStyle}">
+                                <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                                <Setter Property="Padding" Value="0"/>
+                            </Style>
+                        </ListView.ItemContainerStyle>
+                    </ListView>
                     <Button x:Name="BtnMore" x:Uid="DA_BtnMore" Margin="0,0,0,40" HorizontalAlignment="Center" Style="{StaticResource AccentButtonStyle}" Content="더 보기"
                             FontSize="18" Visibility="{x:Bind ViewModel.IsMoreButtonVisible, Mode=OneWay}" Click="{x:Bind ViewModel.SearchMore}" />
                 </StackPanel>
@@ -100,6 +121,10 @@
                     <StackPanel Padding="20" Margin="0,0,0,10" Background="{ThemeResource PageBackgroundBrush}"
                                 CornerRadius="8" BorderBrush="{ThemeResource BorderBrush}" BorderThickness="1" Visibility="{Binding IsOriginVisible}">
                         <ContentPresenter Content="{Binding originRTB}"/>
+                    </StackPanel>
+                    <StackPanel Padding="20" Margin="0,0,0,10" Background="{ThemeResource PageBackgroundBrush}"
+                                CornerRadius="8" BorderBrush="{ThemeResource BorderBrush}" BorderThickness="1" Visibility="{Binding IsNormVisible}">
+                        <ContentPresenter Content="{Binding normRTB}"/>
                     </StackPanel>
                     <StackPanel Padding="20" Margin="0,0,0,10" Background="{ThemeResource PageBackgroundBrush}"
                                 CornerRadius="8" BorderBrush="{ThemeResource BorderBrush}" BorderThickness="1" Visibility="{Binding IsRelationVisible}">

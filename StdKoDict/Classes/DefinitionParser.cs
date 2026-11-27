@@ -79,6 +79,10 @@ namespace 표준국어대사전.Classes
         {
             string url = string.Format(WORD_DETAIL_URL, API_KEY, target_code);
 
+            // 최근 10분 안에 같은 요청을 했으면 저장된 응답을 그대로 쓴다
+            if (ResponseCache.TryGet(url, out string cachedBody))
+                return cachedBody;
+
             HttpClient client = new HttpClient();
 
             try
@@ -87,6 +91,7 @@ namespace 표준국어대사전.Classes
                 response.EnsureSuccessStatusCode();
 
                 string responseBody = await response.Content.ReadAsStringAsync();
+                ResponseCache.Add(url, responseBody);
                 return responseBody;
             }
             catch
@@ -129,13 +134,19 @@ namespace 표준국어대사전.Classes
                 wordDetail.wordname = (string)xDoc.Root.Element("item").Element("word_info").Element("word");
             wordDetail.sup_no = sup_no;
 
+            // 단어 단위 (단어, 관용구, 속담 등)
+            wordDetail.word_unit = ((string)xDoc.Root.Element("item").Element("word_info").Element("word_unit"))?.Trim();
+
             // 원어
             wordDetail.original_language = "";
-            if (xDoc.Root.Element("item").Element("word_info").Element("original_language_info") != null)
+            wordDetail.original_language_parts = new List<WordDetailItem.OriginalLanguagePart>();
+            foreach (XElement info in xDoc.Root.Element("item").Element("word_info").Elements("original_language_info"))
             {
-                IEnumerable<XElement> original_languages = xDoc.Root.Element("item").Element("word_info").Elements("original_language_info").Elements("original_language");
-                for (int i = 0; i < original_languages.Count(); i++)
-                    wordDetail.original_language += (string)original_languages.ElementAt(i);
+                string text = (string)info.Element("original_language") ?? "";
+                string languageType = ((string)info.Element("language_type"))?.Trim() ?? "";
+
+                wordDetail.original_language += text;
+                wordDetail.original_language_parts.Add(new WordDetailItem.OriginalLanguagePart { text = text, language_type = languageType });
             }
 
             // 발음
@@ -420,7 +431,9 @@ namespace 표준국어대사전.Classes
                     wordDetail.norms = new List<string>();
                     for (int i = 0; i < norms.Count(); i++)
                     {
-                        wordDetail.norms.Add((string)norms.ElementAt(i).Element("desc"));
+                        string desc = ((string)norms.ElementAt(i).Element("desc"))?.Trim();
+                        if (!string.IsNullOrEmpty(desc))
+                            wordDetail.norms.Add(desc);
                     }
                 }
 

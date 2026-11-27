@@ -405,12 +405,56 @@
           <target state="new">도움말</target>
         </trans-unit>
         <trans-unit id="Set_CopyrightInfo.Text" translate="yes" xml:space="preserve">
-          <source>저작권 정보</source>
-          <target state="new">저작권 정보</target>
+          <source>라이선스 정보</source>
+          <target state="translated">License information</target>
         </trans-unit>
         <trans-unit id="Set_SoftwareInfo.Text" translate="yes" xml:space="preserve">
           <source>소프트웨어 정보</source>
           <target state="new">소프트웨어 정보</target>
+        </trans-unit>
+        <trans-unit id="OriginalLanguageTitle" translate="yes" xml:space="preserve">
+          <source>원어</source>
+          <target state="translated">Original language</target>
+        </trans-unit>
+        <trans-unit id="OriginalLanguageOr" translate="yes" xml:space="preserve">
+          <source>또는</source>
+          <target state="translated">or</target>
+        </trans-unit>
+        <trans-unit id="Set_ResetConfirmTitle" translate="yes" xml:space="preserve">
+          <source>설정을 초기화할까요?</source>
+          <target state="translated">Reset settings?</target>
+        </trans-unit>
+        <trans-unit id="Set_ResetConfirmContent" translate="yes" xml:space="preserve">
+          <source>언어, 색상 모드, 글꼴, 오픈 API 인증키 설정과 최근 검색어가 모두 지워집니다. 되돌릴 수 없습니다.</source>
+          <target state="translated">Language, color mode, font, Open API key settings and recent searches will all be erased. This can't be undone.</target>
+        </trans-unit>
+        <trans-unit id="Set_ResetConfirmPrimary" translate="yes" xml:space="preserve">
+          <source>초기화</source>
+          <target state="translated">Reset</target>
+        </trans-unit>
+        <trans-unit id="Set_ResetConfirmCancel" translate="yes" xml:space="preserve">
+          <source>취소</source>
+          <target state="translated">Cancel</target>
+        </trans-unit>
+        <trans-unit id="Set_APIKeySaved" translate="yes" xml:space="preserve">
+          <source>저장했습니다.</source>
+          <target state="translated">Saved.</target>
+        </trans-unit>
+        <trans-unit id="Set_APIKeyInvalid" translate="yes" xml:space="preserve">
+          <source>인증키는 16진수 32자리입니다. 입력한 값을 확인해 주세요.</source>
+          <target state="translated">The key must be 32 hexadecimal characters. Please check what you entered.</target>
+        </trans-unit>
+        <trans-unit id="Set_BtnRestart.Text" translate="yes" xml:space="preserve">
+          <source>지금 다시 시작</source>
+          <target state="translated">Restart now</target>
+        </trans-unit>
+        <trans-unit id="Set_BtnSave.[using:Windows.UI.Xaml.Automation]AutomationProperties.Name" translate="yes" xml:space="preserve">
+          <source>저장</source>
+          <target state="translated">Save</target>
+        </trans-unit>
+        <trans-unit id="Set_BtnSave.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" translate="yes" xml:space="preserve">
+          <source>저장</source>
+          <target state="translated">Save</target>
         </trans-unit>
       </group>
     </body>

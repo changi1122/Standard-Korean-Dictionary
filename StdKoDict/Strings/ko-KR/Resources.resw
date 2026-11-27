@@ -412,9 +412,42 @@
     <value>도움말</value>
   </data>
   <data name="Set_CopyrightInfo.Text" xml:space="preserve">
-    <value>저작권 정보</value>
+    <value>라이선스 정보</value>
   </data>
   <data name="Set_SoftwareInfo.Text" xml:space="preserve">
     <value>소프트웨어 정보</value>
+  </data>
+  <data name="OriginalLanguageTitle" xml:space="preserve">
+    <value>원어</value>
+  </data>
+  <data name="OriginalLanguageOr" xml:space="preserve">
+    <value>또는</value>
+  </data>
+  <data name="Set_ResetConfirmTitle" xml:space="preserve">
+    <value>설정을 초기화할까요?</value>
+  </data>
+  <data name="Set_ResetConfirmContent" xml:space="preserve">
+    <value>언어, 색상 모드, 글꼴, 오픈 API 인증키 설정과 최근 검색어가 모두 지워집니다. 되돌릴 수 없습니다.</value>
+  </data>
+  <data name="Set_ResetConfirmPrimary" xml:space="preserve">
+    <value>초기화</value>
+  </data>
+  <data name="Set_ResetConfirmCancel" xml:space="preserve">
+    <value>취소</value>
+  </data>
+  <data name="Set_APIKeySaved" xml:space="preserve">
+    <value>저장했습니다.</value>
+  </data>
+  <data name="Set_APIKeyInvalid" xml:space="preserve">
+    <value>인증키는 16진수 32자리입니다. 입력한 값을 확인해 주세요.</value>
+  </data>
+  <data name="Set_BtnRestart.Text" xml:space="preserve">
+    <value>지금 다시 시작</value>
+  </data>
+  <data name="Set_BtnSave.[using:Windows.UI.Xaml.Automation]AutomationProperties.Name" xml:space="preserve">
+    <value>저장</value>
+  </data>
+  <data name="Set_BtnSave.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
+    <value>저장</value>
   </data>
 </root>

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Windows.UI.Xaml;
 using 표준국어대사전.Classes;
 
 namespace 표준국어대사전.Models
@@ -28,6 +29,25 @@ namespace 표준국어대사전.Models
         public string display_sup_no { get; set; }
         //간단 뜻풀이
         public string definition { get; set; }
+        //원어 (예: 謝過, ←gata[肩]), 없으면 null
+        public string origin { get; set; }
+        //품사 (예: 동사), 없으면 null
+        public string pos { get; set; }
+        //표시 품사: 품사가 있으면 " 「품사」", 없으면 빈 문자열
+        public string display_pos
+        {
+            get { return string.IsNullOrEmpty(pos) ? "" : $" 「{pos}」"; }
+        }
+        //툴팁 표시 여부: 뜻풀이가 없는 항목([시작] 등)은 빈 툴팁이 뜨지 않도록 숨김
+        public Visibility tooltip_visibility
+        {
+            get { return string.IsNullOrEmpty(definition) ? Visibility.Collapsed : Visibility.Visible; }
+        }
+        //표시 원어: 원어가 있으면 " (원어)", 없으면 빈 문자열
+        public string display_origin
+        {
+            get { return string.IsNullOrEmpty(origin) ? "" : $" ({origin})"; }
+        }
     }
 
     public class SearchResultStaticPage

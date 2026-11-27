@@ -75,7 +75,17 @@ namespace 표준국어대사전.Classes
             int letter_e = 1;*/
             #endregion
 
-            string url = string.Format(WORD_SEARCH_URL, API_KEY, method, start, num, searchText);
+            // 사전 표기대로 어미·접사를 붙임표와 함께 입력해도(예: -ㅂ니다, 제-) 검색되도록
+            // API는 붙임표 없는 검색어만 찾으므로 앞뒤 붙임표를 제거한다.
+            string query = searchText?.Trim().Trim('-').Trim() ?? "";
+            if (query.Length == 0)
+                query = searchText;
+
+            string url = string.Format(WORD_SEARCH_URL, API_KEY, method, start, num, query);
+
+            // 최근 10분 안에 같은 요청을 했으면 저장된 응답을 그대로 쓴다
+            if (ResponseCache.TryGet(url, out string cachedBody))
+                return cachedBody;
 
             HttpClient client = new HttpClient();
 
@@ -85,6 +95,7 @@ namespace 표준국어대사전.Classes
                 response.EnsureSuccessStatusCode();
 
                 string responseBody = await response.Content.ReadAsStringAsync();
+                ResponseCache.Add(url, responseBody);
                 return responseBody;
             }
             catch
@@ -129,7 +140,9 @@ namespace 표준국어대사전.Classes
                             word = (string)SearchResultItem.Element("word"),
                             sup_no = (int)SearchResultItem.Element("sup_no"),
                             display_sup_no = ((int)SearchResultItem.Element("sup_no")).ToString(),
-                            definition = (string)SearchResultItem.Element("sense").Element("definition")
+                            definition = (string)SearchResultItem.Element("sense").Element("definition"),
+                            origin = ((string)SearchResultItem.Element("origin"))?.Trim(),
+                            pos = ((string)SearchResultItem.Element("pos"))?.Trim()
                         };
 
             List<SearchResultItem> wordlist = words.ToList();
