@@ -15,7 +15,8 @@ namespace 표준국어대사전.Classes
     class WordFinder
     {
         string API_KEY;
-        const string WORD_SEARCH_URL = "https://kdict.korean.go.kr/standard/api/search.do?&key={0}&type_search=search&method={1}&part=all&start={2}&num={3}&q={4}";
+        // advanced=y여야 method·target 옵션이 적용되고 관용구·속담도 함께 검색된다 (오픈 API 안내 기준)
+        const string WORD_SEARCH_URL = "https://kdict.korean.go.kr/standard/api/search.do?key={0}&advanced=y&method={1}&target={2}&start={3}&num={4}&q={5}";
 
         ObservableCollection<SearchResultItem> SearchResults;
         Action<Visibility> SetProgressBar;
@@ -35,13 +36,16 @@ namespace 표준국어대사전.Classes
         /// <summary>
         /// 단어 검색 결과를 받아오고, SearchResults 리스트에 넣는다.
         /// </summary>
-        /// <returns>남은 검색 결과 존재 여부(더 보기 버튼 표시 여부)</returns>
-        public async void GetSearchResults(int start, int num, string searchText, Visibility isMoreButtonVisible, Action<Visibility> setMoreButtonVisibility)
+        /// <param name="start">페이지 번호 (1부터)</param>
+        /// <param name="reportNoResult">결과가 없을 때 '검색 결과 없음'을 표시할지 (자동 포함 검색 전에는 끈다)</param>
+        /// <returns>전체 결과 수. 네트워크·API 오류면 -1</returns>
+        public async Task<int> GetSearchResults(int start, int num, SearchRequest request, Visibility isMoreButtonVisible,
+                                                Action<Visibility> setMoreButtonVisibility, bool reportNoResult = true)
         {
             setMoreButtonVisibility(Visibility.Collapsed);
             SetProgressBar(Visibility.Visible);
 
-            string responseBody = await DownloadSearchResultsAsync(start, num, searchText);
+            string responseBody = await DownloadSearchResultsAsync(start, num, request);
             if (responseBody == null) //실패 여부 확인
             {
                 string error_code = "404";
@@ -49,39 +53,27 @@ namespace 표준국어대사전.Classes
                 ShowErrorMessage(error_code, error_message, null);
                 SetProgressBar(Visibility.Collapsed);
                 setMoreButtonVisibility(isMoreButtonVisible);
-                return;
+                return -1;
             }
 
-            ParseAndShowSearchResults(responseBody, start, num, searchText, setMoreButtonVisibility);
+            int total = ParseAndShowSearchResults(responseBody, start, num, reportNoResult, setMoreButtonVisibility);
 
             SetProgressBar(Visibility.Collapsed);
+            return total;
         }
 
-        private async Task<string> DownloadSearchResultsAsync(int start, int num, string searchText)
+        private async Task<string> DownloadSearchResultsAsync(int start, int num, SearchRequest request)
         {
-            #region VAR
-            //Search_Text
-            string method = "exact";
-            //start;
-            //num
-            /*string advanced = "n";
-            int target = 1;
-            string type1 = "all";
-            string type2 = "all";
-            int pos = 0;
-            int cat = 0;
-            int multimedia = 0;
-            int letter_s = 1;
-            int letter_e = 1;*/
-            #endregion
-
             // 사전 표기대로 어미·접사를 붙임표와 함께 입력해도(예: -ㅂ니다, 제-) 검색되도록
             // API는 붙임표 없는 검색어만 찾으므로 앞뒤 붙임표를 제거한다.
+            string searchText = request.Query;
             string query = searchText?.Trim().Trim('-').Trim() ?? "";
             if (query.Length == 0)
-                query = searchText;
+                query = searchText ?? "";
 
-            string url = string.Format(WORD_SEARCH_URL, API_KEY, method, start, num, query);
+            // 뜻풀이 검색은 띄어쓰기·기호가 들어가므로 검색어를 URL 인코딩한다
+            string url = string.Format(WORD_SEARCH_URL, API_KEY, request.ApiMethod, request.ApiTarget, start, num,
+                                       Uri.EscapeDataString(query));
 
             // 최근 10분 안에 같은 요청을 했으면 저장된 응답을 그대로 쓴다
             if (ResponseCache.TryGet(url, out string cachedBody))
@@ -105,7 +97,8 @@ namespace 표준국어대사전.Classes
             }
         }
 
-        private void ParseAndShowSearchResults(string responseBody, int start, int num, string searchText, Action<Visibility> setMoreButtonVisibility)
+        // 반환값: 전체 결과 수, API 오류면 -1
+        private int ParseAndShowSearchResults(string responseBody, int start, int num, bool reportNoResult, Action<Visibility> setMoreButtonVisibility)
         {
             XDocument xDoc = XDocument.Parse(responseBody);
 
@@ -122,15 +115,18 @@ namespace 표준국어대사전.Classes
                 var res = Windows.ApplicationModel.Resources.ResourceLoader.GetForCurrentView();
                 ShowErrorMessage(error_code, error_message, res.GetString("ContentDialogText1"));
 
-                return;
+                return -1;
             }
 
             int total = (int)xDoc.Descendants("total").ElementAt(0);
             if (total == 0)
             {
-                var res = Windows.ApplicationModel.Resources.ResourceLoader.GetForCurrentView();
-                SetErrorMessageText(res.GetString("ErrorMessageNoResult"));
-                return;
+                if (reportNoResult)
+                {
+                    var res = Windows.ApplicationModel.Resources.ResourceLoader.GetForCurrentView();
+                    SetErrorMessageText(res.GetString("ErrorMessageNoResult"));
+                }
+                return 0;
             }
 
             var words = from SearchResultItem in xDoc.Descendants("item")
@@ -152,10 +148,11 @@ namespace 표준국어대사전.Classes
                 SearchResults.Add(new ObservableCollection<SearchResultItem>(wordlist)[i]);
             }
 
-            if (start * 10 < total)
+            if (start * num < total)
             {
                 setMoreButtonVisibility(Visibility.Visible);
             }
+            return total;
         }
 
         private async void ShowErrorMessage(string error_code, string error_message, string PrimaryButtonText)

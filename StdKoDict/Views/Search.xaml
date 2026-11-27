@@ -19,6 +19,16 @@
             <!-- 원어가 길면 줄 끝을 …로 줄이도록 폭이 제한되는 Grid 사용 -->
             <!-- Background를 지정해야 글자가 없는 빈 곳에서도 마우스를 인식해 툴팁이 뜬다 -->
             <Grid Height="68" HorizontalAlignment="Stretch" Margin="0,0,0,0" Background="Transparent">
+                <!-- 우클릭(길게 누르기) 메뉴: 단어장에 추가/삭제 -->
+                <Grid.ContextFlyout>
+                    <MenuFlyout Opening="SearchResultMenu_Opening">
+                        <MenuFlyoutItem Click="SearchResultMenuBookmark_Click">
+                            <MenuFlyoutItem.Icon>
+                                <FontIcon FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" Glyph="&#xE734;"/>
+                            </MenuFlyoutItem.Icon>
+                        </MenuFlyoutItem>
+                    </MenuFlyout>
+                </Grid.ContextFlyout>
                 <!-- 마우스를 올리면 품사와 대표 뜻풀이를 툴팁으로 표시 -->
                 <ToolTipService.ToolTip>
                     <ToolTip Visibility="{x:Bind tooltip_visibility}" MaxWidth="320">
@@ -48,6 +58,12 @@
                           Icon="Back" IsEnabled="{x:Bind ViewModel.CanGoBack, Mode=OneWay}" Click="{x:Bind ViewModel.Undo}"/>
             <AppBarButton x:Name="BtnForward" x:Uid="DA_BtnForward" Label="앞으로" ToolTipService.ToolTip="앞으로"
                           Icon="Forward" IsEnabled="{x:Bind ViewModel.CanGoForward, Mode=OneWay}" Click="{x:Bind ViewModel.Redo}"/>
+            <AppBarButton x:Name="BtnBookmarks" x:Uid="DA_BtnBookmarks" Label="단어장" ToolTipService.ToolTip="단어장"
+                          Click="{x:Bind ViewModel.ShowBookmarks}">
+                <AppBarButton.Icon>
+                    <FontIcon FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" Glyph="&#xE728;"/>
+                </AppBarButton.Icon>
+            </AppBarButton>
 
             <CommandBar.SecondaryCommands>
                 <AppBarButton x:Name="BtnHome" x:Uid="DA_BtnHome" Label="시작" ToolTipService.ToolTip="시작"
@@ -68,11 +84,45 @@
 
         <Grid x:Name="MasterGrid" Margin="10,50,0,10" HorizontalAlignment="Left" Width="310" Background="{ThemeResource PageBackgroundBrush}"
               CornerRadius="8" BorderBrush="{ThemeResource BorderBrush}" BorderThickness="1">
-            <AutoSuggestBox x:Name="SearchBox" x:Uid="DA_SearchBox" VerticalAlignment="Top" Margin="10,22,10,0"
-                            HorizontalAlignment="Stretch" PlaceholderText="검색할 단어를 입력하세요" FontSize="18" QueryIcon="Find"
-                            Text="{x:Bind ViewModel.Query, Mode=TwoWay}" IsEnabled="{x:Bind ViewModel.IsSearchBoxEnabled, Mode=OneWay}"
-                            QuerySubmitted="SearchBox_QuerySubmitted" KeyDown="SearchBox_KeyDown"/>
-            <ScrollViewer x:Name="SearchResultScrollView" HorizontalAlignment="Stretch" Margin="0,80,0,0" ViewChanged="SearchResultScrollView_ViewChanged">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <!-- 검색창 + 검색 옵션 버튼, 그 아래 상태 줄(기본값이 아닌 옵션 또는 자동 포함 검색 안내) -->
+            <StackPanel Margin="10,22,10,8" Spacing="6">
+                <Grid ColumnSpacing="6">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <AutoSuggestBox x:Name="SearchBox" x:Uid="DA_SearchBox" VerticalAlignment="Center"
+                                    HorizontalAlignment="Stretch" PlaceholderText="검색어 입력" FontSize="18" QueryIcon="Find"
+                                    Text="{x:Bind ViewModel.Query, Mode=TwoWay}" IsEnabled="{x:Bind ViewModel.IsSearchBoxEnabled, Mode=OneWay}"
+                                    QuerySubmitted="SearchBox_QuerySubmitted" KeyDown="SearchBox_KeyDown"/>
+                    <Button x:Name="BtnSearchOptions" x:Uid="DA_BtnSearchOptions" Grid.Column="1" VerticalAlignment="Stretch"
+                            Padding="9,0,9,0" AutomationProperties.Name="검색 옵션" ToolTipService.ToolTip="검색 옵션">
+                        <FontIcon FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" Glyph="&#xE71C;" FontSize="16"/>
+                        <Button.Flyout>
+                            <Flyout Placement="BottomEdgeAlignedRight">
+                                <StackPanel Width="250" Spacing="12">
+                                    <muxc:RadioButtons x:Name="RadioSearchTarget" x:Uid="DA_SearchTarget" Header="찾을 대상"
+                                                       SelectedIndex="0" SelectionChanged="SearchOptions_SelectionChanged"/>
+                                    <muxc:RadioButtons x:Name="RadioSearchMethod" x:Uid="DA_SearchMethod" Header="검색 방식" MaxColumns="2"
+                                                       SelectedIndex="0" SelectionChanged="SearchOptions_SelectionChanged"/>
+                                    <TextBlock x:Name="TextSearchOptionHint" x:Uid="DA_SearchDefinitionHint" Visibility="Collapsed"
+                                               FontSize="12" Foreground="Gray" TextWrapping="Wrap"
+                                               Text="뜻풀이는 입력한 말이 들어간 뜻풀이를 찾습니다 (포함 검색)."/>
+                                </StackPanel>
+                            </Flyout>
+                        </Button.Flyout>
+                    </Button>
+                </Grid>
+                <TextBlock x:Name="TextSearchStatus" Margin="4,0,4,0" FontSize="12" Foreground="Gray" TextWrapping="Wrap"
+                           Text="{x:Bind ViewModel.SearchStatusText, Mode=OneWay}" Visibility="{x:Bind ViewModel.IsSearchStatusVisible, Mode=OneWay}"/>
+            </StackPanel>
+
+            <ScrollViewer x:Name="SearchResultScrollView" Grid.Row="1" HorizontalAlignment="Stretch" ViewChanged="SearchResultScrollView_ViewChanged">
                 <StackPanel>
                     <ListView x:Name="ListviewSearchResult" ItemClick="ListviewSearchResult_ItemClick" IsItemClickEnabled="True" Margin="0,0,0,20"
                               PreviewKeyDown="ListviewSearchResult_PreviewKeyDown" SelectionChanged="ListviewSearchResult_SelectionChanged"
@@ -91,15 +141,32 @@
                 </StackPanel>
             </ScrollViewer>
 
-            <muxc:ProgressBar x:Name="MasterProgressBar" Margin="0,0,0,0" VerticalAlignment="Top" IsIndeterminate="True" ShowPaused="False"
+            <muxc:ProgressBar x:Name="MasterProgressBar" Grid.RowSpan="2" Margin="0,0,0,0" VerticalAlignment="Top" IsIndeterminate="True" ShowPaused="False"
                               ShowError="False" Visibility="{x:Bind ViewModel.IsMasterProgressBarVisible, Mode=OneWay}"/>
-            <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+            <StackPanel Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center">
                 <TextBlock x:Name="TextBlockErrorMessage" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="20"
                            Text="{x:Bind ViewModel.ErrorMessageText, Mode=OneWay}" Visibility="{x:Bind ViewModel.IsErrorMessageVisible, Mode=OneWay}"/>
                 <Button x:Name="BtnNetStatusRefresh" x:Uid="DA_BtnNetStatusRefresh" Margin="0,20,0,0"  HorizontalAlignment="Center" Content="다시 시도"
                         Visibility="{x:Bind ViewModel.IsErrorMessageVisible, Mode=OneWay}" Click="{x:Bind ViewModel.NetStatusRefresh}"/>
             </StackPanel>
         </Grid>
+        <!-- 큰 창에서 검색 결과 목록 너비를 조절하는 분할선 (끌기, ←/→ 키, 더블클릭·Home으로 기본 너비) -->
+        <ContentControl x:Name="MasterSplitter" x:Uid="DA_MasterSplitter" Width="10" Margin="320,50,0,10"
+                        HorizontalAlignment="Left" VerticalAlignment="Stretch"
+                        HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch"
+                        IsTabStop="True" UseSystemFocusVisuals="True" AutomationProperties.Name="검색 결과 목록 너비 조절"
+                        ManipulationMode="None"
+                        PointerEntered="MasterSplitter_PointerEntered" PointerExited="MasterSplitter_PointerExited"
+                        PointerPressed="MasterSplitter_PointerPressed" PointerMoved="MasterSplitter_PointerMoved"
+                        PointerReleased="MasterSplitter_PointerReleased" PointerCaptureLost="MasterSplitter_PointerCaptureLost"
+                        DoubleTapped="MasterSplitter_DoubleTapped" KeyDown="MasterSplitter_KeyDown">
+            <!-- 투명 배경이 있어야 분할선 전체 폭에서 마우스를 인식한다 -->
+            <Grid Background="Transparent">
+                <Rectangle Width="3" Height="36" RadiusX="1.5" RadiusY="1.5" Fill="{ThemeResource BorderBrush}"
+                           HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            </Grid>
+        </ContentControl>
+
         <Grid x:Name="DetailGrid" HorizontalAlignment="Stretch" Margin="330,50,10,0" VerticalAlignment="Stretch"
               Background="{ThemeResource NavigationViewBackground}" Visibility="{x:Bind ViewModel.IsDetailGridVisible, Mode=OneWay}">
             <ScrollViewer x:Name="DefinitionViewer" Visibility="{x:Bind ViewModel.IsDefinitionViewerVisible, Mode=OneWay}" IsTabStop="True">

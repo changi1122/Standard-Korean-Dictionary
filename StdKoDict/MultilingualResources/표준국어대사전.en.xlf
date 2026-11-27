@@ -44,8 +44,8 @@
           <target state="translated">Refresh</target>
         </trans-unit>
         <trans-unit id="DA_SearchBox.PlaceholderText" translate="yes" xml:space="preserve">
-          <source>검색할 단어를 입력하세요</source>
-          <target state="translated">Enter words to search</target>
+          <source>검색어 입력</source>
+          <target state="translated">Search</target>
         </trans-unit>
         <trans-unit id="ADJ_BtnDefaultbrowser.Content" translate="yes" xml:space="preserve">
           <source>기본 브라우저에서 보기</source>
@@ -455,6 +455,90 @@
         <trans-unit id="Set_BtnSave.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" translate="yes" xml:space="preserve">
           <source>저장</source>
           <target state="translated">Save</target>
+        </trans-unit>
+        <trans-unit id="DA_BtnSearchOptions.[using:Windows.UI.Xaml.Automation]AutomationProperties.Name" translate="yes" xml:space="preserve">
+          <source>검색 옵션</source>
+          <target state="translated">Search options</target>
+        </trans-unit>
+        <trans-unit id="DA_BtnSearchOptions.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" translate="yes" xml:space="preserve">
+          <source>검색 옵션</source>
+          <target state="translated">Search options</target>
+        </trans-unit>
+        <trans-unit id="DA_SearchTarget.Header" translate="yes" xml:space="preserve">
+          <source>찾을 대상</source>
+          <target state="translated">Search in</target>
+        </trans-unit>
+        <trans-unit id="DA_SearchMethod.Header" translate="yes" xml:space="preserve">
+          <source>검색 방식</source>
+          <target state="translated">Match type</target>
+        </trans-unit>
+        <trans-unit id="DA_SearchDefinitionHint.Text" translate="yes" xml:space="preserve">
+          <source>뜻풀이는 입력한 말이 들어간 뜻풀이를 찾습니다 (포함 검색).</source>
+          <target state="translated">Finds definitions that contain what you typed.</target>
+        </trans-unit>
+        <trans-unit id="SearchTargetHeadword" translate="yes" xml:space="preserve">
+          <source>표제어 (관용구·속담 포함)</source>
+          <target state="translated">Headwords (incl. idioms &amp; proverbs)</target>
+        </trans-unit>
+        <trans-unit id="SearchTargetHeadwordShort" translate="yes" xml:space="preserve">
+          <source>표제어</source>
+          <target state="translated">Headwords</target>
+        </trans-unit>
+        <trans-unit id="SearchTargetDefinition" translate="yes" xml:space="preserve">
+          <source>뜻풀이</source>
+          <target state="translated">Definitions</target>
+        </trans-unit>
+        <trans-unit id="SearchMethodExact" translate="yes" xml:space="preserve">
+          <source>일치</source>
+          <target state="translated">Exact</target>
+        </trans-unit>
+        <trans-unit id="SearchMethodInclude" translate="yes" xml:space="preserve">
+          <source>포함</source>
+          <target state="translated">Contains</target>
+        </trans-unit>
+        <trans-unit id="SearchMethodStart" translate="yes" xml:space="preserve">
+          <source>시작</source>
+          <target state="translated">Starts with</target>
+        </trans-unit>
+        <trans-unit id="SearchMethodEnd" translate="yes" xml:space="preserve">
+          <source>끝</source>
+          <target state="translated">Ends with</target>
+        </trans-unit>
+        <trans-unit id="SearchOptionSummaryFormat" translate="yes" xml:space="preserve">
+          <source>검색 옵션: {0} · {1}</source>
+          <target state="translated">Search options: {0} · {1}</target>
+        </trans-unit>
+        <trans-unit id="SearchFallbackNotice" translate="yes" xml:space="preserve">
+          <source>‘{0}’와(과) 일치하는 표제어가 없어 포함 검색 결과를 보여 줍니다.</source>
+          <target state="translated">No exact match for “{0}”. Showing results that contain it.</target>
+        </trans-unit>
+        <trans-unit id="DA_MasterSplitter.[using:Windows.UI.Xaml.Automation]AutomationProperties.Name" translate="yes" xml:space="preserve">
+          <source>검색 결과 목록 너비 조절</source>
+          <target state="translated">Resize search results list</target>
+        </trans-unit>
+        <trans-unit id="DA_BtnBookmarks.Label" translate="yes" xml:space="preserve">
+          <source>단어장</source>
+          <target state="translated">Word list</target>
+        </trans-unit>
+        <trans-unit id="DA_BtnBookmarks.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" translate="yes" xml:space="preserve">
+          <source>단어장</source>
+          <target state="translated">Word list</target>
+        </trans-unit>
+        <trans-unit id="BookmarkAdd" translate="yes" xml:space="preserve">
+          <source>단어장에 추가</source>
+          <target state="translated">Add to word list</target>
+        </trans-unit>
+        <trans-unit id="BookmarkRemove" translate="yes" xml:space="preserve">
+          <source>단어장에서 삭제</source>
+          <target state="translated">Remove from word list</target>
+        </trans-unit>
+        <trans-unit id="BookmarkStatusFormat" translate="yes" xml:space="preserve">
+          <source>단어장 · {0}개</source>
+          <target state="translated">Word list · {0}</target>
+        </trans-unit>
+        <trans-unit id="BookmarkEmpty" translate="yes" xml:space="preserve">
+          <source>단어장이 비어 있습니다. 뜻풀이 위의 ☆ 버튼이나 검색 결과의 우클릭 메뉴로 단어를 추가하세요.</source>
+          <target state="translated">Your word list is empty. Add words with the ☆ button above a definition or by right-clicking a search result.</target>
         </trans-unit>
       </group>
     </body>

@@ -23,6 +23,9 @@ namespace 표준국어대사전.Classes
         //Lab Function
         public const string LabWordReaderEnabled = "#LabWordReaderEnabled";             //bool
 
+        // 큰 창에서 검색 결과 목록 너비 (double, 없으면 기본 너비)
+        public const string SearchListWidth = "#SearchListWidth";
+
         // 앱에 내장된 공용 오픈 API 인증키
         public const string PublicAPIKey = "C58534E2D39CF7CA69BCA193541C1688";
 
