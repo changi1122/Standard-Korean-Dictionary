@@ -492,4 +492,7 @@
   <data name="SearchFallbackNotice" xml:space="preserve">
     <value>‘{0}’와(과) 일치하는 표제어가 없어 포함 검색 결과를 보여 줍니다.</value>
   </data>
+  <data name="DA_MasterSplitter.[using:Windows.UI.Xaml.Automation]AutomationProperties.Name" xml:space="preserve">
+    <value>검색 결과 목록 너비 조절</value>
+  </data>
 </root>

@@ -134,6 +134,23 @@
                         Visibility="{x:Bind ViewModel.IsErrorMessageVisible, Mode=OneWay}" Click="{x:Bind ViewModel.NetStatusRefresh}"/>
             </StackPanel>
         </Grid>
+        <!-- 큰 창에서 검색 결과 목록 너비를 조절하는 분할선 (끌기, ←/→ 키, 더블클릭·Home으로 기본 너비) -->
+        <ContentControl x:Name="MasterSplitter" x:Uid="DA_MasterSplitter" Width="10" Margin="320,50,0,10"
+                        HorizontalAlignment="Left" VerticalAlignment="Stretch"
+                        HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch"
+                        IsTabStop="True" UseSystemFocusVisuals="True" AutomationProperties.Name="검색 결과 목록 너비 조절"
+                        ManipulationMode="None"
+                        PointerEntered="MasterSplitter_PointerEntered" PointerExited="MasterSplitter_PointerExited"
+                        PointerPressed="MasterSplitter_PointerPressed" PointerMoved="MasterSplitter_PointerMoved"
+                        PointerReleased="MasterSplitter_PointerReleased" PointerCaptureLost="MasterSplitter_PointerCaptureLost"
+                        DoubleTapped="MasterSplitter_DoubleTapped" KeyDown="MasterSplitter_KeyDown">
+            <!-- 투명 배경이 있어야 분할선 전체 폭에서 마우스를 인식한다 -->
+            <Grid Background="Transparent">
+                <Rectangle Width="3" Height="36" RadiusX="1.5" RadiusY="1.5" Fill="{ThemeResource BorderBrush}"
+                           HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            </Grid>
+        </ContentControl>
+
         <Grid x:Name="DetailGrid" HorizontalAlignment="Stretch" Margin="330,50,10,0" VerticalAlignment="Stretch"
               Background="{ThemeResource NavigationViewBackground}" Visibility="{x:Bind ViewModel.IsDetailGridVisible, Mode=OneWay}">
             <ScrollViewer x:Name="DefinitionViewer" Visibility="{x:Bind ViewModel.IsDefinitionViewerVisible, Mode=OneWay}" IsTabStop="True">

@@ -378,4 +378,7 @@
   <data name="SearchFallbackNotice" xml:space="preserve">
     <value>No exact match for “{0}”. Showing results that contain it.</value>
   </data>
+  <data name="DA_MasterSplitter.[using:Windows.UI.Xaml.Automation]AutomationProperties.Name" xml:space="preserve">
+    <value>Resize search results list</value>
+  </data>
 </root>

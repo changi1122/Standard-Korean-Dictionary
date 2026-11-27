@@ -512,6 +512,10 @@
           <source>‘{0}’와(과) 일치하는 표제어가 없어 포함 검색 결과를 보여 줍니다.</source>
           <target state="translated">No exact match for “{0}”. Showing results that contain it.</target>
         </trans-unit>
+        <trans-unit id="DA_MasterSplitter.[using:Windows.UI.Xaml.Automation]AutomationProperties.Name" translate="yes" xml:space="preserve">
+          <source>검색 결과 목록 너비 조절</source>
+          <target state="translated">Resize search results list</target>
+        </trans-unit>
       </group>
     </body>
   </file>
