@@ -258,6 +258,51 @@ namespace 표준국어대사전.Views
         }
         #endregion
 
+        #region 검색 결과 우클릭 메뉴 (단어장에 추가/삭제)
+        private SearchResultItem contextMenuItem;
+
+        private void SearchResultMenu_Opening(object sender, object e)
+        {
+            MenuFlyout menu = (MenuFlyout)sender;
+            contextMenuItem = (menu.Target as FrameworkElement)?.DataContext as SearchResultItem;
+            MenuFlyoutItem menuItem = (MenuFlyoutItem)menu.Items[0];
+
+            var res = ResourceLoader.GetForCurrentView();
+            bool isWord = contextMenuItem != null && contextMenuItem.target_code > 0; // [시작] 등은 단어가 아님
+            bool isBookmarked = isWord && BookmarkManager.Contains(contextMenuItem.target_code.ToString());
+
+            menuItem.Text = res.GetString(isBookmarked ? "BookmarkRemove" : "BookmarkAdd");
+            menuItem.IsEnabled = isWord;
+            ((FontIcon)menuItem.Icon).Glyph = ((char)(isBookmarked ? 0xE735 : 0xE734)).ToString();
+        }
+
+        private void SearchResultMenuBookmark_Click(object sender, RoutedEventArgs e)
+        {
+            SearchResultItem item = contextMenuItem;
+            if (item == null || item.target_code <= 0)
+                return;
+
+            string code = item.target_code.ToString();
+            if (BookmarkManager.Contains(code))
+            {
+                BookmarkManager.Remove(code);
+                ViewModel.OnBookmarkRemoved(item);
+            }
+            else
+            {
+                BookmarkManager.Add(new BookmarkItem
+                {
+                    TargetCode = code,
+                    Word = item.word,
+                    SupNo = item.sup_no,
+                    Pos = item.pos,
+                    Origin = item.origin,
+                    Definition = item.definition
+                });
+            }
+        }
+        #endregion
+
         #region 검색 옵션
         // 라디오 버튼 순서와 옵션 값 대응
         private static readonly SearchTarget[] SearchTargets = { SearchTarget.Headword, SearchTarget.Definition };

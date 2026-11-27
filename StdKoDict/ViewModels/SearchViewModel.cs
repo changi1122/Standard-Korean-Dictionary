@@ -116,6 +116,71 @@ namespace 표준국어대사전.ViewModels
             RaisePropertyChanged("SearchStatusText", "IsSearchStatusVisible");
         }
 
+        #region 단어장
+        // 지금 목록이 단어장인지 (단어장에서 삭제할 때 목록에서도 빼기 위해)
+        public bool IsBookmarkMode { get; private set; }
+
+        /// <summary>검색 목록 자리에 단어장(최근에 추가한 순)을 보여 준다.</summary>
+        public void ShowBookmarks()
+        {
+            // 되돌리기 위한 기록
+            History.RecordAll(Query, lastSearchedQuery, SearchResults, Definitions, SearchResultSelectedIndex, false, IsMoreButtonVisible);
+
+            SearchResults.Clear();
+            foreach (BookmarkItem bookmark in BookmarkManager.GetAll())
+            {
+                if (!int.TryParse(bookmark.TargetCode, out int code))
+                    continue;
+                SearchResults.Add(new SearchResultItem
+                {
+                    target_code = code,
+                    word = bookmark.Word,
+                    sup_no = bookmark.SupNo,
+                    display_sup_no = bookmark.SupNo != 0 ? NumberConvertor.ToSup(bookmark.SupNo.ToString()) : "",
+                    pos = bookmark.Pos,
+                    origin = bookmark.Origin,
+                    definition = bookmark.Definition
+                });
+            }
+
+            IsBookmarkMode = true;
+            lastSearchedQuery = "";
+            SearchResultSelectedIndex = -1;
+            IsMoreButtonVisible = Visibility.Collapsed;
+            IsErrorMessageVisible = Visibility.Collapsed;
+            IsDefinitionViewerVisible = Visibility.Collapsed;
+            RaisePropertyChanged("SearchResultSelectedIndex", "IsMoreButtonVisible", "IsErrorMessageVisible",
+                                 "IsDefinitionViewerVisible", "CanGoBack", "CanGoForward");
+
+            // 작은 창에서 뜻풀이가 목록을 덮고 있으면 닫는다
+            if (!IsWidthBigEnough)
+            {
+                IsDetailGridVisible = Visibility.Collapsed;
+                IsTitleBarBackButtonEnabled = false;
+                RaisePropertyChanged("IsDetailGridVisible");
+            }
+
+            UpdateBookmarkStatus();
+        }
+
+        /// <summary>단어장에서 지운 단어를, 단어장을 보고 있으면 목록에서도 뺀다.</summary>
+        public void OnBookmarkRemoved(SearchResultItem item)
+        {
+            if (!IsBookmarkMode || item == null)
+                return;
+            SearchResults.Remove(item);
+            UpdateBookmarkStatus();
+        }
+
+        private void UpdateBookmarkStatus()
+        {
+            var res = Windows.ApplicationModel.Resources.ResourceLoader.GetForCurrentView();
+            SetFallbackNotice(SearchResults.Count > 0
+                ? string.Format(res.GetString("BookmarkStatusFormat"), SearchResults.Count)
+                : res.GetString("BookmarkEmpty"));
+        }
+        #endregion
+
         /// <summary>검색 옵션을 바꾸고, 검색어가 있으면 새 옵션으로 다시 검색한다.</summary>
         public void SetSearchOptions(SearchMethod method, SearchTarget target)
         {
@@ -154,6 +219,7 @@ namespace 표준국어대사전.ViewModels
             IsErrorMessageVisible = Visibility.Collapsed;
             RaisePropertyChanged("IsErrorMessageVisible");
             SetFallbackNotice(null);
+            IsBookmarkMode = false;
 
             if (NetworkCheck() == false)
                 return;
@@ -310,6 +376,7 @@ namespace 표준국어대사전.ViewModels
             Visibility isMoreButtonVisible = IsMoreButtonVisible;
             History.Undo(ref query, ref lastSearchedQuery, ref searchResults, ref definition, ref selectedIndex, ref isMoreButtonVisible);
             SetFallbackNotice(null);
+            IsBookmarkMode = false;
 
             Query = query;
             SearchResults = searchResults;
@@ -339,6 +406,7 @@ namespace 표준국어대사전.ViewModels
             Visibility isMoreButtonVisible = IsMoreButtonVisible;
             History.Redo(ref query, ref lastSearchedQuery, ref searchResults, ref definition, ref selectedIndex, ref isMoreButtonVisible);
             SetFallbackNotice(null);
+            IsBookmarkMode = false;
 
             Query = query;
             SearchResults = searchResults;
@@ -369,6 +437,7 @@ namespace 표준국어대사전.ViewModels
             // 검색어 지우기
             Query = "";
             SetFallbackNotice(null);
+            IsBookmarkMode = false;
             // 검색 결과 지우기
             SearchResults.Clear();
 

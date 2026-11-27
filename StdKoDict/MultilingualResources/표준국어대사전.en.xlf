@@ -516,6 +516,30 @@
           <source>검색 결과 목록 너비 조절</source>
           <target state="translated">Resize search results list</target>
         </trans-unit>
+        <trans-unit id="DA_BtnBookmarks.Label" translate="yes" xml:space="preserve">
+          <source>단어장</source>
+          <target state="translated">Word list</target>
+        </trans-unit>
+        <trans-unit id="DA_BtnBookmarks.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" translate="yes" xml:space="preserve">
+          <source>단어장</source>
+          <target state="translated">Word list</target>
+        </trans-unit>
+        <trans-unit id="BookmarkAdd" translate="yes" xml:space="preserve">
+          <source>단어장에 추가</source>
+          <target state="translated">Add to word list</target>
+        </trans-unit>
+        <trans-unit id="BookmarkRemove" translate="yes" xml:space="preserve">
+          <source>단어장에서 삭제</source>
+          <target state="translated">Remove from word list</target>
+        </trans-unit>
+        <trans-unit id="BookmarkStatusFormat" translate="yes" xml:space="preserve">
+          <source>단어장 · {0}개</source>
+          <target state="translated">Word list · {0}</target>
+        </trans-unit>
+        <trans-unit id="BookmarkEmpty" translate="yes" xml:space="preserve">
+          <source>단어장이 비어 있습니다. 뜻풀이 위의 ☆ 버튼이나 검색 결과의 우클릭 메뉴로 단어를 추가하세요.</source>
+          <target state="translated">Your word list is empty. Add words with the ☆ button above a definition or by right-clicking a search result.</target>
+        </trans-unit>
       </group>
     </body>
   </file>

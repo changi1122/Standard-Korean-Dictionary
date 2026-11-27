@@ -495,4 +495,22 @@
   <data name="DA_MasterSplitter.[using:Windows.UI.Xaml.Automation]AutomationProperties.Name" xml:space="preserve">
     <value>검색 결과 목록 너비 조절</value>
   </data>
+  <data name="DA_BtnBookmarks.Label" xml:space="preserve">
+    <value>단어장</value>
+  </data>
+  <data name="DA_BtnBookmarks.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
+    <value>단어장</value>
+  </data>
+  <data name="BookmarkAdd" xml:space="preserve">
+    <value>단어장에 추가</value>
+  </data>
+  <data name="BookmarkRemove" xml:space="preserve">
+    <value>단어장에서 삭제</value>
+  </data>
+  <data name="BookmarkStatusFormat" xml:space="preserve">
+    <value>단어장 · {0}개</value>
+  </data>
+  <data name="BookmarkEmpty" xml:space="preserve">
+    <value>단어장이 비어 있습니다. 뜻풀이 위의 ☆ 버튼이나 검색 결과의 우클릭 메뉴로 단어를 추가하세요.</value>
+  </data>
 </root>

@@ -72,9 +72,77 @@ namespace 표준국어대사전.Models
 
                 sp.Children.Add(BtnFilter);
 
+                // 단어장 추가/삭제 (실제 단어일 때만. 시작 화면 등 정적 페이지는 단어 코드가 없거나 음수)
+                if (int.TryParse(target_code, out int code) && code > 0)
+                {
+                    Button BtnBookmark = new Button { Width = 36, Height = 36, Margin = new Thickness(0, 0, 5, 0),
+                                                      Padding = new Thickness(0),
+                                                      Background = new SolidColorBrush(Colors.Transparent) };
+                    UpdateBookmarkButton(BtnBookmark);
+                    BtnBookmark.Click += BtnBookmark_Click;
+                    sp.Children.Insert(0, BtnBookmark);
+                }
+
                 return sp;
             }
         }
+
+        #region 단어장
+        private void BtnBookmark_Click(object sender, RoutedEventArgs e)
+        {
+            if (BookmarkManager.Contains(target_code))
+                BookmarkManager.Remove(target_code);
+            else
+                BookmarkManager.Add(CreateBookmarkItem());
+
+            UpdateBookmarkButton((Button)sender);
+        }
+
+        // 저장 여부에 따라 ☆/★ 아이콘과 툴팁·이름을 바꾼다
+        private void UpdateBookmarkButton(Button button)
+        {
+            bool isBookmarked = BookmarkManager.Contains(target_code);
+            var res = Windows.ApplicationModel.Resources.ResourceLoader.GetForCurrentView();
+            string label = res.GetString(isBookmarked ? "BookmarkRemove" : "BookmarkAdd");
+
+            button.Content = new FontIcon
+            {
+                FontFamily = new FontFamily("Segoe Fluent Icons, Segoe MDL2 Assets"),
+                Glyph = ((char)(isBookmarked ? 0xE735 : 0xE734)).ToString(),  // FavoriteStarFill / FavoriteStar
+                FontSize = 18
+            };
+            ToolTipService.SetToolTip(button, label);
+            Windows.UI.Xaml.Automation.AutomationProperties.SetName(button, label);
+        }
+
+        // 단어장 목록에서 보여 줄 품사·원어·대표 뜻풀이를 함께 저장한다
+        private BookmarkItem CreateBookmarkItem()
+        {
+            string pos = (poses != null && poses.Count > 0) ? poses[0].pos : "";
+            string definition = "";
+            if (poses != null)
+            {
+                DefinitionItem first = poses.Where(p => p.patterns != null)
+                                            .SelectMany(p => p.patterns)
+                                            .Where(pattern => pattern.definitions != null)
+                                            .SelectMany(pattern => pattern.definitions)
+                                            .FirstOrDefault(d => !string.IsNullOrEmpty(d.definition));
+                if (first != null)
+                    // 뜻풀이 안의 링크 표시(<link target="…">단어</link>)는 글자만 남긴다
+                    definition = System.Text.RegularExpressions.Regex.Replace(first.definition, "<[^>]+>", "");
+            }
+
+            return new BookmarkItem
+            {
+                TargetCode = target_code,
+                Word = wordname,
+                SupNo = sup_no,
+                Pos = pos == "품사 없음" ? "" : pos,
+                Origin = original_language,
+                Definition = definition
+            };
+        }
+        #endregion
 
 
         public void BtnFontDecrease_Click(object sender, RoutedEventArgs e)
