@@ -40,7 +40,7 @@
     <value>Refresh</value>
   </data>
   <data name="DA_SearchBox.PlaceholderText" xml:space="preserve">
-    <value>Enter words to search</value>
+    <value>Search</value>
   </data>
   <data name="ADJ_BtnDefaultbrowser.Content" xml:space="preserve">
     <value>View on Default browser</value>
@@ -335,5 +335,47 @@
   </data>
   <data name="Set_CopyrightInfo.Text" xml:space="preserve">
     <value>License information</value>
+  </data>
+  <data name="DA_BtnSearchOptions.[using:Windows.UI.Xaml.Automation]AutomationProperties.Name" xml:space="preserve">
+    <value>Search options</value>
+  </data>
+  <data name="DA_BtnSearchOptions.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
+    <value>Search options</value>
+  </data>
+  <data name="DA_SearchTarget.Header" xml:space="preserve">
+    <value>Search in</value>
+  </data>
+  <data name="DA_SearchMethod.Header" xml:space="preserve">
+    <value>Match type</value>
+  </data>
+  <data name="DA_SearchDefinitionHint.Text" xml:space="preserve">
+    <value>Finds definitions that contain what you typed.</value>
+  </data>
+  <data name="SearchTargetHeadword" xml:space="preserve">
+    <value>Headwords (incl. idioms &amp; proverbs)</value>
+  </data>
+  <data name="SearchTargetHeadwordShort" xml:space="preserve">
+    <value>Headwords</value>
+  </data>
+  <data name="SearchTargetDefinition" xml:space="preserve">
+    <value>Definitions</value>
+  </data>
+  <data name="SearchMethodExact" xml:space="preserve">
+    <value>Exact</value>
+  </data>
+  <data name="SearchMethodInclude" xml:space="preserve">
+    <value>Contains</value>
+  </data>
+  <data name="SearchMethodStart" xml:space="preserve">
+    <value>Starts with</value>
+  </data>
+  <data name="SearchMethodEnd" xml:space="preserve">
+    <value>Ends with</value>
+  </data>
+  <data name="SearchOptionSummaryFormat" xml:space="preserve">
+    <value>Search options: {0} · {1}</value>
+  </data>
+  <data name="SearchFallbackNotice" xml:space="preserve">
+    <value>No exact match for “{0}”. Showing results that contain it.</value>
   </data>
 </root>

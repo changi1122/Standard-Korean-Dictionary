@@ -31,6 +31,7 @@ namespace 표준국어대사전.Views
             this.ViewModel.PropertyChanged += ViewModel_PropertyChanged;
 
             this.InitializeComponent();
+            InitializeSearchOptions();
 
             this.ViewModel.IsWidthBigEnough = BasicGrid.ActualWidth >= 686;
             this.ViewModel.NetStatusRefresh();
@@ -134,6 +135,48 @@ namespace 표준국어대사전.Views
 
             ViewModel.SearchWords();
         }
+
+        #region 검색 옵션
+        // 라디오 버튼 순서와 옵션 값 대응
+        private static readonly SearchTarget[] SearchTargets = { SearchTarget.Headword, SearchTarget.Definition };
+        private static readonly SearchMethod[] SearchMethods = { SearchMethod.Exact, SearchMethod.Include, SearchMethod.Start, SearchMethod.End };
+        private bool isInitializingSearchOptions = false;
+
+        private void InitializeSearchOptions()
+        {
+            var res = ResourceLoader.GetForCurrentView();
+            isInitializingSearchOptions = true;
+
+            RadioSearchTarget.Items.Add(res.GetString("SearchTargetHeadword"));
+            RadioSearchTarget.Items.Add(res.GetString("SearchTargetDefinition"));
+            foreach (SearchMethod method in SearchMethods)
+                RadioSearchMethod.Items.Add(res.GetString("SearchMethod" + method.ToString()));
+
+            // 페이지를 다시 열어도 현재 옵션이 선택되어 있도록
+            RadioSearchTarget.SelectedIndex = System.Array.IndexOf(SearchTargets, ViewModel.SearchTarget);
+            RadioSearchMethod.SelectedIndex = System.Array.IndexOf(SearchMethods, ViewModel.SearchMethod);
+            UpdateSearchOptionControls();
+
+            isInitializingSearchOptions = false;
+        }
+
+        private void SearchOptions_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (isInitializingSearchOptions || RadioSearchTarget.SelectedIndex < 0 || RadioSearchMethod.SelectedIndex < 0)
+                return;
+
+            UpdateSearchOptionControls();
+            ViewModel.SetSearchOptions(SearchMethods[RadioSearchMethod.SelectedIndex], SearchTargets[RadioSearchTarget.SelectedIndex]);
+        }
+
+        // 뜻풀이 검색은 항상 포함 검색이므로 검색 방식을 고를 수 없게 하고 안내를 보여 준다
+        private void UpdateSearchOptionControls()
+        {
+            bool isDefinition = RadioSearchTarget.SelectedIndex >= 0 && SearchTargets[RadioSearchTarget.SelectedIndex] == SearchTarget.Definition;
+            RadioSearchMethod.IsEnabled = !isDefinition;
+            TextSearchOptionHint.Visibility = isDefinition ? Visibility.Visible : Visibility.Collapsed;
+        }
+        #endregion
 
         private void SearchBox_KeyDown(object sender, KeyRoutedEventArgs e)
         {

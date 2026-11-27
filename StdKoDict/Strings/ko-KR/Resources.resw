@@ -151,7 +151,7 @@
     <value>단어 검색</value>
   </data>
   <data name="DA_SearchBox.PlaceholderText" xml:space="preserve">
-    <value>검색할 단어를 입력하세요</value>
+    <value>검색어 입력</value>
   </data>
   <data name="NaviItem1.Content" xml:space="preserve">
     <value>단어 검색</value>
@@ -449,5 +449,47 @@
   </data>
   <data name="Set_BtnSave.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
     <value>저장</value>
+  </data>
+  <data name="DA_BtnSearchOptions.[using:Windows.UI.Xaml.Automation]AutomationProperties.Name" xml:space="preserve">
+    <value>검색 옵션</value>
+  </data>
+  <data name="DA_BtnSearchOptions.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
+    <value>검색 옵션</value>
+  </data>
+  <data name="DA_SearchTarget.Header" xml:space="preserve">
+    <value>찾을 대상</value>
+  </data>
+  <data name="DA_SearchMethod.Header" xml:space="preserve">
+    <value>검색 방식</value>
+  </data>
+  <data name="DA_SearchDefinitionHint.Text" xml:space="preserve">
+    <value>뜻풀이는 입력한 말이 들어간 뜻풀이를 찾습니다 (포함 검색).</value>
+  </data>
+  <data name="SearchTargetHeadword" xml:space="preserve">
+    <value>표제어 (관용구·속담 포함)</value>
+  </data>
+  <data name="SearchTargetHeadwordShort" xml:space="preserve">
+    <value>표제어</value>
+  </data>
+  <data name="SearchTargetDefinition" xml:space="preserve">
+    <value>뜻풀이</value>
+  </data>
+  <data name="SearchMethodExact" xml:space="preserve">
+    <value>일치</value>
+  </data>
+  <data name="SearchMethodInclude" xml:space="preserve">
+    <value>포함</value>
+  </data>
+  <data name="SearchMethodStart" xml:space="preserve">
+    <value>시작</value>
+  </data>
+  <data name="SearchMethodEnd" xml:space="preserve">
+    <value>끝</value>
+  </data>
+  <data name="SearchOptionSummaryFormat" xml:space="preserve">
+    <value>검색 옵션: {0} · {1}</value>
+  </data>
+  <data name="SearchFallbackNotice" xml:space="preserve">
+    <value>‘{0}’와(과) 일치하는 표제어가 없어 포함 검색 결과를 보여 줍니다.</value>
   </data>
 </root>

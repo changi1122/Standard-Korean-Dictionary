@@ -83,6 +83,54 @@ namespace 표준국어대사전.ViewModels
 
         public int SearchResultSelectedIndex { get; set; }
         public Visibility IsMoreButtonVisible { get; private set; }
+
+        #region 검색 옵션
+        // 검색 옵션 (앱을 다시 켜면 기본값: 표제어·일치)
+        public SearchMethod SearchMethod { get; private set; } = SearchMethod.Exact;
+        public SearchTarget SearchTarget { get; private set; } = SearchTarget.Headword;
+
+        // 검색창 아래 상태 줄: 자동 포함 검색 안내가 우선, 없으면 기본값이 아닌 검색 옵션 요약
+        private string fallbackNotice = null;
+        public string SearchStatusText
+        {
+            get
+            {
+                if (!string.IsNullOrEmpty(fallbackNotice))
+                    return fallbackNotice;
+
+                SearchRequest options = new SearchRequest("", SearchMethod, SearchTarget);
+                if (options.IsDefault)
+                    return "";
+
+                var res = Windows.ApplicationModel.Resources.ResourceLoader.GetForCurrentView();
+                string target = res.GetString(options.Target == SearchTarget.Definition ? "SearchTargetDefinition" : "SearchTargetHeadwordShort");
+                string method = res.GetString("SearchMethod" + options.Method.ToString());
+                return string.Format(res.GetString("SearchOptionSummaryFormat"), target, method);
+            }
+        }
+        public Visibility IsSearchStatusVisible => string.IsNullOrEmpty(SearchStatusText) ? Visibility.Collapsed : Visibility.Visible;
+
+        private void SetFallbackNotice(string notice)
+        {
+            fallbackNotice = notice;
+            RaisePropertyChanged("SearchStatusText", "IsSearchStatusVisible");
+        }
+
+        /// <summary>검색 옵션을 바꾸고, 검색어가 있으면 새 옵션으로 다시 검색한다.</summary>
+        public void SetSearchOptions(SearchMethod method, SearchTarget target)
+        {
+            if (method == SearchMethod && target == SearchTarget)
+                return;
+
+            SearchMethod = method;
+            SearchTarget = target;
+            fallbackNotice = null;
+            RaisePropertyChanged("SearchStatusText", "IsSearchStatusVisible");
+
+            if (!string.IsNullOrWhiteSpace(Query))
+                SearchWords();
+        }
+        #endregion
         public Visibility IsErrorMessageVisible { get; private set; }
         public string ErrorMessageText { get; private set; }
         public Visibility IsDetailProgressBarVisible { get; private set; }
@@ -101,10 +149,11 @@ namespace 표준국어대사전.ViewModels
         }
 
 
-        public void SearchWords()
+        public async void SearchWords()
         {
             IsErrorMessageVisible = Visibility.Collapsed;
             RaisePropertyChanged("IsErrorMessageVisible");
+            SetFallbackNotice(null);
 
             if (NetworkCheck() == false)
                 return;
@@ -121,7 +170,8 @@ namespace 표준국어대사전.ViewModels
             IsDefinitionViewerVisible = Visibility.Collapsed;
             RaisePropertyChanged("SearchResultSelectedIndex", "IsDefinitionViewerVisible");
 
-            lastSearchedQuery = query;
+            SearchRequest request = new SearchRequest(query, SearchMethod, SearchTarget);
+            lastSearchedQuery = request.Encode();
             WordFinder wordFinder = new WordFinder(SearchResults, (Visibility visibility) => {
                 if (visibility == Visibility.Collapsed)
                     LastLoadAddedItems = SearchResults.Count > countBeforeLoad;
@@ -133,15 +183,33 @@ namespace 표준국어대사전.ViewModels
                 IsErrorMessageVisible = Visibility.Visible;
                 RaisePropertyChanged("ErrorMessageText", "IsErrorMessageVisible");
             });
-            countBeforeLoad = 0;
-            wordFinder.GetSearchResults(1, 10, query, IsMoreButtonVisible, (visibility) => {
+            Action<Visibility> setMoreButtonVisibility = (visibility) => {
                 IsMoreButtonVisible = visibility;
                 RaisePropertyChanged("IsMoreButtonVisible");
-            });
+            };
 
             RaisePropertyChanged("CanGoBack", "CanGoForward");
             //최근 검색어 기록
             RecentWordManager.Append(Query);
+
+            // 기본 검색(표제어·일치)은 결과가 없으면 포함 검색으로 다시 찾으므로 '결과 없음'을 바로 표시하지 않는다
+            countBeforeLoad = 0;
+            int total = await wordFinder.GetSearchResults(1, 10, request, IsMoreButtonVisible, setMoreButtonVisibility,
+                                                          reportNoResult: !request.IsDefault);
+
+            if (total == 0 && request.IsDefault && lastSearchedQuery == request.Encode())
+            {
+                SearchRequest includeRequest = request.WithMethod(SearchMethod.Include);
+                lastSearchedQuery = includeRequest.Encode();
+                countBeforeLoad = 0;
+                int includeTotal = await wordFinder.GetSearchResults(1, 10, includeRequest, IsMoreButtonVisible, setMoreButtonVisibility);
+
+                if (includeTotal > 0 && lastSearchedQuery == includeRequest.Encode())
+                {
+                    var res = Windows.ApplicationModel.Resources.ResourceLoader.GetForCurrentView();
+                    SetFallbackNotice(string.Format(res.GetString("SearchFallbackNotice"), query));
+                }
+            }
         }
 
         // 스크롤 자동 추가 로딩
@@ -158,7 +226,8 @@ namespace 표준국어대사전.ViewModels
 
         public void SearchMore()
         {
-            int start = SearchResults.Last().sup_no / 10 + 1;
+            // 포함·뜻풀이 검색은 어깨번호가 0이므로, 지금까지 받은 항목 수로 다음 페이지를 계산한다
+            int start = SearchResults.Count / 10 + 1;
 
             WordFinder wordFinder = new WordFinder(SearchResults, (Visibility visibility) => {
                 if (visibility == Visibility.Collapsed)
@@ -172,7 +241,7 @@ namespace 표준국어대사전.ViewModels
                 RaisePropertyChanged("ErrorMessageText", "IsErrorMessageVisible");
             });
             countBeforeLoad = SearchResults.Count;
-            wordFinder.GetSearchResults(start, 10, lastSearchedQuery, IsMoreButtonVisible, (visibility) => {
+            _ = wordFinder.GetSearchResults(start, 10, SearchRequest.Decode(lastSearchedQuery), IsMoreButtonVisible, (visibility) => {
                 IsMoreButtonVisible = visibility;
                 RaisePropertyChanged("IsMoreButtonVisible");
             });
@@ -240,6 +309,7 @@ namespace 표준국어대사전.ViewModels
             int selectedIndex = SearchResultSelectedIndex;
             Visibility isMoreButtonVisible = IsMoreButtonVisible;
             History.Undo(ref query, ref lastSearchedQuery, ref searchResults, ref definition, ref selectedIndex, ref isMoreButtonVisible);
+            SetFallbackNotice(null);
 
             Query = query;
             SearchResults = searchResults;
@@ -268,6 +338,7 @@ namespace 표준국어대사전.ViewModels
             int selectedIndex = SearchResultSelectedIndex;
             Visibility isMoreButtonVisible = IsMoreButtonVisible;
             History.Redo(ref query, ref lastSearchedQuery, ref searchResults, ref definition, ref selectedIndex, ref isMoreButtonVisible);
+            SetFallbackNotice(null);
 
             Query = query;
             SearchResults = searchResults;
@@ -297,6 +368,7 @@ namespace 표준국어대사전.ViewModels
 
             // 검색어 지우기
             Query = "";
+            SetFallbackNotice(null);
             // 검색 결과 지우기
             SearchResults.Clear();
 

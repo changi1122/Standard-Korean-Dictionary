@@ -104,7 +104,7 @@ namespace 표준국어대사전.ViewModels
                 RaisePropertyChanged("ErrorMessageText", "IsErrorMessageVisible");
             });
             countBeforeLoad = 0;
-            wordFinder.GetSearchResults(1, 10, query, IsMoreButtonVisible, (visibility) => {
+            _ = wordFinder.GetSearchResults(1, 10, new SearchRequest(query), IsMoreButtonVisible, (visibility) => {
                 IsMoreButtonVisible = visibility;
                 RaisePropertyChanged("IsMoreButtonVisible");
             });
@@ -124,7 +124,8 @@ namespace 표준국어대사전.ViewModels
 
         public void SearchMore()
         {
-            int start = SearchResults.Last().sup_no / 10 + 1;
+            // 포함·뜻풀이 검색은 어깨번호가 0이므로, 지금까지 받은 항목 수로 다음 페이지를 계산한다
+            int start = SearchResults.Count / 10 + 1;
 
             WordFinder wordFinder = new WordFinder(SearchResults, (Visibility visibility) => {
                 if (visibility == Visibility.Collapsed)
@@ -138,7 +139,7 @@ namespace 표준국어대사전.ViewModels
                 RaisePropertyChanged("ErrorMessageText", "IsErrorMessageVisible");
             });
             countBeforeLoad = SearchResults.Count;
-            wordFinder.GetSearchResults(start, 10, Query, IsMoreButtonVisible, (visibility) => {
+            _ = wordFinder.GetSearchResults(start, 10, new SearchRequest(Query), IsMoreButtonVisible, (visibility) => {
                 IsMoreButtonVisible = visibility;
                 RaisePropertyChanged("IsMoreButtonVisible");
             });

@@ -68,11 +68,45 @@
 
         <Grid x:Name="MasterGrid" Margin="10,50,0,10" HorizontalAlignment="Left" Width="310" Background="{ThemeResource PageBackgroundBrush}"
               CornerRadius="8" BorderBrush="{ThemeResource BorderBrush}" BorderThickness="1">
-            <AutoSuggestBox x:Name="SearchBox" x:Uid="DA_SearchBox" VerticalAlignment="Top" Margin="10,22,10,0"
-                            HorizontalAlignment="Stretch" PlaceholderText="검색할 단어를 입력하세요" FontSize="18" QueryIcon="Find"
-                            Text="{x:Bind ViewModel.Query, Mode=TwoWay}" IsEnabled="{x:Bind ViewModel.IsSearchBoxEnabled, Mode=OneWay}"
-                            QuerySubmitted="SearchBox_QuerySubmitted" KeyDown="SearchBox_KeyDown"/>
-            <ScrollViewer x:Name="SearchResultScrollView" HorizontalAlignment="Stretch" Margin="0,80,0,0" ViewChanged="SearchResultScrollView_ViewChanged">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <!-- 검색창 + 검색 옵션 버튼, 그 아래 상태 줄(기본값이 아닌 옵션 또는 자동 포함 검색 안내) -->
+            <StackPanel Margin="10,22,10,8" Spacing="6">
+                <Grid ColumnSpacing="6">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <AutoSuggestBox x:Name="SearchBox" x:Uid="DA_SearchBox" VerticalAlignment="Center"
+                                    HorizontalAlignment="Stretch" PlaceholderText="검색어 입력" FontSize="18" QueryIcon="Find"
+                                    Text="{x:Bind ViewModel.Query, Mode=TwoWay}" IsEnabled="{x:Bind ViewModel.IsSearchBoxEnabled, Mode=OneWay}"
+                                    QuerySubmitted="SearchBox_QuerySubmitted" KeyDown="SearchBox_KeyDown"/>
+                    <Button x:Name="BtnSearchOptions" x:Uid="DA_BtnSearchOptions" Grid.Column="1" VerticalAlignment="Stretch"
+                            Padding="9,0,9,0" AutomationProperties.Name="검색 옵션" ToolTipService.ToolTip="검색 옵션">
+                        <FontIcon FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" Glyph="&#xE71C;" FontSize="16"/>
+                        <Button.Flyout>
+                            <Flyout Placement="BottomEdgeAlignedRight">
+                                <StackPanel Width="250" Spacing="12">
+                                    <muxc:RadioButtons x:Name="RadioSearchTarget" x:Uid="DA_SearchTarget" Header="찾을 대상"
+                                                       SelectedIndex="0" SelectionChanged="SearchOptions_SelectionChanged"/>
+                                    <muxc:RadioButtons x:Name="RadioSearchMethod" x:Uid="DA_SearchMethod" Header="검색 방식" MaxColumns="2"
+                                                       SelectedIndex="0" SelectionChanged="SearchOptions_SelectionChanged"/>
+                                    <TextBlock x:Name="TextSearchOptionHint" x:Uid="DA_SearchDefinitionHint" Visibility="Collapsed"
+                                               FontSize="12" Foreground="Gray" TextWrapping="Wrap"
+                                               Text="뜻풀이는 입력한 말이 들어간 뜻풀이를 찾습니다 (포함 검색)."/>
+                                </StackPanel>
+                            </Flyout>
+                        </Button.Flyout>
+                    </Button>
+                </Grid>
+                <TextBlock x:Name="TextSearchStatus" Margin="4,0,4,0" FontSize="12" Foreground="Gray" TextWrapping="Wrap"
+                           Text="{x:Bind ViewModel.SearchStatusText, Mode=OneWay}" Visibility="{x:Bind ViewModel.IsSearchStatusVisible, Mode=OneWay}"/>
+            </StackPanel>
+
+            <ScrollViewer x:Name="SearchResultScrollView" Grid.Row="1" HorizontalAlignment="Stretch" ViewChanged="SearchResultScrollView_ViewChanged">
                 <StackPanel>
                     <ListView x:Name="ListviewSearchResult" ItemClick="ListviewSearchResult_ItemClick" IsItemClickEnabled="True" Margin="0,0,0,20"
                               PreviewKeyDown="ListviewSearchResult_PreviewKeyDown" SelectionChanged="ListviewSearchResult_SelectionChanged"
@@ -91,9 +125,9 @@
                 </StackPanel>
             </ScrollViewer>
 
-            <muxc:ProgressBar x:Name="MasterProgressBar" Margin="0,0,0,0" VerticalAlignment="Top" IsIndeterminate="True" ShowPaused="False"
+            <muxc:ProgressBar x:Name="MasterProgressBar" Grid.RowSpan="2" Margin="0,0,0,0" VerticalAlignment="Top" IsIndeterminate="True" ShowPaused="False"
                               ShowError="False" Visibility="{x:Bind ViewModel.IsMasterProgressBarVisible, Mode=OneWay}"/>
-            <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+            <StackPanel Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center">
                 <TextBlock x:Name="TextBlockErrorMessage" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="20"
                            Text="{x:Bind ViewModel.ErrorMessageText, Mode=OneWay}" Visibility="{x:Bind ViewModel.IsErrorMessageVisible, Mode=OneWay}"/>
                 <Button x:Name="BtnNetStatusRefresh" x:Uid="DA_BtnNetStatusRefresh" Margin="0,20,0,0"  HorizontalAlignment="Center" Content="다시 시도"
